@@ -1,0 +1,135 @@
+% Coefficient provenance appendix: audit trail for every constant in the
+% co-design program. Generated 2026-09-03; sources are file:line in the
+% CORGIsolve systems/ tree (feasibility_checks.py and the SOCP builders).
+\section{Coefficient Audit Trail: Where Every Constant Comes From}
+\label{app:coeff_provenance}
+
+The following inventory records the \emph{historical analytical extension}
+coefficients and menu assumptions. It is not the numerical contract for the
+native full-input experiment, which is specified in
+Appendix~\ref{app:native_provenance}. R denotes a reported measurement or
+silicon anchor, A an assumption, and D a derived value; these labels describe
+provenance, not validation of every proposed chip or precision configuration.
+Timeloop-derived costs are modeled estimates. Quantization and prefix-cache
+menu entries below receive no native speedup credit. Source paths refer to
+the original released builders, whose historical \texttt{socp} filenames do
+not change the linear form of the exported program.
+
+% ================================================================
+\begin{table}[h]
+\centering
+\footnotesize\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}p{0.26\linewidth}p{0.17\linewidth}p{0.045\linewidth}p{0.42\linewidth}@{}}
+\toprule
+Constant & Value (units) & St. & Anchor \\
+\midrule
+\texttt{RETICLE\_\allowbreak AREA\_\allowbreak MM2} ($A_{\mathrm{cap}}$) & 600 (hard limit 858) $\mathrm{mm}^2$ & A & ASML/TSMC 26$\times$33 mm reticle field is 858 $\mathrm{mm}^2$ (the standard lithography limit); 600 leaves yield headroom, the same cap style as FAST \citep{zhang_fast} \\
+\texttt{MM2\_\allowbreak PER\_\allowbreak MAC} ($k_{\mathrm{MAC}}$) & $1.5\times10^{-4}$ $\mathrm{mm}^2$/MAC (INT8, 7 nm) & R & \textbf{Post-synthesis extracted} (\cref{sec:asap7}): OpenROAD/ASAP7 7 nm placement of an INT8 systolic tile at 256/1024/4096 MACs gives $8.21\times10^{-5}$ $\mathrm{mm}^2$/MAC of cell area ($R^2=0.999999$ linear, $0.46\%$ spread), i.e.\ this value at $54.7\%$ placement utilization; also calibrated so TPU-v3 inputs (65{,}536 MACs) reproduce its core area, and consistent with Simba 8-bit PE area at 16 nm scaled to 7 nm \citep{shao2019simba} \\
+\texttt{MM2\_\allowbreak PER\_\allowbreak MB\_\allowbreak SRAM} ($k_{\mathrm{SRAM}}$) & 1.5 $\mathrm{mm}^2$/MB (7 nm) & R & TSMC N7 SRAM bitcell 0.027 $\mu\mathrm{m}^2$/bit (ISSCC 2017 N7 test chip) plus macro overhead gives 1.4--1.6 $\mathrm{mm}^2$/MB \\
+\texttt{MM2\_\allowbreak PER\_\allowbreak DRAM\_\allowbreak CHANNEL} & 8.0 $\mathrm{mm}^2$/channel & R & HBM PHY plus controller floorplan area on TPU/GPU die shots (TPU-v4i die analysis) \citep{jouppi2021ten} \\
+\texttt{MIN\_\allowbreak CHIP\_\allowbreak AREA\_\allowbreak MM2} & 50.0 $\mathrm{mm}^2$ & A & IO ring, control, and power-grid floor observed on small accelerator dies (Simba chiplet package overheads) \citep{shao2019simba} \\
+\texttt{W\_\allowbreak PER\_\allowbreak MAC\_\allowbreak AT\_\allowbreak FULL\_\allowbreak UTIL} & $0.4\times10^{-3}$ W/MAC at 1 GHz (7 nm INT8) & R & Calibrated to TPU-v3 250 W TDP at 65{,}536 MACs $\times$ 700 MHz, then roughly 5$\times$ 7 nm INT8 efficiency (Horowitz energy scaling) \citep{jouppi2021ten} \\
+\texttt{DEFAULT\_\allowbreak UTILIZATION} & 0.5 (fraction) & A & Measured LLM-serving MFU of 30--50\% on production accelerators (vLLM and TPU serving reports) \citep{kwon2023vllm} \\
+$k_{\mathrm{HBM,byte}}$ (HBM-resident capacity area) & $k_{\mathrm{SRAM}}/10 = 1.43\times10^{-7}$ $\mathrm{mm}^2$/byte & A & DRAM roughly 10$\times$ denser than SRAM per bit (standard memory-technology density gap) \\
+$k_{\mathrm{BW}}$ (bandwidth area) & 0.08 $\mathrm{mm}^2$/(GB/s) & D & \texttt{MM2\_\allowbreak PER\_\allowbreak DRAM\_\allowbreak CHANNEL} (Real) divided by roughly 100 GB/s per HBM3 channel (819 GB/s per stack over 8 channels, JEDEC JESD238) \\
+$k_{\mathrm{LD}}$ (load-engine area) & $= k_{\mathrm{BW}} = 0.08$ $\mathrm{mm}^2$/(GB/s) & A & Load/DMA engine area assumed comparable to PHY area at matched bandwidth \\
+$\pi_{\mathrm{MAC}}$ (power per MAC at operating util.) & $2.0\times10^{-4}$ W/MAC & D & Product of \texttt{W\_\allowbreak PER\_\allowbreak MAC\_\allowbreak AT\_\allowbreak FULL\_\allowbreak UTIL} (TPU-v3 calibrated, Real) and \texttt{DEFAULT\_\allowbreak UTILIZATION} \citep{jouppi2021ten}. \textbf{Silicon-anchored}: $0.4\times10^{-3}$ W/MAC at 1 GHz is $0.40$ pJ/MAC-op, bracketed by whole-chip shipped INT8 silicon (H100 $0.35$, A100 $0.64$, TPU-v4i $1.27$ pJ/op), which an array-only coefficient must sit at or below (\cref{sec:asap7}) \\
+$P_{\mathrm{cap}}$ (TDP cap) & 700 W & A & NVIDIA H100 SXM5 TDP is 700 W (vendor datasheet) \\
+$\pi_{\mathrm{bit}}$ (DRAM access energy) & $4.0\times10^{-12}$ J/bit & A & HBM2 access energy roughly 3.9 pJ/bit (O'Connor et al., Fine-Grained DRAM, MICRO 2017) \\
+\bottomrule
+\end{tabular}
+\caption{Silicon cost model: area and power coefficients. Sources: \texttt{feasibility\_\allowbreak checks.py} lines 32--48 and the LP builders (\texttt{deepseek\_\allowbreak socp\_\allowbreak codesign.py} lines 341--350, \texttt{deepseek\_\allowbreak socp\_\allowbreak serving\_\allowbreak codesign.py} lines 147--152).}
+\label{tab:coeff_cost_model}
+\end{table}
+
+% ================================================================
+\begin{table}[h]
+\centering
+\footnotesize\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}p{0.26\linewidth}p{0.17\linewidth}p{0.045\linewidth}p{0.42\linewidth}@{}}
+\toprule
+Constant & Value (units) & St. & Anchor \\
+\midrule
+\texttt{COOLING\_\allowbreak W\_\allowbreak PER\_\allowbreak MM2} (power-density gate) & 2.0 W/$\mathrm{mm}^2$ & A & Envelope over real silicon: TPU-v3 0.36, TPU-v4 0.55, H100 0.7, MI300X 0.6, WSE-3 1.5 W/$\mathrm{mm}^2$; 2.0 corresponds to aggressive AIO/liquid cooling \\
+\texttt{MAX\_\allowbreak LOGIC\_\allowbreak DEPTH} (logic-depth gate) & 35 gate levels at 1 GHz & A & FO4-per-cycle timing literature: roughly 25--35 logic levels per 1 ns cycle at 7 nm (Harris/Horowitz FO4 method) \\
+\texttt{SRAM\_\allowbreak BANK\_\allowbreak KB} (sram-macro gate) & 64 KB per macro & R & Standard foundry SRAM compiler macro size; Simba uses 64 KB-class buffers per PE cluster \citep{shao2019simba} \\
+\texttt{MAX\_\allowbreak BANKS} (sram-macro gate) & 4096 banks & A & Practical routing limit for a banked global buffer; conservative floorplanning rule \\
+\texttt{MAX\_\allowbreak BANK\_\allowbreak ASPECT} (sram-macro gate) & 4.0 (aspect in [1:4, 4:1]) & A & Standard physical-design floorplanning guideline for macro arrays \\
+\texttt{HBM3\_\allowbreak GBPS\_\allowbreak PER\_\allowbreak PIN} (pin gate) & 0.8 GB/s per pin (6.4 Gbps / 8) & R & JEDEC HBM3 standard JESD238: 6.4 Gb/s per pin \\
+\texttt{MAX\_\allowbreak PIN\_\allowbreak COUNT} (pin gate) & 4096 pins (4 stacks $\times$ 1024 data pins, roughly 3.3 TB/s) & R & JEDEC HBM3 1024-bit interface per stack; 4-stack package standard (TPU-v3 uses 4 HBM stacks) \citep{jouppi2021ten} \\
+Crossbar routing-cell cap (crossbar gate) & $5\times10^6$ cells ($n_{\mathrm{pes}} \times n_{\mathrm{banks}}$; flat-crossbar bound $10^6$, relaxed 5$\times$ for a 2-level hierarchical NoC) & A & Industry hierarchical-NoC precedent: TPU-v4 mesh plus crossbar, H100 GPC/L2 partitions, MI300X chiplet XGMI, WSE-3 tile fabric \citep{jouppi2021ten} \\
+\bottomrule
+\end{tabular}
+\caption{Pre-RTL manufacturability gate thresholds. Sources: \texttt{feasibility\_\allowbreak checks.py} lines 57--64 and 174.}
+\label{tab:coeff_gates}
+\end{table}
+
+% ================================================================
+\begin{table}[h]
+\centering
+\footnotesize\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}p{0.26\linewidth}p{0.17\linewidth}p{0.045\linewidth}p{0.42\linewidth}@{}}
+\toprule
+Constant & Value (units) & St. & Anchor \\
+\midrule
+\texttt{MAC\_\allowbreak WIDTH\_\allowbreak BY\_\allowbreak DTYPE} & int8 = 8, bf16/fp16 = 16, fp32 = 32 bits & R & Datatype bit-widths by definition (IEEE 754 / bfloat16) \\
+Precision-menu byte fractions ($b_W, b_A, b_{KV}$) & W8A8 = (1,1,1); W4A8 = (0.5,1,1); W4A8-KV4 = (0.5,1,0.5); W4A16 = (0.5,2,1) & A & Illustrative settings motivated by AWQ (W4), GPTQ (W4), and KVQuant (KV4); not quality-qualified here \citep{lin2024awq, frantar2023gptq, hooper2024kvquant} \\
+Array-aspect menu dims & sq16x16 = (16,16); wgmma8x32 = (8,32); tcgen05\_\allowbreak 32x8 = (32,8) rows $\times$ cols & R & NVIDIA Hopper WGMMA and Blackwell tcgen05 native MMA tile shapes (PTX ISA); ThunderKittens documents the H100 tile constraint \citep{spector2024thunderkittens} \\
+Utilization $\eta(\mathrm{spec}, a_r, a_c)$ & $\eta = (\mathrm{rows}/\lceil\cdot\rceil_r)\allowbreak (\mathrm{cols}/\lceil\cdot\rceil_c)$, clipped to $[10^{-3}, 1]$ & A & Analytic ceil-quantization model of array under-fill; reproduces the Timeloop mapper low-GEMV-utilization artifact \citep{timeloop} \\
+DVFS menu $\gamma$ (clock scale) & [0.7, 1.0, 1.3] for lo/nom/hi & A & Standard CMOS DVFS operating points ($\pm$30\% around nominal); $f$ proportional to $V$ \\
+DVFS menu $p_f$ (dynamic-power factor) & [0.5, 1.0, 1.9] for lo/nom/hi & A & $P$ proportional to $f V^2$ (roughly cubic in $f$), the CMOS dynamic-power law \\
+Radix-cache menu sizes & [0, 64, 256, 1024] MB & A & Cache-size sweep grid; an on-chip-SRAM-scale prefix cache \citep{zheng2024sglang} \\
+Radix-cache hit-rate profile $\eta_s$ & [0.0, 0.30, 0.50, 0.65] (saturating), fraction of prefill reuse & A & SGLang RadixAttention measured prefix-cache hit rates (saturating in cache size) \citep{zheng2024sglang} \\
+\bottomrule
+\end{tabular}
+\caption{Precision, datatype, and decision menus. Sources: \texttt{feasibility\_\allowbreak checks.py} lines 65--73 and \texttt{deepseek\_\allowbreak socp\_\allowbreak codesign.py} lines 228--280.}
+\label{tab:coeff_menus}
+\end{table}
+
+% ================================================================
+\begin{table}[h]
+\centering
+\footnotesize\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}p{0.26\linewidth}p{0.17\linewidth}p{0.045\linewidth}p{0.42\linewidth}@{}}
+\toprule
+Constant & Value (units) & St. & Anchor \\
+\midrule
+Timeloop Pareto tile menu $T_{\min}(c)$, $T_{\max}(c)$, $t_{I/O/W}(c)$, $d_{I/O/W}(c)$ & per-op per-tile arrays (cycles; bytes) & R & Measured Timeloop mapper Pareto frontier for DeepSeek-V3 layers \citep{timeloop} \\
+$f_e$ routing frequency (balls-in-bins base) & $f_{\mathrm{unif}} = 1-(1-8/256)^{B}$ (0.983 at $B{=}128$; 0.638 at $B{=}32$) & D & Distinct-expert balls-in-bins derivation from the DeepSeek-V3 top-$k{=}8$ of $n{=}256$ routed experts \citep{deepseekv3report} \\
+Zipf routing-skew exponent & 0.6 (mean-normalized tilt on $f_{\mathrm{unif}}$) & A & Mild expert-load imbalance consistent with the MoE load-balancing literature (DeepSeek-V3 aux-loss-free routing reports residual skew) \citep{deepseekv3report} \\
+$E_{\mathrm{distinct}}$ (expected distinct experts per decode step) & $256(1-(1-8/256)^{32}) \approx 163$ at batch 32 & D & Balls-in-bins expectation at the decode operating batch; $f_e$ renormalized to this mean \citep{deepseekv3report} \\
+$W_e$ (per-expert weight bytes, 8-bit) & $3 \times 7168 \times 2048 = 44.0$ MB (up, gate, down) & D & DeepSeek-V3 config: hidden 7168, MoE intermediate 2048 \citep{deepseekv3report} \\
+$d_{KV}$ (MLA KV bytes per token, 8-bit) & $61 \times (512+64) = 35{,}136$ B/token & D & DeepSeek-V3 MLA: $n_{\mathrm{layers}} = 61$ times (kv\_\allowbreak lora\_\allowbreak rank 512 plus qk\_\allowbreak rope\_\allowbreak head\_\allowbreak dim 64) cached per token \citep{deepseekv3report} \\
+\texttt{DEEPSEEK\_\allowbreak V3\_\allowbreak CONFIG} & $n_{\mathrm{layers}}{=}61$, hidden 7168, 256 routed experts, $k{=}8$ active, kv\_\allowbreak lora\_\allowbreak rank 512, qk\_\allowbreak rope\_\allowbreak head\_\allowbreak dim 64, MoE intermediate 2048 & R & DeepSeek-V3 technical report architecture table \citep{deepseekv3report} \\
+\bottomrule
+\end{tabular}
+\caption{Workload-derived quantities (DeepSeek-V3). Sources: \texttt{deepseek\_\allowbreak socp\_\allowbreak codesign.py} lines 180--183 and 283--363, \texttt{timeloop\_\allowbreak full.py} lines 137--156.}
+\label{tab:coeff_workload}
+\end{table}
+
+% ================================================================
+\begin{table}[h]
+\centering
+\footnotesize\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}p{0.26\linewidth}p{0.17\linewidth}p{0.045\linewidth}p{0.42\linewidth}@{}}
+\toprule
+Constant & Value (units) & St. & Anchor \\
+\midrule
+$M_{\mathrm{ref}}$ (reference MAC count) & 65{,}536 MACs & R & Declared TPU-v3 reference MAC count \citep{jouppi2021ten} \\
+$\mathrm{BW}_{\mathrm{ref}}$ (reference bandwidth) & 900 GB/s & A & TPU-v3 4$\times$ HBM2 headline bandwidth \citep{jouppi2021ten} \\
+MAC design envelope $[M_{\min}, M_{\max}]$ & $[16{,}384,\allowbreak\ 4{,}194{,}304]$ MACs & A & Spans $1/4$ TPU-v3 to 64$\times$ TPU-v3 within reticle; a design-space envelope (FAST-style search bounds) \citep{zhang_fast} \\
+BW design envelope $[\mathrm{BW}_{\min}, \mathrm{BW}_{\max}]$ & $[100,\ 8000]$ GB/s & A & Low end GDDR-class single channel; high end HBM3E multi-stack (roughly 8 TB/s, B200-class) \\
+\texttt{cgm\_\allowbreak grid\_\allowbreak mb} (CGM one-hot menu) & [1, 2, 4, 8, 16, 32, 64, 128, 256] MB & A & Power-of-two sweep bracketing TPU-v3's 32 MB on-chip global memory \citep{jouppi2021ten} \\
+\texttt{BW\_\allowbreak GRID} (bandwidth one-hot grid) & [225, 450, 675, 900, 1350, 1800, 2400, 3200, 4200, 5400, 6700, 8000] GB/s & A & Enumerated grid from quarter-TPU-v3 HBM2 to HBM3E multi-stack; one-hot branches are solved integrally (exact per branch), and the pin gate prunes entries above 3276.8 GB/s at the 4096-pin cap \\
+\bottomrule
+\end{tabular}
+\caption{Solver grids and operating-point references. Sources: \texttt{deepseek\_\allowbreak socp\_\allowbreak codesign.py} lines 220 and 326--334, \texttt{deepseek\_\allowbreak socp\_\allowbreak serving\_\allowbreak codesign.py} lines 72--129.}
+\label{tab:coeff_grids}
+\end{table}
+
+The full inventory, including per-coefficient file and line provenance, is
+maintained in \texttt{systems/deepseek\_\allowbreak socp\_\allowbreak formulation.md} in the released
+code; constants marked A above are the explicit modeling assumptions a
+reviewer can vary, and every one enters the program linearly or through a
+one-hot menu, so sensitivity to any single assumption is a re-solve, not a
+re-derivation.

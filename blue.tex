@@ -1,0 +1,550 @@
+\section{Examples of CHEETAH Design Blueprints}\label{app:blueprints}
+
+
+We provide detailed blueprints for eight CHEETAH designs below.  For
+each workload we give two variants: \textbf{Variant 1} (TSMC N7 +
+GDDR/LPDDR commodity memory) and \textbf{Variant 2} (TSMC N5 + HBM3
+upgraded memory).  Within a workload, the two variants share the same PE
+grid, so both inherit the same compute floor under the tile-dependent joint-tile
+LP, and achieve the same speedups. 
+The variants differ only in area, TDP, and memory-subsystem cost.  
+Every blueprint passes the roofline check and all six pre-RTL manufacturability gates of Appendix~\ref{app:details}.
+
+\paragraph{Compute boundedness and the bandwidth choice.}
+The binding floor is compute, not bandwidth, at the target workloads examined. At the chip's peak DRAM
+bandwidth (range 544\,GB/s LPDDR5X (N7) to 2{,}457\,GB/s HBM3 (N5)), we
+measure $T_{\text{DRAM}}/T_{\text{compute}} \le 3.3 \times 10^{-3}$ on
+every blueprint.  
+Total per-forward DRAM bytes are (13B / 65B / 70B / DS-V3) $=$ (30.5 / 121.8 / 126.2 / 95.7) GB, and production inference serving amortizes these reads across many forward passes per weight load (typical batches-per-load $\ge 100$ in vLLM and TGI). 
+Therefore the steady-state DRAM traffic the LP charges per forward is far below the full weight tensor.  
+The two TSMC N7 and TSMC N5 variants presented in Subsections~\ref{app:n7} and~\ref{app:n5} aims to make the
+latency--cost--yield trade-off explicit. TSMC N7's commodity memory subsystem
+still meets the bandwidth floor with $\ge 200\times$ headroom (the LP
+consumes $< 0.4\%$ of peak BW), so paying for HBM3 (TSMC N5) buys lower TDP per delivered TFLOP, not higher compute throughput. 
+
+% \mnote{check this again}
+
+
+\subsection{Variant 1: TSMC N7 + GDDR/LPDDR}
+\label{app:n7}
+% ----- V1 / Llama-1 13B -----
+\begin{table}[h]
+\centering
+\caption{Workload: \texttt{llama1\_13b}~$\cdot$~TSMC N7~$\cdot$~$V_\text{dd}=0.75$\,V~$\cdot$~1.0\,GHz.}
+\label{tab:cheetah_v1_llama1_13b}
+\small\setlength{\tabcolsep}{6pt}
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Field} & \textbf{Value} \\
+\midrule
+Normalized TDP          & $1.46\times$ ($= 364$\,W\,/\,250\,W) \\
+Normalized Area         & $0.61\times$ ($= 427$\,mm$^2$\,/\,700\,mm$^2$) \\
+Peak Compute            & 2{,}703\,TOPS (INT8 @ 1\,GHz) \\
+Peak Bandwidth          & 1{,}344\,GB/s (GDDR6X $\times$16) \\
+Memory capacity         & 32\,GB \\
+Batch size              & 256 \\
+Num PEs                 & 1320 ($33 \times 40$) \\
+PE systolic array dims  & $32 \times 32$ \\
+PE vector width         & 64 lanes \\
+PE L1 buffer (in/wt/out) & 16 / 16 / 16 KB \\
+PE L1 config            & Private \\
+PE L2 config            & Shared \\
+Global buffer (CGM)     & 64.0\,MiB \\
+\midrule
+Compute utilization     & 1.000 (compute-bound) \\
+Pre-fusion mem stall    & 97.1\% \\
+Fusion efficiency       & 100.0\% \\
+OpInt ridgepoint        & 2{,}010\,FLOP/byte \\
+Fused model OpInt       & $2.05 \times 10^{6}$\,FLOP/byte \\
+Performance (QPS)       & 11.08\,QPS @ batch=256 \\
+Inference latency       & 90.22\,ms\,/\,sample \\
+Normalized Perf/TDP     & $23.51\times$ \\
+Achieved speedup vs.\ naive TPU-v3 & $34.22\times$ \\
+MFU (Eq~4)              & 0.998 \\
+Bound by                & compute \\
+Roofline gate (Eq~7)    & \textcolor{green!60!black}{\textbf{PASS}} \\
+\midrule
+Mfg gates               & \textcolor{green!60!black}{\textbf{6/6 PASS}} \\
+\quad pin\_count         & PASS: 1{,}680\,/\,4096 \\
+\quad reticle\_area      & PASS: 427\,mm$^2$\,/\,600\,mm$^2$ \\
+\quad logic\_depth       & PASS: 21 levels\,/\,35 \\
+\quad crossbar           & PASS: 1{,}351{,}680 cells\,/\,5{,}000{,}000 \\
+\quad power\_density     & PASS: 0.63\,W/mm$^2$\,/\,2.0 \\
+\quad sram\_macro        & PASS: 1{,}024 banks\,/\,4096 \\
+\midrule
+Total MACs              & 1{,}351{,}680 \\
+DRAM bandwidth          & 1{,}344\,GB/s \\
+DRAM channels           & 16 \\
+PE array                & $33 \times 40$ (1{,}320 PEs) \\
+PE L2 multipliers       & $4\times$ / $4\times$ / $4\times$ \\
+Datatype                & INT8 (W8A8) \\
+LP objective cycles     & $2.312 \times 10^{10}$ \\
+Compute floor cycles    & $2.308 \times 10^{10}$ \\
+Memory floor cycles     & $2.272 \times 10^{7}$ (at 1{,}344 GB/s) \\
+TPU-v3 naive baseline   & $7.918 \times 10^{11}$ cycles \\
+Tile alphabet $C$       & 16 \\
+Layers $L$              & 360 \\
+LP solver               &  \texttt{custom JAX PDHG}\\
+LP solve time           & 1.7\,s \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+% ----- V1 / Llama-1 65B -----
+\begin{table}[h]
+\centering
+\caption{Workload: \texttt{llama1\_65b}~$\cdot$~TSMC N7~$\cdot$~$V_\text{dd}=0.75$\,V~$\cdot$~1.0\,GHz.}
+\label{tab:cheetah_v1_llama1_65b}
+\small\setlength{\tabcolsep}{6pt}
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Field} & \textbf{Value} \\
+\midrule
+Normalized TDP          & $1.20\times$ ($= 300$\,W\,/\,250\,W) \\
+Normalized Area         & $0.51\times$ ($= 357$\,mm$^2$\,/\,700\,mm$^2$) \\
+Peak Compute            & 2{,}621\,TOPS (INT8 @ 1\,GHz) \\
+Peak Bandwidth          & 544\,GB/s (LPDDR5X $\times$8) \\
+Memory capacity         & 128\,GB \\
+Batch size              & 256 \\
+Num PEs                 & 1280 ($32 \times 40$) \\
+PE systolic array dims  & $32 \times 32$ \\
+PE vector width         & 64 lanes \\
+PE L1 buffer (in/wt/out) & 16 / 16 / 16 KB \\
+PE L1 config            & Private \\
+PE L2 config            & Shared \\
+Global buffer (CGM)     & 64.0\,MiB \\
+\midrule
+Compute utilization     & 1.000 (compute-bound) \\
+Pre-fusion mem stall    & 97.1\% \\
+Fusion efficiency       & 100.0\% \\
+OpInt ridgepoint        & 4{,}818\,FLOP/byte \\
+Fused model OpInt       & $4.02 \times 10^{6}$\,FLOP/byte \\
+Performance (QPS)       & 1.37\,QPS @ batch=256 \\
+Inference latency       & 729.94\,ms\,/\,sample \\
+Normalized Perf/TDP     & $28.83\times$ \\
+Achieved speedup vs.\ naive TPU-v3 & $34.60\times$ \\
+MFU (Eq~4)              & 1.000 \\
+Bound by                & compute \\
+Roofline gate (Eq~7)    & \textcolor{green!60!black}{\textbf{PASS}} \\
+\midrule
+Mfg gates               & \textcolor{green!60!black}{\textbf{6/6 PASS}} \\
+\quad pin\_count         & PASS: 680\,/\,4096 \\
+\quad reticle\_area      & PASS: 357\,mm$^2$\,/\,600\,mm$^2$ \\
+\quad logic\_depth       & PASS: 21 levels\,/\,35 \\
+\quad crossbar           & PASS: 1{,}310{,}720 cells\,/\,5{,}000{,}000 \\
+\quad power\_density     & PASS: 0.74\,W/mm$^2$\,/\,2.0 \\
+\quad sram\_macro        & PASS: 1{,}024 banks\,/\,4096 \\
+\midrule
+Total MACs              & 1{,}310{,}720 \\
+DRAM bandwidth          & 544\,GB/s \\
+DRAM channels           & 8 \\
+PE array                & $32 \times 40$ (1{,}280 PEs) \\
+PE L2 multipliers       & $4\times$ / $4\times$ / $4\times$ \\
+Datatype                & INT8 (W8A8) \\
+LP objective cycles     & $1.868 \times 10^{11}$ \\
+Compute floor cycles    & $1.867 \times 10^{11}$ \\
+Memory floor cycles     & $2.238 \times 10^{8}$ (at 544 GB/s) \\
+TPU-v3 naive baseline   & $6.424 \times 10^{12}$ cycles \\
+Tile alphabet $C$       & 16 \\
+Layers $L$              & 720 \\
+LP solver               & \texttt{custom JAX PDHG} \\
+LP solve time           & 6.7\,s \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+% ----- V1 / Llama-3 70B -----
+\begin{table}[h]
+\centering
+\caption{Workload: \texttt{llama3\_70b}~$\cdot$~TSMC N7~$\cdot$~$V_\text{dd}=0.75$\,V~$\cdot$~1.0\,GHz.}
+\label{tab:cheetah_v1_llama3_70b}
+\small\setlength{\tabcolsep}{6pt}
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Field} & \textbf{Value} \\
+\midrule
+Normalized TDP          & $1.57\times$ ($= 392$\,W\,/\,250\,W) \\
+Normalized Area         & $0.61\times$ ($= 425$\,mm$^2$\,/\,700\,mm$^2$) \\
+Peak Compute            & 3{,}539\,TOPS (INT8 @ 1\,GHz) \\
+Peak Bandwidth          & 544\,GB/s (LPDDR5X $\times$8) \\
+Memory capacity         & 128\,GB \\
+Batch size              & 256 \\
+Num PEs                 & 1728 ($48 \times 36$) \\
+PE systolic array dims  & $32 \times 32$ \\
+PE vector width         & 64 lanes \\
+PE L1 buffer (in/wt/out) & 16 / 16 / 16 KB \\
+PE L1 config            & Private \\
+PE L2 config            & Shared \\
+Global buffer (CGM)     & 64.0\,MiB \\
+\midrule
+Compute utilization     & 1.000 (compute-bound) \\
+Pre-fusion mem stall    & 97.5\% \\
+Fusion efficiency       & 100.0\% \\
+OpInt ridgepoint        & 6{,}505\,FLOP/byte \\
+Fused model OpInt       & $2.07 \times 10^{6}$\,FLOP/byte \\
+Performance (QPS)       & 3.46\,QPS @ batch=256 \\
+Inference latency       & 288.77\,ms\,/\,sample \\
+Normalized Perf/TDP     & $25.61\times$ \\
+Achieved speedup vs.\ naive TPU-v3 & $40.16\times$ \\
+Match to target         & 100.2\% \\
+MFU (Eq~4)              & 1.000 \\
+Bound by                & compute \\
+Roofline gate (Eq~7)    & \textcolor{green!60!black}{\textbf{PASS}} \\
+\midrule
+Mfg gates               & \textcolor{green!60!black}{\textbf{6/6 PASS}} \\
+\quad pin\_count         & PASS: 680\,/\,4096 \\
+\quad reticle\_area      & PASS: 425\,mm$^2$\,/\,600\,mm$^2$ \\
+\quad logic\_depth       & PASS: 21 levels\,/\,35 \\
+\quad crossbar           & PASS: 1{,}769{,}472 cells\,/\,5{,}000{,}000 \\
+\quad power\_density     & PASS: 0.83\,W/mm$^2$\,/\,2.0 \\
+\quad sram\_macro        & PASS: 1{,}024 banks\,/\,4096 \\
+\midrule
+Total MACs              & 1{,}769{,}472 \\
+DRAM bandwidth          & 544\,GB/s \\
+DRAM channels           & 8 \\
+PE array                & $48 \times 36$ (1{,}728 PEs) \\
+PE L2 multipliers       & $4\times$ / $4\times$ / $4\times$ \\
+Datatype                & INT8 (W8A8) \\
+LP objective cycles     & $7.385 \times 10^{10}$ \\
+Compute floor cycles    & $7.398 \times 10^{10}$ \\
+Memory floor cycles     & $2.320 \times 10^{8}$ (at 544 GB/s) \\
+TPU-v3 naive baseline   & $2.965 \times 10^{12}$ cycles \\
+Tile alphabet $C$       & 16 \\
+Layers $L$              & 720 \\
+LP solver               & \texttt{custom JAX PDHG} \\
+LP solve time           &  \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+% ----- V1 / DeepSeek-V3 -----
+\begin{table}[h]
+\centering
+\caption{Workload: \texttt{deepseek\_v3}~$\cdot$~TSMC N7~$\cdot$~$V_\text{dd}=0.75$\,V~$\cdot$~1.0\,GHz.}
+\label{tab:cheetah_v1_deepseek_v3}
+\small\setlength{\tabcolsep}{6pt}
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Field} & \textbf{Value} \\
+\midrule
+Normalized TDP          & $1.20\times$ ($= 300$\,W\,/\,250\,W) \\
+Normalized Area         & $0.51\times$ ($= 357$\,mm$^2$\,/\,700\,mm$^2$) \\
+Peak Compute            & 2{,}621\,TOPS (INT8 @ 1\,GHz) \\
+Peak Bandwidth          & 544\,GB/s (LPDDR5X $\times$8) \\
+Memory capacity         & 128\,GB (active-expert resident) \\
+Batch size              & 128 \\
+Num PEs                 & 1280 ($32 \times 40$) \\
+PE systolic array dims  & $32 \times 32$ \\
+PE vector width         & 64 lanes \\
+PE L1 buffer (in/wt/out) & 16 / 16 / 16 KB \\
+PE L1 config            & Private \\
+PE L2 config            & Shared \\
+Global buffer (CGM)     & 64.0\,MiB \\
+\midrule
+Compute utilization     & 1.000 (compute-bound) \\
+Pre-fusion mem stall    & 97.2\% \\
+Fusion efficiency       & 100.0\% \\
+OpInt ridgepoint        & 4{,}818\,FLOP/byte \\
+Fused model OpInt       & $1.46 \times 10^{6}$\,FLOP/byte \\
+Performance (QPS)       & 2.40\,QPS @ batch=128 \\
+Inference latency       & 417.32\,ms\,/\,sample \\
+Normalized Perf/TDP     & $29.73\times$ \\
+Achieved speedup vs.\ naive TPU-v3 & $35.68\times$ \\
+MFU (Eq~4)              & 1.000 \\
+Bound by                & compute \\
+Roofline gate (Eq~7)    & \textcolor{green!60!black}{\textbf{PASS}} \\
+\midrule
+Mfg gates               & \textcolor{green!60!black}{\textbf{6/6 PASS}} \\
+\quad pin\_count         & PASS: 680\,/\,4096 \\
+\quad reticle\_area      & PASS: 357\,mm$^2$\,/\,600\,mm$^2$ \\
+\quad logic\_depth       & PASS: 21 levels\,/\,35 \\
+\quad crossbar           & PASS: 1{,}310{,}720 cells\,/\,5{,}000{,}000 \\
+\quad power\_density     & PASS: 0.74\,W/mm$^2$\,/\,2.0 \\
+\quad sram\_macro        & PASS: 1{,}024 banks\,/\,4096 \\
+\midrule
+Total MACs              & 1{,}310{,}720 \\
+DRAM bandwidth          & 544\,GB/s \\
+DRAM channels           & 8 \\
+PE array                & $32 \times 40$ (1{,}280 PEs) \\
+PE L2 multipliers       & $4\times$ / $4\times$ / $4\times$ \\
+Datatype                & INT8 (W8A8) \\
+LP objective cycles     & $5.341 \times 10^{10}$ \\
+Compute floor cycles    & $5.370 \times 10^{10}$ \\
+Memory floor cycles     & $1.758 \times 10^{8}$ (at 544 GB/s) \\
+TPU-v3 naive baseline   & $1.906 \times 10^{12}$ cycles \\
+Tile alphabet $C$       & 16 \\
+Layers $L$              & 903 \\
+LP solver               & \texttt{custom JAX PDHG} \\
+LP solve time           &  \\
+\bottomrule
+\end{tabular}
+% \footnotesize \\\vspace{0.2em}
+% Active-expert working set (37\,GB) resident on-package; full model (671\,GB) is paged from off-package storage by the routing layer (not modelled in the LP).
+\end{table}
+
+\clearpage
+\subsection{Variant 2: TSMC N5 + HBM3}
+\label{app:n5}
+% ----- V2 / Llama-1 13B -----
+\begin{table}[h]
+\centering
+\caption{Workload: \texttt{llama1\_13b}~$\cdot$~TSMC N5~$\cdot$~$V_\text{dd}=0.65$\,V~$\cdot$~1.0\,GHz.}
+\label{tab:cheetah_v2_llama1_13b}
+\small\setlength{\tabcolsep}{6pt}
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Field} & \textbf{Value} \\
+\midrule
+Normalized TDP          & $1.31\times$ ($= 328$\,W\,/\,250\,W) \\
+Normalized Area         & $0.52\times$ ($= 363$\,mm$^2$\,/\,700\,mm$^2$) \\
+Peak Compute            & 2{,}703\,TOPS (INT8 @ 1\,GHz) \\
+Peak Bandwidth          & 819\,GB/s (HBM3 $\times$1) \\
+Memory capacity         & 24\,GB \\
+Batch size              & 256 \\
+Num PEs                 & 1320 ($33 \times 40$) \\
+PE systolic array dims  & $32 \times 32$ \\
+PE vector width         & 64 lanes \\
+PE L1 buffer (in/wt/out) & 16 / 16 / 16 KB \\
+PE L1 config            & Private \\
+PE L2 config            & Shared \\
+Global buffer (CGM)     & 64.0\,MiB \\
+\midrule
+Compute utilization     & 1.000 (compute-bound) \\
+Pre-fusion mem stall    & 97.1\% \\
+Fusion efficiency       & 100.0\% \\
+OpInt ridgepoint        & 3{,}300\,FLOP/byte \\
+Fused model OpInt       & $2.05 \times 10^{6}$\,FLOP/byte \\
+Performance (QPS)       & 11.08\,QPS @ batch=256 \\
+Inference latency       & 90.22\,ms\,/\,sample \\
+Normalized Perf/TDP     & $26.08\times$ \\
+Achieved speedup vs.\ naive TPU-v3 & $34.22\times$ \\
+MFU (Eq~4)              & 0.998 \\
+Bound by                & compute \\
+Roofline gate (Eq~7)    & \textcolor{green!60!black}{\textbf{PASS}} \\
+\midrule
+Mfg gates               & \textcolor{green!60!black}{\textbf{6/6 PASS}} \\
+\quad pin\_count         & PASS: 1{,}024\,/\,4096 \\
+\quad reticle\_area      & PASS: 363\,mm$^2$\,/\,600\,mm$^2$ \\
+\quad logic\_depth       & PASS: 21 levels\,/\,35 \\
+\quad crossbar           & PASS: 1{,}351{,}680 cells\,/\,5{,}000{,}000 \\
+\quad power\_density     & PASS: 0.75\,W/mm$^2$\,/\,2.0 \\
+\quad sram\_macro        & PASS: 1{,}024 banks\,/\,4096 \\
+\midrule
+Total MACs              & 1{,}351{,}680 \\
+DRAM bandwidth          & 819\,GB/s \\
+DRAM channels           & 8 \\
+PE array                & $33 \times 40$ (1{,}320 PEs) \\
+PE L2 multipliers       & $4\times$ / $4\times$ / $4\times$ \\
+Datatype                & INT8 (W8A8) \\
+LP objective cycles     & $2.312 \times 10^{10}$ \\
+Compute floor cycles    & $2.308 \times 10^{10}$ \\
+Memory floor cycles     & $3.726 \times 10^{7}$ (at 819 GB/s) \\
+TPU-v3 naive baseline   & $7.918 \times 10^{11}$ cycles \\
+Tile alphabet $C$       & 16 \\
+Layers $L$              & 360 \\
+LP solver               & \texttt{custom JAX PDHG} \\
+LP solve time           & 1.7\,s \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+% ----- V2 / Llama-1 65B -----
+\begin{table}[h]
+\centering
+\caption{Workload: \texttt{llama1\_65b}~$\cdot$~TSMC N5~$\cdot$~$V_\text{dd}=0.65$\,V~$\cdot$~1.0\,GHz.}
+\label{tab:cheetah_v2_llama1_65b}
+\small\setlength{\tabcolsep}{6pt}
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Field} & \textbf{Value} \\
+\midrule
+Normalized TDP          & $1.74\times$ ($= 434$\,W\,/\,250\,W) \\
+Normalized Area         & $0.69\times$ ($= 485$\,mm$^2$\,/\,700\,mm$^2$) \\
+Peak Compute            & 2{,}621\,TOPS (INT8 @ 1\,GHz) \\
+Peak Bandwidth          & 2{,}457\,GB/s (HBM3 $\times$3) \\
+Memory capacity         & 72\,GB \\
+Batch size              & 256 \\
+Num PEs                 & 1280 ($32 \times 40$) \\
+PE systolic array dims  & $32 \times 32$ \\
+PE vector width         & 64 lanes \\
+PE L1 buffer (in/wt/out) & 16 / 16 / 16 KB \\
+PE L1 config            & Private \\
+PE L2 config            & Shared \\
+Global buffer (CGM)     & 64.0\,MiB \\
+\midrule
+Compute utilization     & 1.000 (compute-bound) \\
+Pre-fusion mem stall    & 97.1\% \\
+Fusion efficiency       & 100.0\% \\
+OpInt ridgepoint        & 1{,}067\,FLOP/byte \\
+Fused model OpInt       & $4.02 \times 10^{6}$\,FLOP/byte \\
+Performance (QPS)       & 1.37\,QPS @ batch=256 \\
+Inference latency       & 729.94\,ms\,/\,sample \\
+Normalized Perf/TDP     & $19.93\times$ \\
+Achieved speedup vs.\ naive TPU-v3 & $34.60\times$ \\
+MFU (Eq~4)              & 1.000 \\
+Bound by                & compute \\
+Roofline gate (Eq~7)    & \textcolor{green!60!black}{\textbf{PASS}} \\
+\midrule
+Mfg gates               & \textcolor{green!60!black}{\textbf{6/6 PASS}} \\
+\quad pin\_count         & PASS: 3{,}071\,/\,4096 \\
+\quad reticle\_area      & PASS: 485\,mm$^2$\,/\,600\,mm$^2$ \\
+\quad logic\_depth       & PASS: 21 levels\,/\,35 \\
+\quad crossbar           & PASS: 1{,}310{,}720 cells\,/\,5{,}000{,}000 \\
+\quad power\_density     & PASS: 0.54\,W/mm$^2$\,/\,2.0 \\
+\quad sram\_macro        & PASS: 1{,}024 banks\,/\,4096 \\
+\midrule
+Total MACs              & 1{,}310{,}720 \\
+DRAM bandwidth          & 2{,}457\,GB/s \\
+DRAM channels           & 24 \\
+PE array                & $32 \times 40$ (1{,}280 PEs) \\
+PE L2 multipliers       & $4\times$ / $4\times$ / $4\times$ \\
+Datatype                & INT8 (W8A8) \\
+LP objective cycles     & $1.868 \times 10^{11}$ \\
+Compute floor cycles    & $1.867 \times 10^{11}$ \\
+Memory floor cycles     & $4.957 \times 10^{7}$ (at 2{,}457 GB/s) \\
+TPU-v3 naive baseline   & $6.424 \times 10^{12}$ cycles \\
+Tile alphabet $C$       & 16 \\
+Layers $L$              & 720 \\
+LP solver               & \texttt{custom JAX PDHG} \\
+LP solve time           & 6.7\,s \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+% ----- V2 / Llama-3 70B -----
+\begin{table}[h]
+\centering
+\caption{Workload: \texttt{llama3\_70b}~$\cdot$~TSMC N5~$\cdot$~$V_\text{dd}=0.65$\,V~$\cdot$~1.0\,GHz.}
+\label{tab:cheetah_v2_llama3_70b}
+\small\setlength{\tabcolsep}{6pt}
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Field} & \textbf{Value} \\
+\midrule
+Normalized TDP          & $2.10\times$ ($= 526$\,W\,/\,250\,W) \\
+Normalized Area         & $0.79\times$ ($= 553$\,mm$^2$\,/\,700\,mm$^2$) \\
+Peak Compute            & 3{,}539\,TOPS (INT8 @ 1\,GHz) \\
+Peak Bandwidth          & 2{,}457\,GB/s (HBM3 $\times$3) \\
+Memory capacity         & 72\,GB \\
+Batch size              & 256 \\
+Num PEs                 & 1728 ($48 \times 36$) \\
+PE systolic array dims  & $32 \times 32$ \\
+PE vector width         & 64 lanes \\
+PE L1 buffer (in/wt/out) & 16 / 16 / 16 KB \\
+PE L1 config            & Private \\
+PE L2 config            & Shared \\
+Global buffer (CGM)     & 64.0\,MiB \\
+\midrule
+Compute utilization     & 1.000 (compute-bound) \\
+Pre-fusion mem stall    & 97.5\% \\
+Fusion efficiency       & 100.0\% \\
+OpInt ridgepoint        & 1{,}440\,FLOP/byte \\
+Fused model OpInt       & $2.07 \times 10^{6}$\,FLOP/byte \\
+Performance (QPS)       & 3.46\,QPS @ batch=256 \\
+Inference latency       & 288.77\,ms\,/\,sample \\
+Normalized Perf/TDP     & $19.09\times$ \\
+Achieved speedup vs.\ naive TPU-v3 & $40.16\times$ \\
+MFU (Eq~4)              & 1.000 \\
+Bound by                & compute \\
+Roofline gate (Eq~7)    & \textcolor{green!60!black}{\textbf{PASS}} \\
+\midrule
+Mfg gates               & \textcolor{green!60!black}{\textbf{6/6 PASS}} \\
+\quad pin\_count         & PASS: 3{,}071\,/\,4096 \\
+\quad reticle\_area      & PASS: 553\,mm$^2$\,/\,600\,mm$^2$ \\
+\quad logic\_depth       & PASS: 21 levels\,/\,35 \\
+\quad crossbar           & PASS: 1{,}769{,}472 cells\,/\,5{,}000{,}000 \\
+\quad power\_density     & PASS: 0.64\,W/mm$^2$\,/\,2.0 \\
+\quad sram\_macro        & PASS: 1{,}024 banks\,/\,4096 \\
+\midrule
+Total MACs              & 1{,}769{,}472 \\
+DRAM bandwidth          & 2{,}457\,GB/s \\
+DRAM channels           & 24 \\
+PE array                & $48 \times 36$ (1{,}728 PEs) \\
+PE L2 multipliers       & $4\times$ / $4\times$ / $4\times$ \\
+Datatype                & INT8 (W8A8) \\
+LP objective cycles     & $7.385 \times 10^{10}$ \\
+Compute floor cycles    & $7.398 \times 10^{10}$ \\
+Memory floor cycles     & $5.137 \times 10^{7}$ (at 2{,}457 GB/s) \\
+TPU-v3 naive baseline   & $2.965 \times 10^{12}$ cycles \\
+Tile alphabet $C$       & 16 \\
+Layers $L$              & 720 \\
+LP solver               & \texttt{custom JAX PDHG} \\
+LP solve time           &  \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+% ----- V2 / DeepSeek-V3 -----
+\begin{table}[h]
+\centering
+\caption{Workload: \texttt{deepseek\_v3}~$\cdot$~TSMC N5~$\cdot$~$V_\text{dd}=0.65$\,V~$\cdot$~1.0\,GHz.}
+\label{tab:cheetah_v2_deepseek_v3}
+\small\setlength{\tabcolsep}{6pt}
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Field} & \textbf{Value} \\
+\midrule
+Normalized TDP          & $1.74\times$ ($= 434$\,W\,/\,250\,W) \\
+Normalized Area         & $0.69\times$ ($= 485$\,mm$^2$\,/\,700\,mm$^2$) \\
+Peak Compute            & 2{,}621\,TOPS (INT8 @ 1\,GHz) \\
+Peak Bandwidth          & 2{,}457\,GB/s (HBM3 $\times$3) \\
+Memory capacity         & 72\,GB (active-expert resident) \\
+Batch size              & 128 \\
+Num PEs                 & 1280 ($32 \times 40$) \\
+PE systolic array dims  & $32 \times 32$ \\
+PE vector width         & 64 lanes \\
+PE L1 buffer (in/wt/out) & 16 / 16 / 16 KB \\
+PE L1 config            & Private \\
+PE L2 config            & Shared \\
+Global buffer (CGM)     & 64.0\,MiB \\
+\midrule
+Compute utilization     & 1.000 (compute-bound) \\
+Pre-fusion mem stall    & 97.2\% \\
+Fusion efficiency       & 100.0\% \\
+OpInt ridgepoint        & 1{,}067\,FLOP/byte \\
+Fused model OpInt       & $1.46 \times 10^{6}$\,FLOP/byte \\
+Performance (QPS)       & 2.40\,QPS @ batch=128 \\
+Inference latency       & 417.32\,ms\,/\,sample \\
+Normalized Perf/TDP     & $20.55\times$ \\
+Achieved speedup vs.\ naive TPU-v3 & $35.68\times$ \\
+MFU (Eq~4)              & 1.000 \\
+Bound by                & compute \\
+Roofline gate (Eq~7)    & \textcolor{green!60!black}{\textbf{PASS}} \\
+\midrule
+Mfg gates               & \textcolor{green!60!black}{\textbf{6/6 PASS}} \\
+\quad pin\_count         & PASS: 3{,}071\,/\,4096 \\
+\quad reticle\_area      & PASS: 485\,mm$^2$\,/\,600\,mm$^2$ \\
+\quad logic\_depth       & PASS: 21 levels\,/\,35 \\
+\quad crossbar           & PASS: 1{,}310{,}720 cells\,/\,5{,}000{,}000 \\
+\quad power\_density     & PASS: 0.54\,W/mm$^2$\,/\,2.0 \\
+\quad sram\_macro        & PASS: 1{,}024 banks\,/\,4096 \\
+\midrule
+Total MACs              & 1{,}310{,}720 \\
+DRAM bandwidth          & 2{,}457\,GB/s \\
+DRAM channels           & 24 \\
+PE array                & $32 \times 40$ (1{,}280 PEs) \\
+PE L2 multipliers       & $4\times$ / $4\times$ / $4\times$ \\
+Datatype                & INT8 (W8A8) \\
+LP objective cycles     & $5.341 \times 10^{10}$ \\
+Compute floor cycles    & $5.370 \times 10^{10}$ \\
+Memory floor cycles     & $3.894 \times 10^{7}$ (at 2{,}457 GB/s) \\
+TPU-v3 naive baseline   & $1.906 \times 10^{12}$ cycles \\
+Tile alphabet $C$       & 16 \\
+Layers $L$              & 903 \\
+LP solver               & \texttt{custom JAX PDHG} \\
+LP solve time           &  \\
+\bottomrule
+\end{tabular}
+% \footnotesize \\\vspace{0.2em}
+% Active-expert working set (37\,GB) resident on-package; full model (671\,GB) is paged from off-package storage by the routing layer (not modelled in the LP).
+\end{table}
+
+
+
+\newpage

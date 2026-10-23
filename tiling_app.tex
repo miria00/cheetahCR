@@ -1,0 +1,356 @@
+\section{Two Optimal Tiling Examples: joint-tile LP Solution at a Glance}
+\label{app:tiling}
+This section shows examples of optimal tiling, where accepting a locally slower/smaller tiling to enable better fusion or placement.
+This showcases the strength of the CHEETAH formulation, which discovers nontrivial tiling-placement-fusion trade-offs that less expressive methods would miss. The first example is Llama-3 70B on a modeled H100; the second is DeepSeek-V3 on a modeled RTX~5090.
+
+By fixing the architecture, the inner loop derives optimal tiling and scheduling strategies that can act as custom speedups for targeted inference tasks. Therefore this section briefly provides motivation for future work on expanded hardware variants. This is motivated and similar in spirit to the speedups seen be FlashAttention \citep{dao2022flashattention} due to tiling optimization. 
+
+% \begin{table}[ht!]
+% \centering
+% \caption{Per-chip V1 LP scheduling lift over naive (greedy) scheduling
+% on the same modelled hardware. Speedup $=$ \texttt{static.objective\_cycles}
+% $\div$ \texttt{v1\_rounded.objective\_cycles}.
+% Source: \texttt{exp3\_<hw>\_*.csv}.}
+% \label{tab:v1_per_chip_lift}
+% \small
+% \begin{tabular}{@{}llr@{}}
+% \toprule
+% \textbf{Workload} & \textbf{Hardware} &
+% \textbf{V1 LP speedup over naive} \\
+% \midrule
+% Llama-3 70B  & H100      & $3.06\times$ \\
+% DeepSeek-V3  & RTX~5090  & $5.51\times$ \\
+% \bottomrule
+% \end{tabular}
+% \end{table}
+
+\subsection{joint-tile LP Solution: Llama-3 70B on modeled H100}
+
+\noindent\textbf{Problem dimensions:}
+$L = 720$ layers, $C = 20$ tile configs, $T = 720$ timesteps,
+$E = 703$ activation edges.
+Total LP variables: 1{,}601{,}280.
+Objective: $542{,}790{,}817$ cycles.
+\texttt{CONVERGED\_STRICT} in 1{,}800 PDLP iterations.
+
+\paragraph{Tile-Config Selection ($y_{i,c}$):} The joint-tile LP heavily favours small/fast configurations. Table~\ref{tab:tile_band} groups tiles into three size bands, and Table~\ref{tab:config_histogram} gives the per-config histogram.
+
+\begin{table}[h]
+\centering
+\caption{Tile-config band distribution across $L=720$ layers.}
+\label{tab:tile_band}
+\begin{tabular}{lrr}
+\toprule
+\textbf{Tile size band} & \textbf{Layers} & \textbf{\% of model} \\
+\midrule
+Small ($c = 0\ldots4$): fast / large working set  & 427 & 59\% \\
+Medium ($c = 5\ldots14$)                            & 275 & 38\% \\
+Large ($c = 15\ldots19$): slow / small working set &  18 &  2\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent Config histogram (picks per config index):
+
+\begin{table}[h]
+\centering
+\caption{Number of layers assigned to each tile config $c$.
+Configs with zero picks are omitted.}
+\label{tab:config_histogram}
+\begin{tabular}{lrrrrrrrrrr}
+\toprule
+$c$ & 0 & 1 & 3 & 4 & 5 & 8 & 12 & 16 & 17 \\
+\midrule
+Layers & 285 & 1 & 1 & 140 & 1 & 148 & 125 & 15 & 3 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent Config $c=0$ (largest tile) was selected for ${\approx}40\%$
+of layers, with $c \in \{4, 8, 12\}$ covering most of the remainder.
+The LP decisively favours large tiles for this 70B model on H100:
+with 1.05M MACs and a 50 MB global buffer, reducing tile size to fit
+memory is unnecessary and incurs iteration overhead.
+
+\paragraph{Per-Layer Execution Time $T_i$:}
+
+\[
+    T_i^{\min} = 1{,}204 \text{ cycles}, \quad
+    T_i^{\mathrm{med}} = 524{,}288, \quad
+    T_i^{\max} = 1{,}835{,}008, \quad
+    \textstyle\sum T_i = 542{,}790{,}817.
+\]
+
+\noindent The ten longest layers (Table~\ref{tab:longest_layers}) all hit the same $1{,}835{,}008$-cycle bound: these are the large FFN gate/up/down and Q/K/V/output projection sublayers in the transformer middle blocks:
+
+\begin{table}[h]
+\centering
+\caption{Ten longest layers. All hit the maximum $T_i =
+1{,}835{,}008$ cycles and correspond to large FFN/attention
+projection sublayers.}
+\label{tab:longest_layers}
+\begin{tabular}{rrl}
+\toprule
+\textbf{Layer idx} & \textbf{$T_i$ (cycles)} & \textbf{Selected config $c$} \\
+\midrule
+359 & 1{,}835{,}008 &  4 \\
+376 & 1{,}835{,}008 &  4 \\
+375 & 1{,}835{,}008 &  4 \\
+368 & 1{,}835{,}008 &  4 \\
+  0 & 1{,}835{,}008 &  4 \\
+367 & 1{,}835{,}008 &  4 \\
+718 & 1{,}835{,}008 &  0 \\
+358 & 1{,}835{,}008 &  8 \\
+357 & 1{,}835{,}008 &  8 \\
+377 & 1{,}835{,}008 & 12 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Placement ($p$, $p^W$): Global Buffer Residency}
+
+\begin{itemize}[leftmargin=1.4em, itemsep=2pt]
+    \item Activation edges pinned at $t=0$: $0\ /\ 703$
+    \item Weight layers pinned at $t=0$: $0\ /\ 720$
+    \item Total $p$-cells set across all $t$:
+          $0\ /\ 506{,}160$ ($0.00\%$)
+    \item Total $p^W$-cells set across all $t$:
+          $1\ /\ 518{,}400$ ($0.00\%$)
+\end{itemize}
+
+\noindent The joint-tile LP makes almost no use of the global buffer for
+long-lived tensor residency and nearly everything streams through.
+With the L1/L2 buffer multipliers in this hardware configuration,
+\textbf{tiling alone is sufficient to keep the chip fed}; persistent pins are not needed.
+
+\paragraph{Rematerialization Events $r_{i,t}$}
+
+\[
+    \text{Layers with} \geq 1\ \text{remat event}: 0\ /\ 720.
+    \qquad
+    \text{Total remat events}: 0.
+\]
+
+\noindent Zero Rematerialization. joint-tile has the freedom to recompute
+layers to free memory pressure, but on this cell determined it was
+not worth the additional cycles. Activation streaming combined with
+tile-config selection is sufficient.
+
+\paragraph{Eviction / Restoration Timeline}
+
+\begin{itemize}[leftmargin=1.4em, itemsep=2pt]
+    \item Activation evictions / restorations: $0\ /\ 0$
+    \item Weight evictions / restorations: $1\ /\ 1$
+          (one weight churn across all 720 timesteps)
+\end{itemize}
+
+\paragraph{One Concrete Layer: Layer 360 (Deep Transformer Block)}
+
+\[
+    \text{Selected config}\ c = 0, \qquad T_i = 524{,}288\ \text{cycles}.
+\]
+\[
+    \mathbf{y}_{\mathrm{bin}}\ \text{nonzero indices}: \{0,\ 16\}
+\]
+The LP relaxation assigned nonzero weight to two equally-good configs
+
+\paragraph{What This Reveals About joint-tile on Llama-3 70B / H100}
+
+\begin{enumerate}
+
+    \item \textbf{Tile choice does most of the work, not placement or remat.} Of 1.6M decision variables, only ${\approx}720$
+          (the $y_{i,c}$ selections) are doing real work; placement
+          ($p$, $p^W$) and rematerialisation ($r$) variables are
+          essentially all zero.
+
+    \item \textbf{Large tiles win because H100 is large.} With
+          1.05M MACs and 3.35 TB/s DRAM bandwidth, there is no memory
+          slack pressure forcing small working sets. The LP exploits
+          this by selecting the largest physically permissible tiles.
+
+    \item \textbf{The $1.53\times$ lift over the naive baseline comes
+          entirely from per-layer tile selection.} Ten different configs
+          are active across the 720 layers, versus the naive
+          one-size-fits-all heuristic. On smaller chips (e.g.\ TPU-v3)
+          this same mechanism yields a $2.11\times$ lift, because the
+          memory slack disappears and per-layer tile choice becomes
+          correspondingly more impactful.
+
+\end{enumerate}
+
+
+% As a qualitative example of V1’s solution structure, we inspect the rounded V1 LP solution for DeepSeek-V3 on an RTX-5090-like hardware point. The model contains L=903 layers, including 174 MoE sublayers, and the V1 LP has 2.5M variables. Although the Pareto cache exposes 20 tile configurations per layer, the solution uses only five configs, {0,4,8,12,16}, suggesting that V1 compresses the available tiling space into a small workload-specific alphabet. The most revealing behavior occurs in the FFN sublayers: ffn\_up, ffn\_gate, and ffn\_down have identical compute time, yet V1 assigns them different tile configs in a rotating pattern. This indicates that the LP is not merely selecting the fastest per-layer tile; it is interleaving large- and small-working-set choices across adjacent sublayers to manage memory pressure. V1 also automatically identifies structural outliers: the only seven layers assigned the smallest tile c=16 correspond to unusual sublayers such as rotary-key projections, low-rank Q projections, shared/expert gates, and expert down-projections. Finally, weight churn is highly localized: only four attention-path weights in the first block are evicted/refetched, while the MoE sublayers stream without churn. This case illustrates how V1 exposes interpretable schedule structure that is unavailable in a sequential Timeloop→fusion pipeline.
+
+\subsection{joint-tile LP Solution: DeepSeek-V3 on modeled RTX~5090}
+This example shows the LP makes real per-sublayer scheduling decisions that are directly readable from layer names.
+
+
+As a qualitative example of joint-tile’s solution structure, we inspect the rounded joint-tile LP solution for DeepSeek-V3 on an RTX-5090-like hardware point. The model contains L=903 layers, including 174 MoE sublayers, and the joint-tile LP has 2.5M variables. Although the Pareto cache exposes 20 tile configurations per layer, the solution uses only five configs (Table~\ref{tab:ds_tile_configs}), {0,4,8,12,16}, suggesting that joint-tile compresses the available tiling space into a small workload-specific alphabet. The most revealing behavior occurs in the FFN sublayers: ffn\_up, ffn\_gate, and ffn\_down have identical compute time, yet joint-tile assigns them different tile configs in a rotating pattern (Table~\ref{tab:ds_ffn_stagger}). This indicates that the LP is not merely selecting the fastest per-layer tile; it is interleaving large- and small-working-set choices across adjacent sublayers to manage memory pressure. joint-tile also automatically identifies structural outliers: the only seven layers assigned the smallest tile c=16 correspond to unusual sublayers such as rotary-key projections, low-rank Q projections, shared/expert gates, and expert down-projections (Table~\ref{tab:ds_outliers}). Finally, weight churn is highly localized: only four attention-path weights in the first block are evicted/refetched (Table~\ref{tab:ds_evictions}), while the MoE sublayers stream without churn. This case illustrates how joint-tile exposes interpretable schedule structure that is unavailable in a sequential Timeloop→fusion pipeline.
+
+\paragraph{Problem Dimensions}
+
+\begin{itemize}[leftmargin=1.4em, itemsep=2pt]
+    \item $L = 903$ layers (67-block DeepSeek-V3 with
+          router/expert/shared sublayers per MoE block)
+    \item $C = 20$ tile configs, $T = 903$ timesteps,
+          $E = 886$ activation edges
+    \item 2{,}504{,}019 LP variables,
+          objective $= 517{,}356{,}013$ cycles
+    \item Hardware (RTX~5090): 419K MACs, 1{,}792 GB/s DRAM,
+          98 MB CGM
+\end{itemize}
+
+\paragraph{Tile-Config Selection: Only 5 of 20 Configs Ever Picked}
+
+Configs are spaced exactly every 4 indices. joint-tile does not sweep the full continuum but locks onto a discrete alphabet of five shapes (Table~\ref{tab:ds_tile_configs}).
+
+\begin{table}[ht!]
+\centering
+\caption{Tile-config distribution for DeepSeek-V3 on RTX~5090.
+Only 5 of 20 candidate configs appear in the rounded solution.}
+\label{tab:ds_tile_configs}
+\begin{tabular}{rrl}
+\toprule
+\textbf{Config $c$} & \textbf{Layers} & \textbf{\% of model} \\
+\midrule
+0  & 363 & 40.2\% \quad (largest tile) \\
+4  & 192 & 21.3\% \\
+8  & 172 & 19.0\% \\
+12 & 169 & 18.7\% \\
+16 &   7 &  0.8\% \quad (smallest tile: tightest working set) \\
+\midrule
+others & 0 & unused \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Key Finding: joint-tile Staggers Tile Sizes Across the FFN Trio}
+
+Every transformer block contains three FFN sublayers (up, gate, down) with identical compute time ($T_i = 2{,}580{,}482$ cycles each). joint-tile assigns \emph{different} tile configs to the three so their working sets do not peak simultaneously in the global buffer.
+Table~\ref{tab:ds_ffn_stagger} shows the pattern across the ten hottest layers.
+
+\begin{table}[ht!]
+\centering
+\caption{Top-10 longest layers. Despite identical $T_i$, joint-tile assigns
+different tile configs to the FFN up/gate/down trio within each block, staggering working-set pressure across timesteps.}
+\label{tab:ds_ffn_stagger}
+\begin{tabular}{rllr}
+\toprule
+\textbf{Layer idx} & \textbf{Name} &
+\textbf{$T_i$ (cycles)} & \textbf{Config $c$} \\
+\midrule
+ 8 & \texttt{layer0\_ffn\_up}   & 2{,}580{,}482 &  0 \\
+ 9 & \texttt{layer0\_ffn\_gate} & 2{,}580{,}482 & 12 \\
+10 & \texttt{layer0\_ffn\_down} & 2{,}580{,}482 &  8 \\
+19 & \texttt{layer1\_ffn\_up}   & 2{,}580{,}482 &  4 \\
+20 & \texttt{layer1\_ffn\_gate} & 2{,}580{,}482 &  0 \\
+21 & \texttt{layer1\_ffn\_down} & 2{,}580{,}482 & 12 \\
+30 & \texttt{layer2\_ffn\_up}   & 2{,}580{,}482 &  8 \\
+31 & \texttt{layer2\_ffn\_gate} & 2{,}580{,}482 &  4 \\
+32 & \texttt{layer2\_ffn\_down} & 2{,}580{,}482 &  0 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+This is the scheduling intelligence in joint-tile: same compute cost,
+different tiles, rotated so that any window of timesteps contains at most one large-working-set tile and two smaller ones. A naive mapper assigns one tile size to all FFN layers; joint-tile detects the working-set conflict and breaks the symmetry automatically.
+
+\paragraph{Structural Outliers: The 7 Layers That Pick Config $c=16$}
+
+The LP assigned the tightest working-set tile ($c = 16$) to exactly the sublayers with unusual shapes (rotary embeddings, shared-expert gates, and expert down-projections) without any hand-labeled outlier feature (Table~\ref{tab:ds_outliers}).
+
+\begin{table}[h]
+\centering
+\caption{The seven layers assigned config $c=16$ (smallest tile /
+tightest working set). All correspond to structurally atypical sublayers
+in the DeepSeek-V3 MoE architecture.}
+\label{tab:ds_outliers}
+\begin{tabular}{rllr}
+\toprule
+\textbf{Layer idx} & \textbf{Name} &
+\textbf{$T_i$ (cycles)} & \textbf{Reason} \\
+\midrule
+202 & \texttt{layer14\_K\_rope}      & 1{,}146{,}881 & Rotary-embedded K: small inner dim \\
+238 & \texttt{layer16\_shared\_gate} &   286{,}720   & Shared-expert gate: narrow \\
+322 & \texttt{layer22\_K\_rope}      & 1{,}146{,}881 & Same shape as layer 202 \\
+394 & \texttt{layer27\_Q\_b}         &   737{,}281   & Q lower-rank decomposition \\
+573 & \texttt{layer39\_Q\_a}         &   215{,}040   & Q upper-rank decomposition \\
+706 & \texttt{layer47\_expert\_gate} &   286{,}720   & Per-expert gate \\
+812 & \texttt{layer54\_expert\_down} &   286{,}720   & Per-expert down-projection \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Weight Evictions: Localized to Transformer Block~1}
+
+joint-tile evicts weights for only four layers, all in the first transformer block's attention path (Table~\ref{tab:ds_evictions}).
+
+\begin{table}[h]
+\centering
+\caption{Weight eviction/restoration events. Only transformer block~1
+attention weights are evicted; all 174 MoE blocks have zero churn.}
+\label{tab:ds_evictions}
+\begin{tabular}{rlrrrr}
+\toprule
+\textbf{Layer} & \textbf{Name} &
+\textbf{Evict} & \textbf{Restore} &
+\textbf{$T_i$ (cycles)} & \textbf{Config $c$} \\
+\midrule
+12 & \texttt{layer1\_Q\_b}   & 1 & 0 & 737{,}281   & 0  \\
+13 & \texttt{layer1\_KV\_a}  & 1 & 1 &  71{,}680   & 12 \\
+14 & \texttt{layer1\_KV\_b}  & 1 & 1 & 327{,}680   &  8 \\
+15 & \texttt{layer1\_K\_rope}& 1 & 1 & 1{,}146{,}881 & 4 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent The LP determined that block~0/1 attention weights are cheaper to refetch than to evict the FFN trio they compete with in the global buffer.
+
+\paragraph{Relative Layer Costs}
+Table~\ref{tab:ds_layer_costs} summarizes the execution time of key sublayer types.
+\begin{table}[h]
+\centering
+\caption{Relative execution time of key sublayer types. MoE routers
+are ${\approx}72\times$ cheaper than FFN sublayers yet still receive varied tile assignments because 67 of them serialize in the dependency chain.}
+\label{tab:ds_layer_costs}
+\begin{tabular}{lrr}
+\toprule
+\textbf{Sublayer type} & \textbf{$T_i$ (cycles)} &
+\textbf{Ratio vs.\ FFN} \\
+\midrule
+FFN up / gate / down & 2{,}580{,}482 & $1.00\times$ (long pole) \\
+Q/K/V projections    & 700K–1{,}200K & ${\approx}27$–$47\%$ \\
+MoE routers          & 35{,}840      & $1.4\%$ ($72\times$ smaller) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{What This Demonstrates About joint-tile}
+
+\begin{enumerate}
+
+    \item \textbf{joint-tile performs scheduling, not just per-layer tile
+          picking.} The FFN trio tile rotation is a genuine scheduling decision: no naive per-layer mapper can produce this.
+
+    \item \textbf{joint-tile discovers structural outliers automatically.}
+          The seven $c=16$ picks land exactly on \texttt{K\_rope}, \texttt{Q\_a}, \texttt{Q\_b},
+          \texttt{expert\_gate}, and \texttt{expert\_down} sublayers without any
+          hand-labeled outlier feature in the input.
+
+    \item \textbf{joint-tile commits to a 5-config alphabet, not a 20-config
+          sweep.} This is actionable for hardware designers: only 5 of
+          20 candidate tile shapes ever matter for this workload.
+
+    \item \textbf{Memory churn is highly localized.} Only 4 evictions
+          occur, all in transformer block~1, all in the attention path.
+          The 174 MoE blocks have zero churn: joint-tile streams them entirely.
+
+\end{enumerate}
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.7\linewidth]{figs4/fft2.png}
+    \caption{Visualization or rotating tiles selected by joint-tile LP. There exists 903 FFN sublayers in this workload, tile config C=20. The LP only picks 5 of them (since the rest are Pareto-dominated).}
+    \label{fig:tiling_rotate}% RENAMED: was a duplicate of solver_app.tex's fig:pipeline, which silently broke \ref{fig:pipeline} in prelim.tex
+\end{figure}
+\label{app:tiling_demo}% RENAMED: was a duplicate of solver_app.tex's app:vizier, which silently broke \ref{app:vizier} in prelim.tex

@@ -1,0 +1,20 @@
+\section{Limitations, Future Work, and Broader Impact}
+The model optimizes a declared workload, finite implementation library, and
+analytical hardware contract. Full-library pricing and global master optimality
+remain open. Continuous relaxation bounds, feasible schedules, numerical
+inference equivalence, and physical timing are distinct claims. The full-input
+DeepSeek result uses captured routes and expanded attention under its recorded
+precision policy; its workload is reproducible, not statistically representative
+of every deployment. The large speedup depends on the reference and custom
+memory-interface assumptions. Same-chip controls isolate software effects but
+are not globally reoptimized ablations.
+
+The current execution credits compatible batching, KV retention/placement,
+and SwiGLU storage fusion. Larger native fusion groups, unrestricted overlap,
+quality-changing menus, and general rematerialization gains need additional
+experiments. RTL and synthesis studies cover selected schedules and datapaths,
+not complete-chip calibration. Extending the framework to multiple chips,
+robust workload distributions, or training introduces further communication
+and numerical constraints. More efficient inference designs may reduce energy
+per task; deployment scale and manufacturing costs determine their broader
+resource impact.

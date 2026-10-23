@@ -1,0 +1,209 @@
+\section{CHEETAH: One Master LP for HW/SW Co-Design}
+\label{sec:methods}
+CHEETAH minimizes predicted workload latency under a declared hardware budget.
+The input is a graph of logical invocations, a finite implementation library,
+and a numerical contract. Hardware is shared across every invocation; operation
+choices remain independent. The master includes the supplied schedule model and
+causal execution alternatives as whole-program branches, preserving existing
+feasible points while admitting richer implementations.
+
+\subsection{Pruning, Variables, and the Master Program}
+\label{sec:v1}\label{sec:master_lp}\label{sec:v3}
+\paragraph{Pareto pruning pre-pass.}
+For each operation, we discard infeasible tiles and configurations dominated
+in every relevant cost, traffic, workspace, and interface dimension.
+Dominance is tested within the same implementation contract and hardware class:
+a lower isolated latency alone is insufficient. Timeloop or a native analytical
+recipe supplies the retained coefficients once; the solver then selects among
+them without invoking the mapper at each iteration. Reuse across hardware
+settings requires that the same dominance relation remains valid.
+
+Let $i\in\mathcal N$ index original invocations, $j\in\mathcal J$ storage
+objects, $e\in\{0,\ldots,E-1\}$ events, and $\tau$ memory tiers. An implementation
+$k$ covers members $S_k$ and specifies inputs, outputs, workspace $W_{k\tau}$,
+and resource demands. $\mathcal K_P$ contains primary implementations and
+$\mathcal K_R$ permitted recomputations. The latter are charged executions,
+not free restoration. Table~\ref{tab:var_digest} defines the variables.
+
+\begin{table}[t]
+\centering\small
+\caption{Master variables; selection and state masses are relaxed to $[0,1]$.}
+\label{tab:var_digest}\label{tab:v1_scale}
+\begin{tabularx}{\linewidth}{@{}l l X@{}}
+\toprule
+Variable & Indices & Meaning \\
+\midrule
+$h$ & shared chip & Compute/vector resources, memory capacities and service rates \\
+$\lambda_b,z_b$ & branch $b$ & Whole-program selector and scaled branch coordinates \\
+$y_k$ & implementation $k$ & Tile, mapping, batch or fusion selection \\
+$s_{ke},w_{ke},f_{ke},a_{ke}$ & implementation, event & Start, work, finish and active mass \\
+$D_{ie},\beta_{je}$ & invocation/object, event & Logical completion and generated data \\
+$p_{j\tau e},v_{j\tau e}$ & object, tier, event & Resident state and eviction \\
+$q_{j,\tau\to\tau',e}$ & object, link, event & Paid transfer and destination reservation \\
+$Q^r_e,u_r,Z^r_e,d_e$ & resource, event & Demand, inverse rate, service and duration \\
+$T_i,p_{et},p^W_{it},r_{it},w_{ick}$ & retained schedule block & Latency, residency, recomputation and tile--residency products \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+We use the same selection, residency, and latency structure throughout.
+For each branch $b$, $z_b$ holds its complete coordinates and $c_b^Tz_b$ its
+latency in common units. A branch weight scales every original right-hand side
+and finite bound. In the causal rows below, branch indices are suppressed and
+all quantities are scaled coordinates; $C^\lambda_\tau(h_b)$ is the affine
+capacity with its constant multiplied by $\lambda_b$. $\mathcal R_k$ lists
+required object/tier pairs, $\mathcal D_k$ completed controls, and
+$\mathsf D^r_e$ is the linear demand of work and transfers. The master is given in Eq.~\eqref{eq:master}.
+\begin{figure}[t]
+\begingroup\small
+\begin{equation}
+\begin{aligned}
+\min\quad &\sum_{b\in\mathcal B}c_b^Tz_b \\
+\text{s.t.}\quad
+ &\lambda_b\ge0,\quad\sum_b\lambda_b=1,\qquad h=\sum_b H_bz_b,\\
+ &\sum_{k\in\mathcal K_P:i\in S_k} y_k=\lambda_b,\qquad
+   \sum_{k\in\mathcal K_R:i\in S_k} y_k\le R_b\lambda_b,\\
+ &\sum_e s_{ke}=\sum_e w_{ke}=\sum_e f_{ke}=y_k,\\
+ &a_{ke}=a_{k,e-1}+s_{ke}-f_{k,e-1},\qquad 0\le w_{ke},f_{ke}\le a_{ke}\le y_k,\\
+ &a_{ke}\le p_{j\tau e}-v_{j\tau e}\ ((j,\tau)\in\mathcal R_k),\qquad
+   a_{ke}\le D_{ie}\ (i\in\mathcal D_k),\\
+ &D_{i,e+1}=D_{ie}+\sum_{k\in\mathcal K_P:i\in S_k}f_{ke},\quad D_{i0}=0,\ D_{iE}=\lambda_b,\\
+ &\beta_{j,e+1}=\beta_{je}+\sum_{k\in\mathcal K_P:j\in O_k}f_{ke},\\
+ &p_{j\tau,e+1}=p_{j\tau e}-v_{j\tau e}
+       +\sum_{\sigma:\sigma\to\tau}q_{j,\sigma\to\tau,e}
+       +\sum_{k:j\in O_k,\delta(k)=\tau}f_{ke},\\
+ &0\le v_{j\tau e}\le p_{j\tau e}\le\beta_{je},\qquad
+   0\le q_{j,\tau\to\tau',e}\le p_{j\tau e}-v_{j\tau e},\\
+ &\sum_j m_j\!\left(p_{j\tau e}-v_{j\tau e}
+       +\sum_{\sigma:\sigma\to\tau}q_{j,\sigma\to\tau,e}\right)
+       +\sum_k W_{k\tau}a_{ke}\le C^\lambda_\tau(h_b),\\
+ &Q^r_e=\mathsf D^r_e(q,w),\quad (h_{br},u_r)\in\mathcal R_b^{\lambda_b},\quad
+      (Q^r_e,u_r,Z^r_e)\in\mathcal M_{br}^{\lambda_b},\\
+ &\sum_{r\in\mathcal P_a}Z^r_e\le d_e\quad(\text{each shared service pool }a),
+       \qquad F_bh_b\le g_b\lambda_b,\\
+ &B_bz_b=b_b\lambda_b,\quad J_bz_b\le j_b\lambda_b
+       \quad(\text{boundary, backing and implementation rows}),\\
+ &A_b^Pz_b=a_b^P\lambda_b,\quad G_b^Pz_b\le g_b^P\lambda_b
+       \quad(\text{retained schedule branches}),\\
+ &\ell_{bj}\lambda_b\le z_{bj}\le u_{bj}\lambda_b
+       \quad(\text{each finite original bound}).
+\end{aligned}
+\tag{Master}\label{eq:master}
+\end{equation}
+\stepcounter{equation}
+\endgroup
+\end{figure}
+Causal branches use the cover, lifecycle and service rows; retained schedule
+branches use their complete original rows $A_b^P,G_b^P$. These are alternatives
+inside one program, not extra causal restrictions on the old schedule model.
+Appendix~\ref{app:master_rows} expands the abbreviated rows, including the
+original joint tiling--placement block. Setting one $\lambda_b=1$ embeds every
+point of that branch with unchanged hardware and objective. A fractional
+mixture is a relaxation, not a multi-chip execution; recovery selects one branch.
+
+\subsection{Features and Their Linear Encoding}
+\label{sec:v3_levers}\label{sec:v0}
+\paragraph{Joint tiling and fusion.}
+For an isolated operation, the cover row reduces to $\sum_c y_{i,c}=1$.
+A tile's traffic savings depend on residency. In the retained schedule block,
+$w_{ick}$ represents $y_{ic}p_{\mathrm{assoc}(i,k),o(i)}$ through
+\begin{equation}
+0\le w_{ick},\quad w_{ick}\le y_{ic},\quad w_{ick}\le p,\quad
+w_{ick}\ge y_{ic}+p-1.
+\label{eq:mccormick}
+\end{equation}
+These McCormick inequalities give the convex hull of one bounded bilinear graph
+and are exact at integral factors~\citep{mccormick1976computability}; they do not
+make every fractional solution executable. Tile-dependent footprints use the
+same construction. Native fused atoms instead carry their complete input,
+output, workspace and service recipe, so fusion cannot silently remove work.
+
+\paragraph{Why a relaxation alone is not enough: branch and bound.}
+The envelopes above are exact only at integral factors, so a point the
+relaxation returns need not be a design that can be built. A fractional tile
+selection corresponds to no single tiling; a fractional menu weight mixes two
+memory technologies or array aspects that no die realizes; and a fractional
+branch weight is a blend of execution alternatives rather than one executable
+schedule. In other words, the relaxation bounds the achievable latency but does
+not by itself exhibit a valid physical chip. We therefore close the gap with a
+complete branch-and-bound search over the discrete part of the design, which is
+what lets us claim an actual physically feasible chip: the one-hot menus and
+tile selectors are branched, each node re-solving the same continuous master
+with those selectors pinned, which keeps every node a linear program while the
+branching restores integrality. The relaxation supplies the lower bound at each
+node and any integral point that survives recovery and replay supplies the upper
+bound, so the search terminates with a design that is both buildable and
+bracketed. Branching is applied to the discrete selectors only; the shared
+hardware sizing below stays continuous wherever the underlying physics is
+continuous.
+
+\paragraph{Shared hardware and resource epigraphs.}
+Compute, vector lanes, SRAM, and delivered memory service are shared decisions
+under linear area/power proxies $F_bh_b\le g_b$. Finite implementation or
+technology menus use disaggregated copies with linking equalities and scaled
+bounds. Resource epigraphs charge the maximum of concurrent service demands,
+while demands on the same port add. A per-implementation epigraph retains the
+compute/memory trade-off before summation; arbitrary overlap is not inferred
+from fractional sharing. The native replay uses its declared serial kernel and
+copy semantics.
+\label{eq:v3_caps}\label{eq:v3_epigraph}
+
+\paragraph{Reciprocal and product envelopes.}
+For a rate $r\in[\ell,h]$, $\mathcal R$ bounds $u\approx1/r$ by tangents
+$u\ge2/a-r/a^2$ and the global secant $u\le(\ell+h-r)/(\ell h)$.
+$\mathcal M$ bounds $Z\approx Qu$ by the four McCormick inequalities on
+$[0,\bar Q]\times[1/h,1/\ell]$. All coefficients are constants, so the program
+is linear. Outward coefficient rounding preserves graph containment.
+These are relaxations of physical service; replay reinstates the exact rates
+and products. Discrete bandwidth-menu copies are exact when their selector is
+integral.
+
+\paragraph{Time-indexed placement and KV across steps.}
+Residency $p_{j\tau e}$ changes with events rather than being fixed for the whole
+run. KV production creates immutable append objects; each decode attention
+operation depends on its required prefix. The state rows preserve earlier
+entries while the prefix grows. Capacity accounts for resident data, incoming
+copies, and active workspace simultaneously. Long skip connections and
+multi-fanout tensors use the same object identities and consumer readiness.
+
+\paragraph{Spill, restoration, and rematerialization.}
+Copies retain a valid source, reserve their destination, consume service, and
+become readable only after completion. Boundary rows require the declared
+terminal backing. A permitted repeat executes the original producer again and
+pays its work, input and workspace demands; it restores storage without
+advancing primary logical completion twice. Keeping full KV history in a
+slower tier is therefore different from deleting history. The native results
+credit paid KV restoration and retention, not a lossy KV budget.
+
+\paragraph{Batching and causal scheduling.}
+A batch column covers several compatible invocations and loads shared parameters
+once where its recipe permits. Cover constraints retain every member;
+start/finish and readiness rows prevent using future tokens or expert selections
+before their router dependencies complete. Event placement can vary within the
+finite library. The current native execution uses a recovered serial schedule;
+a larger scheduling domain does not imply that its optimum has been found.
+
+\paragraph{Optional implementation menus and recovery.}
+Precision, sparsity, array aspect, memory technology, and validated overlap
+policies enter as implementation choices with their own numerical and resource
+contracts. Accuracy-changing cache eviction or approximate reuse needs separate
+quality evidence; it is pinned off in the full-input native result. Larger
+cross-GEMM fusion and unrestricted overlap have no credited gain there.
+Recovery pins hardware and mappings, schedules transfers, and replays the
+original obligations. The master LP itself is continuous, and we run a complete
+branch-and-bound search over its discrete selectors to recover designs that are
+actual physically feasible chips: each node re-solves the continuous master with
+the one-hot menu and tile selectors pinned, the relaxation supplies the node
+bound, and a recovered point that survives replay supplies the incumbent, so the
+search closes with a buildable design and a certified bracket.
+
+\subsection{Diagnostic-Guided Outer Search}
+\label{sec:llm_outer}
+The LLM architect reads a ledger of resource prices, slacks, invalid trials,
+and replay outcomes, then proposes candidate implementations or search
+neighborhoods. Deterministic validation checks each proposal before evaluation.
+In the original campaign, Vizier~\citep{google_vizier} searches those neighborhoods;
+the master also represents hardware choices directly. Dual prices guide search,
+but an LLM proposal is not a complete pricing oracle: a full-domain optimality
+claim requires checking all omitted alternatives. The original controller and
+prompts are documented in Appendix~\ref{app:llm_loop}.

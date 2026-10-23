@@ -1,0 +1,428 @@
+\newpage
+
+
+\section{LLM-Architect Outer Loop Details}
+\label{app:llm_loop}
+The LLM-Architect outer loop proceeds through the following steps for each campaign round:
+
+\begin{enumerate}
+
+\item \textbf{Extraction.} Deterministic scripts summarize recent trials
+into a \emph{Causal Ledger}. Each record includes hardware parameters,
+validity, Perf/TDP, LP cycles, capacity duals/slacks, bandwidth
+sensitivity, MFU, memory utilization, roofline gap, failure class, and LP solver metrics.
+
+\item \textbf{Context building.} The last $N$ trials and the Causal Ledger
+are compressed into a compact JSON context for the Strategist. The context
+emphasizes empirical feasibility, observed invalid regions, best known
+valid designs, and physical audit signals.
+
+\item \textbf{Architect.} The online Architect, implemented as
+Qwen2.5-7B-Instruct with a LoRA adapter trained on past trial logs, diagnoses the dominant bottleneck and emits a campaign patch. The patch constrains macro-architectural search decisions such as Global Memory, DRAM bandwidth, total MACs, systolic shape,
+PE grid, and batch size. A larger teacher model, DeepSeek-V3.2, was used offline to generate or critique campaign labels, but is not in the live loop.
+
+\item \textbf{Campaign validation.} A deterministic validator clips or rejects the LLM patch to enforce legal hardware ranges, TDP and area limits, MAC caps, CGM feasibility floors, compute/bandwidth coupling, and roofline constraints. This prevents the LLM from proposing physically implausible regions such as maximum-MAC/minimum-bandwidth designs. 
+
+\item \textbf{Local optimization.} Vizier is initialized inside the
+validated patch and warm-started with prior trials that lie in the same region. Vizier then samples concrete hardware candidates within the approved campaign. The LLM chooses the high-level architectural neighborhood, while Vizier performs local adaptive optimization.
+
+\item \textbf{Unified joint-tile Formulation.} The large-scale LP solver evaluates each candidate by solving the joint-tile joint tiling-fusion-placement LP using saved Pareto $\mathcal{C}$-sets. It returns the objective, cycles, selected tiling configurations, placement/rematerialization decisions, dual/slack summaries, and solver-quality diagnostics.
+
+\item \textbf{Roofline audit.} A deterministic Roofline Auditor checks whether the predicted latency is physically plausible. For each candidate,
+we compute
+\begin{align}
+    t_{\text{compute}} &= \frac{\text{useful FLOPs}}{\text{peak FLOPs/s}},
+    \qquad
+    t_{\text{memory}}  = \frac{\text{post-placement DRAM bytes}}{\text{peak bandwidth}},
+    \nonumber\\
+    t_{\text{ideal}}   &= \max\!\left(t_{\text{compute}},\, t_{\text{memory}}\right).
+\end{align}
+A candidate is rejected if the solver-reported latency falls below this lower bound, or if MFU or memory utilization exceeds 1.0 within tolerance.
+
+\item \textbf{Ledger update.} The loop records the campaign hypothesis, intervention, observed invalid-rate change, MFU change, roofline validity, and best Perf/TDP change. The ledger also records forbidden regions when a campaign produces excessive invalid trials.
+
+\item \textbf{Shortlist Pareto refinement.} At the end of a campaign or study, only the top-ranked candidates are passed to a Pareto refinement run. This reruns targeted Timeloop refinement
+for selected configurations and re-solves joint-tile LP, providing a final trust check. This is an additional and optional sanity check step.
+
+\end{enumerate}
+
+The Architect receives workload summaries, invalid-rate history, MFU, roofline signals, and prior valid regions, normalized LP duals and bandwidth sensitivities. The system starts from a safe empirically valid patch and allows duals only to make bounded edits, such as raising the CGM floor, increasing bandwidth, reducing MAC count, or changing systolic shapes. The validator rejects any dual-guided patch that excludes known high-performing valid regions or predicts a substantially worse feasible rate.
+
+
+\subsection{Profile-Conditioned LLM-Architect Application}
+\label{app:profiles}
+
+We evaluate if the Architect can condition hardware search on deployment intent, since speech models may prioritize latency while data analytics models may prioritize bandwidth. For each workload, we run the same Qwen2.5-LoRA Strategist, validator, random-in-patch sampler, and joint-tile LP evaluator while changing only a two-paragraph profile block describing the user’s objective and constraints. The resulting best chips differ systematically by profile: overnight batch profiles select higher-bandwidth and larger-CGM regions, compact-edge profiles select smaller feasible regions with the lowest invalid rate, and interactive profiles favor small-CGM, extreme-aspect datapaths. Since the inner joint-tile LP and validator are identical across profiles, these differences isolate the effect of the LLM’s profile-conditioned search patch. The absolute Perf/TDP often remains within a narrow band because the joint-tile evaluator reaches a similar structural ceiling, but the hardware families used to reach that ceiling differ substantially. We simulate two user profiles: (1) interactive speech is a spoken dialogue model where latency is more important than bandwidth, and (2) overnight finance batch where the user requires a large amount of financial data to be processed, but might leave it overnight to complete hence bandwidth is more important than latency.
+
+The LLM-Architect clearly learned the profile distinction. Different profiles select meaningfully different chips for the same workload. The signal flows through the LLM's patch choice (steered by the profile prompt), and random-in-patch sampling finds the best chip within each profile-narrowed region. Table~\ref{tab:profile_best_chips} gives examples of best designs per profile. 
+
+\begin{table}[h]
+\centering
+\caption{Best hardware configuration discovered per (deployment profile,
+workload) cell. PE\,SA = PE grid $\times$ systolic array dimensions.
+MACs = total multiply-accumulate units. BW = DRAM bandwidth (GB/s).
+CGM = Global Buffer size (MB). Interactive speech = small low-latency-style chip, overnight finance batch = high-throughput, high-bandwidth, compact edge = compact constrained chip, balanced cloud = moderate/general design.}
+\label{tab:profile_best_chips}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llllrrrr}
+\toprule
+\textbf{Workload} & \textbf{Profile} &
+\textbf{PE grid} & \textbf{Systolic} &
+\textbf{MACs} & \textbf{BW (GB/s)} &
+\textbf{CGM (MB)} &
+\textbf{Best Perf/TDP $\times$} \\
+\midrule
+\multirow{4}{*}{Llama-1 13B}
+ & \texttt{interactive\_speech}      & $1\times128$ & $16\times16$  & 32K   & 512  & 2   & 2.06 \\
+ & \texttt{overnight\_finance\_\allowbreak batch}& $16\times8$  & $128\times32$ & 524K  & 2048 & 256 & 2.73 \\
+ & \texttt{compact\_edge}            & $8\times2$   & $64\times32$  & 32K   & 512  & 4   & 2.06 \\
+ & \texttt{balanced\_cloud}          & $2\times256$ & $8\times16$   & 65K   & 64   & 128 & 2.97 \\
+\midrule
+\multirow{4}{*}{DeepSeek-V3}
+ & \texttt{interactive\_speech}      & $1\times32$  & $8\times128$  & 32K   & 2048 & 16  & 1.07 \\
+ & \texttt{overnight\_finance\_\allowbreak batch}& $8\times256$ & $16\times8$   & 262K  & 2048 & 1   & 2.55 \\
+ & \texttt{compact\_edge}            & $16\times64$ & $16\times4$   & 65K   & 128  & 2   & 2.99 \\
+ & \texttt{balanced\_cloud}          & $256\times2$ & $32\times16$  & 262K  & 1024 & 32  & 2.83 \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+
+\begin{itemize}[leftmargin=1.4em, itemsep=3pt]
+
+    \item \textbf{\texttt{interactive\_speech}} repeatedly selects
+          extreme-aspect PE arrays ($1{\times}32$, $1{\times}128$,
+          $1{\times}256$, $2{\times}128$); these favour narrow systolic
+          streaming for low single-batch latency. CGM is consistently
+          small (2–4 MB), trading cache capacity for compute density.
+          Matches the profile intent: ``minimize end-to-end latency,
+          batch $\leq 8$''.
+
+    \item \textbf{\texttt{overnight\_finance\_\allowbreak batch}} consistently
+          selects high bandwidth (1024–2048 GB/s) and often large CGM
+          (16–256 MB). Matches the profile intent: ``maximize throughput,
+          large batch, sustained bandwidth''.
+
+    \item \textbf{\texttt{compact\_edge}} consistently selects the
+          smallest chips (32–65K MACs is common vs.\ 524K for other
+          profiles) with tiny CGM (1–4 MB). Matches the profile
+          hard constraints: TDP $\leq 0.5\times$, area $\leq 0.5\times$,
+          mobile deployment target.
+
+    \item \textbf{\texttt{balanced\_cloud}} selects medium-everything
+          (middle-of-the-road MACs, bandwidth, and CGM), consistent
+          with its unconstrained balanced objective.
+
+\end{itemize}
+
+\paragraph{Invalid-Rate Signal}
+
+\begin{table}[h]
+\centering
+\caption{Average invalid rate per deployment profile. The LLM responds
+to profile constraints: tighter profiles produce more LP-rejected
+proposals, while compact profiles are more feasible despite strict
+TDP/area limits.}
+\label{tab:profile_invalid_rates}
+\begin{tabularx}{\linewidth}{@{}p{.29\linewidth}lX@{}}
+\toprule
+\textbf{Profile} & \textbf{Avg.\ invalid rate} & \textbf{Interpretation} \\
+\midrule
+\texttt{interactive\_speech}       & 62\% &
+Tightest profile (TDP $\leq 1\times$, batch $\leq 8$): LLM proposes
+patches the LP frequently rejects. \\
+\texttt{overnight\_finance\_\allowbreak batch} & 53\% &
+Loose TDP ($4\times$) but \texttt{min\_batch} $\geq 32$ forces
+large-batch hardware. \\
+\texttt{compact\_edge}             &  8\% &
+Despite strict TDP/area constraints, the LLM finds feasible compact
+regions easily: best feasibility of all profiles. \\
+\texttt{balanced\_cloud}           & 36\% &
+Middle-ground constraints produce intermediate invalid rate. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+
+The absolute Perf/TDP$\,\times$ values are similar within a workload
+across profiles (e.g.\ Llama-3 70B: $3.38$–$3.53$ across all four
+profiles, within ${\approx}5\%$). This is not a failure: it reflects the LP's structural ceiling at fixed compute. \emph{What differs is the chip family used to reach that ceiling.} This is precisely the design-space-narrowing benefit of profile conditioning: the same headline Perf/TDP number is achieved by hardware families with qualitatively different deployment characteristics (narrow streaming chips for interactive speech, large-bandwidth chips for overnight batch), demonstrating that profile conditioning the LLM-Architect steers the search toward different hardware trade-offs without sacrificing overall efficiency.
+
+
+
+\subsection{LLM in the Loop Prompts}
+\label{app:prompt}
+\begin{tcolorbox}[
+    colback=blue!4,
+    colframe=blue!55,
+    title=\textbf{The Strategist System Prompt},
+    fonttitle=\bfseries,
+    breakable,
+    before upper={\setlength{\parskip}{4pt}},
+    left=4pt, right=4pt, top=4pt, bottom=4pt
+]
+
+You are the Strategist agent in a hardware/software co-design loop.
+
+Each round you receive: pain signals from the most recent batch of
+LP-evaluated hardware proposals, the causal ledger (your past hypotheses
++ outcomes), the current search-space bounds, and a roofline summary.
+You return \textbf{ONE JSON object} describing a campaign that narrows
+the search space for the next round.
+
+You are a \emph{campaign-level search-space editor}, not a performance
+predictor. Your job is to point Vizier at a small, physically-plausible
+neighborhood; the deterministic Validator + roofline auditor enforce hard
+constraints.
+
+\medskip
+\textbf{Important facts about the evaluator (CORGIsolve joint-tile).}
+For each fixed hardware candidate, joint-tile already \emph{jointly} optimizes:
+\begin{itemize}[leftmargin=1.4em, itemsep=1pt, topsep=2pt]
+    \item per-layer tiling selection $y_{i,c}$ over precomputed Pareto
+          tiling sets $\mathcal{C}_i$
+    \item time-indexed activation and weight placement
+    \item rematerialization decisions
+    \item tiling $\times$ placement interactions via McCormick variables
+    \item fusion / DRAM-traffic reduction under the candidate's memory
+          capacity
+\end{itemize}
+
+\noindent Therefore: do \textbf{not} assume low Perf/TDP is caused by a
+missing tiling search. The inner LP is already choosing the best available
+tiling/fusion/placement plan for the candidate. Your job is \textbf{only}
+to edit the \emph{outer} hardware search region.
+
+\medskip
+\textbf{Pain signal keys.}
+\begin{itemize}[leftmargin=1.4em, itemsep=1pt, topsep=2pt]
+    \item \texttt{invalid\_rate}: fraction of round's trials not OK
+    \item \texttt{mfu\_med}, \texttt{memory\_util\_med}: median compute / memory utilization ($\leq 1$)
+    \item \texttt{gap\_to\_floor\_med}: median $t_{\mathrm{solver}} / t_{\mathrm{ideal}}$ ($\geq 1$; near-1 $=$ at floor)
+    \item \texttt{op\_intensity\_med}: median FLOPs/byte for OK trials
+    \item \texttt{ridgepoint\_med}: median chip ridgepoint (FLOPs/byte)
+    \item \texttt{capacity\_dual\_p95}, \texttt{bandwidth\_dual\_p95}, \texttt{macfloor\_dual\_p95}: LP duals
+    \item \texttt{best\_perf\_tdp\_so\_far}: running max Perf/TDP across the search
+    \item \texttt{recent\_roofline}: \texttt{\{violation\_rate, dominant\_violation, \ldots\}}
+\end{itemize}
+
+\medskip
+\textbf{Causal reading.}
+\begin{enumerate}[leftmargin=1.6em, itemsep=2pt, topsep=2pt]
+    \item \texttt{capacity\_dual} high \emph{or} failures are
+          \texttt{global\_memory\_infeasible} $\Rightarrow$ increase CGM
+          or restrict to configs with enough global memory. Do \textbf{not}
+          blindly increase MACs.
+    \item \texttt{memory\_util} high, \texttt{gap\_to\_floor} low, or
+          \texttt{op\_intensity\_med} $<$ \texttt{ridgepoint\_med}
+          $\Rightarrow$ increase bandwidth, \emph{reduce} MAC count, or
+          avoid max-MAC/min-BW regions.
+    \item MFU low \emph{and} \texttt{memory\_util} also low $\Rightarrow$
+          compute shape / systolic mismatch. Prefer different-shaped
+          systolic arrays, \textbf{not} more total MACs.
+    \item Perf/TDP plateaued $\Rightarrow$ propose an
+          \texttt{efficiency\_shrink} campaign that keeps $\geq 95\%$ of
+          best Perf/TDP while reducing TDP / area / invalid rate.
+    \item Previous campaign had \texttt{invalid\_rate} $> 50\%$
+          $\Rightarrow$ do \textbf{not} repeat or further narrow into that
+          region. Shift to the nearest empirically valid region.
+    \item \emph{Empirical feasibility beats unverified dual reasoning.}
+          Never choose a patch that excludes the best known valid
+          configurations unless explicitly running a small \texttt{explore}
+          campaign.
+\end{enumerate}
+
+\noindent\textbf{Duals are advisory, not absolute.} If dual-based
+reasoning conflicts with empirical feasibility, prioritise empirical
+feasibility.
+
+\medskip
+\textbf{Anti-gaming policy} (Validator enforces; obeying saves a wasted round):
+\begin{itemize}[leftmargin=1.4em, itemsep=1pt, topsep=2pt]
+    \item Do \textbf{not} propose the entire global search space; every
+          patch must be a strict subset ($\leq 10\%$ volume by default;
+          $\leq 20\%$ if \texttt{campaign\_type} is \texttt{explore}).
+    \item Do \textbf{not} pair max \texttt{total\_macs} with min
+          \texttt{GDDR6\_channels}: ridgepoint cap 1000 FLOPs/byte.
+    \item Do \textbf{not} propose tiny CGM ($\leq 1$ MB) for LLM
+          workloads. Long-context workloads need $\geq 16$ MB CGM
+          ($\geq 32$ MB for 65B+).
+    \item Do \textbf{not} re-propose regions marked forbidden in the
+          ledger.
+\end{itemize}
+
+\medskip
+\textbf{Patchable parameters} (each must remain a non-empty subset of
+original powers-of-two):
+\texttt{PEs\_x\_dim}, \texttt{PEs\_y\_dim}, \texttt{Systolic\_array\_x},
+\texttt{Systolic\_array\_y}, \texttt{Vector\_unit\_multiplier},
+\texttt{L1\_\{input,weight,output\}\_buffer\_size},
+\texttt{L2\_\{input,weight,output\}\_buffer\_multiplier},
+\texttt{L3\_global\_buffer\_size} (CGM in MB),
+\texttt{GDDR6\_channels}, \texttt{Native\_batch\_size}.
+
+\medskip
+\textbf{Output:} one JSON object on one line. No prose, no markdown fence.
+
+\medskip
+\textbf{\texttt{campaign\_type} semantics:}
+\begin{itemize}[leftmargin=1.4em, itemsep=1pt, topsep=2pt]
+    \item \texttt{exploit}: narrow region around best valid designs so far
+    \item \texttt{repair}: targeted intervention for the dominant bottleneck
+    \item \texttt{explore}: diverse region not covered by prior failed
+          campaigns (validator allows up to 20\% of global space)
+    \item \texttt{efficiency\_shrink}: Perf/TDP saturated; find a
+          \emph{smaller} chip that keeps $\geq 95\%$ of best Perf/TDP
+          while reducing TDP / area / invalid rate
+\end{itemize}
+
+\noindent If no actionable hypothesis exists: return
+\texttt{campaign\_name} = \texttt{"explore\_current"},
+\texttt{campaign\_type} = \texttt{"explore"}, empty
+\texttt{search\_patch}, \texttt{dominant\_bottleneck} =
+\texttt{"invalidity"}, and reasonable prediction fields.
+
+\end{tcolorbox}
+\begin{tcolorbox}[
+    colback=grey!4,
+    colframe=grey!55,
+    title=\textbf{Teacher/Critic System Prompt},
+    fonttitle=\bfseries,
+    breakable,
+    before upper={\setlength{\parskip}{4pt}},
+    left=4pt, right=4pt, top=4pt, bottom=4pt
+]
+
+You are the \textbf{teacher/critic} for a hardware/software co-design
+search loop.
+
+\medskip
+\noindent You are given:
+\begin{itemize}[leftmargin=1.4em, itemsep=1pt, topsep=2pt]
+    \item a \emph{Trial Digest} (pain signals from a campaign round)
+    \item a \emph{deterministic oracle patch} (search-space narrowing that
+          empirically worked in the next round of a previous run)
+    \item the student-style template
+\end{itemize}
+
+\noindent Your task is to produce a \textbf{cleaned training example}.
+The patch and prediction \textbf{must} stay grounded in the deterministic
+oracle: do \textbf{not} invent new bounds. You may:
+
+\begin{itemize}[leftmargin=1.4em, itemsep=1pt, topsep=2pt]
+    \item rewrite \texttt{causal\_hypothesis} to be precise and cite the
+          dominant signal
+    \item tighten \texttt{dominant\_bottleneck} to the right category
+    \item quantify \texttt{prediction} deltas (e.g.\ ``drop below 0.25'',
+          ``increase by 0.10'')
+    \item normalize \texttt{campaign\_name} to \texttt{snake\_case}
+    \item reject the example by returning
+          \texttt{\{"keep": false, "reason": "..."\}} if the deterministic
+          oracle is internally inconsistent or unsafe
+\end{itemize}
+
+\medskip
+\noindent Return \textbf{one JSON object on one line}. Schema:
+
+\medskip
+\noindent\textbf{Accept:}
+\begin{quote}
+\small
+\texttt{\{"keep": true, "campaign\_name": "...", "causal\_hypothesis":
+"...", "dominant\_bottleneck":
+"capacity|\allowbreak bandwidth|\allowbreak compute\_shape|\allowbreak tdp|\allowbreak invalidity|\allowbreak roofline\_violation",
+"search\_patch": <unchanged from oracle>, "prediction":
+\{...quantitative...\}\}}
+\end{quote}
+
+\noindent\textbf{Reject:}
+\begin{quote}
+\small
+\texttt{\{"keep": false, "reason": "..."\}}
+\end{quote}
+
+\end{tcolorbox}
+
+
+
+\begin{tcolorbox}[
+    colback=green!6,
+    colframe=green!45!black,
+    title=\textbf{Deployment Profile: \texttt{interactive\_speech}},
+    fonttitle=\bfseries,
+    breakable,
+    left=4pt, right=4pt, top=4pt, bottom=4pt
+]
+\begin{verbatim}
+DEPLOYMENT PROFILE (active for this campaign)
+  natural-language goal: Minimize end-to-end latency for streaming
+                         speech inference. Throughput is secondary.
+                         Power should stay moderate. Small batch sizes
+                         only; single-request latency is the metric.
+  objective_mode:        min_latency
+  soft preferences:      prefer_batch_size=small,
+                         prefer_latency=very_high,
+                         prefer_throughput=medium,
+                         prefer_bandwidth=medium,
+                         prefer_area=medium
+  hard constraints:      max_tdp_relative=1.0,
+                         max_area_relative=1.0,
+                         max_batch_size=8
+  search hint (use as prior_centroid neighborhood):
+    native_batch_size:       [1, 2, 4, 8]
+    L3_global_buffer_size:   [16, 32, 64, 128]
+
+Tailor `search_patch` to this profile. Do NOT always maximize
+Perf/TDP; respect the profile's objective_mode. CORGIsolve V1
+still optimizes inner-loop tiling/fusion/remat for each chip;
+your job is to point it at the chip region whose trade-offs
+match this user need.
+\end{verbatim}
+\end{tcolorbox}
+
+\bigskip
+
+\begin{tcolorbox}[
+    colback=green!6,
+    colframe=green!45!black,
+    title=\textbf{Deployment Profile: \texttt{overnight\_finance\_\allowbreak batch}},
+    fonttitle=\bfseries,
+    breakable,
+    left=4pt, right=4pt, top=4pt, bottom=4pt
+]
+\begin{verbatim}
+DEPLOYMENT PROFILE (active for this campaign)
+  natural-language goal: Maximize throughput for large overnight
+                         historical-data analysis. Latency is not
+                         important. Sustained throughput and memory
+                         bandwidth matter most. TDP/power can be
+                         high as long as the work completes by
+                         deadline.
+  objective_mode:        max_throughput_per_tdp
+  soft preferences:      prefer_batch_size=large,
+                         prefer_latency=low,
+                         prefer_throughput=very_high,
+                         prefer_bandwidth=very_high,
+                         prefer_area=medium
+  hard constraints:      max_tdp_relative=4.0,
+                         min_batch_size=32
+  search hint (use as prior_centroid neighborhood):
+    native_batch_size:       [64, 128, 256]
+    GDDR6_channels:          [16, 32]
+    L3_global_buffer_size:   [128, 256]
+
+Tailor `search_patch` to this profile. Do NOT always maximize
+Perf/TDP; respect the profile's objective_mode. CORGIsolve V1
+still optimizes inner-loop tiling/fusion/remat for each chip;
+your job is to point it at the chip region whose trade-offs
+match this user need.
+\end{verbatim}
+\end{tcolorbox}
+
+\subsection{Resource Prices and Proposal Validation}\label{app:llm_duals}
+Resource prices summarize the current identified program. Proposals can target
+expensive service, workspace, or retention constraints, but must be checked
+against their complete implementation contract. A proposal list is not an
+exhaustive pricing oracle: exhausting that list cannot establish full-master
+optimality. The native experiments use separately admitted schedules and
+complete-domain bound arguments as described in Appendix~\ref{app:native_provenance}.

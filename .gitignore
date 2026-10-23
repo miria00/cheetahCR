@@ -1,0 +1,30 @@
+# LaTeX build intermediates
+*.aux
+*.log
+*.out
+*.blg
+*.bbl
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.toc
+*.lof
+*.lot
+*.ptc
+*.nav
+*.snm
+*.vrb
+
+# editor / OS
+.DS_Store
+*~
+*.swp
+
+# local backups (kept out of history)
+*.bak
+*.bak_*
+ref.bib.bak_*
+
+# pre-edit snapshots and private author notes (kept local)
+_snapshot_*/
+miria_notes.tex

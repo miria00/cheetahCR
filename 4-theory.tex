@@ -1,0 +1,101 @@
+\section{Modeling Properties and Containment}
+\label{sec:theory}\label{app:containment}
+The following statements concern represented feasible sets. They do not imply
+that a numerical solver has optimized the complete master or that arbitrary
+rounding preserves feasibility.
+
+\subsection{Bounded Products and Epigraphs}
+\begin{proposition}\label{prop:mccormick_exact}
+For $0\le y,p\le1$, the inequalities $0\le w$, $w\le y$, $w\le p$,
+and $w\ge y+p-1$ describe the convex hull of the graph $w=yp$.
+If either factor is integral, these inequalities force $w=yp$.
+\end{proposition}
+\begin{proof}
+The lower envelope is $\max(0,y+p-1)$ and the upper envelope is
+$\min(y,p)$~\citep{mccormick1976computability}. For $y=0$ they both force
+$w=0$; for $y=1$ they force $w=p$. The cases for integral $p$ are symmetric.
+\end{proof}
+This is an individual-product property, not a convex-hull theorem for the
+complete program. For example,
+\begin{equation}
+y_1=y_2=p=\tfrac12,\quad w_1=w_2=\tfrac12
+\label{eq:rlt_counterexample}
+\end{equation}
+satisfies the separate envelopes and $y_1+y_2=1$, but violates the identity
+$w_1+w_2=p$ that holds for exact products. Linking rows
+\begin{equation}
+\sum_c w_{ick}=p_{\mathrm{assoc}(i,k)}
+\label{eq:rlt_linking}
+\end{equation}
+can strengthen a branch when its intended integral semantics justify them.
+They must not be added to an immutable compatibility branch while claiming
+containment of every original fractional point.
+
+\begin{corollary}[Disaggregated service epigraphs]\label{cor:v3_hull}
+For fixed resource costs $a_c,b_c$, the one-choice epigraph has the perspective
+form $\sum_c y_c=1$, $y_c\ge0$, $t_c\ge a_cy_c$, $t_c\ge b_cy_c$,
+$T\ge\sum_ct_c$. It gives $T\ge\sum_c y_c\max(a_c,b_c)$ and dominates
+$T\ge\max(\sum_ca_cy_c,\sum_cb_cy_c)$.
+\end{corollary}
+\begin{proof}
+For each $c$, minimizing $t_c$ gives $y_c\max(a_c,b_c)$. Summing maxima is
+at least either sum separately. With a one-hot choice the two formulations
+coincide. For shared variable hardware, every additional coupling must also
+be disaggregated consistently; separate product envelopes alone do not prove
+the convex hull of the entire HW/SW problem.
+\end{proof}
+
+\subsection{An Objective-Preserving Embedding}
+\begin{definition}\label{def:seq_scope}
+An included schedule branch is a complete, identified program with its own
+workload, cost coefficients, hardware and boundary convention. A sequential
+control fixes its tile choices and other schedule decisions within that same
+contract. A method using different coefficients or unsupported hardware is
+not included merely because it has a similar pipeline.
+\end{definition}
+Write each included branch as
+$P_b=\{x:A_bx=a_b,\ G_bx\le g_b,\ \ell_b\le x\le u_b\}$.
+The master homogenizes all its rows and finite boxes with $\lambda_b$.
+\begin{theorem}[Containment of every included branch]\label{thm:containment}
+For every included branch $p$ and every $x\in P_p$, the assignment
+$\lambda_p=1$, $z_p=x$, and $\lambda_b=0,z_b=0$ for $b\ne p$ is master-feasible,
+with the same objective and hardware readout.
+\end{theorem}
+\begin{proof}
+Every active-branch row and bound becomes its original constraint. Every
+inactive-branch row has zero left and right sides; zero satisfies each
+homogenized finite box. The branch weights sum to one, the hardware projection
+returns $H_px$, and $\sum_b c_b^Tz_b=c_p^Tx$. The argument applies to fractional
+points as well as integral schedules.
+\end{proof}
+\begin{corollary}\label{cor:optimum}
+$\inf_{z\in P_M} c_M^Tz\le\min_b\inf_{x\in P_b}c_b^Tx$.
+A fixed-tile sequential control represented within an included branch therefore
+has a master-feasible embedding at the same modeled cost.
+\end{corollary}
+\begin{remark}\label{rem:scope}
+Containment is not automatic reproduction of every published chip: the actual
+branch and its complete contract must be imported. It also does not establish
+that the causal block alone contains the old fractional schedule block, or
+that a recovery heuristic returns a no-worse integral design. Retaining the
+old admitted execution as an eligible incumbent supplies the latter fallback
+under matched semantics. Unbounded branches can retain recession directions
+at zero weight; we claim the embedding above, not an unconditional
+closed-convex-hull identity.
+\end{remark}
+
+\subsection{Structure and Safe Pruning}\label{app:invar}
+\begin{proposition}\label{prop:invariance}
+For fixed graph incidence, variable domains, and candidate library, changes
+only to numerical costs and bounds preserve the structural row/column pattern.
+\end{proposition}
+\begin{proof}
+The same indexed row templates address the same coordinates. Hardware-dependent
+coefficients can change their values; changing the implementation library or
+introducing different lifetimes need not preserve the pattern.
+\end{proof}
+This permits reuse of indexing and warm starts. A new scaling or norm bound
+must still be checked when coefficients change. Pareto pruning similarly needs
+componentwise dominance in every resource and interface used by the branch;
+a two-axis latency plot alone is insufficient when workspace, traffic tiers,
+or numerical formats differ.

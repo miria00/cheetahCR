@@ -1,0 +1,60 @@
+% Table 1: decision spaces in the cited systems.
+% Visual restored to the earlier colored design (green/red/amber marks,
+% banded column groups, alternating row shading, family grouping rows).
+% Citations stay in the System column, not in the caption.
+\definecolor{cmgood}{RGB}{20,120,50}
+\definecolor{cmbad}{RGB}{190,40,40}
+\definecolor{cmpart}{RGB}{200,130,0}
+\providecommand{\cmark}{\textcolor{cmgood}{\ensuremath{\checkmark}}}   % searched/formulated
+\providecommand{\xmark}{\textcolor{cmbad}{\ensuremath{\times}}}        % not searched
+\providecommand{\pmark}{\textcolor{cmpart}{\ensuremath{\circ}}}        % restricted/user-specified
+
+\begin{table}[t]
+\centering
+\caption{Decision spaces in the cited systems. \cmark: searched/formulated;
+\pmark: restricted or user-specified; \xmark: not searched in the cited method.
+Guarantees retain their own objective and domain. CHEETAH's row is formulation scope.}
+\label{tab:capability-matrix}
+\scriptsize\setlength{\tabcolsep}{2.1pt}\renewcommand{\arraystretch}{1.18}
+\definecolor{bandsched}{RGB}{230,239,253}
+\definecolor{bandsearch}{RGB}{230,245,233}
+\definecolor{bandguar}{RGB}{253,234,234}
+\definecolor{rowalt}{gray}{0.955}
+\definecolor{rowours}{gray}{0.875}
+\providecommand{\hdr}[1]{\begin{tabular}[b]{@{}c@{}}#1\end{tabular}}
+\providecommand{\famrow}[1]{\multicolumn{10}{@{}l}{\textit{#1}}}
+\begin{tabularx}{\linewidth}{@{}Xccccccccc@{}}
+\toprule
+ & \multicolumn{5}{c}{\cellcolor{bandsched}\textbf{Schedule decisions}}
+ & \multicolumn{2}{c}{\cellcolor{bandsearch}\textbf{Search}}
+ & \multicolumn{2}{c}{\cellcolor{bandguar}\textbf{Guarantee}} \\
+\cmidrule(lr){2-6}\cmidrule(lr){7-8}\cmidrule(lr){9-10}
+\textbf{System} & \hdr{Per-op\\tiling} & Fusion & \hdr{Temporal\\placement} & Remat. &
+\hdr{Op.\\order} & Mapping & \hdr{HW\\sizing} & \hdr{Opt.\\guarantee} & \hdr{Joint HW/SW\\program} \\
+\midrule
+\famrow{Per-op mappers} \\
+Timeloop~\citep{timeloop} & \cmark & \xmark & \xmark & \xmark & \xmark & \cmark & \xmark & \xmark & \xmark \\
+\rowcolor{rowalt}
+CoSA~\citep{huang2021cosaschedulingconstrainedoptimization} & \cmark & \xmark & \xmark & \xmark & \xmark & \cmark & \xmark & \pmark & \xmark \\
+\famrow{Fusion-aware mappers} \\
+DeFiNES~\citep{mei2023defines} & \cmark & \cmark & \pmark & \pmark & \pmark & \cmark & \xmark & \xmark & \xmark \\
+\rowcolor{rowalt}
+Fast-and-Fusiest~\citep{andrulis2026fusiest} & \cmark & \cmark & \pmark & \xmark & \cmark & \cmark & \xmark & \pmark & \xmark \\
+\famrow{Hardware design-space exploration} \\
+ZigZag~\citep{mei2021zigzag} & \cmark & \xmark & \xmark & \xmark & \xmark & \cmark & \cmark & \xmark & \xmark \\
+\rowcolor{rowalt}
+DOSA~\citep{hong2023dosa} & \cmark & \xmark & \xmark & \xmark & \xmark & \cmark & \cmark & \xmark & \cmark \\
+Gemini~\citep{cai2024gemini} & \cmark & \pmark & \pmark & \xmark & \pmark & \cmark & \cmark & \xmark & \xmark \\
+\rowcolor{rowalt}
+CODEBench~\citep{Tuli_2023} & \pmark & \xmark & \xmark & \xmark & \xmark & \xmark & \cmark & \xmark & \xmark \\
+FAST~\citep{zhang_fast} & \cmark & \cmark & \pmark & \xmark & \xmark & \cmark & \cmark & \xmark & \xmark \\
+\famrow{Loop compilers} \\
+\rowcolor{rowalt}
+Pluto~\citep{bondhugula2008pluto} & \pmark & \cmark & \xmark & \xmark & \cmark & \pmark & \xmark & \xmark & \xmark \\
+Tiramisu~\citep{baghdadi2019tiramisu} & \pmark & \pmark & \pmark & \pmark & \pmark & \pmark & \xmark & \xmark & \xmark \\
+\midrule
+\rowcolor{rowours}
+\textbf{CHEETAH master} & \cmark & \cmark & \cmark & \cmark & \cmark & \cmark & \cmark & \pmark & \cmark \\
+\bottomrule
+\end{tabularx}
+\end{table}

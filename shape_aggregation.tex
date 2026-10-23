@@ -1,0 +1,60 @@
+\section{Historical Shape-Tied Control and Its Limits}
+\label{app:shape_agg}
+An earlier scalability experiment shared decisions among operations with
+identical Timeloop coefficient rows. This is a separate restricted control;
+it is not the representation used to claim coverage of the current native
+master. The latter preserves independent invocation choices and deduplicates
+coefficient recipes rather than silently identifying their variables.
+
+\paragraph{Coefficient reuse versus shared decisions.}
+If operations $i$ and $j$ have identical dimensions and implementations, the
+same coefficient recipe may generate both sets of rows. This reduces storage
+without imposing $y_i=y_j$. Replacing their selectors by one shape selector
+$y_s$, however, removes solutions in which they choose different tiles.
+Identical local coefficients do not imply interchangeable decisions: the
+operations can have different dependencies and live-memory pressure.
+
+\paragraph{Temporal coupling.}\label{par:shape_agg_exactness}
+A product $w_{ict}=y_{ic}p_{it}$ depends on both implementation and temporal
+state. A shape-indexed selector and a coarsened residency trajectory cannot
+represent all per-instance products. The historical control grouped identical
+Pareto rows, multiplied compute, traffic, and recomputation coefficients by
+multiplicity, charged tile bytes once, and coarsened $T=N$ to $T=S$.
+Decision tying restricts the domain while removing capacity rows can relax it;
+there is no general ordering between its optimum and the original optimum.
+An objective-preserving reduction requires an explicit lift satisfying all
+original rows, not just agreement of shape dimensions.
+
+\paragraph{Observed small-instance agreement.}
+The retained comparison below solves both programs with HiGHS on the same
+truncated operation set and with the original linking rows enabled. The
+objectives agree to ten significant figures in these cases, with up to an
+$89\times$ reduction in columns. Capacity is slack in this experiment. These
+observations support the control at the tested points, not an equivalence
+claim for capacity-constrained or full native inference.
+
+\begin{table}[ht!]
+\centering
+\small
+\caption{Historical shape-tied control on the first $N$ DeepSeek operations,
+16 MiB global memory. Columns are LP variables; objectives use the original
+cycle convention. Agreement on these cases is not a general equivalence proof.}
+\label{tab:agg_validation}
+\begin{tabular}{@{}rrrrccc@{}}
+\toprule
+$N$ & $S$ & cols (unagg.) & cols (agg.) & unaggregated & aggregated & error \\
+\midrule
+16  & 10 & 9{,}729   & 3{,}981 & $3.848169063\times10^{10}$ & $3.848169063\times10^{10}$ & $0.0000\%$ \\
+32  & 10 & 37{,}377  & 3{,}981 & $1.027407872\times10^{11}$ & $1.027407872\times10^{11}$ & $0.0000\%$ \\
+64  & 13 & 146{,}433 & 6{,}540 & $1.397050573\times10^{11}$ & $1.397050573\times10^{11}$ & $0.0000\%$ \\
+128 & 13 & 579{,}585 & 6{,}540 & $2.088766669\times10^{11}$ & $2.088766669\times10^{11}$ & $0.0000\%$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Current scalability path.}
+Section~\ref{sec:ocs} instead uses structured temporal operators and compact
+working supports, retaining the source identity and checking omitted-domain
+obligations separately. Shared hardware is global, but independent operation
+choices remain independent. A working certificate applies to its identified
+support; only a complete-domain check can extend a lower bound to the source.

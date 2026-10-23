@@ -1,0 +1,319 @@
+\section{Implementation-Level Validation: Cycle-Accurate RTL}
+\label{sec:rtl_validation}
+
+The results so far certify \emph{model-level} quantities computed inside one
+cost-model convention; as we note in \cref{app:mfu}, a real measured
+utilization would require an executable implementation of the selected
+hardware/schedule pair. This section supplies that check. We take the
+committed schedule and the datapath geometry the LP sizes, express them as
+\emph{synthesizable} SystemVerilog, simulate them cycle-accurately with
+Verilator~5.050~\citep{snyder_verilator}, and compare against a reference model
+written in C\texttt{++}. We call this \emph{analytical-model-to-RTL cycle
+validation}: the RTL confirms that the LP's schedule is physically
+realizable, that its time-indexed memory constraints hold byte-for-byte in
+hardware, and that the utilization \emph{mechanisms} the LP charges are the
+ones a real datapath exhibits. We do \emph{not} treat RTL cycle counts as
+absolute ground truth (the analytical per-layer cache floors are uniformly
+conservative by $192\times$ to $2475\times$, quantified below), and we make
+no tape-out claim. \Cref{sec:asap7} then closes the remaining gap on the
+cost-model side, taking the sized datapath through logic synthesis and
+placement at a $7$~nm predictive PDK to test the area and power coefficients
+themselves.
+
+\paragraph{Experiment 1: schedule tape replay (realizability and memory
+legality).}
+We compile the full committed DeepSeek-V3~\citep{deepseekv3report} schedule
+at a TPU-v3-class configuration ($\CGM = 8$~MiB) into a $1{,}383$-instruction
+event tape over the vocabulary \{\textsc{execute}, \textsc{load},
+\textsc{free}, \textsc{evict}, \textsc{reload}, \textsc{rematerialize}\}, and
+execute it on a cycle-accurate SystemVerilog event engine (a Global-Buffer
+allocator, a bandwidth-limited DMA model, and a compute model) under
+Verilator. Each instruction is cross-checked against the analytical residency
+model layer-by-layer, and a deliberately over-committed tape confirms the
+capacity checker is live (it flags exactly one violation). Three pre-stated
+criteria pass (\cref{tab:rtl_validation}), and \cref{tab:rtl_levers} reports, decision by
+decision, that every planned event executed. \emph{Memory legality:} the tape
+runs to completion with \textbf{zero} capacity violations, and the RTL peak
+on-chip occupancy equals the analytical prediction \emph{exactly}
+($7{,}602{,}176$~B $= 7.25/8$~MiB, $9.4\%$ headroom). \emph{Cycles:} the total
+RTL cycle count lands within $+0.000001\%$ of the rounded LP objective, the
+entire gap being the $16{,}431$ decoder/DMA sequencing cycles ($10^{-8}$ of
+the total); i.e., the rounded schedule realizes with \emph{no hidden
+serialization or stall} beyond the model's accounting. \emph{Two-tape ratio:}
+against a stream-everything realization of the same operation order, the
+RTL-measured latency ratio is $1.0723\times$, matching the analytical ratio to
+$8$ significant digits. This ratio is scoped to the pin/reload channel alone
+(both tapes hold the per-operation-optimal tiling fixed, so joint tile
+selection, the dominant channel elsewhere, is deliberately held equal).
+Together these establish that the LP's time-indexed residency model
+(\cref{sec:v0}) is not merely roofline-feasible but executes byte- and
+cycle-faithfully on hardware that enforces the capacity constraint at every
+step.
+
+\begin{table}[t]
+\centering
+\caption{Did each decision fire? Per-decision plan-versus-execution counters from the DeepSeek-V3 tape replay ($\CGM = 8$\,MiB). Every event the LP plans is executed by the RTL engine exactly once, the capacity row is checked in hardware at every step, and the decisions the LP chose not to use at this cell are confirmed absent while their opcodes are proven live on a synthetic tape. The bound says how good the plan is; the counters say the plan is what ran.}
+\label{tab:rtl_levers}
+\scriptsize
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.22}
+\definecolor{bandrtl}{RGB}{230,239,253}
+\definecolor{rowalt}{gray}{0.955}
+\begin{tabular}{@{}l l l l@{}}
+\toprule
+\rowcolor{bandrtl}
+\textbf{Decision} & \textbf{LP plan} & \textbf{RTL executed} & \textbf{Check} \\
+\midrule
+Tile choice ($y$)            & $903$ \textsc{execute}               & $903$                 & \cmark~ids match $903/903$ \\
+\rowcolor{rowalt}
+Residency ($p$, $p^W$)       & $180$ \textsc{load}, $299$ \textsc{free}, $2{,}709$ pins & $180$, $299$ & \cmark~$2{,}709/2{,}709$ pins \\
+Fusion (operand kept resident) & $418$ of $903$ ops                 & $418$                 & \cmark \\
+\rowcolor{rowalt}
+Eviction / reload            & $0$ / $0$                            & $0$ / $0$             & \cmark~opcodes live \\
+Rematerialization ($r$)      & $0$                                  & $0$                   & \cmark~opcode live \\
+\rowcolor{rowalt}
+Capacity row                 & $1{,}083$ hardware checks            & $0$ violations        & \cmark~injected overflow flags $1$ \\
+Peak occupancy               & $7{,}602{,}176$\,B                   & $7{,}602{,}176$\,B    & \cmark~byte-exact, trace within $4$\,B \\
+\rowcolor{rowalt}
+Total cycles                 & $1.6437\times10^{12}$                & $+16{,}431$ cycles    & \cmark~$+0.000001\%$, accounted \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Experiment 2: datapath utilization mechanism.}
+We next build one weight-stationary INT8 systolic PE cluster in synthesizable
+SystemVerilog ($4\times4$ MAC array, INT8$\times$INT8$\rightarrow$INT32, with
+L1 buffers and a tile-loop FSM; plus a $16\times16$ variant), golden-verified
+against a plain-C\texttt{++} reference convolution ($8/8$ runs bit-exact).
+Simulated on EfficientNet-B7~\citep{tan2019efficientnet} layers, the RTL
+reproduces the two utilization mechanisms the cost model charges for. First, the
+\emph{depthwise structural ceiling}: on a broadcast systolic array a depthwise
+convolution can engage only $4$ of $16$ MAC lanes, and the RTL measures a
+steady-state depthwise utilization of $24.9\%$ against the $25\%$ analytic
+ceiling ($6.13\%$ vs.\ $6.25\%$ on the $16\times16$ variant), while dense
+$1\times1$ layers hold $97$--$99\%$ on the identical RTL. Second, the
+predicted \emph{geometry contrasts}: the measured lane law reproduces the
+$4.00\times$ systolic-vs-grid contrast to $4.057\times$, and extends the
+cache's $18\times$ depthwise contrast to within $1.22\times$. Crucially, the
+same runs show the analytical cache cycle \emph{floors} to be $192\times$ to
+$2475\times$ conservative (the RTL executes the identical work that much
+faster), which is precisely why RTL-derived claims are scoped to these
+utilization \emph{contrasts} and to the schedule replay above, never to
+absolute cycle agreement. The mechanism is what matters here: the utilization
+losses the LP models (\cref{sec:methods}) are the ones the real datapath
+exhibits.
+
+\begin{table}[t]
+\centering
+\small
+\caption{Analytical-model-to-RTL cycle validation. Synthesizable
+SystemVerilog simulated cycle-accurately with Verilator~\citep{snyder_verilator}
+and checked against a C\texttt{++} reference. The RTL confirms schedule
+realizability, byte-exact memory legality, and the LP's utilization
+mechanisms; it is \emph{not} used as an absolute cycle oracle.}
+\label{tab:rtl_validation}
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Quantity (RTL vs.\ analytical)} & \textbf{Measured} & \textbf{Verdict} \\
+\midrule
+\multicolumn{3}{@{}l}{\emph{Exp.\ 1: DeepSeek-V3 schedule replay
+($1{,}383$ instr., $\CGM=8$~MiB)}} \\
+Capacity violations & $0$ & pass \\
+Peak on-chip occupancy & $7{,}602{,}176$~B (exact) & byte-exact \\
+Total cycles vs.\ rounded LP obj. & $+0.000001\%$ & no hidden serialization \\
+Two-tape ratio (pin/reload only) & $1.0723\times$ ($8$-digit match) & pass \\
+\midrule
+\multicolumn{3}{@{}l}{\emph{Exp.\ 2: EfficientNet-B7 INT8 systolic cluster
+(golden $8/8$)}} \\
+Depthwise MAC-lane utilization & $24.9\%$ vs.\ $25\%$ ceiling & mechanism confirmed \\
+Systolic-vs-grid geometry contrast & $4.057\times$ vs.\ $4.00\times$ & mechanism confirmed \\
+Absolute cache cycle floors & $192$--$2475\times$ conservative & scope guard \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Physical-design validation: post-synthesis area and the linearity
+of the cost model}
+\label{sec:asap7}
+
+Experiments 1 and 2 validate the \emph{schedule} the program commits to. A
+second, independent question is whether the \emph{cost model} that evaluates the
+hardware is itself faithful: the program sizes a chip through the coefficients
+$k_{\mathrm{MAC}}$ (area per MAC) and $\pi_{\mathrm{MAC}}$ (power per MAC), and
+every manufacturability gate and the area and power caps are expressed in them.
+If those coefficients are wrong, the certified designs are certified against the
+wrong physics. We therefore take the datapath the program sizes, write it as
+synthesizable RTL, and push it through a full open-source RTL-to-placement flow
+at an advanced predictive node.
+
+\paragraph{Setup.}
+We implement a parameterized weight-stationary INT8 systolic tile (an
+$N \times N$ array of processing elements, each holding a resident $8$-bit
+weight, streaming $8$-bit activations east and $32$-bit partial sums south, one
+MAC per PE per cycle in steady state) and synthesize, floorplan, place, and
+timing-repair it with OpenROAD~\citep{ajayi2019openroad} against the ASAP7
+$7$~nm predictive PDK~\citep{clark2016asap7} at a $1$~GHz target, for
+$N \in \{16, 32, 64\}$, that is $256$ to $4{,}096$ MACs. We report post-detailed-placement
+extracted areas. We do not run clock-tree synthesis or routing, and we make no
+tape-out claim: the quantity under test is the area coefficient and its scaling
+law, both of which are fixed at placement.
+
+\paragraph{Result 1: the linear area model is structurally correct.}
+\Cref{tab:asap7} reports extracted cell area at the three sizes. A linear fit
+gives $A_{\mathrm{cell}} = 82.08\,\mathrm{MACs} - 206.5\ \mu\mathrm{m}^2$ with
+$R^2 = 0.999999$, and the extracted area \emph{per MAC} varies by only $0.46\%$
+across a $16\times$ range in MAC count. This is a stronger statement than
+agreement on a single number: the program assumes area is
+\emph{linear} in the MAC count, with the same slope at every chip size, and
+that assumption is exactly what a placed datapath exhibits. The linear area row
+in the program is therefore not a convenient approximation but a measured
+property of the datapath it sizes.
+
+\paragraph{Result 2: the area coefficient is anchored and conservative.}
+The fitted slope is $8.21 \times 10^{-5}\ \mathrm{mm}^2$/MAC of standard-cell
+area. Placed designs occupy a core larger than their cell area; our floorplans
+sit at $41\%$ placement utilization, giving $2.0 \times 10^{-4}\
+\mathrm{mm}^2$/MAC of core area. The value the program uses,
+$k_{\mathrm{MAC}} = 1.5 \times 10^{-4}\ \mathrm{mm}^2$/MAC, lies between these
+two and corresponds to the cell area at $54.7\%$ placement utilization, a
+typical density for a datapath of this kind. The coefficient is thus bracketed
+by extracted silicon area from below and by our own conservative floorplan from
+above.
+
+\paragraph{Result 3: the power coefficient, and why we anchor it to silicon
+rather than to this flow.}
+Power at the same operating point is instructive in a different way. Reporting
+placement-level power on this tile with flat random switching activity yields
+$2.0$ to $6.5$ pJ per MAC operation as the assumed input activity rises from
+$5\%$ to $50\%$, against the $0.40$ pJ/MAC-op implied by
+$\pi_{\mathrm{MAC}}$. Rather than adjudicate this within the flow, we test it
+against an external physical bound. Shipped accelerators deliver INT8
+arithmetic at $0.35$ pJ/op (H100, $4$~nm), $0.64$ pJ/op (A100, $7$~nm), and
+$1.27$ pJ/op (TPU-v4i, $7$~nm), and these are \emph{whole-chip} figures that
+include memory, cache, and control. Our number is for the multiplier array
+alone, at the same node, and exceeds an entire A100 per operation by
+$3.2$--$10.1\times$; a bare array cannot consume more energy per operation than
+the complete system that contains it. The measurement, not the coefficient, is
+therefore out of range: with a generic synthesized multiplier, no clock gating
+or operand isolation, and flat random activity in place of correlated INT8
+data, this flow reports an upper bound rather than a representative figure. The
+program's $\pi_{\mathrm{MAC}} = 0.40$ pJ/MAC-op sits where an array-only
+coefficient should, at the same order as and slightly below whole-chip shipped
+silicon, and we anchor it there~(\cref{app:coeff_provenance}).
+
+\paragraph{Synthesis of the three hardware verification results.}
+Design-space-exploration frameworks are conventionally validated in three ways:
+against measured taped-out chips, against post-synthesis extraction, and
+against other frameworks~\citep{mei2021zigzag}. The Timeloop-derived Pareto
+data places this work in the third category and the silicon-anchored
+coefficients in the first; this section supplies the second. Concretely, it
+converts the area side of every gate-legality claim in this paper, and of the
+certified designs in \cref{sec:experiments}, from a literature-shaped constant
+into a quantity extracted from RTL-to-placement at $7$~nm, together with a
+validated scaling law; and it leaves the power side anchored to shipped
+silicon, with an explicit account of why this particular flow overstates it.
+
+\begin{table}[h]
+\centering
+\footnotesize
+\caption{Post-placement extracted area of the INT8 systolic tile at ASAP7
+$7$~nm. Area per MAC is constant to within $0.46\%$ over a $16\times$ range in
+MAC count; the linear fit has $R^2 = 0.999999$.}
+\label{tab:asap7}
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+$N$ & MACs & Cell area ($\mu\mathrm{m}^2$) & Cell area/MAC ($\mathrm{mm}^2$) &
+Core area/MAC ($\mathrm{mm}^2$) \\
+\midrule
+$16$ & $256$   & $20{,}981$  & $8.196\times10^{-5}$ & $1.986\times10^{-4}$ \\
+$32$ & $1{,}024$  & $83{,}629$  & $8.167\times10^{-5}$ & $1.986\times10^{-4}$ \\
+$64$ & $4{,}096$  & $336{,}049$ & $8.204\times10^{-5}$ & $1.998\times10^{-4}$ \\
+\midrule
+\multicolumn{3}{@{}l}{Linear fit ($R^2 = 0.999999$)} &
+$8.208\times10^{-5}$ & \\
+\multicolumn{3}{@{}l}{Program value $k_{\mathrm{MAC}}$} &
+\multicolumn{2}{l}{$1.5\times10^{-4}$ (cell area at $54.7\%$ utilization)} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Measuring the compute-energy coefficients}
+\label{sec:energy_coeff}
+
+The area result above validates $k_{\mathrm{MAC}}$. The program also charges for
+compute \emph{energy}, and one property of that dual-guided scoring deserves a measurement
+rather than an assumption. Reducing arithmetic precision is usually modelled as
+a reduction in bytes moved, and in an earlier form of our program precision
+affected memory traffic alone. That is incomplete: a narrower multiplier also
+switches less, so precision should reduce compute energy as well. We add that
+term, and because a multiplier's energy is often argued to follow its
+partial-product count, we could have set the ratio analytically. Instead we
+measured it.
+
+\paragraph{Method.}
+We synthesize and place six variants of the tile at ASAP7: three operand-width
+combinations (W8A8, W4A8, W4A4) crossed with two power-management levels
+(ungated, and clock-gated with operand isolation). Power is reported at a matched
+input activity so that the ratios are comparable. As a check on the flow, the
+W8A8 ungated variant reproduces the independently synthesized tile of
+\cref{tab:asap7} to within $0.1\%$ despite a different source file, module name
+and container.
+
+\paragraph{Result: the analytic ratio is wrong in both directions.}
+\Cref{tab:energy} reports the measurements. The partial-product model predicts
+energy ratios of $0.50$ for W4A8 and $0.25$ for W4A4 against the W8A8 baseline.
+The measured ratios are $0.376$ and $0.358$. Narrowing the \emph{weight} saves
+more than the model predicts, because switching concentrates in the multiplier
+tree; narrowing the \emph{activation} saves far less, because the $32$-bit
+accumulator and the partial-sum pipeline registers do not narrow with the
+operands, so the second halving buys only a further $5\%$. We therefore charge
+compute energy with the measured ratios rather than the analytic ones. The
+$\mathrm{W4A16}$ entry is not directly measured and is held at a conservative
+$0.5$ rather than extrapolated in our own favour.
+
+\paragraph{A negative result on gating, and why we do not include it.}
+The same matrix was intended to characterize a clock-clock-gating decision, and it cannot. Under
+a flat synthetic activity model the gated variants measure as \emph{more}
+expensive than the ungated ones ($1.40\times$ the power at W8A8), which is not
+physical. The cause is that a flat activity assumption charges for the gating
+cells while never crediting the idle cycles they exist to skip; the benefit of
+gating is visible only under a realistic idle pattern, which requires
+switching activity captured from a simulation of the actual workload. The area
+cost of gating is measured and real ($+22\%$ at W4A8, $+20\%$ at W4A4), but
+without a credible power benefit to weigh against it we do not introduce the
+decision. We report the attempt because the failure is informative: it delimits
+what this class of measurement can and cannot establish.
+
+\paragraph{Scope.}
+These measurements characterize the synthesized tile; they are not substituted
+into the cost model used for the reported speedups. They therefore provide
+coefficient sensitivity rather than a new whole-chip performance result.
+The best measured variant
+consumes $1.22$~pJ per MAC operation against the $0.40$ implied by
+$\pi_{\mathrm{MAC}}$, a factor of three rather than the order of magnitude that
+an ungated tile driven by random data suggested, with the residual attributable
+to predictive-PDK pessimism, a generic rather than optimized multiplier, and
+synthetic activity. We continue to anchor $\pi_{\mathrm{MAC}}$ to shipped
+silicon.
+
+\begin{table}[h]
+\centering
+\footnotesize
+\caption{Measured compute energy and area of the tile at ASAP7 $7$~nm
+($N=16$, $1$~GHz, matched input activity). Ratios are against the W8A8 ungated
+variant. The analytic partial-product model predicts $0.50$ and $0.25$ for the
+W4A8 and W4A4 energy ratios; both are wrong.}
+\label{tab:energy}
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Variant & Power (W) & pJ/MAC-op & Energy ratio & Area ratio \\
+\midrule
+W8A8, ungated & $0.872$ & $3.41$ & $1.000$ & $1.001$ \\
+W4A8, ungated & $0.328$ & $1.28$ & $\mathbf{0.376}$ & $0.726$ \\
+W4A4, ungated & $0.312$ & $1.22$ & $\mathbf{0.358}$ & $0.625$ \\
+W8A8, gated   & $1.220$ & $4.77$ & $1.399$ & -- \\
+W4A8, gated   & $0.347$ & $1.36$ & $0.398$ & $0.887$ \\
+W4A4, gated   & $0.312$ & $1.22$ & $0.358$ & $0.752$ \\
+\bottomrule
+\end{tabular}
+\end{table}

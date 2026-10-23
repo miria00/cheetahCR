@@ -1,0 +1,286 @@
+\section{Total Cost of Ownership and Return on Investment}
+\label{sec:tco}
+% \Vzero/\mathrm{N7} are defined in the main preamble; guard \mathrm{N5} so this fold
+% is self-contained. \providecommand does not clobber an existing def.
+
+
+A co-designed accelerator only pays for itself if the recurring efficiency it
+buys eventually amortizes its one-time silicon cost. To evaluate this we adopt
+FAST's total-cost-of-ownership (TCO) methodology~\citep{zhang_fast}
+\emph{verbatim} (the same cost model, the same non-recurring-engineering (NRE)
+decomposition, and the same return-on-investment (ROI) break-even analysis;
+their Eq.~1--2 and Sec.~5.1), so that our deployment economics are read on
+FAST's own terms and are directly comparable to their Table~4. We stress at the
+outset that this is the weakest-grounded part of our evaluation: absolute TCO
+depends on proprietary fleet data neither we nor FAST possess, several cost
+constants are assumption-flagged, and the speedup that drives the ROI depends
+strongly on which baseline it is measured against. We therefore do not report a
+single $S$: \cref{par:tco_nonparity} stratifies every Perf/TDP figure over three
+denominators of increasing strength, and we carry the ROI through on the design
+that clears the strongest of them (\cref{par:tco_iso}), stating plainly that the
+throughput-provisioned blueprints do not. We report ROI as an order-of-magnitude
+plausibility check, not a precise claim, and we state every caveat inline.
+
+\paragraph{FAST's cost model (what we mirror).}
+FAST models the three-year cost of a fleet that offloads $n$ baseline
+accelerator-units of traffic onto a co-designed chip as
+%
+\begin{equation}
+\label{eq:tco_old}
+\mathrm{TCO}_{\mathrm{old}}(n) \;=\; C_{\mathrm{cap}}(n) \;+\; t_D\, C_{\mathrm{op}}(n),
+\end{equation}
+%
+capital cost plus lifetime ($t_D=3$~yr) operating cost, and defines the ROI of
+committing the co-design NRE as
+%
+\begin{equation}
+\label{eq:tco_roi}
+\mathrm{ROI} \;=\; \frac{\mathrm{TCO}_{\mathrm{old}}\,(S-1)}
+{\bigl(t_{\mathrm{design}}\,C_{\mathrm{eng}} + C_{\mathrm{mask}} + C_{\mathrm{IP}}\bigr)\,S},
+\end{equation}
+%
+where $S$ is the per-unit efficiency gain of the co-designed chip over the
+baseline; $\mathrm{ROI}>1$ means the deployment is profitable. Because per-chip
+TCO is confidential, FAST uses $S=\text{Perf/TDP}$ as a proxy for Perf/TCO (the
+two are reported to be highly correlated for datacenter
+accelerators~\citep{jouppi2017datacenter,jouppi2021ten}) and anchors the
+baseline unit to a commodity DGX-A100 accelerator. We reuse this proxy, this
+DGX-anchored baseline unit, and FAST's engineering-NRE constant
+($t_{\mathrm{design}}\,C_{\mathrm{eng}}=\text{65 engineer-years}\times\$240\mathrm{K}\times1.65$
+overhead $=\$25.74\mathrm{M}$) unchanged. Inverting \cref{eq:tco_roi} at a
+target ROI multiple $R$ gives the break-even deployment volume
+%
+\begin{equation}
+\label{eq:tco_breakeven}
+n^\star(R) \;=\; \frac{R\,\cdot\,\mathrm{NRE}\,\cdot\,S}{(S-1)\,\cdot\,\mathrm{TCO}_{\mathrm{unit}}},
+\qquad
+\mathrm{NRE} = t_{\mathrm{design}}\,C_{\mathrm{eng}} + C_{\mathrm{mask}} + C_{\mathrm{IP}},
+\end{equation}
+%
+the number of baseline units whose traffic must be offloaded before the NRE is
+repaid. All arithmetic below is a pure evaluation of
+\cref{eq:tco_old,eq:tco_roi,eq:tco_breakeven} on the eight co-designed
+blueprints of \cref{app:blueprints}; no solver is involved.
+
+\paragraph{Break-even under FAST parity.}
+Under FAST's Perf/TDP proxy, our co-designed chips retain
+$S=1.15\text{--}1.79\times$ Perf/TDP over a modeled TPU-v3 after normalizing away
+raw MAC scale, measured against the c0-naive denominator (D1) of
+\cref{par:tco_nonparity}. These are \emph{prefill} blueprints under that
+convention. The iso-resource analysis of \cref{par:tco_iso} separately compares
+against a well-scheduled baseline; neither calculation uses the native
+full-inference timings. For the best chip (the DeepSeek-V3~\citep{deepseekv3report}
+$\mathrm{N7}$ design on TSMC~N7 with LPDDR5X, $S=1.79$), \cref{eq:tco_breakeven} gives a
+$1\times$-ROI break-even of $\mathbf{4{,}410}$ units (\cref{tab:tco_breakeven},
+\cref{fig:tco_breakeven}). This sits at the \emph{same order of magnitude} as
+FAST's own reported $2{,}164\text{--}3{,}534$ units (their Table~4, at
+$S=1.84\text{--}3.91$), and well within the thousands-to-tens-of-thousands scale
+of modern accelerator fleets. As \cref{eq:tco_breakeven} makes explicit and
+\cref{fig:tco_breakeven} shows, deployment volume dominates ROI: the ranking of
+chips by break-even volume is driven jointly by $S$ and by NRE, and the
+N7-plus-commodity-memory family ($\mathrm{N7}$) is uniformly ROI-preferred over the
+N5-plus-HBM3 family ($\mathrm{N5}$), which carries ${\sim}\$15\mathrm{M}$ more mask NRE,
+$1.7\text{--}2.5\times$ the unit TCO, and (except on the 13B) \emph{lower}
+Perf/TDP, pushing its break-even to $13{,}000\text{--}19{,}000$ units.
+
+\begin{table}[t]
+\centering
+\small
+\caption{FAST-parity break-even volumes (convention F: $S=\text{Perf/TDP}$
+proxy, DGX-A100-anchored baseline unit), computed from
+\cref{eq:tco_breakeven}. NRE is $\$50.7\mathrm{M}$ for the N7 ($\mathrm{N7}$) family
+and $\$65.7\mathrm{M}$ for the N5+HBM3 ($\mathrm{N5}$) family. For reference, FAST's
+Table~4 reports $1\times$-ROI volumes of $2{,}164\text{--}3{,}534$ units at
+$S=1.84\text{--}3.91$. Cost constants are assumption-flagged; see
+\cref{par:tco_nre}.}
+\label{tab:tco_breakeven}
+\begin{tabular}{@{}llrrrr@{}}
+\toprule
+\textbf{Chip (blueprint)} & \textbf{Process / memory} & $\mathbf{S}$ &
+\textbf{1$\times$} & \textbf{2$\times$} & \textbf{4$\times$} \\
+\midrule
+DeepSeek-V3 $\mathrm{N7}$ & N7 / LPDDR5X & $1.79$ & $\mathbf{4{,}410}$ & $8{,}821$ & $17{,}641$ \\
+Llama1-65B $\mathrm{N7}$  & N7 / LPDDR5X & $1.74$ & $4{,}591$ & $9{,}182$ & $18{,}363$ \\
+Llama3-70B $\mathrm{N7}$  & N7 / LPDDR5X & $1.54$ & $5{,}528$ & $11{,}057$ & $22{,}114$ \\
+Llama1-13B $\mathrm{N5}$  & N5 / HBM3    & $1.57$ & $6{,}920$ & $13{,}841$ & $27{,}681$ \\
+Llama1-13B $\mathrm{N7}$  & N7 / GDDR6X  & $1.42$ & $6{,}641$ & $13{,}283$ & $26{,}566$ \\
+DeepSeek-V3 $\mathrm{N5}$ & N5 / HBM3    & $1.24$ & $13{,}083$ & $26{,}166$ & $52{,}332$ \\
+Llama1-65B $\mathrm{N5}$  & N5 / HBM3    & $1.20$ & $15{,}079$ & $30{,}158$ & $60{,}317$ \\
+Llama3-70B $\mathrm{N5}$  & N5 / HBM3    & $1.15$ & $19{,}237$ & $38{,}473$ & $76{,}947$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[t]
+\centering
+% TODO: render from tco_data.json (fast_convention/tco_data.json,
+%       breakeven_volume_conventionF, 1x_ROI per representative_chips).
+%       Grouped bar chart: one bar per blueprint (8), N7/V1 vs N5/V2
+%       families in two colors; y-axis = 1x-ROI break-even volume (units,
+%       log or linear). Overlay a horizontal shaded band at 2,164-3,534 =
+%       FAST's Table-4 range, and a dashed marker at 3,650 = our best chip
+%       under FAST's implied ~$42M NRE (\cref{par:tco_nre}).
+% \includegraphics[width=0.78\linewidth]{figs/tco_breakeven.pdf}
+\caption{FAST-parity $1\times$-ROI break-even deployment volume per co-designed
+blueprint (convention F), from \cref{eq:tco_breakeven}. The shaded band marks
+FAST's own reported range ($2{,}164\text{--}3{,}534$ units); our best chip
+(DeepSeek-V3 $\mathrm{N7}$, $4{,}410$ units) lands just above it, and drops to
+${\sim}3{,}650$ units (\emph{inside} FAST's range) when evaluated at FAST's
+implied ${\sim}\$42\mathrm{M}$ total NRE. The N7$+$commodity-memory ($\mathrm{N7}$)
+family is uniformly ROI-preferred over N5$+$HBM3 ($\mathrm{N5}$).}
+\label{fig:tco_breakeven}
+\end{figure}
+
+\paragraph{Reconciling the NRE.}
+\label{par:tco_nre}
+The NRE terms in \cref{eq:tco_breakeven} carry the largest uncertainty, and we
+flag them as assumptions~[A] rather than measured quantities: the mask-set cost
+($\$15\mathrm{M}$ at N7, $\$30\mathrm{M}$ at N5), the IP/PHY-licensing cost
+($\$10\mathrm{M}$, ASIC-Clouds-class~\citep{magaki2016asic}), the defect density
+$D_0$ used in the die-yield model, and the PUE all follow public industry-class
+estimates, not vendor data. FAST published only its engineering-NRE constant, so
+rather than assert NRE parity we \emph{reconcile}: back-computing from FAST's own
+Table~4 break-even volumes and reported $S$ implies a FAST total NRE of
+${\sim}\$42.0\mathrm{M}$. Our best chip carries a larger, deliberately
+conservative $\$50.7\mathrm{M}$; re-evaluating \cref{eq:tco_breakeven} at FAST's
+implied ${\sim}\$42\mathrm{M}$ moves our best-chip break-even from $4{,}410$ to
+$\mathbf{{\sim}3{,}650}$ units, now \emph{inside} FAST's own
+$2{,}164\text{--}3{,}534$ range. The Perf/TDP proxy $S$ is independent of these
+[A] constants except through NRE, so the headline break-even row is robust to
+them: doubling the mask cost alone moves the $1\times$-ROI volume only to
+${\sim}5{,}700$. We also disclose the honest error bar from the proxy itself: a
+fully modeled TCO on both sides (convention M) inflates break-even to
+${\sim}79{,}000\text{--}108{,}000$ units (an ${\sim}18\times$ spread), which is
+precisely why FAST, and we, headline Perf/TDP and cite the Perf/TCO correlation
+rather than claim TCO precision.
+
+\paragraph{The zero-NRE deployment option.}
+\label{par:tco_zeronre}
+A distinct and strictly cleaner deployment story requires \emph{no silicon at
+all}. Because CHEETAH's scheduler is a drop-in software layer, applying the joint
+LP schedule to the \emph{existing} TPU-v3 fleet (same chip, same TDP) delivers
+$S=2.14\text{--}2.51\times$ Perf/TDP on the LLM workloads ($2.21\times$ on
+EfficientNet-B7~\citep{tan2019efficientnet}, $1.50\times$ on the Stable-Diffusion
+U-Net) at software-only engineering cost, with $C_{\mathrm{mask}}=C_{\mathrm{IP}}=0$
+(\cref{fig:tco_perftdp}). Under \cref{eq:tco_roi} the NRE collapses to a software
+term and the ROI exceeds any silicon option at every volume. This is a genuine,
+low-risk path to fleet-wide efficiency that does not depend on any of the
+[A]-flagged silicon constants above.
+
+\begin{figure}[t]
+\centering
+% TODO: render from tco_data.json (fast_convention/tco_data.json,
+%       S_conventionF_perf_per_tdp_proxy for silicon chips;
+%       zero_nre_option.finding for the TPU-v3 scheduling bars) and
+%       fast_convention/table5_cheetah.md. Grouped bar chart:
+%       (a) co-designed silicon 1.15-1.79x Perf/TDP, (b) zero-NRE TPU-v3
+%       scheduling 2.14-2.51x (LLMs) / 2.21x (B7) / 1.50x (SD), against a
+%       baseline of 1.0. Annotate the ~0.8x well-scheduled-TPU-v3 line as a
+%       dashed threshold (\cref{par:tco_nonparity}).
+% \includegraphics[width=0.78\linewidth]{figs/tco_perf_tdp.pdf}
+\caption{Perf/TDP (FAST's TCO proxy) of the two deployment options against a
+TPU-v3 baseline of $1.0$. Co-designed silicon retains $1.15\text{--}1.79\times$
+after normalizing away MAC scale; deploying CHEETAH \emph{scheduling} on the
+existing TPU-v3 fleet delivers $2.14\text{--}2.51\times$ at zero silicon NRE. The
+dashed band marks the $0.46\text{--}0.84\times$ obtained when the blueprints are
+measured against a \emph{joint-scheduled} TPU-v3 (denominator (D3)) rather than a
+naive one, and the marker at $3.00\text{--}3.21\times$ is CHEETAH-iso against
+that same denominator (\cref{par:tco_nonparity,par:tco_iso}).}
+\label{fig:tco_perftdp}
+\end{figure}
+
+\paragraph{Baseline stratification: three denominators, never mixed.}
+\label{par:tco_nonparity}
+Our $S$ and FAST's $S$ are \emph{not measured against the same baseline}:
+CHEETAH's speedup is measured against a naive streaming schedule on the
+reference hardware, whereas FAST's is measured against a production-calibrated
+simulator. Rather than carry a single $S$ and a caveat, we report Perf/TDP
+against three denominators of increasing strength and tag every number with the
+one it uses:
+%
+\begin{enumerate}[label=(D\arabic*),leftmargin=*]
+\item \textbf{c0-naive.} TPU-v3 running its deployed per-operation
+configuration. This is the FAST-comparable ``TPU-v3 as deployed'' convention.
+\item \textbf{stream-naive.} The per-operation streaming optimum
+$\sum_i \min_c \max(C_{i,c}, \alpha B_{i,c})$: the strongest capacity-unaware
+analytic baseline.
+\item \textbf{joint-scheduled.} A TPU-v3 running \emph{CHEETAH's own} joint LP
+schedule. This is the well-scheduled denominator, and it is the correct hurdle
+rate for any silicon proposal, because \cref{par:tco_zeronre} shows that
+schedule is available on the existing fleet at zero silicon NRE.
+\end{enumerate}
+%
+Against (D3) the co-designed \emph{blueprints} of \cref{app:blueprints} do not
+clear the bar, and we state the arithmetic rather than a rounded caveat. Their
+$S=1.15\text{--}1.79\times$ is measured against (D1), while the same schedule on
+unmodified TPU-v3 already buys $2.14\text{--}2.51\times$; the blueprints
+therefore sit at $0.46\text{--}0.84\times$ against (D3), $S-1<0$, and
+\cref{eq:tco_breakeven} admits \emph{no break-even at any deployment volume}.
+That is the correct reading of those chips, and it is not a defect of the
+formulation: the blueprints are provisioned for \emph{throughput}, which
+\cref{app:deficit:twofactor} shows is where $20.0\text{--}26.9\times$ of their
+headline comes from, and raw throughput is not what a Perf/TDP proxy rewards.
+The blueprints' deployment case rests on per-chip throughput, latency, and the
+consequent reduction in fleet size and footprint, mirroring FAST's own
+observation that latency and model-enablement can justify even break-even ROI.
+It does not rest on Perf/TDP, and we no longer claim that it does.
+
+\paragraph{The iso-resource design does clear the bar.}
+\label{par:tco_iso}
+Optimizing Perf/TDP directly, under hard caps at TPU-v3's own area and TDP
+budget, selects a different chip. \textbf{CHEETAH-iso} carries the \emph{same}
+$65{,}536$ MACs as TPU-v3 at $0.82\times$ its area ($73.83$~mm$^2$ against an
+$89.83$~mm$^2$ cap), and provisions $128$~GB/s of GDDR6 where TPU-v3 provisions
+$900$~GB/s of HBM. Because it has no additional MACs, the provisioning factor
+$f_2$ of \cref{app:deficit:twofactor} is eliminated \emph{by construction}, so
+what it reports is attributable to the optimization rather than to silicon
+scale. \cref{tab:tco_iso} evaluates it against all three denominators.
+
+\begin{table}[t]
+\centering
+\small
+\caption{CHEETAH-iso ($65{,}536$ MACs $=$ TPU-v3, $0.82\times$ area, $128$~GB/s)
+Perf/TDP against the three denominators of \cref{par:tco_nonparity}, with the
+$1\times$-ROI break-even volume from \cref{eq:tco_breakeven} computed at the
+(D3) figure: the strongest baseline, a TPU-v3 running CHEETAH's own joint
+schedule. NRE is held at the N7 family's $\$50.7\mathrm{M}$ even though the die
+is smaller, which is conservative. FAST's Table~4 reports $2{,}164\text{--}3{,}534$
+units. Richer TDP convention ($\mathrm{TDP}=\mathrm{MACs}\cdot2.3\!\times\!10^{-4}
++0.07\,\mathrm{W}/(\mathrm{GB/s})\cdot\mathrm{BW}$) applied to both sides.}
+\label{tab:tco_iso}
+\begin{tabular}{@{}lcccrc@{}}
+\toprule
+\textbf{Workload} & \textbf{(D1) c0} & \textbf{(D2) stream} &
+\textbf{(D3) joint} & \textbf{1$\times$ break-even} & \textbf{In FAST range?} \\
+\midrule
+EfficientNet-B7 & $6.96\times$ & $3.36\times$ & $\mathbf{3.21\times}$ & $2{,}827$ & yes \\
+DeepSeek-V3     & $4.95\times$ & $3.05\times$ & $\mathbf{3.00\times}$ & $2{,}919$ & yes \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Two properties make this the number we would have a reader carry. First, it
+survives the hurdle rate: at $S=3.00\text{--}3.21\times$ against (D3),
+\cref{eq:tco_breakeven} gives a $1\times$-ROI break-even of
+$\mathbf{2{,}827\text{--}2{,}919}$ units, \emph{inside} FAST's own reported
+$2{,}164\text{--}3{,}534$ range, and we hold NRE at the larger family's
+$\$50.7\mathrm{M}$ rather than crediting the smaller die. Second, the design was
+recovered independently by multiple search arms (all four on DeepSeek-V3; arms
+1, 2, and 4 on EfficientNet-B7), so it does not depend on the LLM-guided arm
+whose attribution we bound in \cref{app:profiles}.
+
+\paragraph{Where the iso-resource win comes from, and how fragile it is.}
+The mechanism is bandwidth provisioning, not compute: with the same MAC count
+and both sides joint-scheduled, the performance ratio is ${\approx}1$ and
+essentially all of the $3.21\times$ is the TDP denominator
+($78.07\,\mathrm{W}\to24.03\,\mathrm{W}$, a $3.25\times$ ratio). The joint
+schedule raises arithmetic intensity enough that $128$~GB/s suffices where
+TPU-v3 provisions $900$~GB/s, and the memory power follows. This makes the
+result sensitive to one [A]-flagged constant, the $0.07\,\mathrm{W}/(\mathrm{GB/s})$
+memory-power coefficient, so we report its sensitivity rather than assert it:
+the TDP ratio falls to $2.80\times$ at $0.05$, $2.38\times$ at $0.035$,
+$1.88\times$ at $0.02$, and $1.47\times$ at $0.01$, reaching parity only as the
+coefficient reaches zero. The conclusion that CHEETAH-iso beats a
+joint-scheduled TPU-v3 on Perf/TDP is therefore robust to a $7\times$ error in
+that constant; the specific break-even volume is not, and should be read as an
+order-of-magnitude figure.

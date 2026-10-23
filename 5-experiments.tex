@@ -1,0 +1,134 @@
+\section{Experiments}
+\label{sec:experiments}
+We evaluate predicted latency, search cost, and recovered schedules. The original
+suite studies prefill and fixed-hardware mapping; the full-input DeepSeek case
+adds autoregressive decode and phase-specific controls. TPU-v3 provides a
+publicly documented reference consistent with prior
+work~\citep{jouppi2021ten,zhang_fast}. All speedups below are analytical predictions;
+optimization runtime is reported separately and is not charged to inference.
+
+\subsection{Experimental Setup}
+\label{sec:exp_intro}
+The original suite comprises EfficientNet-B1--B7, Llama-1 13B/65B,
+Llama-3 70B, and DeepSeek-V3~\citep{tan2019efficientnet,llama3modelcard,deepseekv3report};
+Stable Diffusion~1.5 UNet supplies a twelfth fixed-hardware workload.
+The original 100-trial campaign compares static pinning, fixed-tile temporal
+placement, and joint tiling under the same cost convention. These are restricted
+controls of CHEETAH, not separate proposed systems. Small programs use
+HiGHS~\citep{huangfu2018parallel}; the current native working programs use OCS.
+The full-input experiment binds actual checkpoint routes and preserves every
+logical invocation (Appendix~\ref{app:native_provenance}).
+
+The following validation paragraph and gates describe the original campaign;
+the new full-input study additionally reports its own native service contract.
+\paragraph{Physical Design Validation.} Since modeling simulations ultimately present a gap with real world physical performance, we validate all results through a five-level audit process: (i) Roofline Auditor, (ii) Campaign Validator, (iii) Causal Ledger, (iv) solver diagnostics, and (v) six pre-RTL gates. Each CHEETAH design must pass all five audit tiers before it is deemed feasible and reported. 
+
+The roofline check rejects costs below compute or memory service floors.
+Table~\ref{tab:mfg_gates} lists the original architectural screening thresholds;
+they are modeling checks, not fabricated-chip timing or packaging sign-off.
+RTL and synthesis evidence is in Appendix~\ref{sec:rtl_validation}.
+
+\begin{table}[t]
+\centering\small
+\caption{Original campaign's six architectural feasibility gates.}
+\label{tab:mfg_gates}
+\begin{tabularx}{\linewidth}{@{}lXr@{}}
+\toprule
+Gate & Check & Threshold \\
+\midrule
+Pin count & HBM3-class signal pins at $0.8$ GB/s/pin & $\le4{,}096$ \\
+Reticle area & Linear area model at 7 nm & $\le600$ mm$^2$ \\
+Logic depth & MAC-tree combinational depth & $\le35$ levels \\
+NoC routing & $n_{\rm PEs}\,n_{\rm banks}$ & $\le5\times10^6$ cells \\
+Power density & Dynamic power / die area & $\le2.0$ W/mm$^2$ \\
+SRAM macros & 64 KiB banks, aspect ratio $1{:}4$--$4{:}1$ & $\le4{,}096$ banks \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Original Workload Results and Fixed-Hardware Controls}
+\label{sec:prog}\label{sec:fixed_hw}
+The original eleven-model campaign achieves an average $22.07\times$ predicted
+speedup over its modeled TPU-v3 baseline, reaching $40.1\times$ on Llama-3 70B.
+These are prefill-oriented results under that campaign's workload and traffic
+conventions. Appendix~\ref{app:blueprints} retains the concrete hardware blueprints;
+Appendix~\ref{app:original_results} retains the original plots and restricted
+controls. They are not full autoregressive-task latencies.
+
+To separate software from provisioning, Table~\ref{tab:fixed_hw} holds each chip
+fixed and compares the joint schedule against streaming every tensor. The
+compact NPU has $32{,}768$ INT8 MACs at 1 GHz, 64 GB/s bandwidth, and 16 MiB
+on-chip storage; TPU-v3 uses the original 900 GB/s, 32 MiB model. The larger
+NPU gains reflect its tighter memory bandwidth. No hardware-area normalization
+is needed within a same-chip pair.
+
+\begin{table}[t]
+\centering\small
+\caption{Predicted same-chip speedup over streaming, original workload convention.}
+\label{tab:fixed_hw}
+\begin{tabular}{@{}lrr@{}}
+\toprule
+Workload & TPU-v3 & Compact NPU \\
+\midrule
+Llama-1 13B & $2.14\times$ & $31.4\times$ \\
+Llama-3 70B & $2.51\times$ & $7.66\times$ \\
+DeepSeek-V3 & $2.22\times$ & $7.8\times$ \\
+SD1.5 UNet & $1.50\times$ & $5.89\times$ \\
+\midrule
+Geometric mean & $2.06\times$ & $10.3\times$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Search Cost and LLM Guidance}
+\label{sec:breakdown}
+Cached implementation coefficients remove repeated mapper calls from the inner
+search. In the original 50-trial comparison, joint tiling reduces Llama-70B
+search time from $58.42$ to $1.17$ hours and DeepSeek-V3 from $69.39$ to $2.17$
+hours relative to the fixed-tile temporal pipeline. These are search times,
+not inference speedups. The LLM-guided campaign reduces mean invalid trials
+from $24.5\%$ to $5.9\%$ while reaching the same best observed Perf/TDP score
+as its full-space Vizier control. This tests proposal efficiency, not proof of
+an optimal architecture or causal validity of every dual suggestion.
+
+
+% ---- plots restored from the long version, original placement ----
+
+\begin{figure}[ht!]
+    \centering
+\includegraphics[width=0.85\linewidth]{fig3/speedup_decomposition_final_v4.png}
+\caption{Speedup decomposition over naive TPU-v3 baseline. Each pie shows the 
+relative contribution of four optimization sources to the total speedup. CHEETAH-V1 joint tiling + fusion dominates on all workloads, 
+especially on larger models where memory management is the primary bottleneck.}\label{fig:accel_decompose}
+\end{figure}
+
+\begin{figure}[ht!] 
+    \centering
+\includegraphics[width=1.0\linewidth]{fig3/wallclock_new_v6.png}
+\caption{Wall-clock time decomposition and performance acceleration across formulations: CHEETAH-V1's internalized tiling eliminates the Timeloop bottleneck, achieving up to 100--300$\times$ faster search than the classical static method. Upper bars show wall-clock hours (log scale); annotations show speedup vs.\ static.}
+\label{fig:wallclock}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.48\textwidth]{figs4/pareto_front.png}
+\hfill
+\includegraphics[width=0.48\textwidth]{figs4/tiles.png}
+\caption{
+Example per-layer tiling cache for EfficientNet-B7 layer L4.
+Left: Timeloop-evaluated candidates plotted by fused/on-chip cost
+\(T_{\min}(c)\) and spilled/off-chip cost \(T_{\max}(c)\); the frontier shows
+non-dominated choices and the star is the LP-rounded selection. Right: the
+16 tiling choices; labels such as \(4\times4\),
+\(8\times8\), and \(32\times32\) denote active tile rows/columns inside the
+fixed accelerator, white dots indicate active PE/MAC sites.
+These are schedule choices, not different chips.
+}
+\label{fig:tiles}
+\end{figure}
+
+\begin{figure}[ht!]
+    \centering
+\includegraphics[width=0.85\linewidth]{fig3/llm_guide_v1.png}
+\caption{Invalid/infeasible trial rate (\%) for full-space Vizier vs.\ LLM-in-loop across five workloads. The LLM Architect reduces the mean invalid rate from 24.5\% to 5.9\% (4.1$\times$ reduction), with the largest gains on LLM workloads where the hardware search space is most prone to infeasible configurations.}\label{fig:llm}
+\end{figure}

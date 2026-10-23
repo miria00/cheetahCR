@@ -1,0 +1,29 @@
+\section{Preliminaries}\label{sec:prelim}
+\subsection{Sequential Design and Information Loss}
+\label{sec:background_pipeline}
+Accelerator design commonly proceeds from a resource budget to a hardware
+template, then to operation mappings and a memory schedule. Engineers iterate
+these choices using analytical models, simulation, and compiler feedback.
+Automated flows replace individual choices with search tools, but an early
+commitment still limits what downstream stages can recover. A mapper that
+exports only its fastest isolated tile discards alternatives that might reduce
+workspace, enable fusion, or retain data for a later consumer. Joint design
+keeps those alternatives available until their complete resource costs are known.
+
+\subsection{Linear Relaxation and Recovery}
+\label{sec:lps}
+An LP minimizes a linear objective subject to linear rows and coordinate
+bounds. Discrete implementation selections are relaxed to $[0,1]$; bounded
+products are represented by convex envelopes. The resulting optimum is a
+lower bound only for the domain actually covered by the formulation and its
+certificate. Fractional selections need not describe a chip. Recovery chooses
+integral hardware and implementations, then checks dependencies, storage,
+transfers, and predicted latency. A feasible recovered design is useful even
+when the remaining optimality interval is wide.
+
+\subsection{Capability Comparison}
+\label{sec:capability-matrix}
+Table~\ref{tab:capability-matrix} compares decision spaces, rather than claiming
+that every listed capability has a measured gain. CHEETAH's row describes the
+master formulation; Section~\ref{sec:decode_decomp} identifies the subset exercised
+by the current full-inference execution. Related Work explains restricted cells.

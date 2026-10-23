@@ -1,0 +1,132 @@
+\section{Native Full-Inference Provenance and Reproduction}
+\label{app:native_provenance}
+\paragraph{Frozen input.}
+DeepSeek-V3 is pinned to checkpoint revision
+\texttt{e815299b0bcbac849fa540c768ef21845365c9eb}.
+Thirty-two nonoverlapping validation-text windows from Wikitext-2 produce
+4,096-token prompts using the pinned tokenizer. Generation is greedy with
+512 outputs per request. All 61 layers and 58 routed MoE layers execute;
+all route IDs and aligned weights are retained. The observation policy
+dequantizes original FP8 blocks to BF16, preserves higher-precision tensors,
+disables TF32 and reduced-precision BF16 accumulation, and uses the pinned
+normalization/router behavior. The workload is reproducible, not a language
+quality or representativeness study. Capture and solver GPU timings are not
+custom-chip performance estimates.
+
+\paragraph{Accepted execution.}
+The source identity is
+\path{6e216623a18c33290a6a072f5dab38f7d5bd1e130bee7f61b011b4caca44185d},
+and the four-branch family is
+\path{261a86dcd42ffdbee930db921f1e7de6d879a17b7289f42a797e6cc74ea92654}.
+The exact predicted duration is
+$60733247481458753/20864$ ns. The complete-source admission checks all changed
+implementations and preserved boundary/state fields against original rows;
+a fresh replay independently confirms the execution. A separate cost checker
+recounts every group and member and reconstructs matrix service formulas.
+Seven semantic regressions cover the feature path. The result and twelve
+controls are retained in
+\path{systems/cheetah_joint/audits/20261023/native_feature_assets/}, including
+\texttt{chip.json}, \texttt{schedule.json}, \texttt{replay.json},
+\texttt{result.json}, \texttt{features.csv}, and \texttt{cases.csv}.
+
+\paragraph{Reference sensitivity.}
+The headline uses a declared 32-GB/s external link for the native TPU-v3
+extension and 1,024 GB/s for the custom design. The preceding matched
+interface-sensitivity study, on the pre-feature custom execution, reduces its
+$22.56\times$ comparison to $4.54$--$4.80\times$ when the same naive reference
+is assigned 1,024 GB/s. This is evidence that interface assumptions materially
+affect the headline, not a new ratio for the final feature-enabled chip.
+The original study varies vector/local service as documented in
+\path{audits/20261023/NATIVE_REFERENCE_SENSITIVITY.md}.
+A well-scheduled, fully calibrated TPU serving stack is not established by the
+naive analytical reference.
+
+\paragraph{Solver scope and current bound.}
+Three accepted OCS working supports are separately identified:
+\begin{center}\small
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Working support & Columns & Rows & Checked interval \\
+\midrule
+Fixed serial policy & 922,183 & 2,305,510 & $0.009473\%$ \\
+Hardware/service & 36,350 & 310,354 & $0.065888\%$ \\
+Expanded residency & 36,508 & 313,061 & $0.077406\%$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+The first combines saved OCS iterates with exact reconstruction and a small CPU
+dual completion; the latter two use no CPU optimizer. The hardware/service and
+residency producers take 188.598 and 313.248 seconds respectively, including
+preparation and checking. These are not full-library solve times.
+
+For the four-branch native family used in the main experiment, complete checking admits a continuous lower
+of $1{,}059{,}841.723689$ ms against a continuous upper
+$1{,}352{,}483.524969$ ms, a $21.6374\%$ interval. The new fusion alternatives
+invalidate direct transfer of older prices; the bound is rederived for all
+1,964 fused coefficient classes. Request-specific decode prices then exploit
+actual expert imbalance while paying for mixed prefill/decode groups. Signed
+cover and work-mass equality multipliers remain legal; all 45,091 parameter
+families and their original request counts are independently checked. This covers the declared
+library and original event domain, not every intended future implementation.
+It is independent of the integral latency reported in Table~\ref{tab:native_phases}.
+The derivation and independent replay are in
+\path{audits/20261023/NATIVE_REQUEST_COVER_BOUND.md}. The upper transfers the
+already admitted fused columns into the complete fractional-pass witness,
+preserving storage, event labels, and hardware; every changed shared row and
+box is rechecked. This improves the continuous upper by 11,857.091 ms without
+changing the integral result; see
+\path{audits/20261023/NATIVE_FUSED_WAVE_TRANSFER.md}.
+
+\paragraph{Negative scheduling result.}
+Two additional current-head batching policies preserve all decode invocations
+and pass independent dependency checks, but their predicted costs increase by
+1,829.259 and 1,840.501 seconds relative to the retained execution. They are
+rejected. This motivates joint pricing of waiting, batch alignment, and parameter
+reuse; it does not prove that all alternative schedules are worse.
+
+\paragraph{Additional array allocation.}
+Keeping the admitted cover, kernel tiles, KV policy, fusion, and interfaces
+fixed, we vary the integer array count and pay for the additional SRAM.
+Dispatch time is nonincreasing in array count; exact budget enumeration
+therefore identifies the best feasible endpoint of this restricted change.
+The following candidates pass independent arithmetic and original-row
+composition checks for the entire native input:
+\begin{center}\small
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+Power reserve (W) & Arrays & SRAM (MiB) & Total latency (s) & Speedup \\
+\midrule
+10 & 429 & 98.3125 & 2,908.727 & $22.897\times$ \\
+5 & 473 & 106.5625 & 2,888.207 & $23.060\times$ \\
+0 & 518 & 115.0625 & 2,874.771 & $23.168\times$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+At 518 arrays, prefill and decode improve to $13.607\times$ and
+$28.497\times$ against the same declared reference. Its modeled peak power
+is 299.932 W; this is a proxy budget, not physical power sign-off. The
+384-array chip remains the common experimental point for the twelve controls
+in the main text. These additional points improve latency by at most 1.24\%
+without new scheduling or implementation choices; they do not establish global
+hardware optimality. The exact field substitution and checks are retained in
+\path{audits/20261023/NATIVE_ARRAY_ALLOCATION.md}.
+
+\paragraph{Joint array and tile recovery.}
+Reselecting among all five original tiles at each array endpoint improves the
+518-array candidate to 2,871.252 seconds: $23.196\times$ overall,
+$13.607\times$ prefill, and $28.551\times$ decode. Fifty-six expert gate/up
+batch classes change tiles, covering 8,550,454 decode groups and four prefill
+groups. The additional saving is 3.519 seconds, almost entirely in decode;
+the 429- and 473-array candidates retain their tiles. Independent reconstruction
+and original-row admission pass with unchanged KV, fusion, copies and causal
+order. Every added group choice remains independently addressable. This extends
+the candidate family to five branches; the four-branch lower bound above is
+not transferred. The exact witness and replay are recorded in
+\path{audits/20261023/NATIVE_ARRAY_TILES.md}. This is a restricted joint recovery
+result, not full-master pricing or global hardware/software optimality.
+
+\paragraph{Persistence.}
+Source versions, failed preparations, exact checks, controls, and final results
+are content-verified on local external storage and the A100 host. Evidence
+archives use external content manifests. No original OCS project code is
+modified; experiments use the copied \texttt{systems/OCS\_0.3.2} implementation.

@@ -1,0 +1,64 @@
+\section{Extended Related Work}
+\label{app:related_work}\label{related_work_appendix}
+\paragraph{Architecture and mapping search.}
+Timeloop searches mappings for a supplied architecture~\citep{timeloop}.
+CoSA uses mixed-integer optimization for a constrained mapping objective;
+its guarantee does not make the resulting latency globally optimal under an
+arbitrary simulator~\citep{huang2021cosaschedulingconstrainedoptimization}.
+ZigZag expands the architecture--mapping space~\citep{mei2021zigzag}, while
+DOSA places architecture and mapping variables in one differentiable program
+\citep{hong2023dosa}. Gemini couples spatial mappings and architectural choices
+for multi-chiplet accelerators~\citep{cai2024gemini}. CODEBench uses
+multi-objective exploration over accelerator configurations~\citep{Tuli_2023}.
+FAST combines hardware, mapping, and compiler search, including a fusion ILP
+\citep{zhang_fast}. These methods motivate the controls in our original campaign.
+CHEETAH retains alternatives until shared storage, implementation cost, and
+hardware provisioning can be evaluated together.
+
+\paragraph{Fusion, placement, and rematerialization.}
+DeFiNES includes depth-first fused execution, caching, and overlap recomputation;
+its restricted placement and recomputation cells in Table~\ref{tab:capability-matrix}
+are therefore not marked absent~\citep{mei2023defines}. Fast-and-Fusiest searches
+legal operation orders as well as fusion and mappings under its stated cost model
+\citep{andrulis2026fusiest}. These are substantial joint compiler capabilities,
+even though they do not provide CHEETAH's complete temporal state model and
+variable hardware domain. Checkmate formulates training checkpointing as an
+integer program~\citep{jain2020checkmatebreakingmemorywall}; POET combines
+rematerialization and paging~\citep{patil2022poettrainingneuralnetworks}.
+CHEETAH uses paid recomputation, transfer completion, and readiness to represent
+these tradeoffs for inference. Representability alone is not a measured gain;
+our native controls exercise only the features identified in
+Section~\ref{sec:native_features}.
+
+\paragraph{Polyhedral transformations.}
+Pluto constructs affine schedules for parallelism and locality
+\citep{bondhugula2008pluto}. Tiramisu exposes a richer programmable scheduling
+language, including storage and recomputation transformations
+\citep{baghdadi2019tiramisu}. Their user-programmed capabilities should not be
+confused with an automatic joint search over every table axis. Conversely,
+CHEETAH's causal event choices should not be described as arbitrary loop
+transformation coverage: its implementation library and dependency contract
+bound the represented schedules.
+
+\paragraph{Relaxations and first-order LP solvers.}
+McCormick envelopes bound bilinear products over boxes
+\citep{mccormick1976computability}; exactness for a single integral-factor
+product does not prove exactness of an entire fractional co-design program.
+PDLP demonstrates practical large-scale linear programming with first-order
+methods~\citep{applegate2022practicallargescalelinearprogramming}. GPU variants
+include cuPDLP.jl, cuPDLP-C, and cuPDLPx
+\citep{lu2024cupdlpjlgpuimplementationrestarted,lu2024cupdlpcstrengthenedimplementationcupdlp,lu2025cupdlpxenhancedgpubasedfirstorder}.
+Our qualified OCS path uses centered Halpern PDHG, fixed diagonal scaling,
+structured forward/adjoint operators, and independent certificate checking.
+These mechanisms address memory and iteration cost; they do not imply that
+full-library pricing or global master optimality is complete.
+
+\paragraph{LLM-guided search.}
+FunSearch and AlphaEvolve combine model proposals with deterministic evaluation
+\citep{romera2024mathematical,novikov2025alphaevolvecodingagentscientific}.
+CHEETAH similarly uses an LLM to propose search interventions, with resource
+prices and failed-trial diagnostics as context. The original campaign edits
+Vizier search neighborhoods; current master experiments can also propose
+implementations and hardware alternatives directly. A proposal is admitted
+only after its numerical, dependency, and resource checks. The proposal
+mechanism is not an exhaustive separation oracle.

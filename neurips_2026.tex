@@ -1,0 +1,190 @@
+\documentclass{article}
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{siunitx}
+\usepackage{optidef}
+\usepackage{booktabs}
+\usepackage{caption}   % for \captionof
+\usepackage{xcolor}
+\usepackage{xurl}
+\usepackage{amsmath}
+\DeclareMathOperator*{\minimize}{minimize}
+ \usepackage[final,main]{neurips_2026}
+\usepackage[breakable]{tcolorbox}
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\hypersetup{colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue}
+\usepackage{url}            % simple URL typesetting
+\usepackage{titletoc}       % appendix-only local table of contents (Hawkeye-style)
+\dottedcontents{section}[1.6em]{\bfseries}{1.6em}{0.7pc}
+\dottedcontents{subsection}[4.0em]{}{2.4em}{0.7pc}
+\dottedcontents{subsubsection}[6.8em]{}{3.2em}{0.7pc}
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{xcolor}         % colors
+\usepackage{graphicx}
+\usepackage{algorithm}
+\usepackage{stmaryrd}
+\usepackage{fontenc}
+\usepackage{enumitem}
+\usepackage{algorithmic}
+\definecolor{grey}{gray}{0.5}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{amsthm}
+\usepackage[capitalise]{cleveref}  % must come after hyperref
+\usepackage{wrapfig}
+\usepackage{tikz}
+\usepackage{colortbl}
+\usetikzlibrary{arrows.meta,positioning,fit,backgrounds}
+\newtheorem{proposition}{Proposition}
+\definecolor{skyblue}{RGB}{65, 155, 225}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage{pdflscape}
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+
+
+\newcommand{\mnote}[1]{}
+\renewcommand{\mnote}[1]{\textcolor{blue}{\textbf{[NOTE: #1]}}}
+
+\newcommand{\ie}{\textit{i.e.}}
+\newcommand{\eg}{\textit{e.g.}}
+\newcommand{\acroletter}[1]{\textbf{\textsc{#1}}}
+\newcommand{\etal}{\textit{et al.}}
+\newcommand{\todo}[1]{\textcolor{red}{\textbf{[TODO: #1]}}}
+\newcommand{\Tmax}{T^{\max}}
+\newcommand{\Tmin}{T^{\min}}
+\newcommand{\CGM}{C_{\text{GM}}}
+
+
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+
+\title{Accelerating the Inference Era with AI-Driven, Globally Optimized HW/SW Co-Design}
+
+\author{%
+    Miria Feng \\
+    Electrical Engineering \\
+    Stanford University \\
+    \texttt{miria0@stanford.edu}
+    \And
+    Fangzhao Zhang \\
+    Electrical Engineering \\
+    Stanford University \\
+    \texttt{zfzhao@stanford.edu} 
+    \And
+    Adrian Lafuente \\
+    Computer Science \\
+    Stanford University \\
+    \texttt{agamarra@stanford.edu}
+    \And
+    Mert Pilanci \\
+    Electrical Engineering \\
+    Stanford University \\
+    \texttt{pilanci@stanford.edu}
+    \And
+    Azalia Mirhoseini \\
+    Computer Science \\
+    Stanford University \\
+    \texttt{azalia@stanford.edu}
+}
+
+
+
+\begin{document}
+
+\maketitle
+
+
+\begin{abstract}
+Deep learning inference demand is projected to grow $10{,}000\times$ over the next five years, a trajectory general-purpose accelerators cannot match. Custom inference accelerators offer a viable path forward, but designing them requires coordinating hardware datapaths, software schedules, and compiler transformations across a combinatorial design space exceeding $\mathcal O(10^{2300})$. Sequential pipelines discard alternatives before their global memory consequences are known. We introduce \textsc{CHEETAH}, an AI-guided co-design framework built around one master LP relaxation. Time-indexed placement and rematerialization expose reuse across operations and decode steps; McCormick envelopes couple tiling with fusion; and shared hardware variables jointly allocate compute, capacity, and bandwidth under area and power budgets. Disaggregated epigraphs and implementation menus represent competing service costs and discrete design choices. The operator-based GPU solver OCS optimizes working programs without forming the complete temporal matrix. An LLM architect proposes interventions using resource prices and trial diagnostics; integral recovery and replay establish feasible designs separately from relaxation bounds. Across eleven original workloads, CHEETAH achieves an average predicted $22.07\times$ speedup and up to $40.1\times$ over modeled TPU-v3 within six hours of search. A full-inference DeepSeek-V3 design predicts $22.88\times$ overall, $13.39\times$ prefill, and $28.20\times$ decode acceleration under a declared memory-interface model. Matched controls isolate batching, fusion, KV retention, and temporal placement gains.
+\end{abstract}
+
+
+
+\input{1-introduction}
+\input{2-related-work}
+
+\input{prelim}
+\input{update/comparison_matrix}
+
+\input{3-methods}
+\input{update/solver_vm}
+
+\input{5-experiments}
+\input{update/decode_decomp}
+
+
+\input{6-conclusion}
+
+
+
+\label{page:main-end}
+\clearpage
+\bibliographystyle{abbrvnat}
+\bibliography{ref}
+
+\newpage
+\appendix
+
+\startcontents[appendix]
+{\noindent\normalsize\textbf{Appendix}\par}
+\vspace{2pt}
+\begin{center}{\Large\textbf{Table of Contents}}\end{center}
+\vspace{4pt}
+\printcontents[appendix]{}{1}{\setcounter{tocdepth}{3}}
+\clearpage
+
+\input{update/tco}
+\clearpage
+\input{update/rtl_validation}
+\clearpage
+\input{update/discussion}
+\clearpage
+\input{related_work_appendix}
+\clearpage
+\input{4-theory}
+\clearpage
+\input{lp_app}
+\clearpage
+\input{details_audits}
+\clearpage
+\input{update/deficit_sensitivity}
+\clearpage
+\input{solver_app}
+\clearpage
+\input{profiles_app}
+\clearpage
+\input{tiling_app}
+\clearpage
+\input{blue}
+\clearpage
+\input{limitations}
+\input{shape_aggregation}
+\input{master_v3_lp}
+\clearpage
+\input{update/native_provenance}
+\input{coeff_provenance}
+
+
+\end{document}

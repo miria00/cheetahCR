@@ -1,0 +1,112 @@
+\section{Complete Rows of the Master Blocks}
+\label{app:master_rows}\label{app:master_v3}
+This appendix expands the abbreviated families in \eqref{eq:master}. There is
+one master; the blocks below are its included alternatives. All displayed
+branch coordinates are homogenized: unit right-hand sides become $\lambda_b$,
+affine capacity becomes $C^\lambda(h_b)$, and finite coordinate bounds become
+$\ell_j\lambda_b\le z_j\le u_j\lambda_b$. At weight one these are the original
+rows; at weight zero the zero vector is feasible.
+
+\subsection{The Retained Joint Tiling--Placement Block}
+For original operation $i$, configuration $c$, edge $e$, and fixed time label
+$t$, let $P_{ik}=p_{\mathrm{assoc}(i,k),o(i)}$ for an associated activation,
+$P_{iW}=p^W_{i,o(i)}$ for weights, and $P_{ik}=0$ when no placement association
+exists. The block's contribution to the master objective is
+$\alpha_b(\sum_i T_i+\sum_{i,t}c_i^{\rm remat}r_{it})$; $\alpha_b$ converts its
+cost units. Its explicit rows, in the original joint-LP notation, are
+\begin{align*}
+&\sum_c y_{ic}=\lambda_b,\qquad h_b=h_b^P\lambda_b,\\
+&T_i\ge\sum_cT_i^{\min}(c)y_{ic},\qquad
+ T_i\ge\sum_cT_i^{\max}(c)y_{ic}-\sum_{c,k}t_i^k(c)w_{ick},\\
+&0\le w_{ick}\le y_{ic},\quad w_{ick}\le P_{ik},\quad
+ w_{ick}\ge y_{ic}+P_{ik}-\lambda_b,\\
+&\sum_e d_ep_{et}+\sum_i d_i^Wp^W_{it}\le C_{GM,b}\lambda_b,\\
+&p_{et}\le p_{e,t-1}+r_{\mathrm{src}(e),t}\quad(t>o(\mathrm{src}(e))),\\
+&p^W_{it}\le p^W_{i,t-1}\quad(t>o(i)),\qquad r_{it}=0\quad(t\le o(i)),\\
+&r_{it}\le p_{et},\quad r_{it}\le p^W_{it}\quad(e\in\mathrm{in}(i),\ t>o(i)),\\
+&T_i\ge0,\qquad 0\le y,w,p,p^W,r\le\lambda_b.
+\end{align*}
+These rows preserve the original fractional savings convention. Extra cold-start,
+copy, or exact-product constraints are not appended to this block. Causal
+execution uses its own complete contract instead.
+
+\subsection{Causal Boundaries, Backing, and Implementation Conditions}
+The cover, lifecycle, state and capacity rows appear in \eqref{eq:master}.
+The remaining boundary and backing rows are
+\begin{align*}
+&\beta_{j0}=I_j\lambda_b,\qquad p_{j\tau0}=I_{j\tau}\lambda_b,\qquad
+ \sum_jm_jp_{j\tau0}\le C^\lambda_\tau(h_b),\\
+&\beta_{je}\le\sum_\tau p_{j\tau e}+D_{ie}\quad((j,i)\in\mathcal U),\\
+&\beta_{je}\le\sum_\tau p_{j\tau e}\quad(j\in\mathcal B_{\rm back}),\qquad
+ \beta_{jE}\le p_{j,H,E}+p_{j,D,E}\quad(j\in\mathcal T),\\
+&y_k=0\quad(k\in\mathcal K_{\rm bad}),\qquad
+ w_{ke}=f_{ke}\quad(k\in\mathcal K_{\rm io}).
+\end{align*}
+$\mathcal U$ lists required user/backing pairs, $\mathcal B_{\rm back}$ persistent
+backing invariants, and $\mathcal T$ terminal objects. Certified recomputable
+objects may be exempted from the first two sets, never from readiness or required
+terminal backing. $\mathcal K_{\rm bad}$ excludes uncertified repeat outputs;
+$\mathcal K_{\rm io}$ uses the streamed-I/O completion convention.
+History at $e=-1$ and capacity actions at $e=E$ are zero. Recomputations require
+prior primary completion. Starts, finishes, and all copy directions consume the
+same original event domain.
+
+\subsection{Resource Demands and Linear Service Envelopes}
+For kernel coefficients $b_k^W,b_k^I,b_k^O$, compute demand $M_k$, vector work
+$V_k$, and local traffic $L_k$, the linear demands include
+\begin{align*}
+Q_e^{B0}&=\sum_{j,\tau\to\tau'}m_jq_{j,\tau\to\tau',e}+\sum_k b_k^Ww_{ke},&
+Q_e^{Bi}&=\sum_k b_k^Iw_{ke},&Q_e^{Bo}&=\sum_k b_k^Ow_{ke},\\
+Q_e^N&=\sum_k M_kw_{ke},&Q_e^V&=\sum_k V_kw_{ke}.&&
+\end{align*}
+Demand coefficients include each implementation's padding, retained/reloaded
+weights, conversions, and workspace convention. For $r\in[\ell,h]$ with
+$u_-=1/h$, $u_+=1/\ell$, the homogenized reciprocal envelope is
+\begin{align*}
+&\ell\lambda_b\le r\le h\lambda_b,\quad
+ u_-\lambda_b\le u\le u_+\lambda_b,\\
+&u\ge 2\lambda_b/a-r/a^2\quad(a\in\mathcal A),\qquad
+ u\le ((\ell+h)\lambda_b-r)/(\ell h).
+\end{align*}
+For demand $0\le Q\le\bar Q\lambda_b$, its service envelope is
+\begin{align*}
+&Z\ge0,\quad Z\ge u_-Q,\quad
+ Z\ge\bar Q u+u_+Q-\bar Q u_+\lambda_b,\\
+&Z\le u_+Q,\qquad Z\le\bar Q u+u_-Q-\bar Q u_-\lambda_b.
+\end{align*}
+Compute and vector services each obey $Z_e^N\le d_e$, $Z_e^V\le d_e$.
+The shared DRAM pool obeys $Z_e^{B0}+Z_e^{Bi}+Z_e^{Bo}\le d_e$.
+Fixed external and local rates additionally impose
+\begin{align*}
+&\sum_{j,H\in\{\tau,\tau'\}}\frac{m_j}{H_{\rm rate}}q_{j,\tau\to\tau',e}\le d_e,\\
+&\sum_{j,S\in\{\tau,\tau'\}}\frac{m_j}{L_{\rm rate}}q_{j,\tau\to\tau',e}
+       +\sum_k\frac{L_k}{L_{\rm rate}}w_{ke}\le d_e.
+\end{align*}
+A branch with a rate menu disaggregates the corresponding demand over its
+selector. The causal objective contribution is $\kappa_b\sum_e d_e$.
+Recomputation is already charged in $w$ and must not be added a second time.
+Stored coefficients and outward rounding receipts define the actual checked LP.
+
+\subsection{Feature Scope}
+\begin{table}[h]
+\centering\small
+\caption{Master scope versus the current native performance result.}
+\begin{tabularx}{\linewidth}{@{}lXX@{}}
+\toprule
+Family & Encoding & Native result credited here \\
+\midrule
+Hardware sizing & Shared resources, service and area/power rows & One integral chip, explicit interface assumptions \\
+Tiling and batching & Independent cover and work coefficients & Compatible shared-weight GEMMs \\
+Fusion & Whole implementation ports and workspace & SwiGLU intermediate storage fusion \\
+Temporal placement & Tier state, copies, readiness and capacity & Five KV layers vs.\ fixed two-layer partition \\
+KV persistence & Append identities, prefix dependencies, terminal backing & Full history and paid restoration \\
+Rematerialization & Permitted repeat implementations, charged work & No new native gain claimed \\
+Precision and sparsity & Qualified implementation branches & Capture precision fixed; no pruning/quality credit \\
+Overlap and reordering & Event placement and shared resource service & Serial recovered execution \\
+Clock, technology, prefix or diffusion reuse & Optional branch-specific contracts & Not credited in native comparison \\
+\bottomrule
+\end{tabularx}
+\end{table}
+Quality-changing alternatives are not admitted merely because their byte costs
+can be expressed linearly. Each needs a numerical contract and an executable
+implementation. Proposed library coverage remains distinct from measured gains.
