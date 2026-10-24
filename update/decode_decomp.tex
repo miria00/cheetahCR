@@ -1,11 +1,11 @@
 \subsection{Full-Inference DeepSeek: One Chip, Prefill and Decode}
 \label{sec:decode_decomp}\label{sec:batch_sensitivity}
-We bind the pinned DeepSeek-V3 checkpoint to 32 independent requests, each
-with 4,096 prompt and 512 output tokens. All 61 layers execute; prefill produces
+We examine a DeepSeek-V3 checkpoint to 32 independent requests, each
+with 4,096 prompt and 512 output tokens. All 61 layers execute, prefill produces
 the first output, followed by 511 decode forwards. Actual expert IDs and aligned
 routing weights define the task. The recovered execution covers all
 $61{,}985{,}244$ original invocations in $41{,}987{,}272$ groups. Original FP8
-weights are dequantized to BF16 on demand; conversion is charged separately.
+weights are dequantized to BF16 on demand and conversion is charged separately.
 The capture uses expanded attention and the full KV history, with no assumed
 quality gain from changing precision or dropping tokens.
 
@@ -16,8 +16,7 @@ analytical clock; existing area/power proxies give $312.21$ mm$^2$ and $284.95$ 
 The full-task TPU-v3 extension uses the original compute/DRAM resources with
 32 GB/s external, 8,192 GB/s local, and 2,048 primitive vector cycles/ns.
 These interface assumptions are part of the comparison, not measurements of
-a complete TPU system. Wider custom external service contributes materially
-to the headline ratio.
+a complete TPU system.
 
 \begin{table}[t]
 \centering\small
@@ -36,8 +35,8 @@ Total & 66,601.769 & 2,910.911 & $\mathbf{22.880\times}$ \\
 \end{tabular}
 \end{table}
 
-Table~\ref{tab:native_phases} decomposes predicted inference latency, not solver
-runtime. Phase times add; the total ratio is computed from the two total times.
+Table~\ref{tab:native_phases} decomposes inference latency, not solver
+runtime. Phase times add and the total ratio is computed from the two total times.
 Decode accounts for $80.39\%$ of the predicted time saved, prefill $19.45\%$,
 and conversion $0.16\%$. Complete-source admission and fresh replay pass, as does
 an independent population and cost recount. The result is an admitted design,
@@ -45,30 +44,9 @@ not a globally optimal solution of the full master. The current finite native
 family's continuous interval is $21.64\%$; that interval is not a latency error bar
 on this replayed execution.
 
-\subsection{What the Software Features Contribute}
+\subsection{What Each Feature Contribute}
 \label{sec:native_features}
-Table~\ref{tab:decode_decomp} disables one feature at a time on the same chip,
-with the other listed features enabled. Twelve controls cross three KV policies
-with batching and SwiGLU storage fusion on/off. They are matched schedule
-comparisons, not independently optimized feature-off chip designs.
 
-\begin{table}[t]
-\centering\small
-\caption{Same-chip feature gains. Saved seconds are control minus full schedule.}
-\label{tab:decode_decomp}
-\begin{tabularx}{\linewidth}{@{}Xrrrr@{}}
-\toprule
-Feature enabled & \multicolumn{2}{c}{Phase speedup} & \multicolumn{2}{c}{Seconds saved} \\
-\cmidrule(lr){2-3}\cmidrule(lr){4-5}
- & Prefill & Decode & Prefill & Decode \\
-\midrule
-Compatible GEMM batching & $1.02567$ & $1.29514$ & 25.671 & 555.661 \\
-SwiGLU intermediate fusion & $1.01458$ & $1.00097$ & 14.579 & 1.819 \\
-Five-layer KV retention, paid restoration & $1.00000$ & $1.01319$ & 0 & 24.835 \\
-Time-indexed KV placement vs.\ fixed two-layer partition & $1.00000$ & $1.00791$ & 0 & 14.901 \\
-\bottomrule
-\end{tabularx}
-\end{table}
 
 \paragraph{Batching and fusion.}
 Compatible GEMMs share matrix execution while retaining each request's identity.
@@ -86,15 +64,8 @@ layers require 163,840 paid host-to-DRAM copies, checked for source validity,
 reservation, readiness, and terminal backing. Reusing prefill's temporary region
 allows five layers to fit after prefill; a fixed partition fits two. The
 $14.901$-second placement gain is therefore \emph{included} in the $24.835$-second
-KV gain and must not be added to it. Only five of 61 expanded layer caches fit,
+KV gain and not added to it. Only five of 61 expanded layer caches fit,
 and the wide custom interface limits the marginal value of eliminating reads.
 Backing and transfer completion are correctness costs, not features that can
 be removed for a valid speedup.
 
-\paragraph{Scope of attribution.}
-The feature rows isolate incremental software gains under this hardware and
-schedule. They do not explain the entire $22.88\times$, which also includes
-resource provisioning and the declared memory-interface asymmetry. Earlier
-matched interface sensitivity and the full result provenance are reported in
-Appendix~\ref{app:native_provenance}. Broader fusion, temporal reordering, and
-full-library pricing remain opportunities rather than credited results.

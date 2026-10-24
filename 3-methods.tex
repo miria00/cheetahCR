@@ -1,13 +1,13 @@
-\section{CHEETAH: One Master LP for HW/SW Co-Design}
+\section{CHEETAH Formulation for HW/SW Co-Design}
 \label{sec:methods}
-CHEETAH minimizes predicted workload latency under a declared hardware budget.
+CHEETAH minimizes input workload inference time under a declared pre-RTL hardware budget.
 The input is a graph of logical invocations, a finite implementation library,
-and a numerical contract. Hardware is shared across every invocation; operation
-choices remain independent. The master includes the supplied schedule model and
+and a numerical contract. Hardware is shared across every invocation, operation
+choices remain independent. The formulation includes the supplied schedule model and
 causal execution alternatives as whole-program branches, preserving existing
 feasible points while admitting richer implementations.
 
-\subsection{Pruning, Variables, and the Master Program}
+\subsection{Pruning, Variables, and the Encoded Features}
 \label{sec:v1}\label{sec:master_lp}\label{sec:v3}
 \paragraph{Pareto pruning pre-pass.}
 For each operation, we discard infeasible tiles and configurations dominated
@@ -101,7 +101,7 @@ original joint tiling--placement block. Setting one $\lambda_b=1$ embeds every
 point of that branch with unchanged hardware and objective. A fractional
 mixture is a relaxation, not a multi-chip execution; recovery selects one branch.
 
-\subsection{Features and Their Linear Encoding}
+\subsection{Features and Their Mathematical Encoding}
 \label{sec:v3_levers}\label{sec:v0}
 \paragraph{Joint tiling and fusion.}
 For an isolated operation, the cover row reduces to $\sum_c y_{i,c}=1$.
@@ -118,7 +118,7 @@ make every fractional solution executable. Tile-dependent footprints use the
 same construction. Native fused atoms instead carry their complete input,
 output, workspace and service recipe, so fusion cannot silently remove work.
 
-\paragraph{Why a relaxation alone is not enough: branch and bound.}
+\paragraph{Branch and bound.}
 The envelopes above are exact only at integral factors, so a point the
 relaxation returns need not be a design that can be built. A fractional tile
 selection corresponds to no single tiling; a fractional menu weight mixes two
@@ -183,7 +183,7 @@ before their router dependencies complete. Event placement can vary within the
 finite library. The current native execution uses a recovered serial schedule;
 a larger scheduling domain does not imply that its optimum has been found.
 
-\paragraph{Optional implementation menus and recovery.}
+\paragraph{Implementation menus and recovery.}
 Precision, sparsity, array aspect, memory technology, and validated overlap
 policies enter as implementation choices with their own numerical and resource
 contracts. Accuracy-changing cache eviction or approximate reuse needs separate
@@ -197,12 +197,12 @@ the one-hot menu and tile selectors pinned, the relaxation supplies the node
 bound, and a recovered point that survives replay supplies the incumbent, so the
 search closes with a buildable design and a certified bracket.
 
-\subsection{Diagnostic-Guided Outer Search}
+\subsection{LLM Architect Diagnostic Outer Search}
 \label{sec:llm_outer}
 The LLM architect reads a ledger of resource prices, slacks, invalid trials,
 and replay outcomes, then proposes candidate implementations or search
 neighborhoods. Deterministic validation checks each proposal before evaluation.
-In the original campaign, Vizier~\citep{google_vizier} searches those neighborhoods;
+In the sequential engineering pipelines, tools such as Vizier~\citep{google_vizier} searches those neighborhoods through Bayesian search of thousands of trials.
 the master also represents hardware choices directly. Dual prices guide search,
 but an LLM proposal is not a complete pricing oracle: a full-domain optimality
 claim requires checking all omitted alternatives. The original controller and

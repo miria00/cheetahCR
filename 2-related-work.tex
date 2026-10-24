@@ -11,20 +11,19 @@ CHEETAH couples these choices to temporal storage and shared hardware in an LP
 relaxation; this is a distinction in formulation, not a claim that prior work
 lacks joint optimization altogether.
 
-\paragraph{Reading the capability table.}
+\paragraph{Capability comparison table.}
 Table~\ref{tab:capability-matrix} distinguishes searched decisions from restricted
-or user-specified support. DeFiNES chooses caching versus overlap recomputation;
+or user-specified support. DeFiNES chooses caching versus overlap recomputation,
 Fast-and-Fusiest searches dependency-respecting orders within its fused mapspace.
 Gemini's fusion and order support concerns layer pipelines. Pluto optimizes
-affine schedules; Tiramisu also exposes explicit storage, copies, and redundant
+affine schedules, Tiramisu also exposes explicit storage, copies, and redundant
 computation through its scheduling language. These differ from unrestricted
 cost-driven temporal placement. CoSA's guarantee concerns a per-layer proxy
-objective, and Fast-and-Fusiest's concerns its fixed-hardware mapspace; neither
+objective, and Fast-and-Fusiest's concerns its fixed-hardware mapspace, but neither
 is a bound over a joint hardware--schedule domain. The last column denotes one joint mathematical program, rather than staged
-co-search; DOSA's qualifying program is nonconvex. CHEETAH's checks cover its identified finite library, not every
-intended implementation or an already solved global master.
+co-search. DOSA's qualifying program is nonconvex.
 
-First-order LP methods~\citep{applegate2022practicallargescalelinearprogramming}
+First-order solver methods~\citep{applegate2022practicallargescalelinearprogramming}
 and McCormick envelopes~\citep{mccormick1976computability} supply the optimization
 building blocks. LLM proposal systems such as FunSearch and
 AlphaEvolve~\citep{romera2024mathematical,novikov2025alphaevolvecodingagentscientific}

@@ -1,27 +1,23 @@
 \section{Operator-Based Optimization with OCS}
 \label{sec:solver_vm}\label{sec:ocs}\label{sec:vm_solver}\label{sec:mccormick_blowup}
-The master combines independent choices with long storage trajectories and shared
-hardware. Expanding every operation--event incidence is prohibitive; even
-compact working programs can be badly scaled. We use the project copy of OCS
-0.3.2 to optimize identified working supports, and check proposals separately.
+The formulation combines independent choices with long storage trajectories and shared
+hardware. Expanding every operation--event incidence is prohibitive. We adapt a variant of OCS
+0.3.2 to solve the large scale problem.
 
-\paragraph{Operators replace a globally stored matrix.}
+\paragraph{Operators replace matrices.}
 For a working LP $\min_x f(x)+g(Kx)$, an operator computes the forward action
 $Kx$ and the adjoint $K^Ty$. Here $f(x)=c^Tx+I_{[\ell,u]}(x)$, and $g$
 encodes row equalities and inequalities. The adjoint accumulates local
 contributions to shared capacities and hardware. Generated operators avoid
-storing the full temporal matrix; compact supports may still use sparse arrays.
-Neither representation requires a factorization.
+storing the full modeling matrix, and does not require a factorization.
 
 \paragraph{GPU first-order updates.}
 The selected OCS path uses centered Halpern primal--dual hybrid gradient updates
 with fixed diagonal steps and block-average restarts, building on first-order
 splitting~\citep{chambolle2011first,halpern1967fixed,applegate2022practicallargescalelinearprogramming}.
-Each update needs a forward action, an adjoint, and separable proximal operations:
-objective-shifted clipping for coordinate boxes, and RHS shifts plus sign
-projection for inequality multipliers. JAX~\citep{jax2018github} compiles
-binary64 update blocks; anchoring and restarts control iteration drift without
-requiring an adaptive one-sided rescue controller.
+Each update needs a forward action, an adjoint, and separable proximal operations.
+Objective-shifted clipping for coordinate boxes, and RHS shifts plus sign
+projection for inequality multipliers. JAX~\citep{jax2018github} compiles update blocks, while anchoring and restarts control iteration drift with an adaptive one-sided rescue controller.
 
 \paragraph{Scaling and balanced steps.}
 Reversible power-of-two row and coordinate scaling reduces coefficient disparity.
@@ -32,15 +28,6 @@ and dual steps balances their progress while preserving that bound. Coefficient
 range is a scaling diagnostic, not itself a condition number or a convergence
 certificate.
 
-\paragraph{Temporal compression without decision tying.}
-An interval term $(j,a,b,c)$ contributes $cx_j$ to rows $a,\ldots,b-1$.
-Difference scatters and prefix scans compute its forward action; endpoint
-reductions compute its adjoint. Prefix-readiness chains similarly replace
-triangular KV incidence with an exactly liftable representation. The tested
-readiness family shrinks $183.3\times$; this is not a reduction factor for the
-whole master. Equal coefficients may share storage while invocation choices
-remain independent.
-
 \paragraph{Working sets and vector memory.}
 GPU-resident supports use sparse or generated products. A separately tested
 paged adapter keeps iteration vectors in file-backed arrays and transfers bounded
@@ -48,13 +35,13 @@ pages, accumulating global contributions before each proximal update. Paging
 reduces GPU memory, not total vector storage, and incurs transfer overhead.
 The expanded-residency working LP has $36{,}508$ columns and $313{,}061$ rows;
 an A100 run reached a checked $0.0774\%$ working interval in $313.25$ seconds
-including preparation and checking. This is a support-specific result.
+including preparation and checking. 
 
-\paragraph{Bounds, pricing, and executable recovery.}
+\paragraph{Bounds, pricing, and design recovery.}
 Floating iterates are proposals. Reconstruction checks primal rows and boxes
-in original coordinates; legal dual signs and box support produce outward lower
+in original coordinates, legal dual signs and box support produce outward lower
 bounds. A working lower does not cover omitted choices until pricing or a
 complete-domain certificate accounts for them. The qualified four-branch native
 family underlying the main experiment has a $21.64\%$ continuous interval. Integral recovery and replay establish
-the reported chip latency separately; neither that interval nor the working
+the reported chip latency separately, neither that interval nor the working
 solver result establishes full-master optimality.

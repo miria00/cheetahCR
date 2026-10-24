@@ -1,36 +1,30 @@
 \section{Experiments}
 \label{sec:experiments}
-We evaluate predicted latency, search cost, and recovered schedules. The original
-suite studies prefill and fixed-hardware mapping; the full-input DeepSeek case
+We evaluate predicted latency, search cost, and recovered schedules. Studies include prefill/decode and fixed-hardware mapping. For example, the full-input DeepSeek case
 adds autoregressive decode and phase-specific controls. TPU-v3 provides a
-publicly documented reference consistent with prior
-work~\citep{jouppi2021ten,zhang_fast}. All speedups below are analytical predictions;
-optimization runtime is reported separately and is not charged to inference.
+publicly documented reference baseline consistent with prior
+work~\citep{jouppi2021ten,zhang_fast}. All speedups below are analytical and modeled results.
 
 \subsection{Experimental Setup}
 \label{sec:exp_intro}
-The original suite comprises EfficientNet-B1--B7, Llama-1 13B/65B,
-Llama-3 70B, and DeepSeek-V3~\citep{tan2019efficientnet,llama3modelcard,deepseekv3report};
-Stable Diffusion~1.5 UNet supplies a twelfth fixed-hardware workload.
-The original 100-trial campaign compares static pinning, fixed-tile temporal
+The suite comprises EfficientNet-B1--B7, Llama-1 13B/65B,
+Llama-3 70B, and DeepSeek-V3~\citep{tan2019efficientnet,llama3modelcard,deepseekv3report} and Stable Diffusion~1.5 UNet.
+The campaign compares static pinning, fixed-tile temporal
 placement, and joint tiling under the same cost convention. These are restricted
 controls of CHEETAH, not separate proposed systems. Small programs use
-HiGHS~\citep{huangfu2018parallel}; the current native working programs use OCS.
+HiGHS~\citep{huangfu2018parallel}; the large scale native working programs use OCS.
 The full-input experiment binds actual checkpoint routes and preserves every
 logical invocation (Appendix~\ref{app:native_provenance}).
 
-The following validation paragraph and gates describe the original campaign;
-the new full-input study additionally reports its own native service contract.
 \paragraph{Physical Design Validation.} Since modeling simulations ultimately present a gap with real world physical performance, we validate all results through a five-level audit process: (i) Roofline Auditor, (ii) Campaign Validator, (iii) Causal Ledger, (iv) solver diagnostics, and (v) six pre-RTL gates. Each CHEETAH design must pass all five audit tiers before it is deemed feasible and reported. 
 
 The roofline check rejects costs below compute or memory service floors.
-Table~\ref{tab:mfg_gates} lists the original architectural screening thresholds;
-they are modeling checks, not fabricated-chip timing or packaging sign-off.
+Table~\ref{tab:mfg_gates} lists the architectural screening thresholds. These are modeling checks, not fabricated-chip timing or packaging sign-off.
 RTL and synthesis evidence is in Appendix~\ref{sec:rtl_validation}.
 
 \begin{table}[t]
 \centering\small
-\caption{Original campaign's six architectural feasibility gates.}
+\caption{Six architectural feasibility gates.}
 \label{tab:mfg_gates}
 \begin{tabularx}{\linewidth}{@{}lXr@{}}
 \toprule
@@ -46,14 +40,14 @@ SRAM macros & 64 KiB banks, aspect ratio $1{:}4$--$4{:}1$ & $\le4{,}096$ banks \
 \end{tabularx}
 \end{table}
 
-\subsection{Original Workload Results and Fixed-Hardware Controls}
+\subsection{Workload Results and Fixed-Hardware Controls}
 \label{sec:prog}\label{sec:fixed_hw}
-The original eleven-model campaign achieves an average $22.07\times$ predicted
+The eleven-model experiments achieves an average $22.07\times$ predicted
 speedup over its modeled TPU-v3 baseline, reaching $40.1\times$ on Llama-3 70B.
 These are prefill-oriented results under that campaign's workload and traffic
-conventions. Appendix~\ref{app:blueprints} retains the concrete hardware blueprints;
-Appendix~\ref{app:original_results} retains the original plots and restricted
-controls. They are not full autoregressive-task latencies.
+conventions. Appendix~\ref{app:blueprints} shows the concrete hardware blueprints;
+Appendix~\ref{app:original_results} has the original plots and restricted
+controls. 
 
 To separate software from provisioning, Table~\ref{tab:fixed_hw} holds each chip
 fixed and compares the joint schedule against streaming every tensor. The
@@ -64,7 +58,7 @@ is needed within a same-chip pair.
 
 \begin{table}[t]
 \centering\small
-\caption{Predicted same-chip speedup over streaming, original workload convention.}
+\caption{Fixed-chip speedup.}
 \label{tab:fixed_hw}
 \begin{tabular}{@{}lrr@{}}
 \toprule

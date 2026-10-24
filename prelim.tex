@@ -3,12 +3,12 @@
 \label{sec:background_pipeline}
 Accelerator design commonly proceeds from a resource budget to a hardware
 template, then to operation mappings and a memory schedule. Engineers iterate
-these choices using analytical models, simulation, and compiler feedback.
+these choices using heuristics, analytical models, simulation, and compiler feedback.
 Automated flows replace individual choices with search tools, but an early
 commitment still limits what downstream stages can recover. A mapper that
 exports only its fastest isolated tile discards alternatives that might reduce
 workspace, enable fusion, or retain data for a later consumer. Joint design
-keeps those alternatives available until their complete resource costs are known.
+keeps those alternatives available until their complete resource costs are known in a global comprehensive end-to-end design.
 
 \subsection{Linear Relaxation and Recovery}
 \label{sec:lps}

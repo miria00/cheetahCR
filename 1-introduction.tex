@@ -5,75 +5,66 @@ years~\citep{cra2026aifuture}. General-purpose accelerators leave significant
 efficiency gains unrealized, which motivates accelerators specialized to their
 target workloads. Specialization, however, requires coordinating datapaths,
 memory capacity, mappings, and compiler transformations, and the resulting
-design space can exceed $\mathcal O(10^{2300})$~\citep{zhang_fast}. Engineers typically explore it in
-stages: choose hardware, map each operation, then optimize data reuse. Automation
-accelerates these stages without necessarily removing their information loss.
-A locally faster tile can consume the memory needed to retain a neighboring
-tensor; a slightly slower tile can therefore yield a faster complete schedule.
+design space can exceed $\mathcal O(10^{2300})$~\citep{zhang_fast}. Engineers typically tackle this problem in
+stages: propose hardware, map each operation, then optimize data reuse and fusion. However this sequential method misses crucial global gains in co-design. 
+For example, a locally faster tile can consume the memory needed to retain a neighboring
+tensor, and a slightly slower tile can therefore yield a faster complete schedule.
 
-We introduce \textsc{CHEETAH}: \acroletter{C}o-designed \acroletter{H}ardware
+In this paper, we introduce \textsc{CHEETAH}: \acroletter{C}o-designed \acroletter{H}ardware
 \acroletter{E}xploration via \acroletter{E}fficient \acroletter{T}hroughput and
-\acroletter{H}ybrid-search. One master LP relaxation exposes these interactions
-jointly. Its implementation choices determine work, traffic, and workspace;
-time-indexed states track residency and reuse; and shared hardware variables
+\acroletter{H}ybrid-search, a novel mathematically principled hardware-software co-design framework with LLM guided search efficiency. The inner loop consists of one master convex program which exposes complex interactions
+jointly. Its implementation choices determine work, traffic, memory,
+time-indexed states track residency and reuse. Its shared hardware variables
 allocate compute, vector, memory, and bandwidth resources under area and power
-budgets. McCormick envelopes and disaggregated epigraphs keep the model linear.
-The relaxation supplies bounds for its declared domain, while integral recovery
-and replay supply a concrete chip and software schedule. These are distinct
-outputs: a low fractional objective alone is not an executable design.
+budgets. CHEETAH uses McCormick envelopes and disaggregated epigraph techniques to model HW/SW relationships in a rigorous and realistic way.
+The large scale convex program also yields bounds for its declared domain, while integral recovery
+and replay verify each chip designed and complementing software schedule. These are distinct
+outputs, since a single low fractional objective alone is not a realistic executable physical design.
 
-\paragraph{One program, many architectures.}
-The formulation operates on a graph of independent logical invocations and
+The CHEETAH formulation operates on a graph of independent logical invocations and
 typed storage objects. Convolutions, dense and expert GEMMs, attention, and
 vector operations contribute implementation-specific coefficients and
-dependencies. Optional batches and fusion groups cover original invocations
-without erasing their identities. KV prefixes, expert weights, and long skip
+dependencies. Optional batches and fusion groups cover original invocations, and KV prefixes, expert weights, and long skip
 connections enter the same capacity and readiness accounting. This makes the
 program reusable across architectures without assuming that identical shapes
 must share a decision.
 
-\paragraph{Beyond prefill: the decode memory wall.}
-Prefill amortizes weight traffic across many tokens; autoregressive decode
+We separate inference acceleration gains betwee prefill and decode. Prefill amortizes weight traffic across many tokens, whil autoregressive decode
 repeatedly accesses weights and an expanding KV history. Batching helps, but
 sparse routing also increases the number of experts touched. Under independent
 uniform top-$k$ routing, the expected union is
 $n[1-(1-k/n)^B]$: with $n=256$, $k=8$, it grows from $8$ experts at batch one
 to about $163$ at batch $32$. Thus batching does not guarantee a compute-bound
-decode phase. CHEETAH jointly chooses resource provisioning, compatible
+decode phase. CHEETAH therefore jointly chooses resource provisioning, compatible
 batches, and temporal residency. Our full-inference experiment uses actual
-routes, retains the complete KV history, and charges every restore; its gains
+routes, retains the complete KV history, and charges every restore. Its gains
 do not assume that all weights or KV fit on chip.
 
-\paragraph{Scaling the search.}
-The complete temporal program is too large to materialize. OCS evaluates linear
+Since the complete CHEETAH program is too large to materialize, in order to this large scale formulation we introduce a custom adapted OCSolver, which evaluates linear
 operators and adjoints on compact working supports, using GPU first-order
-updates, reversible scaling, and structured temporal incidence. Full-domain
-checking remains separate from a working solve. An LLM architect reads resource
-prices and trial diagnostics to propose implementations or search neighborhoods;
-deterministic checks decide whether to admit them. The original campaign couples
-this controller to Vizier; the master also admits hardware choices directly.
+updates, reversible scaling, and structured temporal incidence. 
+An LLM architect outer loop then reads resource
+prices and trial diagnostics to propose target specific implementations or hardware search neighborhoods. This reduces the reliance on brute force large space search effectively. Crucially, the hardware-software interactions and decisions are captured in the CHEETAH inner loop formulation. 
 
-\paragraph{Contributions.}
-\begin{enumerate}[leftmargin=*,itemsep=2pt,topsep=3pt]
-\item A unified LP abstraction for hardware sizing, joint tiling--fusion,
-time-indexed placement, and rematerialization, with explicit causal storage and
-service constraints for full inference.
-\item An operator-based solution path combining OCS, compact temporal
-representations, checked bounds, and independently replayed integral recovery.
-\item A diagnostic-guided LLM architect that reduces invalid trials in the
-original campaign from $24.5\%$ to $5.9\%$ without replacing feasibility checks.
-\item Predicted accelerator gains across vision, language, and diffusion
-workloads, plus a full-input DeepSeek design with $22.88\times$ overall speedup
-and matched prefill/decode feature controls. RTL and synthesis studies test
-selected mechanisms; the full-task latency remains an analytical prediction.
+\paragraph{Contributions.}We reformulate the fundamental HW/SW co-design problem into a unified  framework in CHEETAH, combining principled mathematical rigor of the LP formulation to solve strict design decisions optimally, with the powerful aggregation and causal learning of an LLM Architect outer loop for meta-optimization.
+\begin{enumerate}
+
+\item \textbf{CHEETAH formulation.}
+    We introduce time-indexed LP variables $p_{i,t}^k$ and rematerialization variables $r_{i,t}$ to enable cheap recompute operations instead of paying DRAM reload costs, supporting skip connections and multi-fanout nodes.
+    We unify tiling and fusion into a single problem. and use \textbf{McCormick envelopes} to realize this representation. We use classical ideas of mathematical programming (such as McCormick's envelopes and epigraph reformulation) to build a parameter-free relaxation that is exact at every integer vertex. This models coupling that internalizes the tiling-placement trade-off to discover design points that sequential pipelines systematically miss.
+    % This enables the LP to discover trade-offs where accepting a suboptimal tiling configuration enables superior fusion, or vice versa---precisely the cross-stage interactions that the sequential pipeline cannot capture.
+    \item \textbf{Custom first-order GPU Operator Solver.} Comprehensive formulations of complex interactions between HW/SW yields a large scale and ill-consitioning problem, which results in stalls or diverges in stock solver. We therefore introduce \textbf{OCS}, a matrix-free JAX solver to resolve these LPs to dual convergence in seconds on a GPU. To our knowledge it is the first solver to make the McCormick-linearized joint tiling--fusion--placement co-design LP tractable at LLM scale. This collapses a days-long search into hours (Section~\ref{sec:solver_vm}).
+
+    \item \textbf{LLM Architect Outer Loop.} The LLM outer loop steers hardware search by interpreting \emph{converged Lagrangian dual signals} from the inner LP together with a Causal Ledger of past trials to perform targeted subspace interventions, transforming black-box search into a structured, diagnostic-driven process. To our knowledge, CHEETAH is the \textbf{first} to steer an LLM-guided architecture search with the converged Lagrangian dual variables of a co-design LP: the duals \emph{indicate} where to search while the LP retains every optimality certificate. Hence the LLM proposes hardware choices, the solver never loses rigor. The Architect also enables profile-specific designs (speech models may emphasize latency, while data-synthesis models may prioritize bandwidth).
+    \item \textbf{Optimality Certificates.} Every CHEETAH design ships with an LP optimality certificate: the converged dual bound against which the realized design is measured, with the relaxation gap reported per workload and the integral optimum certified exactly on chain-structured models. A cycle-accurate RTL replay then confirms, decision by decision (tile choice, residency, eviction, etc), that the plan executed as planned with byte-exact memory occupancy. This is a stronger guarantee than the standard counter checks that agentic kernel optimizers use to validate hardware-aware code~\citep{tschand2026hawkeye}, since a counter confirms a feature was used, a certificate provably bounds how far the result can be from optimal.
+
+    \item \textbf{Inference Speedup.} Our method demonstrates an average speedup of $\sim22.07\times$ over the baseline across a wide range of $12$ workloads ($11$ vision and language models plus the Stable Diffusion~1.5 UNet), reaching up to ${\sim}40.1\times$ on a single workload, as shown in Figure~\ref{fig:speedup} below. Our input workloads include vision, language, and diffusion models, plus a full-input DeepSeek design with $22.88\times$ overall speedup
+and matched prefill/decode feature controls.
 \end{enumerate}
 
-Section~\ref{sec:related} positions the work; Section~\ref{sec:prelim}
-explains sequential information loss and relaxation. Section~\ref{sec:methods}
-presents the master and its feature encodings, and Section~\ref{sec:ocs} describes
-OCS. Section~\ref{sec:experiments} reports the original campaign and the full-input
-phase and feature results. The appendix provides complete rows, containment
-arguments, physical-validation details, economics, and reproduction evidence.
+The following paper is organized as follows. Section~\ref{sec:related} discusses related work, Section~\ref{sec:prelim} summarizes preliminary background,  Section~\ref{sec:methods}
+presents the CHEETAH framework and the features we encode, and Section~\ref{sec:ocs} describes OCS. Section~\ref{sec:experiments} reports our experimental results and ablation studies, and the appendix provides containment
+theorems, physical-validation details, economics, co-design blueprints, and reproduction evidence.
 
 
 % ---- plots restored from the long version, original placement ----
@@ -81,9 +72,9 @@ arguments, physical-validation details, economics, and reproduction evidence.
 \begin{figure}[ht!]
     \centering
     \includegraphics[width=1.0\linewidth]{figs/cheetah_v4_new.png}
-\caption{Sequential vs Our Unified Optimization Paradigm.
-(Left) Baseline methods decouple hardware search, operation-level tiling, and static fusion; precluding cross-stage trade-offs.
-(Right) CHEETAH presents a unified LLM-driven LP-solver-based framework that jointly optimizes tiling, placement, and rematerialization while learning from a causal ledger.}
+\caption{Heuristics based Sequential design vs Our Unified Optimization Paradigm.
+(Left) Baseline methods decouple hardware search, operation-level tiling, and static fusion, precluding cross-stage trade-offs.
+(Right) CHEETAH presents a unified LLM-driven mathematical framework that jointly optimizes tiling, placement, and more while learning from a causal ledger.}
 \label{fig::workflow}
 \end{figure}
 
