@@ -17,15 +17,16 @@ The original campaign uses five levels of modeled feasibility validation.
     \item Roofline Auditor: A deterministic Roofline Auditor checks physical feasibility by comparing
 each LP-predicted latency against the lower bound
 \begin{equation}
-    \mathrm{LB} = \max\!\left(t_{\mathrm{compute}},\;
+    \mathrm{LB} = \max\!\left(t_{\mathrm{floor}},\;
     t_{\mathrm{memory}}\right),
 \end{equation}
-where $t_{\mathrm{compute}}$ is total FLOPs divided by peak FLOPs/s and
-$t_{\mathrm{memory}}$ is post-placement off-chip traffic divided by
-available memory bandwidth.
-The audit additionally reports $\mathrm{MFU}_{\mathrm{bound}}$ and memory
-utilization; values above 1 would indicate a physically impossible
-prediction.
+where $t_{\mathrm{floor}}$ is the mapper-derived compute floor of
+\cref{eq:floor_construction} and $t_{\mathrm{memory}}$ is post-placement
+off-chip traffic divided by available memory bandwidth.
+The audit additionally reports the compute-floor tightness
+$\rho_{\mathrm{comp}}$ and memory utilization; values above 1 would indicate a
+physically impossible prediction. Neither ratio is a model FLOPs utilization,
+which \cref{app:mfu} distinguishes.
 The original campaign's audited results have zero roofline lower-bound violations;
 \cref{app:mfu} gives the detailed checks.
 
@@ -49,115 +50,119 @@ constitute physical-design sign-off.
 \end{enumerate}
 
 
-\subsection{MFU and Latency Audits}
+\subsection{Compute-Floor and Roofline Tightness Audits}
 \label{app:mfu}
-\paragraph{Clarification on MFU}
-In this work, $\mathrm{MFU} = \texttt{compute\_floor} / \texttt{obj\_cycles}$
-is a \emph{roofline tightness ratio}, not a measured hardware utilization.
-$\mathrm{MFU} = 1.000$ means the LP objective equals the ideal compute
-lower bound; it does not mean a real chip would achieve 100\% utilization. This is since the searched accelerators are hypothetical datapaths rather than fabricated chips or RTL implementations, we cannot report measured hardware MFU; instead, we report MFU\_bound only as a roofline lower-bound consistency check, where values above 1 would indicate an impossible prediction.
-
-\noindent We define the idealized roofline saturation metric as:
+\paragraph{What this audit reports, and what it is not.}
+The original campaign's audit column records a \emph{tightness} ratio, not a
+model-FLOP utilization. Write $T_{\mathrm{LP}}$ for the LP-predicted latency of
+a cell: its modeled execution time, never the optimizer's runtime. The archived
+quantity is
 \begin{equation}
-    \mathrm{MFU}_{\mathrm{audit}}
-    = \frac{t_{\mathrm{compute}}}{t_{\mathrm{solver}}},
+    \rho_{\mathrm{comp}}
+    = \frac{t_{\mathrm{floor}}}{T_{\mathrm{LP}}},
     \label{eq:mfu_audit}
 \end{equation}
-where $t_{\mathrm{compute}}$ is the theoretical compute lower bound and
-$t_{\mathrm{solver}}$ is the LP-predicted latency. Thus,
-$\mathrm{MFU}_{\mathrm{audit}} = 1$ means the LP solution is
-\emph{compute-floor tight} under the idealized accelerator model. It is
-not a claim that a real implementation would achieve 100\% hardware
-utilization. Real chips would incur additional losses from pipeline
-bubbles, NoC contention, SRAM latency, control overhead, imperfect
-scheduling, and compiler/runtime effects.
+which we call \emph{compute-floor tightness}. Earlier versions of this appendix
+labelled $\rho_{\mathrm{comp}}$ ``MFU''. We retire that label and leave every
+archived number unchanged: the audited values in \cref{app:blueprints} and
+\cref{app:deficit} are $\rho_{\mathrm{comp}}$.
 
-\noindent The \texttt{binding} column reports whether the objective is
-sitting on the compute floor, the memory floor, or above both floors.
-The key sanity condition is that no row has $\mathrm{MFU}_{\mathrm{audit}} > 1$
-and no fixed-tile/joint-tile row is unexpectedly loose above the lower bound.
-Values greater than 1 are physically impossible and would indicate a bug
-or cost-model violation. Values equal to 1 are acceptable: they indicate
-that the idealized LP solution is exactly on the compute lower bound.
-
-
-
-
-A true measured MFU would require an actual executable implementation of
-the selected hardware/schedule pair: either fabricated silicon, an
-FPGA/RTL prototype, or a calibrated cycle-accurate simulator with the
-selected joint-tile tiling/fusion/placement schedule implemented. One would need
-to run the workload and collect hardware counters such as active MAC cycles, issued FLOPs, memory stalls, NoC stalls, SRAM bank conflicts,
-pipeline bubbles, and total elapsed cycles. Measured MFU would then be:
+The label has to go because of the numerator. The auditor does not count useful
+model arithmetic from the graph. It derives a FLOP total from the per-operator
+Timeloop tile minima, $F = 2\,M_{\mathrm{ref}}\sum_c T_{\min}(c)$, and divides
+by the candidate chip's arithmetic rate, so that
 \begin{equation}
-    \mathrm{MFU}_{\mathrm{measured}}
-    = \frac{\text{useful FLOPs}}
-           {\text{elapsed cycles} \times \text{peak FLOPs/cycle}}.
-    \label{eq:mfu_measured}
+    t_{\mathrm{floor}}
+    = \sum_c T_{\min}(c)\cdot\frac{M_{\mathrm{ref}}}{M},
+    \label{eq:floor_construction}
 \end{equation}
+with $M$ the candidate's MAC count and $M_{\mathrm{ref}}$ the reference
+geometry's. Now $\sum_c T_{\min}(c)$ is a \emph{mapping} result: it already
+carries the reference datapath's tile padding and mapping inefficiency. So
+$t_{\mathrm{floor}}$ is not $F_{\mathrm{model}}/C_{\mathrm{peak}}$, and
+$\rho_{\mathrm{comp}}$ is not the model FLOPs utilization of
+\cref{sec:reported_quantities}. The two ratios would coincide only if the
+numerator were the useful-arithmetic count at the same peak rate and phase
+boundary, and here it is not. Accordingly $\rho_{\mathrm{comp}} = 1$ says the LP
+objective has reached the mapper's per-operator floor at the selected geometry.
+That is a statement about scheduling slack, not about how much of the silicon's
+arithmetic the model keeps busy.
 
-\noindent We define:
+\paragraph{Roofline-bound tightness.}
+The auditor separately checks the lower bound
 \begin{equation}
-    \mathrm{MFU}_{\mathrm{bound}}
-    = \frac{t_{\mathrm{compute}}}{t_{\mathrm{solver}}},
-    \label{eq:mfu_bound}
-\end{equation}
-where $t_{\mathrm{compute}}$ is the theoretical compute lower-bound
-latency and $t_{\mathrm{solver}}$ is the LP-predicted latency.
-The roofline audit additionally checks the stronger lower bound:
-\begin{equation}
-    t_{\mathrm{solver}}
+    T_{\mathrm{LP}}
     \;\geq\;
-    \max\!\left(t_{\mathrm{compute}},\; t_{\mathrm{memory}}\right),
+    \mathrm{LB} = \max\!\left(t_{\mathrm{floor}},\; t_{\mathrm{memory}}\right),
     \label{eq:roofline_lb}
 \end{equation}
-where the memory floor is total bytes moved divided by peak bandwidth.
-Concretely, the audit enforces \texttt{roof\_ratio} $= \mathrm{LB} /
-\mathrm{obj} \leq 1.001$ as the pass criterion.
+where $t_{\mathrm{memory}}$ is total scheduled bytes divided by peak bandwidth,
+and enforces $\texttt{roof\_ratio} = \mathrm{LB}/T_{\mathrm{LP}} \le 1.001$ as
+the pass criterion. Only the ratio built on this maximum,
+$\rho_{\mathrm{roof}} = \mathrm{LB}/T_{\mathrm{LP}}$, deserves the name
+\emph{roofline} tightness. The distinction matters in precisely the regime the
+compute-only ratio hides: a memory-bound cell can sit on its roofline bound,
+$\rho_{\mathrm{roof}} \to 1$, while its compute-floor ratio stays small.
+Calling $\rho_{\mathrm{comp}}$ a roofline-tightness ratio, as earlier versions
+of this appendix did, is imprecise whenever memory is the active limitation.
 
-\noindent\textbf{Interpretation of $\mathrm{MFU}_{\mathrm{bound}} = 1$.}
-Since the searched accelerators are hypothetical datapaths evaluated by
-CORGIsolve rather than fabricated chips, RTL models, or calibrated
-cycle-accurate simulators, real measured MFU is unavailable.
-We therefore use $\mathrm{MFU}_{\mathrm{bound}} = t_{\mathrm{compute}} /
-t_{\mathrm{solver}}$ solely as a roofline consistency check.
-$\mathrm{MFU}_{\mathrm{bound}} = 1$ means the LP solution is
-\emph{compute-floor tight} under the idealized accelerator model; it does
-not imply that real silicon would achieve 100\% utilization.
+\paragraph{What the audit establishes.}
+A value $\rho_{\mathrm{comp}} > 1$, or an LP latency below
+$\max(t_{\mathrm{floor}}, t_{\mathrm{memory}})$, would indicate a physically
+impossible prediction or a cost-model violation; the original campaign's
+audited cells show no such violation. That is a necessary consistency
+condition, and it is all this audit supplies. It does not establish
+realizability, silicon timing accuracy, or optimality, and a real
+implementation would generally fall below either bound through pipeline
+bubbles, NoC contention, SRAM bank conflicts, control overhead, imperfect
+scheduling and compiler effects.
 
-\noindent\textbf{What the roofline audit proves.}
-The audit does not establish that real-world MFU would equal~1.
-It establishes the more basic and necessary condition that the reported
-LP latency is not physically impossible: no result is faster than either
-the compute or memory lower bound.
-In a real implementation, utilization would generally be lower due to
-pipeline bubbles, NoC contention, SRAM banking conflicts, control
-overhead, compiler effects, and imperfect scheduling.
+\paragraph{Predicted versus measured utilization.}
+Model FLOPs utilization is defined in \cref{sec:reported_quantities} as
+$F_{\mathrm{model}}/(C_{\mathrm{peak}}T)$. Predicted and measured variants are
+the same metric under different timing evidence,
+\begin{equation}
+    \mathrm{MFU}_{\mathrm{pred}}
+    = \frac{F_{\mathrm{model}}}{C_{\mathrm{peak}}T_{\mathrm{pred}}},
+    \qquad
+    \mathrm{MFU}_{\mathrm{meas}}
+    = \frac{F_{\mathrm{model}}}{C_{\mathrm{peak}}T_{\mathrm{meas}}},
+    \label{eq:mfu_measured}
+\end{equation}
+and forming either needs only an analytical count of useful model arithmetic
+and one execution time. Hardware counters explain where utilization is lost but
+are not required to compute the ratio; an earlier version of this appendix
+implied otherwise. A cycle-accurate simulator supplies a \emph{simulated} $T$,
+which we would report as such and not as a silicon measurement. For the present
+designs no executable implementation of the selected hardware/schedule pair
+exists, so we report $\mathrm{MFU}_{\mathrm{pred}}$ against the recovered
+execution's modeled latency and never a measured figure. Two conventions must
+travel with any such number. The FLOP-counting rule, because padding,
+rematerialized arithmetic and inactive experts are charged in time but are not
+credited as useful work; and the precision of $C_{\mathrm{peak}}$, which must
+match the arithmetic actually modeled, so an FP8-stored but BF16-computed path
+takes the BF16 capability rather than an FP8 peak. Where one
+multiply--accumulate counts as two FLOPs, numerator and denominator follow that
+convention together.
 
-Since our accelerators are simulated datapaths rather than fabricated
-chips, real measured MFU is unavailable. We use
-$\mathrm{MFU}_{\mathrm{bound}} = t_{\mathrm{compute}} /
-t_{\mathrm{solver}}$ only as a roofline consistency check. Values above~1,
-or LP latencies below $\max(t_{\mathrm{compute}}, t_{\mathrm{memory}})$,
-would indicate a physically impossible prediction. Values equal to~1 mean
-the LP solution is tight to the ideal compute floor, not that real
-hardware would achieve 100\% utilization; real implementations would
-generally fall below this bound due to microarchitectural overheads.
-Our audit reports 31 plotted cells, 2 skipped infeasible cells, and
-0 MFU or roofline violations, supporting that the reported fixed-tile/joint-tile speedups
-are physically feasible upper-bound estimates rather than
-below-roofline artifacts.
-
-
+\paragraph{Relation to FAST.}
+FAST reports \emph{compute utilization}, defined there as a fraction of peak
+throughput, and neither names nor specifies MFU; its modeled TPU-v3 entry is
+$0.14$ on EfficientNet-B7~\citep{zhang_fast}. We therefore make no claim to
+reproduce a FAST MFU definition. The tightness ratios $\rho_{\mathrm{comp}}$
+and $\rho_{\mathrm{roof}}$ are not that quantity and are not comparable to it:
+a utilization comparison would require one useful-work count and one peak
+convention applied to both arms.
 
 \begin{table}[ht!]
 \centering
 \caption{Single Workloads of Vizier-discovered hardware configuration.
-$\mathrm{MFU}_{\mathrm{audit}} = t_{\mathrm{compute}} / t_{\mathrm{solver}}$
-is a roofline tightness ratio (see Eq.~\ref{eq:mfu_audit}), not a measured
-hardware utilization. $\mathrm{MFU} = 1.000$ means the LP hit the theoretical
+$\rho_{\mathrm{comp}} = t_{\mathrm{floor}} / T_{\mathrm{LP}}$
+is a compute-floor tightness ratio (see Eq.~\ref{eq:mfu_audit}), not a measured
+hardware utilization and not the model FLOPs utilization of
+\cref{sec:reported_quantities}. $\rho_{\mathrm{comp}} = 1.000$ means the LP hit the mapper-derived
 compute floor. \emph{Compute-bound}: $\mathrm{obj} \approx t_{\mathrm{compute}}$.
-\emph{Memory-bound}: $\mathrm{obj} \approx t_{\mathrm{memory}}$, $\mathrm{MFU} < 1$.
+\emph{Memory-bound}: $\mathrm{obj} \approx t_{\mathrm{memory}}$, $\rho_{\mathrm{comp}} < 1$.
 \emph{Above-roofline}: obj exceeds both floors; expected for Static on hard cells,
 unexpected for fixed-tile/joint-tile. Two cells (Llama-3 70B and DeepSeek-V3 under Static) had no
 physically valid trial and are marked infeasible.}
@@ -169,7 +174,7 @@ physically valid trial and are marked infeasible.}
 \textbf{MACs} & \textbf{BW} &
 \textbf{Speedup} & \textbf{Obj cycles} &
 \textbf{Comp.\ floor} & \textbf{Mem.\ floor} &
-\textbf{MFU} & \textbf{obj/lb} &
+$\boldsymbol{\rho_{\mathrm{comp}}}$ & \textbf{obj/lb} &
 \textbf{Binding} & \textbf{Verdict} \\
 \midrule
 \multicolumn{12}{l}{\textit{Static FAST ILP}} \\
@@ -215,9 +220,9 @@ joint-tile & Llama-3 70B & 1{,}048{,}576 & 64 & 40.14 & $4.614\times10^{9}$ & $4
 joint-tile & DeepSeek-V3 & 1{,}048{,}576 & 64 & 35.50 & $1.656\times10^{9}$ & $1.656\times10^{9}$ & $1.495\times10^{9}$ & 1.000 & 1.000 & compute-bound & OK \\
 \midrule
 \multicolumn{12}{l}{%
-\textit{Summary: 31 cells plotted (MFU $\leq$ 1, roofline-feasible) $\cdot$
+\textit{Summary: 31 cells plotted ($\rho_{\mathrm{comp}} \leq$ 1, roofline-feasible) $\cdot$
 2 cells skipped (no physically valid trial) $\cdot$
-0 MFU $>$ 1 regressions $\cdot$
+0 $\rho_{\mathrm{comp}} >$ 1 regressions $\cdot$
 0 fixed-tile/joint-tile loose rows.}}\\
 \bottomrule
 \end{tabular}%

@@ -10,6 +10,19 @@ LP, and achieve the same speedups.
 The variants differ only in area, TDP, and memory-subsystem cost.  
 Every blueprint passes the roofline check and all six pre-RTL manufacturability gates of Appendix~\ref{app:details}.
 
+\paragraph{Reading the utilization rows.}
+Three rows below --- compute utilization, fusion efficiency and
+$\rho_{\mathrm{comp}}$ --- are the \emph{same} archived ratio
+$t_{\mathrm{floor}}/T_{\mathrm{LP}}$ under the names the original campaign used
+for it, and differ only in rounding and percentage formatting. They measure how
+closely the LP objective approaches the mapper-derived compute floor of
+\cref{eq:floor_construction}, not what fraction of the datapath's arithmetic
+the model occupies. In particular they are not comparable to FAST's compute
+utilization, which is a fraction of peak throughput and is reported there as
+$0.14$ for modeled TPU-v3~\citep{zhang_fast}; \cref{app:mfu} sets out the
+distinction and the FLOP-counting conventions a utilization comparison would
+require.
+
 \paragraph{Compute boundedness and the bandwidth choice.}
 The binding floor is compute, not bandwidth, at the target workloads examined. At the chip's peak DRAM
 bandwidth (range 544\,GB/s LPDDR5X (N7) to 2{,}457\,GB/s HBM3 (N5)), we
@@ -60,7 +73,7 @@ Performance (QPS)       & 11.08\,QPS @ batch=256 \\
 Inference latency       & 90.22\,ms\,/\,sample \\
 Normalized Perf/TDP     & $23.51\times$ \\
 Achieved speedup vs.\ naive TPU-v3 & $34.22\times$ \\
-MFU (Eq~4)              & 0.998 \\
+$\rho_{\mathrm{comp}}$ (Eq~\ref{eq:mfu_audit}) & 0.998 \\
 Bound by                & compute \\
 Roofline gate (Eq~7)    & \textcolor{green!60!black}{\textbf{PASS}} \\
 \midrule
@@ -124,7 +137,7 @@ Performance (QPS)       & 1.37\,QPS @ batch=256 \\
 Inference latency       & 729.94\,ms\,/\,sample \\
 Normalized Perf/TDP     & $28.83\times$ \\
 Achieved speedup vs.\ naive TPU-v3 & $34.60\times$ \\
-MFU (Eq~4)              & 1.000 \\
+$\rho_{\mathrm{comp}}$ (Eq~\ref{eq:mfu_audit}) & 1.000 \\
 Bound by                & compute \\
 Roofline gate (Eq~7)    & \textcolor{green!60!black}{\textbf{PASS}} \\
 \midrule
@@ -189,7 +202,7 @@ Inference latency       & 288.77\,ms\,/\,sample \\
 Normalized Perf/TDP     & $25.61\times$ \\
 Achieved speedup vs.\ naive TPU-v3 & $40.16\times$ \\
 Match to target         & 100.2\% \\
-MFU (Eq~4)              & 1.000 \\
+$\rho_{\mathrm{comp}}$ (Eq~\ref{eq:mfu_audit}) & 1.000 \\
 Bound by                & compute \\
 Roofline gate (Eq~7)    & \textcolor{green!60!black}{\textbf{PASS}} \\
 \midrule
@@ -253,7 +266,7 @@ Performance (QPS)       & 2.40\,QPS @ batch=128 \\
 Inference latency       & 417.32\,ms\,/\,sample \\
 Normalized Perf/TDP     & $29.73\times$ \\
 Achieved speedup vs.\ naive TPU-v3 & $35.68\times$ \\
-MFU (Eq~4)              & 1.000 \\
+$\rho_{\mathrm{comp}}$ (Eq~\ref{eq:mfu_audit}) & 1.000 \\
 Bound by                & compute \\
 Roofline gate (Eq~7)    & \textcolor{green!60!black}{\textbf{PASS}} \\
 \midrule
@@ -321,7 +334,7 @@ Performance (QPS)       & 11.08\,QPS @ batch=256 \\
 Inference latency       & 90.22\,ms\,/\,sample \\
 Normalized Perf/TDP     & $26.08\times$ \\
 Achieved speedup vs.\ naive TPU-v3 & $34.22\times$ \\
-MFU (Eq~4)              & 0.998 \\
+$\rho_{\mathrm{comp}}$ (Eq~\ref{eq:mfu_audit}) & 0.998 \\
 Bound by                & compute \\
 Roofline gate (Eq~7)    & \textcolor{green!60!black}{\textbf{PASS}} \\
 \midrule
@@ -385,7 +398,7 @@ Performance (QPS)       & 1.37\,QPS @ batch=256 \\
 Inference latency       & 729.94\,ms\,/\,sample \\
 Normalized Perf/TDP     & $19.93\times$ \\
 Achieved speedup vs.\ naive TPU-v3 & $34.60\times$ \\
-MFU (Eq~4)              & 1.000 \\
+$\rho_{\mathrm{comp}}$ (Eq~\ref{eq:mfu_audit}) & 1.000 \\
 Bound by                & compute \\
 Roofline gate (Eq~7)    & \textcolor{green!60!black}{\textbf{PASS}} \\
 \midrule
@@ -449,7 +462,7 @@ Performance (QPS)       & 3.46\,QPS @ batch=256 \\
 Inference latency       & 288.77\,ms\,/\,sample \\
 Normalized Perf/TDP     & $19.09\times$ \\
 Achieved speedup vs.\ naive TPU-v3 & $40.16\times$ \\
-MFU (Eq~4)              & 1.000 \\
+$\rho_{\mathrm{comp}}$ (Eq~\ref{eq:mfu_audit}) & 1.000 \\
 Bound by                & compute \\
 Roofline gate (Eq~7)    & \textcolor{green!60!black}{\textbf{PASS}} \\
 \midrule
@@ -513,7 +526,7 @@ Performance (QPS)       & 2.40\,QPS @ batch=128 \\
 Inference latency       & 417.32\,ms\,/\,sample \\
 Normalized Perf/TDP     & $20.55\times$ \\
 Achieved speedup vs.\ naive TPU-v3 & $35.68\times$ \\
-MFU (Eq~4)              & 1.000 \\
+$\rho_{\mathrm{comp}}$ (Eq~\ref{eq:mfu_audit}) & 1.000 \\
 Bound by                & compute \\
 Roofline gate (Eq~7)    & \textcolor{green!60!black}{\textbf{PASS}} \\
 \midrule

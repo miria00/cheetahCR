@@ -18,10 +18,14 @@ pre-RTL feasibility gates of \cref{app:details}: the gates certify that a design
 is \emph{buildable}; this section certifies where its speedup \emph{comes from}.
 
 \paragraph{Reading conventions (read before any number below).}
-Throughout, \textbf{MFU is model-MFU}: the roofline-tightness ratio
-$\mathrm{MFU}=t_{\mathrm{compute}}/t_{\mathrm{solver}}$ of \cref{app:mfu}
-(cache compute floor over the LP/analytic latency within one cost-model
-convention), \emph{never} a measured-silicon utilization; the searched
+Throughout, every quantity written \textbf{MFU} in this appendix is the
+\textbf{compute-floor tightness} ratio
+$\rho_{\mathrm{comp}}=t_{\mathrm{floor}}/T_{\mathrm{LP}}$ of \cref{app:mfu}
+(the mapper-derived compute floor over the LP/analytic latency within one
+cost-model convention). It is \emph{not} model-FLOP utilization in the sense of
+\cref{sec:reported_quantities}, because its numerator is a Timeloop tile
+minimum carrying the reference geometry's padding rather than a useful-work
+count, and it is \emph{never} a measured-silicon utilization; the searched
 datapaths are hypothetical, not fabricated. \textbf{Same-silicon} comparisons
 are equal-area and equal-TDP \emph{by construction} (both sides share the PE
 grid, so the area/power model of \cref{app:gates} returns identical budgets).
