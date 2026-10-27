@@ -12,9 +12,19 @@ Llama-3 70B, and DeepSeek-V3~\citep{tan2019efficientnet,llama3modelcard,deepseek
 The campaign compares static pinning, fixed-tile temporal
 placement, and joint tiling under the same cost convention. These are restricted
 controls of CHEETAH, not separate proposed systems. Small programs use
-HiGHS~\citep{huangfu2018parallel}; the large scale native working programs use OCS.
+HiGHS~\citep{huangfu2018parallel}; operator-based native working programs use OCS.
+The new BF16 suite recovery enumerates a finite common-chip menu and minimizes
+independent implementation or stage choices within each candidate. These
+recovered executions are evaluated separately from continuous LP certificates.
 The full-input experiment binds actual checkpoint routes and preserves every
 logical invocation (Appendix~\ref{app:native_provenance}).
+
+The new checkpoint-bound comparisons use the same numerical contract on both
+arms: BF16 matrix operands and activations, FP32 accumulation and the pinned
+implementation's sensitive operations, with TF32 and reduced-precision
+accumulation disabled. Checkpoint conversion and data movement are charged.
+Historical prefill results retain their original numerical and workload
+contracts; we do not combine their speedups with the new BF16 results.
 
 \paragraph{Physical Design Validation.} Since modeling simulations ultimately present a gap with real world physical performance, we validate all results through a five-level audit process: (i) Roofline Auditor, (ii) Campaign Validator, (iii) Causal Ledger, (iv) solver diagnostics, and (v) six pre-RTL gates. Each CHEETAH design must pass all five audit tiers before it is deemed feasible and reported. 
 
@@ -40,16 +50,80 @@ SRAM macros & 64 KiB banks, aspect ratio $1{:}4$--$4{:}1$ & $\le4{,}096$ banks \
 \end{tabularx}
 \end{table}
 
+\subsection{Reported Efficiency Quantities}
+\label{sec:reported_quantities}
+Three quantities carry the efficiency claims below, and each is read off the
+scheduled execution rather than assumed. Let $T$ be the duration of the
+interval being reported, $C_{\mathrm{peak}}$ the peak arithmetic throughput of
+the recovered chip, $b_r$ the peak bandwidth of resource $r$, and
+$P_{\mathrm{peak}}$ its modeled peak power.
+\begin{equation}
+\mathrm{MFU}=\frac{F_{\mathrm{useful}}}{C_{\mathrm{peak}}T},
+\qquad
+\mathrm{MBU}_r=\frac{B_{r,\mathrm{read}}+B_{r,\mathrm{write}}}{b_rT},
+\qquad
+\mathrm{Perf}/\mathrm{TDP}=\frac{Q/T}{P_{\mathrm{peak}}}.
+\label{eq:reported_quantities}
+\end{equation}
+
+\paragraph{Model FLOP utilization.}
+$\mathrm{MFU}$ is the fraction of the chip's arithmetic capability that the
+schedule converts into useful work, where $F_{\mathrm{useful}}$ counts only the
+arithmetic the model requires. It is distinct from the work the arrays actually
+issue: padding, masked edge tiles and replicated operands are charged to the
+machine but are not useful, so $F^{\mathrm{useful}}\le F^{\mathrm{issued}}$
+always. Within a fixed-chip branch the per-event service rows enforce
+$\sum_i F^{\mathrm{issued}}_{i,e}x_{i,e}\le C_{\mathrm{peak}}\Delta t_e$, which
+sums every concurrent implementation sharing the arrays in event $e$; because
+the installed rate is a branch constant there, summing over the event intervals
+guarantees an aggregate $\mathrm{MFU}\le 1$ by construction rather than by
+inspection. This guarantee is a property of the fixed-chip rows and is not
+inherited by the variable-hardware relaxation, where the corresponding product
+is bilinear and its McCormick envelope is necessary but not exact
+(\cref{app:physical_rooflines}); the installed-rate condition is therefore
+re-checked exactly at execution admission.
+
+\paragraph{Model bandwidth utilization.}
+$\mathrm{MBU}_r$ is the same ratio for a memory resource, and it is computed
+from the \emph{complete} scheduled traffic: operand rereads, KV transfers
+between timesteps, and spill and restore movement all count, since each
+occupies the interface whether or not it advances the model's arithmetic.
+Because the resources have different peak rates and different consequences for
+a schedule, HBM, the host link and on-chip SRAM are reported separately rather
+than aggregated into a single figure.
+
+\paragraph{Performance per TDP.}
+$\mathrm{Perf}/\mathrm{TDP}$ divides delivered throughput, $Q$ units of work
+per unit time, by modeled peak power. Three conditions govern its use as a
+comparison. The process, the power scope and the unit of work must match
+between the designs compared; a ratio across differing scopes is not a ratio of
+efficiencies. Average measured power is not a substitute for modeled peak TDP,
+and we do not interchange them. And because the objective minimizes latency
+rather than this ratio, a performance/power tradeoff is obtained by solving
+across power budgets and comparing recovered designs: for a fixed amount of
+work the ratio factors as
+$(\mathrm{Perf}/\mathrm{TDP})_{\mathrm{design}}/(\mathrm{Perf}/\mathrm{TDP})_{\mathrm{baseline}}
+=(T_{\mathrm{baseline}}/T_{\mathrm{design}})\cdot(\mathrm{TDP}_{\mathrm{baseline}}/\mathrm{TDP}_{\mathrm{design}})$,
+so a latency objective does not by itself maximize it.
+
+All three are reported over the prefill interval, the decode interval, and the
+whole task separately, because a quantity averaged across phases conceals the
+regime change between them. Values recovered from a fractional relaxation are
+reported as bounds, not as admitted physical designs; only points that survive
+integral recovery and replay are reported as designs.
+
 \subsection{Workload Results and Fixed-Hardware Controls}
 \label{sec:prog}\label{sec:fixed_hw}
-The eleven-model experiments achieves an average $22.07\times$ predicted
+The original campaign reports an average $22.07\times$ predicted
 speedup over its modeled TPU-v3 baseline, reaching $40.1\times$ on Llama-3 70B.
 These are prefill-oriented results under that campaign's workload and traffic
 conventions. Appendix~\ref{app:blueprints} shows the concrete hardware blueprints;
 Appendix~\ref{app:original_results} has the original plots and restricted
 controls. 
 
-To separate software from provisioning, Table~\ref{tab:fixed_hw} holds each chip
+\input{update/uniform_bf16_suite}
+
+In the historical controls, Table~\ref{tab:fixed_hw} holds each chip
 fixed and compares the joint schedule against streaming every tensor. The
 compact NPU has $32{,}768$ INT8 MACs at 1 GHz, 64 GB/s bandwidth, and 16 MiB
 on-chip storage; TPU-v3 uses the original 900 GB/s, 32 MiB model. The larger
@@ -58,7 +132,7 @@ is needed within a same-chip pair.
 
 \begin{table}[t]
 \centering\small
-\caption{Fixed-chip speedup.}
+\caption{Historical fixed-chip speedup, under the original numerical contracts.}
 \label{tab:fixed_hw}
 \begin{tabular}{@{}lrr@{}}
 \toprule
@@ -91,9 +165,7 @@ an optimal architecture or causal validity of every dual suggestion.
 \begin{figure}[ht!]
     \centering
 \includegraphics[width=0.85\linewidth]{fig3/speedup_decomposition_final_v4.png}
-\caption{Speedup decomposition over naive TPU-v3 baseline. Each pie shows the 
-relative contribution of four optimization sources to the total speedup. CHEETAH-V1 joint tiling + fusion dominates on all workloads, 
-especially on larger models where memory management is the primary bottleneck.}\label{fig:accel_decompose}
+\caption{Retained historical prefill attribution under the original campaign's numerical and traffic conventions. The artwork's V1 label denotes joint tiling and fusion. New uniform BF16 phase and feature controls are reported separately in Tables~\ref{tab:uniform_llama_phases}, \ref{tab:uniform_llama_controls}, and \ref{tab:uniform_bf16_cnn_controls}.}\label{fig:accel_decompose}
 \end{figure}
 
 \begin{figure}[ht!] 

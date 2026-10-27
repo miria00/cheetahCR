@@ -1,0 +1,132 @@
+\subsection{End-to-End Solution and Recovery Workflow}
+\label{app:native_solve_workflow}
+The continuous objective certificate and the integral performance result solve
+different tasks. We specify the finite branch family and original coordinates,
+use working LPs and structured transformations to construct source points, and
+certify their objectives against a complete-family bound. Hardware search and
+schedule recovery produce a separate analytical execution. The following is
+the implemented workflow, not a proposed complete branch-and-price algorithm.
+
+\paragraph{1. Freeze the mathematical instance.}
+The native family has 21 branches, 61,985,244 independent invocations,
+62,030,334 logical nodes including conversions, and 68,907,890 storage
+allocations. Its largest current branch has 15,044,386,833 implementation
+choices before temporal expansion; the event domain has 5,809,955,157 labels.
+These are logical domain counts, not an allocated sparse matrix.
+Invocation membership, types, demand caps, hardware ranges, costs and row
+recipes identify the LP. A generator may reuse a coefficient formula without
+forcing its invocations to share decisions. The more general implementation
+resolver can describe choices outside this frozen pool; those choices are
+outside the present certificate.
+
+\paragraph{2. Solve manageable working supports with OCS.}
+Activated columns and temporal fields define a restricted working LP with a
+checked lift to original coordinates. Let $f(x)=c^Tx+I_{[\ell,u]}(x)$,
+let $Kx$ stack equality and inequality row activities, and let
+$g(z)=I_{\{z_{\rm eq}=b_{\rm eq},\ z_{\rm ineq}\le b_{\rm ineq}\}}(z)$.
+The selected fixed-step OCS kernel performs
+\begin{align}
+ \widehat v^{k+1}
+   &=\operatorname{prox}_{\Sigma g^*}(v^k+\Sigma K\bar x^k),\nonumber\\
+ \widehat x^{k+1}
+   &=\operatorname{prox}_{T f}(x^k-TK^T\widehat v^{k+1}),\nonumber\\
+ (x^{k+1},v^{k+1})
+   &=\alpha_k(x^{\rm anchor},v^{\rm anchor})
+       +(1-\alpha_k)(\widehat x^{k+1},\widehat v^{k+1}),
+       \qquad \alpha_k=\frac1{k+2},\nonumber\\
+ \bar x^{k+1}&=2x^{k+1}-x^k .
+ \label{eq:native_halpern}
+\end{align}
+Each block restarts from its average. Centered arithmetic computes differences
+from the anchor to avoid repeatedly summing a large baseline.
+The primal proximal map is $\Pi_{[\ell,u]}(x-Tc)$; equality dual coordinates
+receive the RHS shift, while $\le$-row multipliers additionally project onto
+the nonnegative orthant. Reversible scaling and diagonal steps are verified
+against the original operator. The tested paged adapter moves bounded vector
+pages between host storage and GPU; it reduces GPU memory but still stores
+the working iteration vectors somewhere.
+
+\paragraph{3. Improve a full-domain primal without full vectors.}
+The final continuation starts from an admitted implicit source point.
+It retains identified parameter owners, changes legal original weighted
+implementations, retains the embedding after its first real import, and
+retires converted-host backups only after verifying their remaining consumers.
+These are searches for better points of the same source LP, not new
+constraints restricting all source solutions.
+The accepted recipe translates a compact parent of $H$ events over $T$
+delays, using weights $\omega_j=2(T-j)/(T(T+1))$.
+Each linear state and lifecycle field is represented by its weighted sum;
+duration is the maximum of the resulting resource-service fields.
+The retained parent can exceed DRAM capacity, so convexity of feasible parents
+is not the argument for feasibility. The checker proves the mixed capacity:
+the largest mass of any $H$ consecutive delays is
+$H(2T-H+1)/(T(T+1))$ for $H\le T$, with initial/static reservations accounted
+for separately. Original readiness, boundary and service rows are also checked.
+GPU blocks evaluate the two edges of the mixture; rational affine sums handle
+the middle. An outward arithmetic allowance is included in the objective upper.
+
+\paragraph{4. Certify the full LP objective.}
+For $\min c^Tx$ subject to $Ex=e$, $Gx\le g$, $x\in[\ell,u]$,
+any equality multipliers $\nu$ and legal inequality multipliers $\mu\ge0$ give
+\[
+ L=-e^T\nu-g^T\mu+
+       \inf_{\ell\le x\le u}(c+E^T\nu+G^T\mu)^Tx .
+\]
+Box support and every residual sign are checked in original coordinates;
+a small negative residual on an unbounded nonnegative axis cannot be rounded
+away. A working-set dual is insufficient when omitted columns change this
+infimum. The final certificate instead uses explicit coverage prices, work-mass
+equalities and original service rows. Generator-wide inequalities establish
+the required residual signs for all implementations; constant temporal
+multipliers apply to every event. The minimum branch bound certifies the
+perspective family. Appendix~\ref{app:native_lp_certificate} gives the actual
+multipliers and endpoints. This provides approximate continuous objective
+closure without completing a general arbitrary-multiplier pricing coordinator.
+
+\paragraph{5. Search discrete hardware and recover software.}
+The hardware branch-and-bound tree is separate from the whole-program branch
+index $b$ in the LP. A tree node is a rectangle in a declared finite menu of
+array counts, vector lanes, DRAM rates, host channels and local-service units.
+Minimum-resource budget violations prune infeasible rectangles. Optimistic
+resource values, relaxed private-capacity constraints and repriced local
+implementations provide latency lower estimates. In a joint variant, each
+parameter family has a two-state retained/streamed dynamic program. Nonnegative
+prices on shared capacity rows yield the conditional Lagrangian bound
+\[
+ L(h,\mu)=\sum_f\min_{\pi\in\mathcal P_f}
+       \left[t_f(h,\pi)+\sum_t\mu_t B_{ft}(\pi)\right]
+       -\sum_t\mu_t C_t
+\]
+plus costs outside those paths. Here $f$ identifies an original parameter
+family, $\pi$ an allowed retention path, and $B_{ft}$ its storage use.
+GPU scans evaluate the independent paths; shared prices preserve the capacity
+coupling in the bound. A path mixture or optimistic rectangle is not itself
+an executable schedule.
+
+The demonstrated menu contains 536,380,416 hardware combinations:
+64--1,024 arrays in steps of two, 1,024--16,384 vector lanes in steps of 128,
+512--2,560 GB/s DRAM in steps of 128 plus 2,608 GB/s, 1--64 host channels,
+and 1--8 local-service units. An earlier fixed-software tree exhausted that
+menu; the joint capacity-path tree made 1,190 GPU oracle calls and retained
+142 unresolved schedule leaves, reduced to 78 by its subsequent replayed
+incumbent. Its bounds were numerical and conditional on the then-current
+cover, progress and implementation menu. They are not the final LP certificate,
+and subsequent menu expansions require fresh tree bounds.
+
+Only a replayed feasible design supplies a pruning incumbent; an unverified
+candidate does not. Surviving hardware choices undergo integral cover/path
+selection, capacity repair and transfer scheduling. Replay then computes
+the predicted phase latencies using the selected chip's actual modeled
+rates, clocks, formats and buffer reservations. This is how an integral
+hardware/software result is obtained without claiming a completed tree over
+every master selector.
+
+\paragraph{What an exhaustive discrete proof would additionally require.}
+One would need complete lower bounds at every remaining hardware/schedule node,
+pricing over every allowed implementation under each branching decision,
+and a fully explored or pruned frontier. Making tile or branch choices integral
+alone does not make continuous rate/product envelopes exact. Spatial branching
+to enforce physical products addresses a stronger nonlinear design problem;
+it is not necessary to solve the frozen LP relaxation and is not claimed here.
+Analytical replay supports the reported design latency, while fabrication and
+global discrete optimality remain separate questions.

@@ -1,0 +1,124 @@
+\subsection{Archived certificate for the finite native master}
+\label{app:native_lp_certificate}
+The identified 21-branch native master retains all 61,985,244 independent
+invocations and 5,809,955,157 original event labels. Its current finite
+implementation generators remain fixed. We construct a feasible implicit
+continuous point and a complete-domain lower-bound certificate, obtaining
+\[
+ \begin{gathered}
+ L=734{,}095.7109040404\ \mathrm{ms},\qquad
+ U=734{,}720.3897564713\ \mathrm{ms},\\
+ \frac{U-L}{U}\,100\%=0.0850226646\%.
+ \end{gathered}
+\]
+Thus the LP objective gap is certified to approximately $0.0850\%$
+(rounded), or strictly less than $0.085023\%$. This concerns the continuous
+finite master, not global optimality of the recovered chip and schedule.
+It retains the original physical-cost and service-envelope contract. The direct
+roofline and revised BF16 physical rows in Appendix~\ref{app:physical_rooflines}
+define strengthened branches and require their own admission and bounds.
+
+\paragraph{Explicit dual certificate.}
+Use the notation of Eq.~\eqref{eq:master}. Let $\kappa$ be the stored
+duration-cost coefficient, $u_b^-$ the stored inverse-bandwidth lower-support
+coefficient in branch $b$, $B_k$ the original stream demand of implementation
+$k$, and $\pi_i\ge0$ a logical node's coverage price, including conversion nodes.
+We verify $\sum_{i\in S_k}\pi_i\le B_k$ for every implementation in every
+frozen generator. At branch weight one, under the convention
+$c^Tx+\sum_r \mu_r(A_rx-b_r)$, the nonzero row multipliers are
+\[
+\begin{array}{ll}
+ Z^B_e-d_e\le0: & \mu=\kappa,\\
+ u_b^- Q^B_e-Z^B_e\le0: & \mu=\kappa,\\
+ Q^B_e-\sum_k B_k w_{ke}-\text{transfer bytes}_e=0:
+   & \mu=-\kappa u_b^-,\\
+ \sum_e w_{ke}-y_k=0: & \mu=-\kappa u_b^- B_k,\\
+ \sum_{k:i\in S_k}y_k=1: & \mu=-\kappa u_b^- \pi_i.
+\end{array}
+\]
+All other multipliers are zero. The duration, service, demand and work
+coefficients cancel. Choice residuals are
+$\kappa u_b^-(B_k-\sum_{i\in S_k}\pi_i)\ge0$; transfer residuals are nonnegative.
+Original nonnegative coordinate bounds therefore give
+$L_b=\kappa u_b^-\sum_i\pi_i$. For the perspective branch union, the multiplier
+$-\min_b L_b$ on $\sum_b\lambda_b=1$ leaves residual
+$L_b-\min_b L_b\ge0$, proving $L=\min_bL_b$ for the full family.
+The multiplier identities apply to every original event, including events
+outside the primal's compact parent support.
+Here $\kappa=4722366482869645/4722366482869645213696$ is the exact
+stored binary64 value of $10^{-6}$; $u_b^-$ likewise uses the stored outward
+coefficient. Ideal decimal constants are not substituted into the certificate.
+
+\paragraph{Primal certificate and verification.}
+The saved rational field recipe translates a parent of $H=126{,}469{,}531$
+events over $T=5{,}683{,}485{,}627$ admissible delays with weights
+$2(T-j)/(T(T+1))$, $0\le j<T$. The weights sum to one. Duration is the
+maximum of eight mixed resource fields. Original lifecycle and implementation
+admissions are retained as source-bound proof dependencies; the mixed DRAM
+capacity is checked using its maximum translation-window mass.
+A separate checker verifies the generator price inequalities, exact dual
+cancellation and rational resource moments. It checks the central affine
+envelope exactly and re-evaluates all 252,939,060 edge events in CPU extended
+precision with an outward error allowance. It shares the original source
+compiler and earlier lifecycle lemmas, rather than claiming a separately
+implemented frontend or proof-assistant formalization.
+
+The certificate changes no source coefficients, implementation choices or
+event labels, and requires no new inference or optimization. It does not
+cover implementations absent from the frozen finite generators and does not
+establish convergence of a generic OCS primal--dual iteration. Exact fractions,
+source identities, multiplier tables, verifier source and replay receipts
+are retained in the accompanying native LP certificate artifacts.
+
+\subsection{Corrected fixed-chip full-domain LP}
+\label{app:corrected_native_lp}
+The revised BF16 physical contract admits the chip in
+Table~\ref{tab:native_phases}. Its new source is
+\path{577942e1db9ffbe4f6582d27a69a418765e60deec584e04465f70b4f7a558604}.
+All 15,044,386,833 implementation choices, 61,985,244 invocations and
+5,809,955,157 event labels remain independent. Hardware is fixed to this
+chip; this result does not certify optimization over all hardware branches.
+The complete software/temporal LP has checked endpoints
+\[
+ \begin{gathered}
+ L=1{,}180{,}606.049320422\ \mathrm{ms},\qquad
+ U=1{,}181{,}606.6831816933\ \mathrm{ms},\\
+ 100(U-L)/U=0.0846841741\%.
+ \end{gathered}
+\]
+The lower certificate reuses the checked original coverage prices $\pi_i$,
+whose inequalities still hold for every implementation's unchanged stream
+demand. It removes the old reciprocal-support multiplier and uses the new
+exact resource row $Q^B_e\le B_h d_e$, giving
+$L=\kappa\sum_i\pi_i/B_h$ with $B_h=1630$.
+This transfers the row proof, not the old scalar bound.
+
+The upper retains the admitted parent point's choices, lifecycle, storage
+and temporal translation mixture. It recomputes resource services for the
+new rates and regenerates all receiver alternatives. Nonnegative setup
+costs permit a conservative host-service factor $8/5$; twice the old
+receiver service bounds each new twenty-channel option. Duration is the
+complete resource maximum after mixing. The checker verifies 197,075 source
+service cases, 791,997 shared row checks and all 19,317 point service classes;
+the unchanged local rows follow their saved exact lift. A fresh source
+reconstruction reproduces both exact endpoints. Admission takes 94.626 s;
+the replay's admission stage takes 96.503 s, excluding source reconstruction.
+No new optimizer call is used for this certificate.
+
+The continuous upper is distinct from the recovered schedule's conservative
+3,196,885.598-ms latency. The latter preserves the admitted outer order and
+rechecks all 384 changed internal pipelines; the previous state/dependency
+replay supplies the unchanged lifetimes. This is a full-workload concept
+result under declared physical assumptions, not silicon validation or a
+discrete optimality proof.
+
+\paragraph{Numerical reconstruction progress.}
+The specialized GPU path executes candidate lifecycle updates and all shared
+candidate products over the same complete candidate/event domain. Four
+updates plus products take 56.21 s on an A100 and 23.14 s on an RTX 5090;
+their shared products agree. Source-bound checkpoints preserve independent
+owner values and permit continuation from disk. These runs keep external
+prices fixed. They do not establish convergence of the coupled master;
+readiness/storage coupling and a complete native residual pass remain
+integration obligations. The objective certificate above establishes its
+stated LP interval independently of that unfinished iteration engine.

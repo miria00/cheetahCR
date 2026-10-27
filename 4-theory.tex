@@ -54,18 +54,18 @@ contract. A method using different coefficients or unsupported hardware is
 not included merely because it has a similar pipeline.
 \end{definition}
 Write each included branch as
-$P_b=\{x:A_bx=a_b,\ G_bx\le g_b,\ \ell_b\le x\le u_b\}$.
+$P_b=\{x:E_bx=e_b,\ G_bx\le g_b,\ \ell_b\le x\le u_b\}$.
 The master homogenizes all its rows and finite boxes with $\lambda_b$.
 \begin{theorem}[Containment of every included branch]\label{thm:containment}
 For every included branch $p$ and every $x\in P_p$, the assignment
-$\lambda_p=1$, $z_p=x$, and $\lambda_b=0,z_b=0$ for $b\ne p$ is master-feasible,
+$\lambda_p=1$, $x_p=x$, and $\lambda_b=0,x_b=0$ for $b\ne p$ is master-feasible,
 with the same objective and hardware readout.
 \end{theorem}
 \begin{proof}
 Every active-branch row and bound becomes its original constraint. Every
 inactive-branch row has zero left and right sides; zero satisfies each
-homogenized finite box. The branch weights sum to one, the hardware projection
-returns $H_px$, and $\sum_b c_b^Tz_b=c_p^Tx$. The argument applies to fractional
+homogenized finite box. The branch weights sum to one, active hardware
+coordinates are unchanged, and $\sum_b c_b^Tx_b=c_p^Tx$. The argument applies to fractional
 points as well as integral schedules.
 \end{proof}
 \begin{corollary}\label{cor:optimum}

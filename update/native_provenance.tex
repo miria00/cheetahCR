@@ -1,5 +1,43 @@
 \section{Native Full-Inference Provenance and Reproduction}
 \label{app:native_provenance}
+\subsection{Baseline and BF16 physical-cost reconciliation}
+\label{app:native_feasibility_repair}
+The native ratios below retain their original analytical contracts. They do
+not yet establish comparisons against FAST's modeled TPU-v3 baseline, which
+starts from ordinary XLA fusion regions on two cores with two $128\times128$
+MXUs per core, 16 MiB SRAM per core, 123 BF16 TFLOP/s and 900 GB/s per chip.
+FAST's additional fusion/scheduling is a separate optimized arm. Its internal
+simulator and compiler artifacts are not available here; the replacement is an
+explicit reconstruction with complete device residence, matrix mapping and
+nonmatrix service, rather than a claim to reproduce that internal simulator.
+
+The archived native MAC peak-power slope is 0.4 mW, whereas the appendix
+specifies 1.2 mW for BF16. Replacing only that slope makes all twelve saved
+chips exceed 300 W. Area, banks, pins and NoC costs also require explicit
+shared assumptions. A new versioned analytical scenario applies the BF16
+power slope, a shared 4,096-signal-pin budget for host and HBM traffic, and
+declared SRAM port/geometry assumptions. The inherited area slope is varied
+by factors of 1, 2 and 4; these are sensitivities, not calibrated BF16 bounds.
+New whole-chip branches use identical constraints for LP construction and
+execution admission. A passing scenario is not silicon sign-off.
+
+For fixed chip $h$, each event satisfies total issued matrix work
+$F_e\le P_h t_e$ and total accounted interface traffic $D_e\le B_h t_e$.
+Summing over the same phase proves aggregate MFU and MBU at most one;
+padding, concurrent work and copies cannot be omitted. Variable-hardware
+McCormick points remain relaxation bounds, not physical latency predictions.
+The new contract does not relabel the frozen native LP certificate.
+Perf/TDP comparisons await matched process, workload and peak-power scope.
+
+The construction and evidence are recorded in
+\path{systems/cheetah_joint/audits/20261026/BASELINE_FEASIBILITY_REPAIR.md}
+and \path{systems/cheetah_joint/audits/20261026/BASELINE_EXECUTION_CONTRACT.md}.
+
+The corrected DeepSeek chip and its full-domain fixed-chip LP interval are
+reported in Appendix~\ref{app:corrected_native_lp}. Its retimed workload
+remains separate from the historical comparisons below.
+
+\subsection{Archived native results}
 \paragraph{Frozen input.}
 DeepSeek-V3 is pinned to checkpoint revision
 \texttt{e815299b0bcbac849fa540c768ef21845365c9eb}.
@@ -13,7 +51,53 @@ normalization/router behavior. The workload is reproducible, not a language
 quality or representativeness study. Capture and solver GPU timings are not
 custom-chip performance estimates.
 
-\paragraph{Accepted execution.}
+\paragraph{Archived chip and controls.}
+The earlier result uses source identity
+\path{831edc6f8cde9bd2091541b55beaa00fae2736035badb3937236ba32c66104e3}
+and family
+\path{c2dbac2a699129be05060253c6d44292644ee7fa244f3cd9590bf5da6c113dd8}.
+Its 21 branches retain prior alternatives. The 320-array execution predicts
+$31.705749\times$ overall, $19.852844\times$ prefill and $37.931777\times$
+decode speedup. Joint weight/KV recovery retains 281,872 weight gaps and
+246 prefix chains. Its conservative execution reservation uses
+68,697,653,440 of 68,719,476,736 DRAM bytes. The separately admitted continuous
+point was 1,146,545.738382 ms. Subsequent optimization of the same finite master
+gives a continuous upper of 734,720.389756 ms and the certificate in
+Appendix~\ref{app:native_lp_certificate}. Direct original-row embedding of the
+physical-duration execution is not established by these separate points.
+The historical four-branch lower below was not transferred to this expanded
+family; its new lower is derived over all 21 branches.
+
+The archived controls use this same chip, weight plan, KV policy and causal progress.
+Removing batching expands original groups into serial members inside each
+original dependency envelope; prefill members retain their actual routed row
+counts. Each streamed member pays a complete weight receive. Independent checks
+recount 31,706,528 decode and 1,441,733 prefill matrix members, and verify every
+selected receiver template. Fusion controls restore original paid primitive
+spills, preserving local service and numerical boundaries. The added private
+scratch is 335,872 DRAM bytes and fits beyond the retained execution pool.
+Disabling full-K prefill panels reselects among the five ordinary tiles within
+the original workspace allowance. All other owners, dependencies and terminal
+obligations inherit the admitted execution. These controls are analytical
+substitutions, not new continuous-source admissions or feature-off optima.
+
+The archived report is
+\path{systems/cheetah_joint/audits/20261023/NATIVE_JOINT_WEIGHT_KV.md}.
+Source, exact ledgers, independent checks and versioned failures are preserved
+under \path{native_joint_weight_kv_20261024_v1/}: \texttt{publish\_v1},
+\texttt{kv\_ablation\_replay\_v1}, \texttt{storage\_check\_v1}, and
+\texttt{batching\_check\_v1}, and \texttt{family\_tile\_check\_v1}.
+The tile control independently selects each of 45,091 parameter families' best
+constant decode tile while retaining membership, source kind, panel boundaries,
+buffers, leases and hardware. Its 0.865673-second penalty covers weighted decode;
+it is not a complete ablation of every time-indexed master choice.
+The current controls supersede the older chip's
+feature ratios; they do not erase the historical results below.
+
+\paragraph{Earlier retained execution.}
+The following four-branch record and 384-array controls are historical; the
+preceding archived result is described above.
+
 The source identity is
 \path{6e216623a18c33290a6a072f5dab38f7d5bd1e130bee7f61b011b4caca44185d},
 and the four-branch family is
@@ -59,7 +143,7 @@ dual completion; the latter two use no CPU optimizer. The hardware/service and
 residency producers take 188.598 and 313.248 seconds respectively, including
 preparation and checking. These are not full-library solve times.
 
-For the four-branch native family used in the main experiment, complete checking admits a continuous lower
+For the earlier four-branch native family, complete checking admitted a continuous lower
 of $1{,}059{,}841.723689$ ms against a continuous upper
 $1{,}352{,}483.524969$ ms, a $21.6374\%$ interval. The new fusion alternatives
 invalidate direct transfer of older prices; the bound is rederived for all
@@ -68,7 +152,7 @@ actual expert imbalance while paying for mixed prefill/decode groups. Signed
 cover and work-mass equality multipliers remain legal; all 45,091 parameter
 families and their original request counts are independently checked. This covers the declared
 library and original event domain, not every intended future implementation.
-It is independent of the integral latency reported in Table~\ref{tab:native_phases}.
+It is separate from both integral latency and the later 21-branch main-text family.
 The derivation and independent replay are in
 \path{audits/20261023/NATIVE_REQUEST_COVER_BOUND.md}. The upper transfers the
 already admitted fused columns into the complete fractional-pass witness,
@@ -106,7 +190,7 @@ At 518 arrays, prefill and decode improve to $13.607\times$ and
 $28.497\times$ against the same declared reference. Its modeled peak power
 is 299.932 W; this is a proxy budget, not physical power sign-off. The
 384-array chip remains the common experimental point for the twelve controls
-in the main text. These additional points improve latency by at most 1.24\%
+on the earlier chip. These additional points improve latency by at most 1.24\%
 without new scheduling or implementation choices; they do not establish global
 hardware optimality. The exact field substitution and checks are retained in
 \path{audits/20261023/NATIVE_ARRAY_ALLOCATION.md}.
@@ -130,3 +214,6 @@ Source versions, failed preparations, exact checks, controls, and final results
 are content-verified on local external storage and the A100 host. Evidence
 archives use external content manifests. No original OCS project code is
 modified; experiments use the copied \texttt{systems/OCS\_0.3.2} implementation.
+
+\input{update/native_solve_workflow}
+\input{update/native_lp_certificate}

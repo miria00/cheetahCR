@@ -2,8 +2,12 @@
 \label{sec:conclusion}
 CHEETAH jointly represents hardware, implementation, and temporal memory
 choices in one master LP relaxation. Operator-based optimization, checked
-bounds, and integral replay produce concrete designs. Full-input DeepSeek demonstrates $22.88\times$ overall acceleration
-under the modeled TPU-v3, with separate phase and feature controls.
+bounds, and integral replay produce concrete designs. Full-input captures and
+matched analytical controls expose prefill, decode and memory-reuse effects.
+The revised DeepSeek concept passes a declared BF16 physical scenario and has
+a tightly bounded fixed-chip LP. Its comparison with FAST's modeled TPU-v3
+baseline, calibrated cost assumptions and joint numerical convergence remain
+open; the accepted original campaign retains its separate results and evidence.
 
 
 \textbf{Acknowledgments.} We gratefully acknowledge support from federal sources: NSF under No. 24-554 (AIMing) and DARPA under No. HR00112520038 (Fallingwater). We also gratefully acknowledge support from Stanford HAI, IBM (Code Generation), Lightspeed, Felicis, and Google. This work was also partially supported by IBM and Felicis as an affiliate member of Stanford Institute for Human-centered Artificial Intelligence (HAI)’s industry program.
@@ -16,4 +20,4 @@ in part by the Office of Naval Research under Grant
 N00014-24-1-2164, and in part by the Defense Advanced
 Research Projects Agency under Grant HR00112490441.
 
-We thank Lucy Woof for her continuous support throughout. Dan Zhang for his invaluable guidance, Kevin Nam for feedback on an early draft and analysis, and ZhongWei Dang on RTL and physical design conversations. Some other people.
+Miria Feng was supported in part by the Stanford Graduate Fellowship. We also thank Lucy Woof for her continuous support throughout, Dan Zhang for his invaluable guidance, Kevin Nam for feedback on an early draft and analysis, and ZhongWei Dang on RTL and physical design conversations.

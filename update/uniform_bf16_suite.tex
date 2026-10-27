@@ -1,0 +1,109 @@
+\paragraph{Uniform BF16 extension.}
+The following archived comparisons use the earlier host-backed reference and
+physical-cost coefficients. They are not yet verified comparisons against
+FAST's modeled TPU-v3 baseline. The BF16 power and interface correction in
+Appendix~\ref{app:native_feasibility_repair} requires new chip recovery;
+the original numerical records are retained here with that scope.
+Table~\ref{tab:uniform_bf16_cnn} applies the DeepSeek comparison convention to
+fresh EfficientNet-B1--B7 and UNet captures. Each classifier result covers one complete classifier
+forward at its original resolution, cold checkpoint conversion/import and final
+output writeback. The reference uses the same frozen matrix mapper and scaling,
+900 GB/s DRAM, 32 GB/s host service, 2,048 vector lanes and 8,192 GB/s local
+service as the reported DeepSeek comparison. These latter service rates are
+analytical assumptions. The software control retains the reference matrix
+implementations while keeping intermediate tensors in DRAM and vector
+temporaries in registers.
+
+The custom search selects a common chip and independent per-invocation tiles
+from a finite recovery family. Convolution may materialize patches or read them
+directly; direct reads pay 24 scalar address/mask cycles per issued input
+element. The execution serializes transfers and kernels, retains all observed
+classifier allocations in DRAM, and charges FP32-checkpoint-to-BF16 conversion.
+Rational replay checks every original invocation, dependency, allocation,
+transfer and selected service count. This is analytical recovery, not a
+full-master optimality certificate or a measurement of the custom kernels.
+
+\begin{table}[t]
+\centering\small
+\caption{Archived BF16 vision predictions, including preparation and writeback.
+All latencies are ms. SW holds the modeled TPU-v3 resources fixed.}
+\label{tab:uniform_bf16_cnn}
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Workload & Reference & Reference + SW & Custom & Speedup \\
+\midrule
+EfficientNet-B1 & 13.657 & 3.557 & 0.826 & $16.53\times$ \\
+EfficientNet-B2 & 17.124 & 4.372 & 1.011 & $16.94\times$ \\
+EfficientNet-B3 & 28.752 & 7.276 & 1.576 & $18.25\times$ \\
+EfficientNet-B4 & 59.880 & 15.673 & 3.128 & $19.14\times$ \\
+EfficientNet-B5 & 117.697 & 29.791 & 5.946 & $19.79\times$ \\
+EfficientNet-B6 & 200.960 & 53.037 & 9.859 & $20.38\times$ \\
+EfficientNet-B7 & 354.137 & 97.591 & 16.909 & $20.94\times$ \\
+SD1.5 UNet (50 calls) & 109,439.059 & 55,112.649 & 2,712.737 & $40.34\times$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+B1--B4 select 512 $16\times16$ arrays and 114 MiB SRAM; B5--B7 select 896
+arrays and 185.875 MiB SRAM. Both designs have 16,384 vector lanes,
+2,608 GB/s DRAM and 32,768 GB/s local service. Their host interfaces supply
+512 and 256 GB/s respectively. Area/power proxies are 411.64 mm$^2$/295.55 W
+and 523.44 mm$^2$/298.47 W under the earlier coefficient set. These old power
+values do not establish compliance with the repaired 300-W BF16 model.
+This comparison includes the explicit interface provisioning difference.
+The seven fixed-resource software controls improve predicted latency by
+$3.63$--$3.95\times$; full co-design gives $16.53$--$20.94\times$.
+Classifiers and denoising UNets have no autoregressive prefill/decode split.
+
+\paragraph{Same-chip feature controls.}
+Table~\ref{tab:uniform_bf16_cnn_controls} removes one implementation freedom
+at a time while retaining the recovered chip, all original operations and
+their order, DRAM residence, cold preparation and output writeback. Direct
+affine convolution reads avoid materializing patches, after paying their
+address generation and masked reads. Per-invocation tiling chooses different
+matrix tiles for different operations. Its control uses the best single
+tile from the same five-tile menu for the whole network, while preserving
+independent convolution dataflow choices. All resulting schedules pass rational
+replay. These effects interact and are not additive; the controls optimize
+their declared serial implementation menus, not every feature-disabled schedule.
+
+\begin{table}[t]
+\centering\small
+\caption{Latency relative to the full BF16 design on the same chip.
+Larger values show the cost of removing a feature.}
+\label{tab:uniform_bf16_cnn_controls}
+\begin{tabular}{@{}lrr@{}}
+\toprule
+Workload & Materialized patches only & Best single matrix tile \\
+\midrule
+EfficientNet-B1 & $2.00\times$ & $1.040\times$ \\
+EfficientNet-B2 & $2.07\times$ & $1.049\times$ \\
+EfficientNet-B3 & $2.15\times$ & $1.064\times$ \\
+EfficientNet-B4 & $2.29\times$ & $1.065\times$ \\
+EfficientNet-B5 & $2.38\times$ & $1.090\times$ \\
+EfficientNet-B6 & $2.44\times$ & $1.096\times$ \\
+EfficientNet-B7 & $2.48\times$ & $1.103\times$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Denoising UNet.}
+The UNet result covers all 50 captured denoising calls; conditioning, the
+scheduler and image decoding remain outside that declared boundary. Its chip
+has 1,024 arrays, 209.75 MiB SRAM and a 128-GB/s host interface, with the same
+vector, DRAM and local service rates. A paid 128-KiB GELU table is checked over
+every finite BF16 input and all original tensor layouts; positional tables are
+recomputed from their captured constant programs. Preparation contributes
+32.508 ms and denoising with boundary transfers 2,680.229 ms. The result is an
+analytical UNet design, not a complete text-to-image timing measurement.
+On this same chip, restricting GELU to one banked lookup-table copy increases
+latency from 2,712.737 to 7,304.729 ms ($2.693\times$); the full design chooses
+the number of table replicas per operation and pays their bank capacity and
+reload traffic. Materializing every convolution patch increases latency to
+2,987.345 ms ($1.101\times$). In contrast, the best common matrix tile gives
+2,713.233 ms, only $1.00018\times$ slower. Thus adaptive tiling contributes
+little for this UNet, whereas lookup replication is consequential. Each control
+retains the original 50 calls, numerical table, chip and boundary transfers;
+their effects are not additive.
+
+\input{update/uniform_bf16_llama_generated}

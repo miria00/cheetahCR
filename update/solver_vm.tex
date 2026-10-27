@@ -1,47 +1,70 @@
-\section{Operator-Based Optimization with OCS}
+\section{Operator-Based Optimization and Design Recovery}
 \label{sec:solver_vm}\label{sec:ocs}\label{sec:vm_solver}\label{sec:mccormick_blowup}
-The formulation combines independent choices with long storage trajectories and shared
-hardware. Expanding every operation--event incidence is prohibitive. We adapt a variant of OCS
-0.3.2 to solve the large scale problem.
+We combine OCS working solves, structured primal improvements and complete-domain
+bounds for the continuous LP, then search and replay integral designs.
+These stages share coefficients but have distinct stopping criteria.
 
 \paragraph{Operators replace matrices.}
-For a working LP $\min_x f(x)+g(Kx)$, an operator computes the forward action
-$Kx$ and the adjoint $K^Ty$. Here $f(x)=c^Tx+I_{[\ell,u]}(x)$, and $g$
-encodes row equalities and inequalities. The adjoint accumulates local
-contributions to shared capacities and hardware. Generated operators avoid
-storing the full modeling matrix, and does not require a factorization.
+For a working LP $\min_x f(x)+g(Kx)$, $f(x)=c^Tx+I_{[\ell,u]}(x)$
+and $g$ encodes row equalities and inequalities. An operator computes $Kx$
+without storing its matrix; its adjoint $K^Ty$ accumulates row prices back to
+coordinates, including shared hardware and capacity. Generated incidence and
+coefficient reuse preserve independent invocation decisions.
 
-\paragraph{GPU first-order updates.}
-The selected OCS path uses centered Halpern primal--dual hybrid gradient updates
-with fixed diagonal steps and block-average restarts, building on first-order
-splitting~\citep{chambolle2011first,halpern1967fixed,applegate2022practicallargescalelinearprogramming}.
-Each update needs a forward action, an adjoint, and separable proximal operations.
-Objective-shifted clipping for coordinate boxes, and RHS shifts plus sign
-projection for inequality multipliers. JAX~\citep{jax2018github} compiles update blocks, while anchoring and restarts control iteration drift with an adaptive one-sided rescue controller.
+\paragraph{GPU first-order working solves.}
+Our project copy of OCS 0.3.2 uses centered Halpern primal--dual hybrid gradient
+updates with fixed diagonal steps and block-average restarts
+\citep{chambolle2011first,halpern1967fixed,applegate2022practicallargescalelinearprogramming}.
+Each step applies $K,K^T$, objective-shifted box projection and the appropriate
+dual sign projection. JAX~\citep{jax2018github} compiles the update blocks.
+Reversible power-of-two scaling reduces coefficient disparity; outward
+row/column sums choose steps with $\|\Sigma^{1/2}KT^{1/2}\|_2\le0.9$.
+All residual and bound checks return to original coordinates.
 
-\paragraph{Scaling and balanced steps.}
-Reversible power-of-two row and coordinate scaling reduces coefficient disparity.
-The adapter checks that unscaling recovers the original objective, rows and bounds.
-Outward row/column sums provide diagonal steps $\Sigma,T$ satisfying
-$\|\Sigma^{1/2}KT^{1/2}\|_2\le0.9$. A fixed reciprocal rescaling of the primal
-and dual steps balances their progress while preserving that bound. Coefficient
-range is a scaling diagnostic, not itself a condition number or a convergence
-certificate.
+\paragraph{Working supports and implicit full-domain points.}
+A checked lift embeds each restricted support into the source LP. One
+expanded-residency support has $36{,}508$ columns and $313{,}061$ rows;
+OCS reached a checked $0.0774\%$ working interval in $313.25$ seconds on an
+A100, including preparation and checking. This alone is not a full-master bound.
+For the full input, we improve independently identified owner retention,
+original tiles and streamed-weight choices, then represent temporal fields
+implicitly as weighted translations. GPU evaluation streams edge events while
+the central affine envelope is summed analytically. Capacity is checked on the
+resulting fractional point; no full event-expanded vector is allocated.
 
-\paragraph{Working sets and vector memory.}
-GPU-resident supports use sparse or generated products. A separately tested
-paged adapter keeps iteration vectors in file-backed arrays and transfers bounded
-pages, accumulating global contributions before each proximal update. Paging
-reduces GPU memory, not total vector storage, and incurs transfer overhead.
-The expanded-residency working LP has $36{,}508$ columns and $313{,}061$ rows;
-an A100 run reached a checked $0.0774\%$ working interval in $313.25$ seconds
-including preparation and checking. 
+\paragraph{Complete-domain LP certificate.}
+Coverage prices are checked against every implementation in the frozen generators.
+Work-mass and service rows extend those inequalities to every original event;
+the minimum of the 21 branch bounds gives the family lower bound.
+Together with the admitted implicit primal, this yields
+$L=734{,}095.710904$ ms and $U=734{,}720.389756$ ms, hence
+$(U-L)/U=0.0850226646\%$: a certified $0.0850\%$ LP objective gap, rounded.
+The certificate closes the continuous objective interval through specialized
+primal transformations and algebraic bounds, not a claim that generic PDHG
+iterates converged on the entire expansion
+(Appendix~\ref{app:native_lp_certificate}).
+This certificate concerns the frozen native instance; it is not transferred to
+the strengthened physical branches in Eq.~\eqref{eq:master}.
+A new source with the corrected BF16 chip instead gives a checked
+$0.0846842\%$ interval over its complete implementation and temporal domain
+(Appendix~\ref{app:corrected_native_lp}). Hardware is fixed in this result;
+the numerical reconstruction engine has not converged over the joint master.
 
-\paragraph{Bounds, pricing, and design recovery.}
-Floating iterates are proposals. Reconstruction checks primal rows and boxes
-in original coordinates, legal dual signs and box support produce outward lower
-bounds. A working lower does not cover omitted choices until pricing or a
-complete-domain certificate accounts for them. The qualified four-branch native
-family underlying the main experiment has a $21.64\%$ continuous interval. Integral recovery and replay establish
-the reported chip latency separately, neither that interval nor the working
-solver result establishes full-master optimality.
+\paragraph{Hardware branch and bound.}
+For integral recovery, a finite tree partitions array counts, vector lanes,
+memory bandwidth, host channels and local-service units. Optimistic resources
+and capacity-priced retention paths bound each region; budget-infeasible
+regions or those unable to beat a replayed incumbent are pruned.
+Promising leaves are evaluated with actual capacity and implementation costs.
+The demonstrated tree covers a declared hardware grid and conditional software
+choices, not every discrete selector of the master. It does not re-solve the
+full temporal LP at every node. Appendix~\ref{app:native_solve_workflow}
+describes the bounds and the unresolved schedule leaves.
+
+\paragraph{Recovery and replay.}
+Recovery selects one branch, an integral cover, hardware allocations and legal
+storage/transfer actions. Analytical replay recomputes services at the selected
+rates, dependency readiness and capacities, yielding the reported chip latency.
+The LP certificate and recovered design are separate outputs: integer choices
+do not remove continuous reciprocal/product relaxation error, and the
+continuous LP interval is not a discrete-design optimality guarantee.

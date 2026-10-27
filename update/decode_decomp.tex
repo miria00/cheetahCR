@@ -1,71 +1,103 @@
 \subsection{Full-Inference DeepSeek: One Chip, Prefill and Decode}
 \label{sec:decode_decomp}\label{sec:batch_sensitivity}
-We examine a DeepSeek-V3 checkpoint to 32 independent requests, each
-with 4,096 prompt and 512 output tokens. All 61 layers execute, prefill produces
-the first output, followed by 511 decode forwards. Actual expert IDs and aligned
-routing weights define the task. The recovered execution covers all
-$61{,}985{,}244$ original invocations in $41{,}987{,}272$ groups. Original FP8
-weights are dequantized to BF16 on demand and conversion is charged separately.
-The capture uses expanded attention and the full KV history, with no assumed
-quality gain from changing precision or dropping tokens.
+We evaluate DeepSeek-V3 on 32 independent requests, each with 4,096 prompt
+and 512 output tokens. All 61 layers execute: prefill produces the first
+output, followed by 511 decode forwards. Captured expert IDs and routing
+weights define all $61{,}985{,}244$ invocations in $41{,}924{,}510$ execution
+groups. Original FP8 weights are converted to BF16 with the captured rounding
+policy; higher-precision tensors and complete KV history are preserved.
 
-The single custom chip has 384 $16\times16$ MAC arrays, 4,096 vector lanes,
-89.875 MiB SRAM, 64 GiB DRAM and 2 TiB backing storage. Its declared rates are
-2,608 GB/s DRAM, 1,024 GB/s external and 16,384 GB/s local service at a 1 ns
-analytical clock; existing area/power proxies give $312.21$ mm$^2$ and $284.95$ W.
-The full-task TPU-v3 extension uses the original compute/DRAM resources with
-32 GB/s external, 8,192 GB/s local, and 2,048 primitive vector cycles/ns.
-These interface assumptions are part of the comparison, not measurements of
-a complete TPU system.
+The recovered chip has 320 $16\times16$ MAC arrays, 5,248 vector lanes,
+1,024 paid FP8 receiver lanes, 78.25 MiB SRAM, 64 GiB DRAM and 2 TiB backing.
+At a 1 ns analytical clock, the corrected chip provides 1,630 GB/s DRAM,
+640 GB/s external and 20,480 GB/s local service. It passes the shared BF16
+scenario's area, peak-power, density, pins, bank, depth and NoC predicates:
+$321.69$ mm$^2$ and $298.69$ W. The BF16 peak coefficient is 1.2 mW/MAC;
+the area scale and interface organization remain explicit concept assumptions,
+not calibrated silicon estimates. Retiming preserves the original cover,
+addresses and outer dependency order; 384 regenerated pipeline recipes pass
+replay, and all other durations are conservatively extended.
+The historical TPU-v3 extension retains the reference compute/DRAM resources
+with 32 GB/s external and 8,192 GB/s local service, and 2,048 primitive vector
+cycles/ns. These interface assumptions are explicit parts of the prediction,
+not measurements of a calibrated TPU serving stack or fabricated custom chip.
+This extension is not yet a verified reconstruction of FAST's modeled TPU-v3
+baseline, which includes ordinary XLA fusion. The ratios below use that
+retained reference with the corrected custom chip; they remain conditional
+comparisons, not established reproduction of FAST's modeled TPU-v3 baseline.
 
 \begin{table}[t]
 \centering\small
-\caption{Predicted full-task latency in seconds; conversion is counted once.}
+\caption{Corrected custom-chip predictions (seconds); ratios use the retained, uncalibrated TPU-v3 extension.}
 \label{tab:native_phases}
 \begin{tabular}{@{}lrrr@{}}
 \toprule
 Phase & TPU-v3 extension & Custom chip & Speedup \\
 \midrule
-Prefill & 13,387.193 & 1,000.078 & $13.386\times$ \\
-Decode & 53,083.324 & 1,882.692 & $28.195\times$ \\
-Conversion & 131.252 & 28.142 & $4.664\times$ \\
+Prefill & 13,387.193 & 1,078.914 & $12.408\times$ \\
+Decode & 53,083.324 & 2,074.999 & $25.582\times$ \\
+Preparation & 131.252 & 42.973 & $3.054\times$ \\
 \midrule
-Total & 66,601.769 & 2,910.911 & $\mathbf{22.880\times}$ \\
+Total & 66,601.769 & 3,196.886 & $\mathbf{20.833\times}$ \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Table~\ref{tab:native_phases} decomposes inference latency, not solver
-runtime. Phase times add and the total ratio is computed from the two total times.
-Decode accounts for $80.39\%$ of the predicted time saved, prefill $19.45\%$,
-and conversion $0.16\%$. Complete-source admission and fresh replay pass, as does
-an independent population and cost recount. The result is an admitted design,
-not a globally optimal solution of the full master. The current finite native
-family's continuous interval is $21.64\%$; that interval is not a latency error bar
-on this replayed execution.
+Phase times add; speedup is the ratio of total predicted inference latencies.
+Decode contributes $80.45\%$ of time saved, prefill $19.41\%$, and preparation
+$0.14\%$. Initial conversion is charged in preparation; subsequent streamed
+conversion is charged to the consuming kernels. Optimization time is separate.
+The retained execution's state replay is reused with the checked retiming;
+the corrected fixed-chip LP separately has a $0.0846842\%$ objective interval
+(Appendix~\ref{app:corrected_native_lp}). Neither this interval nor the
+retiming establishes global integral optimality.
 
-\subsection{What Each Feature Contribute}
+\subsection{Feature Contributions on the Same Chip}
 \label{sec:native_features}
+Table~\ref{tab:native_features} retains the archived chip and removes one
+mechanism at a time on the original numerical workload. These are matched
+execution controls, not globally optimized feature-off designs. Interacting
+rows are not an additive attribution of the headline speedup. They have not
+been retimed to the corrected chip in Table~\ref{tab:native_phases}.
 
+\begin{table}[t]
+\centering\small
+\caption{Archived-chip feature controls: predicted time saved (seconds).}
+\label{tab:native_features}
+\begin{tabular}{@{}lrr@{}}
+\toprule
+Feature & Prefill & Decode \\
+\midrule
+Matrix batching & 43.173 & 856.070 \\
+SwiGLU primitive fusion & 14.579 & 1.819 \\
+Other elementwise register storage & 257.071 & 34.026 \\
+Full-K panel reuse & 32.445 & 0 \\
+Per-use weighted decode tiles & 0 & 0.866 \\
+Optional KV residency & 0 & 15.726 \\
+Phase-reused placement (included above) & 0 & 3.698 \\
+\bottomrule
+\end{tabular}
+\end{table}
 
-\paragraph{Batching and fusion.}
-Compatible GEMMs share matrix execution while retaining each request's identity.
-The no-batch control retains weight residency and chooses each member's best
-tile, so the gain isolates grouped execution rather than repeated parameter
-loads. Small decode matrices benefit most. SwiGLU fusion keeps primitive
-intermediates in installed vector scratch, removing spills while preserving
-arithmetic, BF16 rounding, and local/vector service. It helps both phases but
-saves more time in prefill. This is storage fusion within SwiGLU, not a
-multi-GEMM gate/up/down pipeline.
+\paragraph{Batching and storage fusion.}
+The no-batch control executes every original member separately and reselects
+its tile. Resident weights remain resident; each streamed member pays its own
+receive. The control expands to exactly $61{,}985{,}244$ kernels and takes
+$2{,}999.864$ seconds, versus $2{,}100.621$ with batching. Thus grouped execution
+and shared streamed-weight delivery give $1.612\times$ decode and
+$1.064\times$ prefill gains. SwiGLU and elementwise storage choices remove
+primitive spills while retaining arithmetic, BF16 rounding, and local/vector
+service. Full-K panels reuse weights across output-row tiles, paying SRAM and
+serialized panel waves. Holding one tile fixed per parameter family adds $0.866$ seconds to decode;
+panel boundaries, buffers and residency stay fixed. This tests weighted decode
+tile adaptation, rather than every temporal choice in the master.
 
-\paragraph{KV persistence and time-indexed placement.}
-Every arm already uses cached decoding with the full history. Five retained
-layers require 163,840 paid host-to-DRAM copies, checked for source validity,
-reservation, readiness, and terminal backing. Reusing prefill's temporary region
-allows five layers to fit after prefill; a fixed partition fits two. The
-$14.901$-second placement gain is therefore \emph{included} in the $24.835$-second
-KV gain and not added to it. Only five of 61 expanded layer caches fit,
-and the wide custom interface limits the marginal value of eliminating reads.
-Backing and transfer completion are correctness costs, not features that can
-be removed for a valid speedup.
-
+\paragraph{KV and time-indexed placement.}
+Every arm retains complete cached decoding, growth, host backing and mandatory
+writes. Optional DRAM residency selects 246 request/layer/K-or-V prefix chains
+and pays 125,952 copies. A fixed whole-task partition fits 193 chains; releasing
+prefill temporaries before decode permits 246. Placement's $3.698$-second gain
+is included in the $15.726$-second KV gain. These modest marginal gains reflect
+limited DRAM capacity and the wide custom external interface. Independent
+checks replay changed copies and kernel traffic; Appendix~\ref{app:native_provenance}
+records exact inputs, costs, controls and their scope.

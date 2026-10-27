@@ -46,24 +46,46 @@ updates, reversible scaling, and structured temporal incidence.
 An LLM architect outer loop then reads resource
 prices and trial diagnostics to propose target specific implementations or hardware search neighborhoods. This reduces the reliance on brute force large space search effectively. Crucially, the hardware-software interactions and decisions are captured in the CHEETAH inner loop formulation. 
 
-\paragraph{Contributions.}We reformulate the fundamental HW/SW co-design problem into a unified  framework in CHEETAH, combining principled mathematical rigor of the LP formulation to solve strict design decisions optimally, with the powerful aggregation and causal learning of an LLM Architect outer loop for meta-optimization.
+\paragraph{Contributions.} CHEETAH combines a unified HW/SW design relaxation,
+operator-based optimization and certified bounds with an LLM architect that
+proposes implementations and hardware search neighborhoods.
 \begin{enumerate}
 
 \item \textbf{CHEETAH formulation.}
     We introduce time-indexed LP variables $p_{i,t}^k$ and rematerialization variables $r_{i,t}$ to enable cheap recompute operations instead of paying DRAM reload costs, supporting skip connections and multi-fanout nodes.
-    We unify tiling and fusion into a single problem. and use \textbf{McCormick envelopes} to realize this representation. We use classical ideas of mathematical programming (such as McCormick's envelopes and epigraph reformulation) to build a parameter-free relaxation that is exact at every integer vertex. This models coupling that internalizes the tiling-placement trade-off to discover design points that sequential pipelines systematically miss.
+    We unify tiling and fusion through \textbf{McCormick envelopes} and resource
+    epigraphs. Binary tile--residency products are exact at integral choices;
+    continuous hardware/service products retain their explicit relaxation.
+    These couplings expose tiling--placement trade-offs that sequential
+    pipelines can discard.
     % This enables the LP to discover trade-offs where accepting a suboptimal tiling configuration enables superior fusion, or vice versa---precisely the cross-stage interactions that the sequential pipeline cannot capture.
-    \item \textbf{Custom first-order GPU Operator Solver.} Comprehensive formulations of complex interactions between HW/SW yields a large scale and ill-consitioning problem, which results in stalls or diverges in stock solver. We therefore introduce \textbf{OCS}, a matrix-free JAX solver to resolve these LPs to dual convergence in seconds on a GPU. To our knowledge it is the first solver to make the McCormick-linearized joint tiling--fusion--placement co-design LP tractable at LLM scale. This collapses a days-long search into hours (Section~\ref{sec:solver_vm}).
+    \item \textbf{Operator-based GPU optimization.} OCS applies the master constraints and their adjoint without materializing the matrix. GPU working solves, structured pricing and integral recovery address complementary parts of the large native problem; Section~\ref{sec:solver_vm} distinguishes accepted working supports from full-master closure.
 
-    \item \textbf{LLM Architect Outer Loop.} The LLM outer loop steers hardware search by interpreting \emph{converged Lagrangian dual signals} from the inner LP together with a Causal Ledger of past trials to perform targeted subspace interventions, transforming black-box search into a structured, diagnostic-driven process. To our knowledge, CHEETAH is the \textbf{first} to steer an LLM-guided architecture search with the converged Lagrangian dual variables of a co-design LP: the duals \emph{indicate} where to search while the LP retains every optimality certificate. Hence the LLM proposes hardware choices, the solver never loses rigor. The Architect also enables profile-specific designs (speech models may emphasize latency, while data-synthesis models may prioritize bandwidth).
-    \item \textbf{Optimality Certificates.} Every CHEETAH design ships with an LP optimality certificate: the converged dual bound against which the realized design is measured, with the relaxation gap reported per workload and the integral optimum certified exactly on chain-structured models. A cycle-accurate RTL replay then confirms, decision by decision (tile choice, residency, eviction, etc), that the plan executed as planned with byte-exact memory occupancy. This is a stronger guarantee than the standard counter checks that agentic kernel optimizers use to validate hardware-aware code~\citep{tschand2026hawkeye}, since a counter confirms a feature was used, a certificate provably bounds how far the result can be from optimal.
+    \item \textbf{LLM Architect Outer Loop.} The architect interprets resource prices and a causal ledger of earlier trials to propose hardware and implementation changes. Deterministic checks admit proposals; the LLM itself supplies no certificate. This couples architecture exploration with the optimizer's diagnostics rather than relying only on black-box scores.
 
-    \item \textbf{Inference Speedup.} Our method demonstrates an average speedup of $\sim22.07\times$ over the baseline across a wide range of $12$ workloads ($11$ vision and language models plus the Stable Diffusion~1.5 UNet), reaching up to ${\sim}40.1\times$ on a single workload, as shown in Figure~\ref{fig:speedup} below. Our input workloads include vision, language, and diffusion models, plus a full-input DeepSeek design with $22.88\times$ overall speedup
-and matched prefill/decode feature controls.
+    \item \textbf{Bounds and executable validation.} The frozen 21-branch native
+    DeepSeek master has a certified $0.0850\%$ LP objective gap (rounded).
+    Analytical replay and selected control/datapath checks support a separate
+    recovered design; global discrete optimality remains open. The original
+    experiments retain their certificates and physical-validation evidence.
+
+    \item \textbf{Inference speedup.} The accepted prefill-oriented campaign
+    reports an average $22.07\times$ predicted speedup and up to $40.1\times$
+    under its original contracts (Figure~\ref{fig:speedup}). The new
+    checkpoint-bound campaign uses matched BF16/FP32 arithmetic for custom
+    and reference hardware, with full-inference phase and same-chip feature
+    controls. Its archived full-input DeepSeek comparison gives $31.71\times$
+    against an earlier host-backed reference; this remains conditional on the
+    unreconciled baseline and BF16 physical-cost assumptions
+    (Appendix~\ref{app:native_feasibility_repair}).
+    Section~\ref{sec:experiments} reports the uniform vision and Llama extensions
+    separately from the historical results.
 \end{enumerate}
 
 The following paper is organized as follows. Section~\ref{sec:related} discusses related work, Section~\ref{sec:prelim} summarizes preliminary background,  Section~\ref{sec:methods}
-presents the CHEETAH framework and the features we encode, and Section~\ref{sec:ocs} describes OCS. Section~\ref{sec:experiments} reports our experimental results and ablation studies, and the appendix provides containment
+presents the CHEETAH master and its features, and Section~\ref{sec:ocs} describes
+OCS, full-domain certification and hardware search. Section~\ref{sec:experiments}
+reports experimental results and ablations, and the appendix provides containment
 theorems, physical-validation details, economics, co-design blueprints, and reproduction evidence.
 
 
@@ -81,6 +103,6 @@ theorems, physical-validation details, economics, co-design blueprints, and repr
 \begin{figure}[ht!]
     \centering
 \includegraphics[width=1.0\linewidth]{fig3/speedup_final_v3.png}
-\caption{Speedup over modeled TPU-v3 baseline for each workload and formulation: CHEETAH-V1's joint tiling-fusion optimization achieves up to $\sim$40.1$\times$ acceleration, while static fusion is infeasible on large-scale LLMs. Progressive gains are visible across formulations: V0's dynamic placement improves over static by $2$--$20\times$, while V1's joint tiling-fusion adds another $2$--$4\times$ on top. See Section~\ref{sec:experiments} for full analysis and wall-clock time breakdowns.}
+\caption{Retained original prefill-oriented results over the modeled TPU-v3 baseline. Legacy labels in the artwork identify restricted controls: static fusion, fixed-tile temporal placement (V0), and joint tiling/fusion (V1). These results retain their original numerical and workload contracts; Section~\ref{sec:experiments} reports the new uniform BF16 comparisons and separates prefill from decode.}
 \label{fig:speedup}
 \end{figure}

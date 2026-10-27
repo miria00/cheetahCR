@@ -37,7 +37,13 @@ We examine two designs on the DeepSeek-V3  (trials 81 vs.\ 95) and Llama-3 70B (
 
 \subsection{Hardware and Vizier Search}
 
-In all experiments, we utilize 16 NVIDIA H100 GPUs. Each unit in the configuration provides 80 GB of VRAM, totaling 1.28 TB of available memory across the cluster. The system is characterized by a high memory bandwidth of approximately 3.35 TB/s per GPU, which is critical for the memory-intensive workloads examined in this work. In order to be consistent with prior work on accelerator design \citep{zhang_fast}, we utilize Vizier to simulate TPUv3 and perform hardware search. \cref{tab:vizier_search_space} presents Vizier's search parameter groups for completeness, and \cref{fig:pipeline} depicts standard accelerator datapath configuration layout. 
+The original campaign used 16 NVIDIA H100 GPUs, each with 80 GB of VRAM,
+and Vizier for hardware search following the experimental conventions of
+\citet{zhang_fast}. Table~\ref{tab:vizier_search_space} records that campaign's
+parameter groups; Figure~\ref{fig:pipeline} depicts its accelerator template.
+The native full-inference extension instead uses the OCS, implicit-certificate
+and finite hardware-search paths in Section~\ref{sec:ocs} and
+Appendix~\ref{app:native_solve_workflow}; it is not an all-H100/Vizier experiment.
 
 A Processing Element (PE) is a repeated compute tile in an accelerator template.
 The datapath can be modeled as a grid of PEs connected by a mesh on-chip network.

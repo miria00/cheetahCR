@@ -1,0 +1,119 @@
+\paragraph{Common comparison across the suite.}
+Table~\ref{tab:uniform_suite_overview} preserves the archived designs under
+the BF16/FP32 arithmetic and modeled reference convention used for DeepSeek.
+Each ratio compares the same complete declared task on the two chips;
+task sizes differ across models and are specified below. Cold preparation
+is included. The historical host-backed reference is not yet verified against
+FAST's modeled TPU-v3 baseline, and these chips require re-screening under the
+consistent BF16 physical-cost contract (Appendix~\ref{app:native_feasibility_repair}).
+The hardware and software controls following the table identify
+which changes contribute, without adding interacting speedup ratios.
+
+\begin{table}[t]
+\centering\small
+\caption{Archived ratios over the earlier host-backed TPU-v3-resource reference; baseline and BF16 physical-cost reconciliation remain open. Phase ratios do not add. Dashes denote inapplicable phases.}
+\label{tab:uniform_suite_overview}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Workload & Overall & Prefill & Decode \\
+\midrule
+EfficientNet-B1 & $16.53\times$ & -- & -- \\
+EfficientNet-B2 & $16.94\times$ & -- & -- \\
+EfficientNet-B3 & $18.25\times$ & -- & -- \\
+EfficientNet-B4 & $19.14\times$ & -- & -- \\
+EfficientNet-B5 & $19.79\times$ & -- & -- \\
+EfficientNet-B6 & $20.38\times$ & -- & -- \\
+EfficientNet-B7 & $20.94\times$ & -- & -- \\
+SD1.5 UNet (50 calls) & $40.34\times$ & -- & -- \\
+Llama-1 13B & $122.59\times$ & $48.00\times$ & $148.94\times$ \\
+Llama-1 65B & $68.92\times$ & $25.36\times$ & $80.76\times$ \\
+Llama-3 70B & $91.78\times$ & $47.14\times$ & $105.93\times$ \\
+DeepSeek-V3 & $31.71\times$ & $19.85\times$ & $37.93\times$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Full-inference Llama designs.}
+The same BF16/FP32 arithmetic and reference service rates apply to 32
+independent requests per model, each producing 512 greedy output tokens.
+Llama-1 retains its original 1,536-token prompt; Llama-3 uses 4,096 tokens.
+Prefill emits the first output, followed by 511 decode forwards per request.
+Cold checkpoint conversion/import and final backing are charged in every arm.
+These are modeled extensions of the paper reference convention, not measured
+TPU serving latencies. The reference remains the original host-backed
+singleton schedule; the software arm holds all reference resources fixed.
+
+Recovery selects a common chip and compatible linear batches. Between linear
+stages, each member executes its original dependent operations, keeping
+attention temporaries private. Gather/scatter, KV copies and all original
+token dependencies are retained. Whole immutable parameters may remain in
+DRAM across stages and timesteps after their first paid import. Their complete
+extents are conservatively reserved in addition to the original KV/activation
+peak. A bounded residency MILP selects these leases. The fixed-resource
+software arm also batches linears and shares weights within each stage,
+using memory-feasible complete-request cohorts and the same matrix mapper.
+These finite recovery searches provide analytical executions; the separate
+DeepSeek LP certificate is not transferred to them.
+
+\begin{table}[t]
+\centering\scriptsize
+\caption{Uniform full-inference predictions in seconds for all 32 requests. Preparation is included in totals. SW keeps TPU-v3 resources fixed.}
+\label{tab:uniform_llama_phases}
+\begin{tabular}{@{}llrrrr@{}}
+\toprule
+Model & Phase & Reference & Reference + SW & Custom & Speedup \\
+\midrule
+Llama-1 13B & Prefill & 980.380 & 720.526 & 20.425 & $48.00\times$ \\
+ & Decode & 17,668.410 & 1,317.840 & 118.631 & $148.94\times$ \\
+ & Total & 18,663.574 & 2,053.150 & 152.245 & $122.59\times$ \\
+\addlinespace
+Llama-1 65B & Prefill & 4,407.777 & pending & 173.827 & $25.36\times$ \\
+ & Decode & 82,145.424 & pending & 1,017.176 & $80.76\times$ \\
+ & Total & 86,627.355 & pending & 1,256.908 & $68.92\times$ \\
+\addlinespace
+Llama-3 70B & Prefill & 15,076.868 & 10,905.168 & 319.824 & $47.14\times$ \\
+ & Decode & 106,905.123 & 7,982.193 & 1,009.241 & $105.93\times$ \\
+ & Total & 121,981.992 & 18,887.361 & 1,329.065 & $91.78\times$ \\
+\addlinespace
+\bottomrule
+\end{tabular}
+\end{table}
+
+Llama-1 13B selects 512 $16\times16$ arrays, 16,384 vector lanes, 114 MiB SRAM and a 512-GB/s host interface (411.64 mm$^2$/295.55 W proxies). Its 43,350,816 logical operations complete in 1 cohort(s) of 32 requests. It retains 275 parameters occupying 13.416 GiB; the conservative DRAM bound is 63.998 GiB within 64 GiB. Prefill/decode account for 5.19\%/94.81\% of predicted time saved; preparation is separate. Fixed-resource software improves the reference by $9.09\times$; the custom design is a further $13.49\times$ faster.
+
+Llama-1 65B selects 128 $16\times16$ arrays, 12,288 vector lanes, 74.375 MiB SRAM and a 1,024-GB/s host interface (326.38 mm$^2$/298.15 W proxies). Its 114,898,464 logical operations complete in 4 cohort(s) of 8 requests. It retains 335 parameters occupying 23.045 GiB; the conservative DRAM bound is 64.000 GiB within 64 GiB. Prefill/decode account for 4.96\%/95.03\% of predicted time saved; preparation is separate.
+
+Llama-3 70B selects 512 $16\times16$ arrays, 16,384 vector lanes, 114 MiB SRAM and a 512-GB/s host interface (411.64 mm$^2$/295.55 W proxies). Its 133,248,544 logical operations complete in 1 cohort(s) of 32 requests. It retains 373 parameters occupying 11.241 GiB; the conservative DRAM bound is 63.997 GiB within 64 GiB. Prefill/decode account for 12.23\%/87.77\% of predicted time saved; preparation is separate. Fixed-resource software improves the reference by $6.46\times$; the custom design is a further $14.21\times$ faster.
+
+All custom designs retain 64-GiB DRAM and use the same paid memory-interface
+and local-service model as DeepSeek. These comparisons include differences
+in installed interface bandwidth. Local and A100 replays check service and
+logical memory; physical fragmentation and silicon timing are not measured.
+
+\begin{table}[t]
+\centering\scriptsize
+\caption{Matched custom-chip controls. Extra predicted time in seconds relative to each retained design; effects are not additive.}
+\label{tab:uniform_llama_controls}
+\begin{tabular}{@{}llrrr@{}}
+\toprule
+Model & Control & Prefill extra & Decode extra & Latency ratio \\
+\midrule
+Llama-1 13B & No linear batching & 0.000 & 222.329 & $2.460\times$ \\
+ & Singletons, no weight leases & 2.298 & 1,417.469 & $10.326\times$ \\
+ & KV spill/restore & 0.115 & 137.112 & $1.901\times$ \\
+ & No cross-step weight residency & 0.000 & 20.976 & $1.138\times$ \\
+\addlinespace
+Llama-1 65B & No linear batching & 0.000 & 1,324.921 & $2.054\times$ \\
+ & Singletons, no weight leases & 6.969 & 4,909.761 & $4.912\times$ \\
+ & KV spill/restore & 0.242 & 287.970 & $1.229\times$ \\
+ & No cross-step weight residency & 0.139 & 94.616 & $1.075\times$ \\
+\addlinespace
+Llama-3 70B & No linear batching & 0.000 & 1,175.788 & $1.885\times$ \\
+ & Singletons, no weight leases & 12.443 & 7,551.977 & $6.692\times$ \\
+ & KV spill/restore & 0.124 & 134.051 & $1.101\times$ \\
+ & No cross-step weight residency & 0.000 & 17.593 & $1.013\times$ \\
+\addlinespace
+\bottomrule
+\end{tabular}
+\end{table}
+

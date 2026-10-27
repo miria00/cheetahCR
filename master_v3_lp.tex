@@ -1,11 +1,36 @@
 \section{Complete Rows of the Master Blocks}
 \label{app:master_rows}\label{app:master_v3}
-This appendix expands the abbreviated families in \eqref{eq:master}. There is
-one master; the blocks below are its included alternatives. All displayed
-branch coordinates are homogenized: unit right-hand sides become $\lambda_b$,
-affine capacity becomes $C^\lambda(h_b)$, and finite coordinate bounds become
-$\ell_j\lambda_b\le z_j\le u_j\lambda_b$. At weight one these are the original
-rows; at weight zero the zero vector is feasible.
+Equation~\eqref{eq:master} is a perspective formulation of a declared finite
+family. If branch $b$ has equality matrix $E_b$, inequality matrix $G_b$,
+right-hand sides $e_b,g_b$, and coordinate box $[\ell_b,u_b]$, its complete
+block form is
+\begin{equation}
+\begin{aligned}
+ \min_{\lambda,x}\quad&
+ \sum_{b\in\mathcal B_C}\kappa_b\sum_{e\in\mathcal E_b}d_{be}
+ +\sum_{b\in\mathcal B_P}\alpha_b
+       \left(\sum_iT_{bi}+\sum_{i,t}c^{\rm remat}_{bi}r_{bit}\right)\\
+ \text{s.t.}\quad&E_bx_b=e_b\lambda_b,\quad G_bx_b\le g_b\lambda_b,\\
+ &\ell_{b\nu}\lambda_b\le x_{b\nu}\le u_{b\nu}\lambda_b,\quad
+   \lambda_b\ge0,\quad\sum_b\lambda_b=1.
+\end{aligned}
+\label{eq:master_block}
+\end{equation}
+This is the explicit coefficient expansion of $\sum_b c_b^Tx_b$: duration
+coordinates carry cost $\kappa_b$ in causal branches; operation latency and
+rematerialization carry their original costs in retained schedule branches.
+All other coordinates in these blocks have zero objective cost. Branch weights
+are not multiplied into this expression a second time. A native-only instance
+has $\mathcal B_P=\varnothing$. The declared row matrices include the direct
+physical constraints below precisely when that versioned branch includes them.
+Only finite endpoints generate box rows. A branch at weight one retains its
+original constraints and objective; setting every other branch to zero gives
+an explicit inclusion map. This does not transfer a lower bound from one
+branch to a larger family. The retained schedule block below explains inclusion
+of the supplied joint LP when it is configured as a branch. The certified
+21-branch native instance uses the causal blocks and their identified extensions;
+its bound is not asserted for a union with additional schedule models or a
+larger implementation library.
 
 \subsection{The Retained Joint Tiling--Placement Block}
 For original operation $i$, configuration $c$, edge $e$, and fixed time label
@@ -30,83 +55,296 @@ These rows preserve the original fractional savings convention. Extra cold-start
 copy, or exact-product constraints are not appended to this block. Causal
 execution uses its own complete contract instead.
 
-\subsection{Causal Boundaries, Backing, and Implementation Conditions}
-The cover, lifecycle, state and capacity rows appear in \eqref{eq:master}.
-The remaining boundary and backing rows are
-\begin{align*}
-&\beta_{j0}=I_j\lambda_b,\qquad p_{j\tau0}=I_{j\tau}\lambda_b,\qquad
- \sum_jm_jp_{j\tau0}\le C^\lambda_\tau(h_b),\\
-&\beta_{je}\le\sum_\tau p_{j\tau e}+D_{ie}\quad((j,i)\in\mathcal U),\\
-&\beta_{je}\le\sum_\tau p_{j\tau e}\quad(j\in\mathcal B_{\rm back}),\qquad
- \beta_{jE}\le p_{j,H,E}+p_{j,D,E}\quad(j\in\mathcal T),\\
-&y_k=0\quad(k\in\mathcal K_{\rm bad}),\qquad
- w_{ke}=f_{ke}\quad(k\in\mathcal K_{\rm io}).
-\end{align*}
-$\mathcal U$ lists required user/backing pairs, $\mathcal B_{\rm back}$ persistent
-backing invariants, and $\mathcal T$ terminal objects. Certified recomputable
-objects may be exempted from the first two sets, never from readiness or required
-terminal backing. $\mathcal K_{\rm bad}$ excludes uncertified repeat outputs;
-$\mathcal K_{\rm io}$ uses the streamed-I/O completion convention.
-History at $e=-1$ and capacity actions at $e=E$ are zero. Recomputations require
-prior primary completion. Starts, finishes, and all copy directions consume the
-same original event domain.
+\subsection{Native Cover, Lifecycle and Storage}
+All following equations use scaled coordinates in one native branch.
+The event range is $0\le e<E$, with storage/completion states at $0\le e\le E$.
+A column covers its original nodes $S_k$, including any conversion nodes; all
+cover, work-mass, active-state, typed $w=f$, control and operand-readiness rows
+are those in Eq.~\eqref{eq:master}. In particular
+$\sum_k a_{ke}=A_e\le\lambda_b$ is an aggregate active-mass restriction.
+Distinct invocations retain distinct coverage constraints even when coefficients
+are reused.
 
-\subsection{Resource Demands and Linear Service Envelopes}
-For kernel coefficients $b_k^W,b_k^I,b_k^O$, compute demand $M_k$, vector work
-$V_k$, and local traffic $L_k$, the linear demands include
-\begin{align*}
-Q_e^{B0}&=\sum_{j,\tau\to\tau'}m_jq_{j,\tau\to\tau',e}+\sum_k b_k^Ww_{ke},&
-Q_e^{Bi}&=\sum_k b_k^Iw_{ke},&Q_e^{Bo}&=\sum_k b_k^Ow_{ke},\\
-Q_e^N&=\sum_k M_kw_{ke},&Q_e^V&=\sum_k V_kw_{ke}.&&
-\end{align*}
-Demand coefficients include each implementation's padding, retained/reloaded
-weights, conversions, and workspace convention. For $r\in[\ell,h]$ with
-$u_-=1/h$, $u_+=1/\ell$, the homogenized reciprocal envelope is
-\begin{align*}
-&\ell\lambda_b\le r\le h\lambda_b,\quad
- u_-\lambda_b\le u\le u_+\lambda_b,\\
-&u\ge 2\lambda_b/a-r/a^2\quad(a\in\mathcal A),\qquad
- u\le ((\ell+h)\lambda_b-r)/(\ell h).
-\end{align*}
-For demand $0\le Q\le\bar Q\lambda_b$, its service envelope is
-\begin{align*}
-&Z\ge0,\quad Z\ge u_-Q,\quad
- Z\ge\bar Q u+u_+Q-\bar Q u_+\lambda_b,\\
-&Z\le u_+Q,\qquad Z\le\bar Q u+u_-Q-\bar Q u_-\lambda_b.
-\end{align*}
-Compute and vector services each obey $Z_e^N\le d_e$, $Z_e^V\le d_e$.
-The shared DRAM pool obeys $Z_e^{B0}+Z_e^{Bi}+Z_e^{Bo}\le d_e$.
-Fixed external and local rates additionally impose
-\begin{align*}
-&\sum_{j,H\in\{\tau,\tau'\}}\frac{m_j}{H_{\rm rate}}q_{j,\tau\to\tau',e}\le d_e,\\
-&\sum_{j,S\in\{\tau,\tau'\}}\frac{m_j}{L_{\rm rate}}q_{j,\tau\to\tau',e}
-       +\sum_k\frac{L_k}{L_{\rm rate}}w_{ke}\le d_e.
-\end{align*}
-A branch with a rate menu disaggregates the corresponding demand over its
-selector. The causal objective contribution is $\kappa_b\sum_e d_e$.
-Recomputation is already charged in $w$ and must not be added a second time.
-Stored coefficients and outward rounding receipts define the actual checked LP.
+Let $O_k$ be implementation outputs and $\tau_k$ their declared destination.
+For initial indicators $I_j,I_{j\tau}$, the birth and tier recurrences are
+\begin{align}
+ &\beta_{j0}=I_j\lambda_b,\qquad p_{j\tau0}=I_{j\tau}\lambda_b,\nonumber\\
+ &\beta_{j,e+1}=\beta_{je}+\sum_{k:j\in O_k}f_{ke},\nonumber\\
+ &p_{j\tau,e+1}=p_{j\tau e}-v_{j\tau e}
+   +\sum_{\sigma:\sigma\to\tau}q_{j,\sigma\to\tau,e}
+   +\sum_{k:j\in O_k,\tau_k=\tau}f_{ke}
+   +{\bf1}_{\{\tau=D,\ j\in\mathcal J_{\rm stage}\}}\delta_{je}.
+ \label{eq:native_state}
+\end{align}
+$H,D,S$ denote host, DRAM and SRAM. The drain term occurs only in staging
+branches. Ordinary copy links are $H\leftrightarrow D\leftrightarrow S$.
+A copy retains its source and adds destination state at the next event; it
+is not a destructive move or instantaneous readiness. State, eviction,
+copy, choice and lifecycle masses have boxes $[0,\lambda_b]$.
+
+For a nonterminal object's original users $\mathcal U_j$, backing requires
+\begin{align}
+ &\beta_{je}\le p_{jHe}+p_{jDe}+p_{jSe}+D_{ie}
+           &&(i\in\mathcal U_j,\ 0\le e\le E),\nonumber\\
+ &\beta_{je}\le p_{jHe}+p_{jDe}+p_{jSe}
+           &&(j\text{ terminal},\ 0\le e\le E),\nonumber\\
+ &\beta_{jE}\le p_{jHE}+p_{jDE}
+           &&(j\text{ terminal}).
+ \label{eq:native_backing}
+\end{align}
+Terminal backing implies the corresponding user rows because $D_{ie}\ge0$;
+their exact elimination changes no feasible point. KV appends use original
+object identities, complete prefix operands and these same persistence rules.
+The native certified family adds no recomputation columns. A separate
+recomputation extension must charge repeat work, gate it on prior production,
+restore tier state without a second birth/completion, and explicitly identify
+which backing obligations can be discharged by recomputation.
+
+\paragraph{Selected numerical representation.}
+A raw FP8 parameter and its converted BF16 parameter are different objects.
+For converted object $j$, raw owner $r(j)$, and consumer $i$, define
+$R_{ij}=\sum_{k\ni i:\,k\ {\rm reads}\ r(j)}y_k$.
+Selected-reader branches replace the corresponding nonterminal user row by
+\begin{align}
+ \beta_{je}&\le\sum_\tau p_{j\tau e}+D_{ie}+R_{ij},&
+ R_{ij}&\le\sum_\tau p_{r(j),\tau e}+D_{ie}.
+ \label{eq:native_formats}
+\end{align}
+The actual selected implementation still requires readiness in its declared
+input tier. Original conversion nodes remain covered. Earlier branches retain
+their original backing rows; Eq.~\eqref{eq:native_formats} is an identified
+alternative contract, not an equivalence transformation of them.
+
+\subsection{Capacities, Staging and Installed Hardware}
+Define the transient ordinary occupancy
+\[
+ o_{j\tau e}=p_{j\tau e}-v_{j\tau e}
+              +\sum_{\sigma:\sigma\to\tau}q_{j,\sigma\to\tau,e}.
+\]
+Let $N=h_{b,\rm arrays}$, $S=h_{b,\rm SRAM}$ in MiB, and $V=h_{b,\rm vector}$.
+The source introduces $\chi_e\approx N A_e$ with the four linear inequalities
+\begin{align}
+ n_-A_e\le\chi_e\le n_+A_e,\qquad
+ N+n_+A_e-n_+\lambda_b\le\chi_e
+ \le N+n_-A_e-n_-\lambda_b .
+ \label{eq:native_workspace}
+\end{align}
+Let $W_N,W_V$ be the original per-array and active-vector workspace constants,
+$P_k$ private panel SRAM, $D_k$ private DRAM workspace, and
+$O_{k\tau}=\sum_{j\in O_k:\tau_k=\tau}m_j$ output reservation.
+The newest native branch uses
+\begin{align}
+ &\sum_jm_jo_{jSe}+W_N\chi_e+W_VA_e
+        +\sum_k(P_k+O_{kS})a_{ke}
+        +(C_{\rm stage}+C_{\rm receiver})\lambda_b
+       \le 2^{20}S,\nonumber\\
+ &\sum_jm_jo_{jDe}+\sum_k(D_k+O_{kD})a_{ke}
+        +\sum_{j\in\mathcal J_{\rm stage}}m_j\delta_{je}
+       \le C_D\lambda_b,\nonumber\\
+ &\sum_jm_jo_{jHe}+\sum_k O_{kH}a_{ke}\le C_H\lambda_b .
+ \label{eq:native_capacity}
+\end{align}
+Branch-specific absent terms are zero. Entry and exit capacity rows count the
+resident state and installed dedicated reservations, without active work or
+in-flight transfers. Installed bank, register, controller and receiver
+requirements also give affine hardware rows, alongside area and power
+proxies. Host/local channel counts and receiver variants are whole-program
+choices; arrays, vector lanes, SRAM and DRAM bandwidth remain shared continuous
+coordinates inside each branch.
+
+\paragraph{Explicit parameter staging.}
+For each stageable owner $j$, the additional coordinates obey
+\begin{align}
+ &\eta_{j0}=\eta_{jE}=0,\quad
+   \eta_{j,e+1}=\eta_{je}+\rho_{je}-\delta_{je},\nonumber\\
+ &0\le\delta_{je}\le\eta_{je}\le\beta_{je},\qquad
+   0\le\rho_{je}\le p_{jHe}-v_{jHe},\nonumber\\
+ &\sum_jm_j\eta_{je}\le C_{\rm stage}\lambda_b,\nonumber\\
+ &\sum_jm_j(\eta_{je}-\delta_{je}+\rho_{je})
+   +\sum_{j,\ H\in\{\tau,\tau'\}}\min(m_j,C_{\rm stage})q_{j,\tau\to\tau',e}
+   +\sum_k R_k^{\rm stage}a_{ke}\le C_{\rm stage}\lambda_b .
+ \label{eq:native_staging}
+\end{align}
+The state bound applies through exit; the transition row applies to action
+events. $R_k^{\rm stage}$ is the original implementation's reservation:
+ordinary host service uses $\min(B_k^H,C_{\rm stage})$, while full-K and receiver
+implementations use their explicit panel/buffer reservation.
+The drain enters DRAM state and transient capacity in
+Eqs.~\eqref{eq:native_state}--\eqref{eq:native_capacity}.
+Dedicated staging and receiver SRAM cannot simultaneously hold ordinary data.
+
+\subsection{Native Resource Demands and Linear Service Envelopes}
+For original stream bytes $B_k$, MAC demand $M_k$, and vector work $V_k$,
+the native variable-rate demands are
+\begin{align}
+ Q_e^B&=\sum_{j,\tau\to\tau'}m_jq_{j,\tau\to\tau',e}
+          +\sum_k B_kw_{ke}+\sum_{j\in\mathcal J_{\rm stage}}m_j\delta_{je},
+          \nonumber\\
+ Q_e^N&=\sum_k (M_k/256)w_{ke},\qquad
+ Q_e^V=\sum_k V_kw_{ke}.
+ \label{eq:native_demands}
+\end{align}
+Here one native array has $16\times16$ MACs. All traffic on the same DRAM
+service pool enters $Q_e^B$ before applying its epigraph. Different resource
+services each satisfy $Z_e^r\le d_e$.
+For a rate $r\in[\ell,h]$, $u_-=1/h$, $u_+=1/\ell$, the ideal homogenized
+reciprocal and product rows are
+\begin{align}
+ &\ell\lambda_b\le r\le h\lambda_b,\quad
+ u_-\lambda_b\le u\le u_+\lambda_b,\nonumber\\
+ &u\ge2\lambda_b/a-r/a^2\quad(a\in\mathcal A),\qquad
+ u\le((\ell+h)\lambda_b-r)/(\ell h),\nonumber\\
+ &0\le Q\le\bar Q\lambda_b,\quad Z\ge0,\quad Z\ge u_-Q,\nonumber\\
+ &Z\ge\bar Q u+u_+Q-\bar Q u_+\lambda_b,\quad
+ Z\le u_+Q,\quad Z\le\bar Q u+u_-Q-\bar Q u_-\lambda_b .
+ \label{eq:native_envelopes}
+\end{align}
+The implemented LP uses outward-rounded reciprocal endpoints and row
+coefficients derived from exact rational interpretations of supplied binary64
+values. Each coefficient error is paid against its original coordinate box in
+the row RHS, rounded upward; errors on unbounded coordinates are refused.
+Thus stored rows contain the physical graph without asserting equality to it.
+The source demand bounds $\bar Q$ cover the full declared generator domain,
+not just activated working columns.
+
+Fixed-rate ports use integer-scaled service rows. With $B_k^H,B_k^L$ the
+original host/local byte coefficients, $t_k^{\rm setup}$ host setup ticks,
+$B_k^{\rm stage}$ the staging service bytes and $t_k^{\rm recv}$ receiver ticks,
+\begin{align}
+ &\sum_{j,\ H\in\{\tau,\tau'\}}m_jq_{j,\tau\to\tau',e}
+       +\sum_jm_j\rho_{je}+\sum_k(B_k^H+r_Ht_k^{\rm setup})w_{ke}
+       \le r_Hd_e,\nonumber\\
+ &\sum_{j,\ S\in\{\tau,\tau'\}}m_jq_{j,\tau\to\tau',e}
+       +\sum_k B_k^Lw_{ke}\le r_Ld_e,\nonumber\\
+ &\sum_jm_j(\rho_{je}+\delta_{je})
+       +2\sum_{j,\ H\in\{\tau,\tau'\}}m_jq_{j,\tau\to\tau',e}
+       +\sum_k B_k^{\rm stage}w_{ke}\le r_{\rm stage}d_e,\nonumber\\
+ &\sum_k t_k^{\rm recv}w_{ke}\le d_e,\qquad
+   \sum_k t_k^{\min}w_{ke}\le d_e .
+ \label{eq:native_fixed_ports}
+\end{align}
+Stage-owner sums are restricted to $\mathcal J_{\rm stage}$.
+Ordinary kernels pay $B_k^{\rm stage}=2B_k^H$; streamed implementations
+substitute their paid staging recipe. Absent receiver/setup/floor terms are zero.
+The current source retains the floor row when its implementation contract
+requires it. The objective is $\kappa\sum_e d_e$, with $\kappa$ the exact
+stored binary64 conversion from ns to ms. Integral replay adds its declared
+clock, descriptor and dispatch accounting; LP event sharing alone does not
+establish realizable kernel overlap.
+
+\subsection{Direct Roofline and Physical Constraints}
+\label{app:physical_rooflines}
+The strengthened fixed-chip implementation uses one installed chip $\bar h_b$
+per whole-program branch. Its scaled coordinates satisfy
+$h_b=\lambda_b\bar h_b$; no operation chooses a separate chip. Let
+$\bar C_b$ be installed BF16 matrix throughput in FLOP/ns, and
+$\bar B_{br}$ the delivered byte/ns rate of interface $r$.
+With original useful work $F_k^{\rm useful}\le F_k^{\rm issued}$ and linear
+traffic incidence $\mathsf B_{bre}$, the source adds
+\begin{align}
+ &\sum_k F_k^{\rm issued}w_{ke}\le\bar C_b d_e,
+ &\mathsf B_{bre}(q,w,\rho,\delta)&\le\bar B_{br}d_e,\nonumber\\
+ &\sum_k V_kw_{ke}\le\bar V_b d_e,
+ &b&\in\mathcal B_{\rm phys},\ e\in\mathcal E_b .
+ \label{eq:hard_roofline_rows}
+\end{align}
+For the suite's $16\times16$ arrays at 1 GHz,
+$\bar C_b=512\bar N_b$ and
+$F_k^{\rm issued}=512\,\mathrm{jobs}_k\,\mathrm{bundle}_k\,
+\mathrm{reductionCycles}_k$; one MAC is two FLOPs. The demand sums include
+every concurrently active implementation and transfer sharing a resource.
+HBM, host, local SRAM, DMA staging and aggregate bank ports have separate
+incidences and limits. The suite's external-copy staging row charges at least
+$64\lceil m/32\rceil$ bytes for a transfer of $m$ bytes, accounting for its
+32-byte-word write and read. This is an alignment-independent necessary bound;
+replay pays actual alignment, commands and queue costs. Kernel local traffic,
+SRAM-copy endpoints and DMA staging enter one aggregate bank-port row.
+
+For a selected branch ($\lambda_b=1$), summing over the same event interval
+with total duration $T=\sum_e d_e>0$ gives
+\begin{equation}
+ \mathrm{MFU}=\frac{\sum_{e,k}F_k^{\rm useful}w_{ke}}{\bar C_bT}
+ \le\frac{\sum_{e,k}F_k^{\rm issued}w_{ke}}{\bar C_bT}\le1,
+ \qquad
+ \mathrm{MBU}_r=\frac{\sum_e\mathsf B_{bre}}{\bar B_{br}T}\le1.
+ \label{eq:hard_roofline_guarantee}
+\end{equation}
+Traffic includes the represented reads, writes, repeated loads and transfers;
+vector arithmetic is not counted as BF16 matrix work. No tolerance declares a
+positive resource residual zero at exact admission. These inequalities remain
+linear because the installed rates are branch constants. In a variable-hardware
+relaxation, $C(h)d_e$ is bilinear; its McCormick envelope does not provide this
+exact fixed-chip guarantee. Fractional branch mixtures and intermediate solver
+iterates are not reported as fabricated or executable chips.
+
+Write installed-component area and all-components-active peak power as
+$\mathsf A_b^\lambda=a_{b0}\lambda_b+a_b^Th_b$ and
+$\mathsf P_b^\lambda=p_{b0}\lambda_b+p_b^Th_b$. The shared constraint compiler
+adds the following exact affine rows:
+\begin{align}
+ &\mathsf A_b^\lambda\le600\lambda_b,
+ \quad\mathsf P_b^\lambda\le300\lambda_b,
+ \quad\mathsf P_b^\lambda\le2\mathsf A_b^\lambda,\nonumber\\
+ &\frac{h_{b,B}}{\eta_H\beta_H}\le n_H^{\max}\lambda_b,
+ \quad\frac{h_{b,B}}{\eta_H\beta_H}
+       +\frac{\bar B_{b,\rm host}}{\eta_{\rm host}\beta_{\rm host}}\lambda_b
+       \le n_{\rm pkg}^{\max}\lambda_b,\nonumber\\
+ &h_{b,B}\le\bar B_{b,\rm controller}\lambda_b,
+ \quad 2^{20}h_{b,S}=65536\,n_b\lambda_b,
+ \quad n_bh_{b,N}\le5{,}000{,}000\lambda_b .
+ \label{eq:physical_budget_rows}
+\end{align}
+Here area is in $\mathrm{mm}^2$, power in W, $\beta$ is byte/ns per signal pin,
+$\eta$ is delivered efficiency, $n_b$ is the fixed installed bank count,
+and $h_{b,B},h_{b,S},h_{b,N}$ denote bandwidth, SRAM MiB and arrays.
+The declared BF16 scenario uses at most 4,096 combined host/HBM signal pins,
+whole 64-KiB banks with $n_b\le4{,}096$, bank-array aspect between $1/4$ and 4,
+and a logic-depth proxy at most 35. Each bank supplies a combined 32-byte/cycle
+port at 1 GHz. Installed-buffer lower bounds prevent hardware arrays, vector
+registers or DMA storage from borrowing memory already assigned to live data.
+Bank organization, pipeline depth and interface choices are fixed template
+constants; an invalid template cannot become an admitted positive-weight branch.
+
+Peak power uses 1.2 mW per BF16 MAC in the revised analytical scenario, with
+separately priced SRAM, vector, controller and interface components. It is not
+multiplied by MFU. Inherited area coefficients and their sensitivity factors
+remain declared assumptions. The NoC-size and chip-average density rows are
+proxies, not detailed network congestion or hotspot models; arbitrary bank/link
+overlap additionally needs its actual resource incidence. LP construction and
+recovery use the same identified coefficient set and gates.
+
+\paragraph{Implementation and certificate scope.}
+These rows are compiled by \texttt{native\_physical\_contract.py} and
+\texttt{native\_suite\_physical\_rows.py}; the fixed-rate native wrapper also
+adds direct compute, bandwidth and vector ceilings. The complete saved
+Llama-13B execution passes 520,216,367 added scalar rows and four hardware
+boxes. Integration into every other master construction path is unfinished.
+The 21-branch $0.0850\%$ certificate in
+Appendix~\ref{app:native_lp_certificate} retains its original rows and costs;
+it is not a certificate for the strengthened physical family.
 
 \subsection{Feature Scope}
 \begin{table}[h]
 \centering\small
-\caption{Master scope versus the current native performance result.}
+\caption{Master encoding and the current native performance result.}
 \begin{tabularx}{\linewidth}{@{}lXX@{}}
 \toprule
 Family & Encoding & Native result credited here \\
 \midrule
-Hardware sizing & Shared resources, service and area/power rows & One integral chip, explicit interface assumptions \\
-Tiling and batching & Independent cover and work coefficients & Compatible shared-weight GEMMs \\
-Fusion & Whole implementation ports and workspace & SwiGLU intermediate storage fusion \\
-Temporal placement & Tier state, copies, readiness and capacity & Five KV layers vs.\ fixed two-layer partition \\
-KV persistence & Append identities, prefix dependencies, terminal backing & Full history and paid restoration \\
-Rematerialization & Permitted repeat implementations, charged work & No new native gain claimed \\
-Precision and sparsity & Qualified implementation branches & Capture precision fixed; no pruning/quality credit \\
-Overlap and reordering & Event placement and shared resource service & Serial recovered execution \\
-Clock, technology, prefix or diffusion reuse & Optional branch-specific contracts & Not credited in native comparison \\
+Hardware sizing & Shared resources, installed banks, area/power rows & One chip; explicit interface assumptions \\
+Tiling and batching & Independent cover and work coefficients & Compatible shared-weight GEMMs and per-use tiles \\
+Fusion/registers & Original ports, outputs and private workspace & SwiGLU and elementwise storage choices \\
+Temporal placement & Tier states, paid copies, transient capacity & 246 KV chains vs.\ 193 in a fixed partition \\
+KV persistence & Append identities, prefix readiness, terminal backing & Full history and paid restoration \\
+Parameter supply & Staging, panel buffers, raw/converted backing & Full-K panels and paid FP8-to-BF16 receiver \\
+Rematerialization & Retained schedule or explicit repeat extension & No native repeat-column gain claimed \\
+Precision/sparsity & Separately qualified implementation contracts & Fixed capture precision; no pruning/quality gain \\
+Overlap/reordering & Event placement and resource epigraphs & Serial inter-kernel replay; internal panel pipelines \\
 \bottomrule
 \end{tabularx}
 \end{table}
-Quality-changing alternatives are not admitted merely because their byte costs
-can be expressed linearly. Each needs a numerical contract and an executable
-implementation. Proposed library coverage remains distinct from measured gains.
+The generic formulation can express further clock, memory technology or reuse
+contracts, but they are not thereby members of the certified finite native
+pool. Adding a branch, implementation, or hardware range requires a new
+instance identity and new bounds. Quality-changing alternatives additionally
+need their own numerical contract.
