@@ -1,5 +1,11 @@
 \section{Complete Rows of the Master Blocks}
 \label{app:master_rows}\label{app:master_v3}
+Appendices~\ref{app:rows_retained}--\ref{app:rows_scope} list the rows block by
+block: the retained tiling--placement block (\ref{app:rows_retained}), cover,
+lifecycle and storage (\ref{app:rows_cover}), capacities, staging and installed
+hardware (\ref{app:rows_capacity}), resource demands and service envelopes
+(\ref{app:rows_service}), direct rooflines (\ref{app:physical_rooflines}) and feature
+scope (\ref{app:rows_scope}).
 Equation~\eqref{eq:master} is a perspective formulation of a declared finite
 family. If branch $b$ has equality matrix $E_b$, inequality matrix $G_b$,
 right-hand sides $e_b,g_b$, and coordinate box $[\ell_b,u_b]$, its complete
@@ -312,19 +318,6 @@ remain declared assumptions. The NoC-size and chip-average density rows are
 proxies, not detailed network congestion or hotspot models; arbitrary bank/link
 overlap additionally needs its actual resource incidence. LP construction and
 recovery use the same identified coefficient set and gates.
-
-\paragraph{Implementation and certificate scope.}
-These rows are compiled by \texttt{native\_physical\_contract.py} and
-\texttt{native\_suite\_physical\_rows.py}; the fixed-rate native wrapper also
-adds direct compute, bandwidth and vector ceilings. The complete saved
-Llama-13B execution passes 520,216,367 added scalar rows and four hardware
-boxes. Integration into every other master construction path is unfinished.
-The
-1,557-branch expanded family has a complete $0.067154\%$ certificate
-(Appendix~\ref{app:expanded_native_certificate}), retaining variable hardware,
-its declared physical rows and its original product/bank relaxation. Its
-fractional point does not inherit the exact installed-rate MFU guarantee of
-the fixed-chip wrapper merely by satisfying a relaxed product envelope.
 
 \subsection{Feature Scope}\label{app:rows_scope}
 \begin{table}[h]

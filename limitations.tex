@@ -1,28 +1,25 @@
 \section{Limitations, Future Work, and Broader Impact}\label{app:limitations}
-The model optimizes a declared workload, finite implementation library, and
-analytical hardware contract. The frozen 1,557-branch expanded master is
-certified to a $0.067154\%$ LP objective gap. This completes that continuous
-instance; a larger implementation universe requires new bounds. OCS's closing
-stage uses manually selected supports and proof directions. General automatic
-support discovery and global discrete optimality remain open; neither LLM
-guidance nor a favorable numerical objective supplies a global optimality proof. Continuous
-relaxation bounds, feasible schedules, numerical
-inference equivalence, and physical timing are distinct claims. The full-input
-DeepSeek result uses captured routes and expanded attention under its recorded
-precision policy; its workload is reproducible, not statistically representative
-of every deployment. The large speedup depends on the reference and custom
-memory-interface assumptions. Same-chip controls isolate software effects but
-are not globally reoptimized ablations, and they must be read at their own
-hardware and workload: retention savings shrink as a link widens, batching can
-remove array padding without changing an external load count, and nested KV
-placement controls are not independent contributions.
+CHEETAH is a new mathematical abstraction for global HW/SW co-design. It
+captures exact cross-stage trade-offs that sequential pipelines cannot express,
+and a rounded, simulated replay shows that these trade-offs are not an LP
+artifact. The decomposition of the $40\times$ speedup and the sensitivity
+sweeps show that the gain is not merely the result of adding MACs. This
+manuscript therefore gives a formal and empirical demonstration that sequential
+tiling-then-fusion loses solutions, together with a joint optimization method
+that recovers those solutions in precisely characterized operating regimes.
+Sequential accelerator pipelines make locally optimal mapping decisions before
+they know the global memory schedule, whereas CHEETAH exposes tile choice,
+tensor residency, and rematerialization to one optimization problem. We prove
+that the lifted sequential feasible set is contained in CHEETAH's, isolate a
+fixed-hardware free-$y$ gain on Llama-3 70B, and demonstrate a second strict
+separation in capacity-constrained DeepSeek-V3, where tile-dependent footprints
+enable schedules unavailable to both the stock pipeline and an oracle two-pass
+sequential baseline.
 
-The full-inference execution credits compatible batching, KV retention/placement,
-and SwiGLU storage fusion. Larger native fusion groups, unrestricted overlap,
-quality-changing menus, and general rematerialization gains need additional
-experiments. RTL and synthesis studies cover selected schedules and datapaths,
-not complete-chip calibration. Extending the framework to multiple chips,
-robust workload distributions, or training introduces further communication
-and numerical constraints. More efficient inference designs may reduce energy
-per task; deployment scale and manufacturing costs determine their broader
-resource impact.
+The reported efficiency quantities are roofline-model diagnostics, not
+measured silicon utilization. Real implementations would still incur NoC,
+SRAM, pipeline, and control overheads. Future work can build on this framework
+in two meaningful ways: as an end-to-end co-design system for efficient
+accelerators, and as an automated optimization engine for existing hardware.
+By fixing the architecture, the inner loop derives optimal tiling and
+scheduling strategies that act as custom speedups for targeted inference tasks.

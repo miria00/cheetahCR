@@ -37,7 +37,7 @@ work~\citep{jouppi2021ten,zhang_fast}. All speedups below are analytical and mod
 
 \subsection{Experimental Setup}
 \label{sec:exp_intro}
-Software alone is physics-capped, therefore co-design is the only route past the performance ceiling. The experimental suite comprises EfficientNet-B1--B7, Llama-1 13B/65B, Llama-3 70B,
+Software alone is physics-capped (Theorem~\ref{thm:deficiency}, Appendix~\ref{app:deficiency}), therefore co-design is the only route past the performance ceiling. The experimental suite comprises EfficientNet-B1--B7, Llama-1 13B/65B, Llama-3 70B,
 DeepSeek-V3~\citep{tan2019efficientnet,llama3modelcard,deepseekv3report} and
 Stable Diffusion~1.5 UNet. DeepSeek-V3 is evaluated on thirty-two 4,096-token
 Wikitext-2 prompts, each decoded greedily for 512 tokens, with FP8 weights

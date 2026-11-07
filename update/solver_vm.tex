@@ -2,9 +2,8 @@
 \label{sec:solver_vm}\label{sec:ocs}\label{sec:vm_solver}\label{sec:mccormick_blowup}
 To solve the master LP we use OCS~\citep{feng2026ocs}, our in-house solver
 framework. OCS is a standalone contribution whose numerical design is described
-in a companion paper, with the implementation released at the cited repository
-and its kernel and closing stage in Appendix~\ref{app:ocs_working_path}. Here we
-give only what the results require. OCS never forms the event-expanded matrix.
+in a companion paper, with the implementation released at the cited repository.
+Here we give only what the results require. OCS never forms the event-expanded matrix.
 It applies the constraint map $Kx$ and its adjoint $K^Ty$ as operators, runs an
 anchored, restarted primal--dual scheme with a diagonal variable metric on
 working supports, and then replaces the converged iterates with compact fits
@@ -20,7 +19,7 @@ and $L=\min_bL_b$ with the best feasible cost $U$ brackets the optimum. For the 
 1,557-branch DeepSeek master LP, composing the 1,787 per-branch certificates
 gives $L\approx946{,}487.72$ ms and $U\approx947{,}123.74$ ms, a relative gap of
 $0.07\%$, with 1,095 branches at the stopping threshold, 462 pruned and none
-unresolved (Appendix~\ref{app:expanded_native_certificate}).
+unresolved.
 
 \paragraph{Hardware branch and bound and recovery.}
 Integral recovery searches a finite tree over array counts, vector lanes, DRAM

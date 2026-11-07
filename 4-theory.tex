@@ -69,9 +69,11 @@ operation, and only then solves its fusion problem over tensor pinning. To compa
 the two formulations in one variable space we lift FAST's feasible set by encoding
 its committed mapper choice as a singleton one-hot,
 \begin{equation}
-\mathcal F^{\mathrm{lift}}_F(H,G)=\Bigl\{(y,p,p^W,T):
-y_{i,c^{\mathrm{FAST}}_i}=1,\ y_{ic}=0\ \forall c\ne c^{\mathrm{FAST}}_i,\
-\text{$p$ in FAST's consecutive fusion pattern},\ A_Fx\le b_F(H,G)\Bigr\},
+\begin{aligned}
+\mathcal F^{\mathrm{lift}}_F(H,G)=\Bigl\{(y,p,p^W,T):\ &
+y_{i,c^{\mathrm{FAST}}_i}=1,\ y_{ic}=0\ \forall c\ne c^{\mathrm{FAST}}_i,\\
+&\text{$p$ in FAST's consecutive fusion pattern},\ A_Fx\le b_F(H,G)\Bigr\},
+\end{aligned}
 \label{eq:fflift}
 \end{equation}
 where $A_F,b_F$ encode FAST's buffer capacity at its hard-coded $g$, its

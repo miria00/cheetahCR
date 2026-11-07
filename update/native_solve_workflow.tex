@@ -71,7 +71,7 @@ first checked $(U-L)/U\le10^{-3}$. The final composition checks committed proof
 receipts and identities; it does not rerun every inherited checker. Shared
 checker algorithms and manual support selection are recorded limitations of
 automation and independent implementation, not missing terms in the certificate.
-Appendix~\ref{app:expanded_native_certificate} gives the accepted endpoints.
+Section~\ref{sec:ocs} gives the accepted endpoints.
 
 \paragraph{5. Search discrete hardware and recover software.}
 The hardware branch-and-bound tree is separate from the whole-program branch
@@ -120,59 +120,3 @@ to enforce physical products addresses a stronger nonlinear design problem;
 it is not necessary to solve the frozen LP relaxation and is not claimed here.
 Analytical replay supports the reported design latency, while fabrication and
 global discrete optimality remain separate questions.
-
-
-\subsection{The OCS Solver}\label{app:ocs_working_path}
-Activated columns and temporal fields define a restricted working LP with a
-checked lift to original coordinates. Let $f(x)=c^Tx+I_{[\ell,u]}(x)$,
-let $Kx$ stack equality and inequality row activities, and let
-$g(z)=I_{\{z_{\rm eq}=b_{\rm eq},\ z_{\rm ineq}\le b_{\rm ineq}\}}(z)$.
-The selected fixed-step OCS kernel performs
-\begin{align}
- \widehat v^{k+1}
-   &=\operatorname{prox}_{\Sigma g^*}(v^k+\Sigma K\bar x^k),\nonumber\\
- \widehat x^{k+1}
-   &=\operatorname{prox}_{T f}(x^k-TK^T\widehat v^{k+1}),\nonumber\\
- (x^{k+1},v^{k+1})
-   &=\alpha_k(x^{\rm anchor},v^{\rm anchor})
-       +(1-\alpha_k)(\widehat x^{k+1},\widehat v^{k+1}),
-       \qquad \alpha_k=\frac1{k+2},\nonumber\\
- \bar x^{k+1}&=2x^{k+1}-x^k .
- \label{eq:native_halpern}
-\end{align}
-Each block restarts from its average. Centered arithmetic computes differences
-from the anchor to avoid repeatedly summing a large baseline.
-The primal proximal map is $\Pi_{[\ell,u]}(x-Tc)$; equality dual coordinates
-receive the RHS shift, while $\le$-row multipliers additionally project onto
-the nonnegative orthant. Reversible scaling and diagonal steps are verified
-against the original operator. The tested paged adapter moves bounded vector
-pages between host storage and GPU; it reduces GPU memory but still stores
-the working iteration vectors somewhere.
-
-
-\paragraph{Variable metric.}
-The diagonal metric rescales the primal and dual step sizes by the smoothed
-square root of the dual-to-primal residual ratio, which keeps primal and dual
-progress balanced on a system whose coefficients span ten orders of magnitude.
-Reversible scaling and JAX operator kernels
-\citep{chambolle2011first,halpern1967fixed,applegate2022practicallargescalelinearprogramming,jax2018github}
-apply $K$ and $K^T$ without forming the event-expanded matrix. On a
-36,508-column, 313,061-row residency support the kernel reaches a checked
-$0.0774\%$ interval in 313.25 seconds on one A100.
-
-\paragraph{Closing stage.}
-The kernel supplies prices and working supports; the closing stage certifies
-them. Signed coverage prices are fitted against each family's actual
-implementation menus, including coincident ancestral alternatives, with 45,085
-nonempty-family compact LP fits across eight CPU workers (six empty families need
-no call), their cover reconstructed on a $2^{32}$ rational grid. A stateful lift
-preserves a causal prefix and pays for the copies, evictions, workspace and
-reservations required by the changed suffix choices; one further fit with 10,245
-variables and 112,633 nonzeros adjusts shared hardware, reciprocal/service
-fields and original KV alternatives, and its restricted support generates the
-candidate upper. Rational temporal fields and affine interval identities then
-represent the primal and verify residuals over every original event, and dual
-multipliers are checked for their original signs and valid Lagrangian box
-support over all coordinates, so no event-expanded matrix or dense temporal
-witness is ever allocated. Support and proof directions were selected manually;
-automatic discovery for arbitrary instances is not established.

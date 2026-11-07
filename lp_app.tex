@@ -40,7 +40,7 @@ reciprocal rate variable spans $80\times$ inside its own box. Standard
 first-order methods plateau at a $0.999$ primal violation after 2,000
 iterations and never descend, even with the chip pinned. A certificate
 therefore cannot be read off floating-point iterates and is built in exact
-rational arithmetic (Section~\ref{sec:ocs}, Appendix~\ref{app:ocs_working_path}).
+rational arithmetic (Section~\ref{sec:ocs}).
 
 \subsection{LP Matrix Structure}\label{append::lp_perform}
 Table~\ref{tab:lp_structure_v0_v1} records the two controls' sparse
@@ -115,11 +115,3 @@ capacity rows. Our solver handles this after preconditioning. & \\
 \end{tabular}%
 }
 \end{table}
-
-\subsection{Current Solver Path}\label{app:lp_solver_path}
-These matrix sizes describe the original restricted workloads, not the full
-native temporal expansion. Section~\ref{sec:solver_vm} summarizes the OCS solver framework and
-Appendix~\ref{app:ocs_working_path} gives its kernel and closing stage. These
-smaller cases do not by themselves establish universal solver superiority; the
-expanded continuous LP is certified at the stated accuracy by the primal--dual
-evidence in Appendix~\ref{app:expanded_native_certificate}.

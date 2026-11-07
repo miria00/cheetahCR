@@ -1,15 +1,10 @@
-\newpage
-\section{Speedup Analysis: Baseline Deficit Attribution and Design-Parameter Sensitivity}
-\label{app:deficit}
-
+\paragraph{Speedup analysis.}
 A large end-to-end speedup number is only credible if two things are shown
 explicitly: (i) the naive baseline actually \emph{carries} that deficit, and
 the deficit can be \emph{localized} to a physical cause; and (ii) the reported
 gain can be \emph{decomposed} into a small number of design decisions, each of
-which is separately sized. This appendix supplies both. We decompose the
-$34.6$--$40.2\times$ co-design speedup of the prefill-oriented designs into
-exactly two orthogonal factors (\cref{app:deficit:twofactor}) and sweep each
-design decision one at a time, reporting the objective's sensitivity
+which is separately sized. This appendix supplies both by sweeping each
+design decision one at a time and reporting the objective's sensitivity
 (\cref{app:deficit:sweeps}). This section is a companion to the
 pre-RTL feasibility gates of \cref{app:details}: the gates certify that a design
 is \emph{buildable}; this section certifies where its speedup \emph{comes from}.
@@ -30,10 +25,10 @@ The $97\%$ pre-fusion memory-stall figures and the naive MFU values are
 \emph{naive-baseline attributions}, not properties of the co-designed schedule.
 Every quantity is convention-tagged, and we never form a ratio across two
 conventions. The fixed-silicon algorithmic gain on EfficientNet-B7 is
-$2.21\times$ under this paper's naive convention (a $2.81\times$ value that
-appears in an earlier discussion note is a transcription error and is not used).
+$2.21\times$ under this paper's naive convention.
 
 % ---------------------------------------------------------------------------
+\iffalse % Appendix F.1 (two-factor speedup decomposition) retained but disabled
 \subsection{Two-Factor Speedup Decomposition}
 \label{app:deficit:twofactor}
 
@@ -173,6 +168,7 @@ $14.0$--$15.7\times$ cycle reduction, because a residual memory floor remains.
 Added silicon buys sub-linearly, which is exactly why capturing the free
 scheduling factor $f_1$ first (and provisioning MACs only up to the point of
 diminishing return) is the efficient order of operations.
+\fi
 
 % ---------------------------------------------------------------------------
 \subsection{One-Decision-at-a-Time Sensitivity Sweeps}
@@ -227,7 +223,7 @@ grid from $65{,}536$ to $1{,}048{,}576$ MACs (a $16\times$ increase) reduces the
 objective by $14.0$--$15.7\times$ (Llama-1 13B $15.72\times$, DeepSeek-V3
 $14.98\times$, Llama-3 70B $14.04\times$, Llama-1 65B $14.02\times$), and the
 provisioning factor to the full co-designed chip is $f_2=20.0$--$26.9\times$
-(\cref{app:deficit:twofactor}), both sub-linear (\S\ref{app:deficit:twofactor}).
+both sub-linear.
 This is the single largest decision on the objective.
 
 \paragraph{(c) DRAM bandwidth: measured, inert in the compute-bound regime.}
