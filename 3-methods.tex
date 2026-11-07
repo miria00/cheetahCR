@@ -314,9 +314,9 @@ is shared across every phase represented in a branch.
 The LLM architect reads a ledger of resource prices, slacks, invalid trials,
 and replay outcomes, then proposes candidate implementations or search
 neighborhoods. Deterministic validation checks each proposal before evaluation.
-The original campaign uses Vizier~\citep{google_vizier} to search hardware
-neighborhoods; the native master also represents hardware choices directly.
+The outer loop uses Vizier~\citep{google_vizier} to search hardware
+neighborhoods; the master also represents hardware choices directly.
 Dual prices guide search,
 but an LLM proposal is not a complete pricing oracle: a full-domain optimality
-claim requires checking all omitted alternatives. The original controller and
+claim requires checking all omitted alternatives. The controller and
 prompts are documented in Appendix~\ref{app:llm_loop}.

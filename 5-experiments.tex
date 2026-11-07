@@ -9,15 +9,15 @@ work~\citep{jouppi2021ten,zhang_fast}. All speedups below are analytical and mod
 \label{sec:exp_intro}
 The suite comprises EfficientNet-B1--B7, Llama-1 13B/65B,
 Llama-3 70B, and DeepSeek-V3~\citep{tan2019efficientnet,llama3modelcard,deepseekv3report} and Stable Diffusion~1.5 UNet.
-The campaign compares static pinning, fixed-tile temporal
+We compare static pinning, fixed-tile temporal
 placement, and joint tiling under the same cost convention. These are restricted
 controls of CHEETAH, not separate proposed systems. Small programs are solved
 directly with HiGHS~\citep{huangfu2018parallel}; the native programs use OCS
 (Section~\ref{sec:ocs}), whose closing fits also use HiGHS as the inner LP
 engine. The expanded-master certificate composes 45,085 such fits with
 original-source checks and complete branch composition. These are closing-stage counts, not the cost
-of all preceding discovery campaigns.
-The latest decoder study (WO24) uses OCS node relaxations inside finite
+of all preceding discovery runs.
+The decoder study uses OCS node relaxations inside finite
 hardware/software branch-and-bound: 19 node initializations and 39,000
 completed updates, with zero CPU numerical LP calls. Hardware remains shared
 across each recovered execution, with independent compatible implementation
@@ -33,7 +33,7 @@ The current phase summary uses the unchanged naive TPU-v3 reference: original
 per-operation mapper rescaling and streaming sum. The recovered decoder
 execution preserves original BF16 operands, ordered FP32 arithmetic, routing,
 rounded boundaries, starting KV and paid entry obligations. The reference
-retains the earlier approved timing/precision proxy; this is not a
+retains the TPU-v3 timing/precision proxy; this is not a
 precision-faithful native TPU-v3 claim. Standalone nonmatrix service and cold
 preparation outside the phase boundary are not silently included in the ratios.
 
@@ -139,16 +139,15 @@ remain distinct.
 
 \subsection{Workload Results and Fixed-Hardware Controls}
 \label{sec:prog}\label{sec:fixed_hw}
-The original campaign reports an average $22.07\times$ predicted
-speedup over its simulated TPU-v3 baseline, reaching $40.1\times$ on Llama-3 70B.
-These are prefill-oriented results under that campaign's workload and traffic
-conventions. Appendix~\ref{app:blueprints} shows the concrete hardware blueprints. 
+The prefill-oriented designs report an average $22.07\times$ predicted
+speedup over the simulated TPU-v3 baseline, reaching $40.1\times$ on Llama-3 70B,
+under their own workload and traffic conventions. Appendix~\ref{app:blueprints} shows the concrete hardware blueprints. 
 
 
-Table~\ref{tab:fixed_hw} retains the original software-search comparisons
+Table~\ref{tab:fixed_hw} reports the fixed-hardware software-search comparisons
 for five workloads on the simulated TPU-v3 and compact NPU. Each entry keeps
-its original matrix graph, full implementation menu, memory policy, timing
-library and streaming-reference formula. The original TPU LLM producer and
+its matrix graph, full implementation menu, memory policy, timing
+library and streaming-reference formula. The TPU LLM producer and
 the vision/compact producer use different LP conventions, including the
 capacity treatment noted in the table. The stored precision proxies are
 retained; these results do not constitute matched native INT8/BF16 experiments
@@ -158,10 +157,10 @@ or recovered full-decode executions on either chip.
 \subsection{Search Cost and LLM Guidance}
 \label{sec:breakdown}
 Cached implementation coefficients remove repeated mapper calls from the inner
-search. In the original 50-trial comparison, joint tiling reduces Llama-70B
+search. In the 50-trial comparison, joint tiling reduces Llama-70B
 search time from $58.42$ to $1.17$ hours and DeepSeek-V3 from $69.39$ to $2.17$
 hours relative to the fixed-tile temporal pipeline. These are search times,
-not inference speedups. The LLM-guided campaign reduces mean invalid trials
+not inference speedups. LLM guidance reduces mean invalid trials
 from $24.5\%$ to $5.9\%$ while reaching the same best observed Perf/TDP score
 as its full-space Vizier control. This tests proposal efficiency, not proof of
 an optimal architecture or causal validity of every dual suggestion.

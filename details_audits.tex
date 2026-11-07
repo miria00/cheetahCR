@@ -11,7 +11,7 @@ memory-interface timing or physical implementation.
 
 \subsection{Five Levels of Validation}
 \label{app:validation}
-The original campaign uses five levels of modeled feasibility validation.
+The prefill study uses five levels of modeled feasibility validation.
 
 \begin{enumerate}
     \item Roofline Auditor: A deterministic Roofline Auditor checks physical feasibility by comparing
@@ -27,7 +27,7 @@ The audit additionally reports the compute-floor tightness
 $\rho_{\mathrm{comp}}$ and memory utilization; values above 1 would indicate a
 physically impossible prediction. Neither ratio is a model FLOPs utilization,
 which \cref{app:mfu} distinguishes.
-The original campaign's audited results have zero roofline lower-bound violations;
+The prefill study's audited results have zero roofline lower-bound violations;
 \cref{app:mfu} gives the detailed checks.
 
 \item Campaign Validator: A deterministic Campaign Validator legalizes LLM-proposed architectural
@@ -53,7 +53,7 @@ constitute physical-design sign-off.
 \subsection{Compute-Floor and Roofline Tightness Audits}
 \label{app:mfu}
 \paragraph{What this audit reports, and what it is not.}
-The original campaign's audit column records a \emph{tightness} ratio, not a
+The prefill study's audit column records a \emph{tightness} ratio, not a
 model-FLOP utilization. Write $T_{\mathrm{LP}}$ for the LP-predicted latency of
 a cell: its modeled execution time, never the optimizer's runtime. The recorded
 quantity is
@@ -62,8 +62,7 @@ quantity is
     = \frac{t_{\mathrm{floor}}}{T_{\mathrm{LP}}},
     \label{eq:mfu_audit}
 \end{equation}
-which we call \emph{compute-floor tightness}. Earlier versions of this appendix
-labelled $\rho_{\mathrm{comp}}$ ``MFU''. We retire that label and leave every
+which we call \emph{compute-floor tightness}. We retire that label and leave every
 recorded number unchanged: the audited values in \cref{app:blueprints} and
 \cref{app:deficit} are $\rho_{\mathrm{comp}}$.
 
@@ -103,13 +102,10 @@ $\rho_{\mathrm{roof}} = \mathrm{LB}/T_{\mathrm{LP}}$, deserves the name
 \emph{roofline} tightness. The distinction matters in precisely the regime the
 compute-only ratio hides: a memory-bound cell can sit on its roofline bound,
 $\rho_{\mathrm{roof}} \to 1$, while its compute-floor ratio stays small.
-Calling $\rho_{\mathrm{comp}}$ a roofline-tightness ratio, as earlier versions
-of this appendix did, is imprecise whenever memory is the active limitation.
-
 \paragraph{What the audit establishes.}
 A value $\rho_{\mathrm{comp}} > 1$, or an LP latency below
 $\max(t_{\mathrm{floor}}, t_{\mathrm{memory}})$, would indicate a physically
-impossible prediction or a cost-model violation; the original campaign's
+impossible prediction or a cost-model violation; the prefill study's
 audited cells show no such violation. That is a necessary consistency
 condition, and it is all this audit supplies. It does not establish
 realizability, silicon timing accuracy, or optimality, and a real
@@ -131,8 +127,7 @@ the same metric under different timing evidence,
 \end{equation}
 and forming either needs only an analytical count of useful model arithmetic
 and one execution time. Hardware counters explain where utilization is lost but
-are not required to compute the ratio; an earlier version of this appendix
-implied otherwise. A cycle-accurate simulator supplies a \emph{simulated} $T$,
+are not required to compute the ratio. A cycle-accurate simulator supplies a \emph{simulated} $T$,
 which we would report as such and not as a silicon measurement. For the present
 designs no executable implementation of the selected hardware/schedule pair
 exists, so we report $\mathrm{MFU}_{\mathrm{pred}}$ against the recovered
@@ -303,7 +298,7 @@ joint-tile & DeepSeek-V3 & 1{,}048{,}576 &  64 & $3.47\times10^{15}$ & $9.57\tim
 \clearpage
 \subsection{Six Physical-Design Feasibility Gates}
 \label{app:gates}
-The original campaign applies six physical-design proxy gates to its candidate
+The prefill study applies six physical-design proxy gates to its candidate
 accelerators.
 % Every CHEETAH chip configuration must therefore pass the roofline + area-aware LP audit and clear this stack of six hard gates.
 The gate thresholds are calibrated end-to-end to reproduce TPU-v3's published headline numbers ($700\,\mathrm{mm}^2$ die, $250\,\mathrm{W}$ TDP, $0.36\,\mathrm{W/mm}^2$ density at $65{,}536$ MACs / $900\,\mathrm{GB/s}$ / $32\,\mathrm{MiB}$ CGM) when fed TPU-v3 inputs. Therefore, they are not arbitrary but pinned to a known-quality silicon.
@@ -462,14 +457,14 @@ finite native family has a $21.6374\%$ continuous interval
 recovered chip's predicted latency and is not a performance error bar.
 
 \paragraph{Rounding is feasibility-preserving and independently validated.}
-In the original campaign, relaxed selectors are rounded by enumeration over the physically integral
+In the prefill study, relaxed selectors are rounded by enumeration over the physically integral
 choices, and no pin that would violate a constraint is ever committed. Each
 rounded design is re-solved and checked against the constraint set independently
 of the solver that produced it, with residuals at the $10^{-13}$ level. We never
 report a relaxed objective as an achievable result.
 
 \paragraph{Search configurations remain explicit.}
-The original campaign uses the configuration in
+The prefill study uses the configuration in
 \cref{app:coeff_provenance}. The native extension separately records its
 reference, recovered design, and matched controls in
 Appendix~\ref{app:native_provenance}. Those controls share a chip and evaluator;
@@ -511,13 +506,13 @@ directly rather than assuming it, and the measurement corrected our analytic
 estimate in both directions (\cref{sec:energy_coeff}).
 
 \paragraph{Against other frameworks: the mapping data.}
-The original campaign's mapping data comes from Timeloop Pareto evaluations.
+The prefill study's mapping data comes from Timeloop Pareto evaluations.
 The native extension uses explicit analytical dispatch, primitive-service,
 and memory-transfer contracts, as documented in
 Appendix~\ref{app:native_provenance}.
 
 \paragraph{Declared feasibility is checked.}
-The original campaign enforces its six proxy gates. The native extension
+The prefill study enforces its six proxy gates. The native extension
 checks its original LP rows, installed bank and staging resources, and
 complete execution accounting. These are different evidence scopes; neither
 replaces detailed physical implementation.

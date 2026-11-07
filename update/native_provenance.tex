@@ -149,7 +149,7 @@ quality or representativeness study. Capture and solver GPU timings are not
 custom-chip performance estimates.
 
 \paragraph{Chip and controls.}
-The earlier result uses source identity
+That result uses source identity
 \path{831edc6f8cde9bd2091541b55beaa00fae2736035badb3937236ba32c66104e3}
 and family
 \path{c2dbac2a699129be05060253c6d44292644ee7fa244f3cd9590bf5da6c113dd8}.
@@ -187,7 +187,7 @@ The tile control independently selects each of 45,091 parameter families' best
 constant decode tile while retaining membership, source kind, panel boundaries,
 buffers, leases and hardware. Its 0.865673-second penalty covers weighted decode;
 it is not a complete ablation of every time-indexed master choice.
-The current controls replace the older chip's feature ratios.
+These controls replace the older chip's feature ratios.
 
 \paragraph{Retained execution.}
 The following four-branch record and 384-array controls predate the current
@@ -287,7 +287,7 @@ At 518 arrays, prefill and decode improve to $13.607\times$ and
 $28.497\times$ against the same declared reference. Its modeled peak power
 is 299.932 W; this is a proxy budget, not physical power sign-off. The
 384-array chip remains the common experimental point for the twelve controls
-on the earlier chip. These additional points improve latency by at most 1.24\%
+on the older chip. These additional points improve latency by at most 1.24\%
 without new scheduling or implementation choices; they do not establish global
 hardware optimality. The exact field substitution and checks are retained in
 \path{audits/20261023/NATIVE_ARRAY_ALLOCATION.md}.

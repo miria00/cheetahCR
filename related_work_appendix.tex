@@ -11,7 +11,7 @@ DOSA places architecture and mapping variables in one differentiable program
 for multi-chiplet accelerators~\citep{cai2024gemini}. CODEBench uses
 multi-objective exploration over accelerator configurations~\citep{Tuli_2023}.
 FAST combines hardware, mapping, and compiler search, including a fusion ILP
-\citep{zhang_fast}. These methods motivate the controls in our original campaign.
+\citep{zhang_fast}. These methods motivate our restricted controls.
 CHEETAH retains alternatives until shared storage, implementation cost, and
 hardware provisioning can be evaluated together.
 
@@ -59,7 +59,7 @@ establish a general automatic solver or discrete-design optimality.
 FunSearch and AlphaEvolve combine model proposals with deterministic evaluation
 \citep{romera2024mathematical,novikov2025alphaevolvecodingagentscientific}.
 CHEETAH similarly uses an LLM to propose search interventions, with resource
-prices and failed-trial diagnostics as context. The original campaign edits
+prices and failed-trial diagnostics as context. The outer loop edits
 Vizier search neighborhoods; current master experiments can also propose
 implementations and hardware alternatives directly. A proposal is admitted
 only after its numerical, dependency, and resource checks. The proposal

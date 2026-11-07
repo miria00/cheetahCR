@@ -37,7 +37,7 @@ We examine two designs on the DeepSeek-V3  (trials 81 vs.\ 95) and Llama-3 70B (
 
 \subsection{Hardware and Vizier Search}
 
-The original campaign used 16 NVIDIA H100 GPUs, each with 80 GB of VRAM,
+The prefill co-design search used 16 NVIDIA H100 GPUs, each with 80 GB of VRAM,
 and Vizier for hardware search following the experimental conventions of
 \citet{zhang_fast}. Table~\ref{tab:vizier_search_space} records that campaign's
 parameter groups; Figure~\ref{fig:pipeline} depicts its accelerator template.

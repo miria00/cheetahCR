@@ -1,4 +1,4 @@
-\subsection{Earlier Full-Inference DeepSeek Comparison}
+\subsection{Full-Inference DeepSeek Comparison}
 \label{sec:decode_decomp}\label{sec:batch_sensitivity}
 We evaluate DeepSeek-V3 on 32 independent requests, each with 4,096 prompt
 and 512 output tokens. All 61 layers execute: prefill produces the first
@@ -39,7 +39,7 @@ execution latency or a discrete-design optimality guarantee.
 \subsection{Feature Contributions on the Same Chip}
 \label{sec:native_features}
 The recorded controls retain the same chip and remove one
-mechanism at a time on the original numerical workload. These are matched
+mechanism at a time on the same numerical workload. These are matched
 execution controls, not globally optimized feature-off designs. Interacting
 effects are not an additive attribution of the headline speedup. They have not
 been retimed to the corrected chip in \texttt{backup.tex} (original Table 10).
