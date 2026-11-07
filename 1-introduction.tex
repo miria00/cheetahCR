@@ -40,9 +40,13 @@ batches, and temporal residency. Our full-inference experiment uses actual
 routes, retains the complete KV history, and charges every restore. Its gains
 do not assume that all weights or KV fit on chip.
 
-Since the complete CHEETAH program is too large to materialize, in order to this large scale formulation we introduce a custom adapted OCSolver, which evaluates linear
-operators and adjoints on compact working supports, using GPU first-order
-updates, reversible scaling, and structured temporal incidence. 
+The complete CHEETAH program is too large to materialize. We instead use a
+CHEETAH-specific, certificate-producing procedure: compact CPU LP fits discover
+coverage prices and primal candidates, rational reconstruction supplies a
+stateful point, and symbolic checks verify the complete original domain.
+The resulting 1,557-branch DeepSeek LP is certified to a $0.067154\%$ objective
+gap. Earlier OCS GPU working solves are reported separately; full-master PDHG
+convergence is not required for, or established by, this certificate.
 An LLM architect outer loop then reads resource
 prices and trial diagnostics to propose target specific implementations or hardware search neighborhoods. This reduces the reliance on brute force large space search effectively. Crucially, the hardware-software interactions and decisions are captured in the CHEETAH inner loop formulation. 
 
@@ -59,32 +63,40 @@ proposes implementations and hardware search neighborhoods.
     These couplings expose tiling--placement trade-offs that sequential
     pipelines can discard.
     % This enables the LP to discover trade-offs where accepting a suboptimal tiling configuration enables superior fusion, or vice versa---precisely the cross-stage interactions that the sequential pipeline cannot capture.
-    \item \textbf{Operator-based GPU optimization.} OCS applies the master constraints and their adjoint without materializing the matrix. GPU working solves, structured pricing and integral recovery address complementary parts of the large native problem; Section~\ref{sec:solver_vm} distinguishes accepted working supports from full-master closure.
+    \item \textbf{Structure-aware optimization and certification.} Compact numerical
+    fits, rational cover reconstruction and stateful lifting make candidate
+    discovery manageable. Original-domain checks certify the complete LP
+    without substituting restricted-support optima for full-master bounds.
+    Section~\ref{sec:solver_vm} identifies the successful CPU HiGHS computation
+    separately from earlier OCS working-support experiments.
 
     \item \textbf{LLM Architect Outer Loop.} The architect interprets resource prices and a causal ledger of earlier trials to propose hardware and implementation changes. Deterministic checks admit proposals; the LLM itself supplies no certificate. This couples architecture exploration with the optimizer's diagnostics rather than relying only on black-box scores.
 
-    \item \textbf{Bounds and executable validation.} The frozen 21-branch native
-    DeepSeek master has a certified $0.0850\%$ LP objective gap (rounded).
+    \item \textbf{Bounds and executable validation.} The frozen 1,557-branch
+    DeepSeek master has a certified $0.067154\%$ LP objective gap.
     Analytical replay and selected control/datapath checks support a separate
     recovered design; global discrete optimality remains open. The original
     experiments retain their certificates and physical-validation evidence.
 
     \item \textbf{Inference speedup.} The accepted prefill-oriented campaign
     reports an average $22.07\times$ predicted speedup and up to $40.1\times$
-    under its original contracts (Figure~\ref{fig:speedup}). The new
-    checkpoint-bound campaign uses matched BF16/FP32 arithmetic for custom
-    and reference hardware, with full-inference phase and same-chip feature
-    controls. Its archived full-input DeepSeek comparison gives $31.71\times$
-    against an earlier host-backed reference; this remains conditional on the
-    unreconciled baseline and BF16 physical-cost assumptions
-    (Appendix~\ref{app:native_feasibility_repair}).
-    Section~\ref{sec:experiments} reports the uniform vision and Llama extensions
-    separately from the historical results.
+    under its original contracts (Figure~\ref{fig:speedup}).
+    Table~\ref{tab:current_phase_speedups} adds the current twelve-workload
+    summary against unchanged paper Baseline 2: the latest separate decoder
+    designs predict $7.823\times$ for DeepSeek-V3 and
+    $11.092$--$17.932\times$ for the three Llamas. These are analytical
+    matrix-and-associated-traffic results with the original timing proxy,
+    not measured TPU-v3 serving gains. Their area proxies are below
+    600~mm$^2$, but relaxed memory/power assumptions remain physically
+    unqualified. Earlier prefill designs are reported separately; they are
+    not the same chips as the decode-only designs. Historical host-offload
+    and equal-supply sensitivities retain their own scope in
+    Appendix~\ref{sec:dual_host_baseline} and \texttt{backup.tex}.
 \end{enumerate}
 
 The following paper is organized as follows. Section~\ref{sec:related} discusses related work, Section~\ref{sec:prelim} summarizes preliminary background,  Section~\ref{sec:methods}
 presents the CHEETAH master and its features, and Section~\ref{sec:ocs} describes
-OCS, full-domain certification and hardware search. Section~\ref{sec:experiments}
+certificate-producing optimization, OCS working supports and hardware search. Section~\ref{sec:experiments}
 reports experimental results and ablations, and the appendix provides containment
 theorems, physical-validation details, economics, co-design blueprints, and reproduction evidence.
 
@@ -100,9 +112,10 @@ theorems, physical-validation details, economics, co-design blueprints, and repr
 \label{fig::workflow}
 \end{figure}
 
-\begin{figure}[ht!]
+\begin{figure}[H]
     \centering
 \includegraphics[width=1.0\linewidth]{fig3/speedup_final_v3.png}
-\caption{Retained original prefill-oriented results over the modeled TPU-v3 baseline. Legacy labels in the artwork identify restricted controls: static fusion, fixed-tile temporal placement (V0), and joint tiling/fusion (V1). These results retain their original numerical and workload contracts; Section~\ref{sec:experiments} reports the new uniform BF16 comparisons and separates prefill from decode.}
+\caption{Retained original prefill-oriented results over the modeled TPU-v3 baseline. Legacy labels in the artwork identify restricted controls: static fusion, fixed-tile temporal placement (V0), and joint tiling/fusion (V1). These results retain their original numerical and workload contracts; the following table gives the current phase-separated summary.}
 \label{fig:speedup}
 \end{figure}
+\input{update/wo24_suite_summary}

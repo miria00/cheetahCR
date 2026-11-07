@@ -1,87 +1,77 @@
 \subsection{End-to-End Solution and Recovery Workflow}
 \label{app:native_solve_workflow}
-The continuous objective certificate and the integral performance result solve
-different tasks. We specify the finite branch family and original coordinates,
-use working LPs and structured transformations to construct source points, and
-certify their objectives against a complete-family bound. Hardware search and
-schedule recovery produce a separate analytical execution. The following is
-the implemented workflow, not a proposed complete branch-and-price algorithm.
+The completed continuous solve uses a CHEETAH-specific certificate-producing
+procedure. Compact working problems discover witnesses; the complete original
+LP determines acceptance. The method retains an explicit record of manually
+chosen supports and proof directions. It is not a demonstrated automatic
+branch-and-price or full-master PDHG algorithm.
 
 \paragraph{1. Freeze the mathematical instance.}
-The native family has 21 branches, 61,985,244 independent invocations,
-62,030,334 logical nodes including conversions, and 68,907,890 storage
-allocations. Its largest current branch has 15,044,386,833 implementation
-choices before temporal expansion; the event domain has 5,809,955,157 labels.
-These are logical domain counts, not an allocated sparse matrix.
-Invocation membership, types, demand caps, hardware ranges, costs and row
-recipes identify the LP. A generator may reuse a coefficient formula without
-forcing its invocations to share decisions. The more general implementation
-resolver can describe choices outside this frozen pool; those choices are
-outside the present certificate.
+The expanded family contains 1,557 whole-program branches, retaining all
+61,985,244 independent native invocations and 62,030,334 logical nodes including
+conversions. The admitted branch has 15,044,386,833 implementation choices and
+5,809,955,157 original event labels. Hardware ranges, physical rows, source
+coefficients, original boxes and the declared bank/product relaxation remain
+fixed throughout closing. Generated coefficient classes share arithmetic,
+not invocation decisions. Implementations outside this identified library
+are outside the certificate.
 
-\paragraph{2. Solve manageable working supports with OCS.}
-Activated columns and temporal fields define a restricted working LP with a
-checked lift to original coordinates. Let $f(x)=c^Tx+I_{[\ell,u]}(x)$,
-let $Kx$ stack equality and inequality row activities, and let
-$g(z)=I_{\{z_{\rm eq}=b_{\rm eq},\ z_{\rm ineq}\le b_{\rm ineq}\}}(z)$.
-The selected fixed-step OCS kernel performs
-\begin{align}
- \widehat v^{k+1}
-   &=\operatorname{prox}_{\Sigma g^*}(v^k+\Sigma K\bar x^k),\nonumber\\
- \widehat x^{k+1}
-   &=\operatorname{prox}_{T f}(x^k-TK^T\widehat v^{k+1}),\nonumber\\
- (x^{k+1},v^{k+1})
-   &=\alpha_k(x^{\rm anchor},v^{\rm anchor})
-       +(1-\alpha_k)(\widehat x^{k+1},\widehat v^{k+1}),
-       \qquad \alpha_k=\frac1{k+2},\nonumber\\
- \bar x^{k+1}&=2x^{k+1}-x^k .
- \label{eq:native_halpern}
-\end{align}
-Each block restarts from its average. Centered arithmetic computes differences
-from the anchor to avoid repeatedly summing a large baseline.
-The primal proximal map is $\Pi_{[\ell,u]}(x-Tc)$; equality dual coordinates
-receive the RHS shift, while $\le$-row multipliers additionally project onto
-the nonnegative orthant. Reversible scaling and diagonal steps are verified
-against the original operator. The tested paged adapter moves bounded vector
-pages between host storage and GPU; it reduces GPU memory but still stores
-the working iteration vectors somewhere.
+\paragraph{2. Fit coverage prices against actual source menus.}
+The compiler enumerates every real ancestral implementation on its original
+membership, saved tile, representation and eligibility conditions. Coincident
+memberships retain all genuine implementation options. Original exact-cover
+equalities have free multipliers; inequality multipliers keep their required
+signs. The final closing stage uses 45,085 finite CPU HiGHS fits over the
+nonempty families, with eight workers; six empty families require no solve.
+Complete checks cover 31,706,528 weighted invocations and 39,223,145 group
+inequalities. Analytic KV, conversion and prefill prices complete the source
+coverage construction under one shared resource budget.
 
-\paragraph{3. Improve a full-domain primal without full vectors.}
-The final continuation starts from an admitted implicit source point.
-It retains identified parameter owners, changes legal original weighted
-implementations, retains the embedding after its first real import, and
-retires converted-host backups only after verifying their remaining consumers.
-These are searches for better points of the same source LP, not new
-constraints restricting all source solutions.
-The accepted recipe translates a compact parent of $H$ events over $T$
-delays, using weights $\omega_j=2(T-j)/(T(T+1))$.
-Each linear state and lifecycle field is represented by its weighted sum;
-duration is the maximum of the resulting resource-service fields.
-The retained parent can exceed DRAM capacity, so convexity of feasible parents
-is not the argument for feasibility. The checker proves the mixed capacity:
-the largest mass of any $H$ consecutive delays is
-$H(2T-H+1)/(T(T+1))$ for $H\le T$, with initial/static reservations accounted
-for separately. Original readiness, boundary and service rows are also checked.
-GPU blocks evaluate the two edges of the mixture; rational affine sums handle
-the middle. An outward arithmetic allowance is included in the objective upper.
+\paragraph{3. Reconstruct and lift a stateful primal.}
+Numerical cover marginals are reconstructed on a $2^{32}$ rational grid;
+integer incidence arithmetic verifies exact coverage of every original member.
+Literal source compilation binds 12,264,122 positive original coordinates and
+255 actual coefficient templates. A causal prefix supplies mass
+$f=1/41{,}969{,}600$ of the inherited execution. The suffix supplies the
+remaining mass through the new cover, preserving independent coordinates and
+original event labels. The selector is $f y^{\rm prefix}+(1-f)y^{\rm suffix}$;
+coverage alone is insufficient to establish feasibility.
 
-\paragraph{4. Certify the full LP objective.}
-For $\min c^Tx$ subject to $Ex=e$, $Gx\le g$, $x\in[\ell,u]$,
-any equality multipliers $\nu$ and legal inequality multipliers $\mu\ge0$ give
-\[
- L=-e^T\nu-g^T\mu+
-       \inf_{\ell\le x\le u}(c+E^T\nu+G^T\mu)^Tx .
-\]
-Box support and every residual sign are checked in original coordinates;
-a small negative residual on an unbounded nonnegative axis cannot be rounded
-away. A working-set dual is insufficient when omitted columns change this
-infimum. The final certificate instead uses explicit coverage prices, work-mass
-equalities and original service rows. Generator-wide inequalities establish
-the required residual signs for all implementations; constant temporal
-multipliers apply to every event. The minimum branch bound certifies the
-perspective family. Appendix~\ref{app:native_lp_certificate} gives the actual
-multipliers and endpoints. This provides approximate continuous objective
-closure without completing a general arbitrary-multiplier pricing coordinator.
+The lift therefore reconstructs owner states, readiness and all required
+transfers. It mirrors 25,607,232 nonterminal owners between their existing
+SRAM/DRAM tiers, pays initialization and suffix copies, and preserves original
+initial inventory, KV history and terminal backing. One further CPU HiGHS
+program jointly adjusts original KV alternatives, shared hardware, reciprocal
+variables and service epigraphs on this candidate construction. Its 10,245
+variables, 1,039 equalities, 104 inequalities and 112,633 nonzeros cover 1,022
+KV classes. Reusing a coefficient-class mixture restricts this candidate search,
+not the frozen master; its optimizer objective supplies no unrestricted lower.
+
+\paragraph{4. Check the original domain and compose the certificate.}
+For $\min c^Tx$ subject to $Ex=e$, $Gx\le g$, $x\in[\ell,u]$, the
+Lagrangian convention used by the checker gives, for $\mu\ge0$ and free $\nu$,
+\begin{equation}
+ L(\nu,\mu)=-e^T\nu-g^T\mu+
+   \inf_{\ell\le x\le u}(c+E^T\nu+G^T\mu)^Tx.
+ \label{eq:complete_box_bound}
+\end{equation}
+All original coordinate bounds, residual signs and recession directions enter
+this calculation. In particular, a tiny negative residual on an unbounded
+nonnegative coordinate cannot be rounded to zero. Restricted multiplier search
+is permitted because each returned lower is evaluated over the complete
+original domain. An omitted-column working dual alone is insufficient.
+
+The primal checker verifies the complete source lift, using exact rational
+fields and affine temporal identities rather than materializing all events.
+Saved-point reconstruction and separate replay reproduce the objective and
+proof. The final adopted receipt also includes the explicit staging-reservation
+supplement. Complete branch proofs, including zero-weight perspective cases,
+give $L=\min_b L_b$; the best admitted branch supplies $U$. We stop at the
+first checked $(U-L)/U\le10^{-3}$. The final composition checks committed proof
+receipts and identities; it does not rerun every inherited checker. Shared
+checker algorithms and manual support selection are recorded limitations of
+automation and independent implementation, not missing terms in the certificate.
+Appendix~\ref{app:expanded_native_certificate} gives the accepted endpoints.
 
 \paragraph{5. Search discrete hardware and recover software.}
 The hardware branch-and-bound tree is separate from the whole-program branch
@@ -130,3 +120,40 @@ to enforce physical products addresses a stronger nonlinear design problem;
 it is not necessary to solve the frozen LP relaxation and is not claimed here.
 Analytical replay supports the reported design latency, while fabrication and
 global discrete optimality remain separate questions.
+
+
+\subsection{Earlier OCS Working-Support Path}\label{app:ocs_working_path}
+Activated columns and temporal fields define a restricted working LP with a
+checked lift to original coordinates. Let $f(x)=c^Tx+I_{[\ell,u]}(x)$,
+let $Kx$ stack equality and inequality row activities, and let
+$g(z)=I_{\{z_{\rm eq}=b_{\rm eq},\ z_{\rm ineq}\le b_{\rm ineq}\}}(z)$.
+The selected fixed-step OCS kernel performs
+\begin{align}
+ \widehat v^{k+1}
+   &=\operatorname{prox}_{\Sigma g^*}(v^k+\Sigma K\bar x^k),\nonumber\\
+ \widehat x^{k+1}
+   &=\operatorname{prox}_{T f}(x^k-TK^T\widehat v^{k+1}),\nonumber\\
+ (x^{k+1},v^{k+1})
+   &=\alpha_k(x^{\rm anchor},v^{\rm anchor})
+       +(1-\alpha_k)(\widehat x^{k+1},\widehat v^{k+1}),
+       \qquad \alpha_k=\frac1{k+2},\nonumber\\
+ \bar x^{k+1}&=2x^{k+1}-x^k .
+ \label{eq:native_halpern}
+\end{align}
+Each block restarts from its average. Centered arithmetic computes differences
+from the anchor to avoid repeatedly summing a large baseline.
+The primal proximal map is $\Pi_{[\ell,u]}(x-Tc)$; equality dual coordinates
+receive the RHS shift, while $\le$-row multipliers additionally project onto
+the nonnegative orthant. Reversible scaling and diagonal steps are verified
+against the original operator. The tested paged adapter moves bounded vector
+pages between host storage and GPU; it reduces GPU memory but still stores
+the working iteration vectors somewhere.
+
+
+These OCS experiments concern their identified working supports. The recorded
+36,508-column residency result is not a full-master bound. Later full-input
+pilots completed no whole update, and the final certificate was discovered by
+the CPU HiGHS and source-verification procedure above. We do not attribute the
+closing solve to OCS merely because both paths use implicit representations or
+primal--dual bounds. A future OCS-backed discovery run would require its own
+numerical provenance and the same complete-domain acceptance checks.

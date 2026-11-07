@@ -1,70 +1,79 @@
-\section{Operator-Based Optimization and Design Recovery}
+\section{Certificate-Producing Optimization and Design Recovery}
 \label{sec:solver_vm}\label{sec:ocs}\label{sec:vm_solver}\label{sec:mccormick_blowup}
-We combine OCS working solves, structured primal improvements and complete-domain
-bounds for the continuous LP, then search and replay integral designs.
-These stages share coefficients but have distinct stopping criteria.
+CHEETAH separates candidate discovery from acceptance against the complete LP.
+We solve the frozen 1,557-branch DeepSeek master to a certified $0.067154\%$
+relative objective gap using compact numerical fits, rational reconstruction
+and original-domain checks. The closing fits use CPU HiGHS; integral design
+recovery and the earlier OCS working-support experiments are separate stages.
 
-\paragraph{Operators replace matrices.}
-For a working LP $\min_x f(x)+g(Kx)$, $f(x)=c^Tx+I_{[\ell,u]}(x)$
-and $g$ encodes row equalities and inequalities. An operator computes $Kx$
-without storing its matrix; its adjoint $K^Ty$ accumulates row prices back to
-coordinates, including shared hardware and capacity. Generated incidence and
-coefficient reuse preserve independent invocation decisions.
+\paragraph{Implicit representation preserves the decision domain.}
+An operator evaluates a linear constraint map $Kx$ without storing its matrix;
+its adjoint $K^Ty$ accumulates row prices onto coordinates. CHEETAH's generated
+incidence reuses coefficients while preserving independent invocation choices.
+For certification, rational temporal fields and affine interval identities
+represent the primal and verify residuals over every original event. This
+avoids allocating the event-expanded matrix or a dense temporal witness.
 
-\paragraph{GPU first-order working solves.}
-Our project copy of OCS 0.3.2 uses centered Halpern primal--dual hybrid gradient
-updates with fixed diagonal steps and block-average restarts
-\citep{chambolle2011first,halpern1967fixed,applegate2022practicallargescalelinearprogramming}.
-Each step applies $K,K^T$, objective-shifted box projection and the appropriate
-dual sign projection. JAX~\citep{jax2018github} compiles the update blocks.
-Reversible power-of-two scaling reduces coefficient disparity; outward
-row/column sums choose steps with $\|\Sigma^{1/2}KT^{1/2}\|_2\le0.9$.
-All residual and bound checks return to original coordinates.
+\paragraph{Compact fits discover primal and dual candidates.}
+Signed coverage prices are fitted against each family's actual implementation
+menus, including coincident ancestral alternatives. The final closing stage
+uses 45,085 nonempty-family HiGHS solves across eight CPU workers; six empty
+families require no call. Their cover is reconstructed on a $2^{32}$ rational
+grid. A stateful lift preserves a causal prefix and pays for the copies,
+evictions, workspace and reservations required by the changed suffix choices.
+One further HiGHS fit, with 10,245 variables and 112,633 nonzeros, adjusts shared
+hardware, reciprocal/service fields and original KV alternatives. Its restricted
+support generates a candidate upper; its optimum is not a full-master lower.
 
-\paragraph{Working supports and implicit full-domain points.}
-A checked lift embeds each restricted support into the source LP. One
-expanded-residency support has $36{,}508$ columns and $313{,}061$ rows;
-OCS reached a checked $0.0774\%$ working interval in $313.25$ seconds on an
-A100, including preparation and checking. This alone is not a full-master bound.
-For the full input, we improve independently identified owner retention,
-original tiles and streamed-weight choices, then represent temporal fields
-implicitly as weighted translations. GPU evaluation streams edge events while
-the central affine envelope is summed analytically. Capacity is checked on the
-resulting fractional point; no full event-expanded vector is allocated.
+\paragraph{Complete-domain acceptance supplies the certificate.}
+The primal must satisfy the complete original branch, including initial and
+terminal state, readiness, resource and physical rows. Dual multipliers must
+have their original signs and valid Lagrangian box support over all coordinates;
+implementation inequalities and temporal identities cover the complete source.
+Each branch has a checked lower $L_b$, and the perspective composition gives
+$L=\min_b L_b$. Separate saved-point reconstruction and replay, followed by
+fresh composition of 1,787 committed receipts, establish
+\[
+ \begin{gathered}
+ L\approx946{,}487.719081842\ \mathrm{ms},\qquad
+ U\approx947{,}123.742096447\ \mathrm{ms},\\
+ \frac{U-L}{U}\,100\%\approx0.0671531064\%.
+ \end{gathered}
+\]
+All 1,557 branches remain: 1,095 meet the stopping threshold and 462 have
+checked fixed-cost infeasibility. No branch remains unresolved at the requested
+accuracy. The certificate covers this frozen variable-hardware LP, rather than
+only the compact numerical supports (Appendix~\ref{app:expanded_native_certificate}).
 
-\paragraph{Complete-domain LP certificate.}
-Coverage prices are checked against every implementation in the frozen generators.
-Work-mass and service rows extend those inequalities to every original event;
-the minimum of the 21 branch bounds gives the family lower bound.
-Together with the admitted implicit primal, this yields
-$L=734{,}095.710904$ ms and $U=734{,}720.389756$ ms, hence
-$(U-L)/U=0.0850226646\%$: a certified $0.0850\%$ LP objective gap, rounded.
-The certificate closes the continuous objective interval through specialized
-primal transformations and algebraic bounds, not a claim that generic PDHG
-iterates converged on the entire expansion
-(Appendix~\ref{app:native_lp_certificate}).
-This certificate concerns the frozen native instance; it is not transferred to
-the strengthened physical branches in Eq.~\eqref{eq:master}.
-A new source with the corrected BF16 chip instead gives a checked
-$0.0846842\%$ interval over its complete implementation and temporal domain
-(Appendix~\ref{app:corrected_native_lp}). Hardware is fixed in this result;
-the numerical reconstruction engine has not converged over the joint master.
+\paragraph{Numerical provenance and OCS scope.}
+The successful closing computation uses CPU numerical LP fits and exact source
+verification. Support and proof directions were manually selected; automatic
+discovery for arbitrary instances is not established. The final composition
+checks committed proofs and identities, and saved-point replay shares checker
+algorithms. Earlier OCS 0.3.2 experiments use centered Halpern PDHG, reversible
+scaling and JAX operators on working supports
+\citep{chambolle2011first,halpern1967fixed,applegate2022practicallargescalelinearprogramming,jax2018github}.
+For example, a 36,508-column, 313,061-row residency support reached a checked
+$0.0774\%$ working interval in 313.25 seconds on an A100. Full-input OCS/PDHG
+pilots completed no full update; that trajectory did not produce the closing
+certificate. Appendix~\ref{app:ocs_working_path} retains its algorithm and scope.
 
 \paragraph{Hardware branch and bound.}
-For integral recovery, a finite tree partitions array counts, vector lanes,
-memory bandwidth, host channels and local-service units. Optimistic resources
-and capacity-priced retention paths bound each region; budget-infeasible
-regions or those unable to beat a replayed incumbent are pruned.
-Promising leaves are evaluated with actual capacity and implementation costs.
-The demonstrated tree covers a declared hardware grid and conditional software
-choices, not every discrete selector of the master. It does not re-solve the
-full temporal LP at every node. Appendix~\ref{app:native_solve_workflow}
-describes the bounds and the unresolved schedule leaves.
+Integral recovery searches a finite tree over array counts, vector lanes,
+DRAM bandwidth, host channels and local-service units. Optimistic resource
+and capacity-priced retention bounds prune budget-infeasible regions or those
+unable to improve a replayed incumbent. Leaves use actual implementation and
+capacity costs. This demonstrated tree covers a declared hardware grid with
+conditional software choices; it does not branch over every discrete master
+selector or solve the complete temporal LP at every node.
 
 \paragraph{Recovery and replay.}
-Recovery selects one branch, an integral cover, hardware allocations and legal
-storage/transfer actions. Analytical replay recomputes services at the selected
-rates, dependency readiness and capacities, yielding the reported chip latency.
-The LP certificate and recovered design are separate outputs: integer choices
-do not remove continuous reciprocal/product relaxation error, and the
-continuous LP interval is not a discrete-design optimality guarantee.
+Recovery selects one branch, integral implementations, hardware and storage
+policies. Analytical replay checks dependency readiness, capacities and service
+at the selected rates. The retained later execution takes
+$2{,}718{,}970.508466$ ms; the continuous upper above is not its latency.
+A lift of this execution establishes its membership, not a universal relaxation
+embedding for all executable designs. Reciprocal/product relaxation and integral
+recovery gaps remain, so the continuous certificate does not establish discrete
+chip/schedule optimality. Appendix~\ref{app:native_solve_workflow} records the
+solve and recovery procedures separately.

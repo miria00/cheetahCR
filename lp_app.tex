@@ -156,7 +156,10 @@ capacity rows. Our solver handles this after preconditioning. & \\
 
 \subsection{Current Solver Path}
 These matrix sizes describe the original restricted workloads, not the full
-native temporal expansion. Section~\ref{sec:solver_vm} describes the OCS path;
+native temporal expansion. Section~\ref{sec:solver_vm} separates the completed
+certificate-producing solve from the OCS working-support path;
 Appendix~\ref{app:native_provenance} lists accepted native working supports.
-No universal solver superiority or full-master convergence follows from these
-smaller cases.
+These smaller cases establish neither universal solver superiority nor
+full-master PDHG convergence. The expanded continuous LP is nevertheless
+certified at the stated accuracy by the separate primal--dual evidence in
+Appendix~\ref{app:expanded_native_certificate}.

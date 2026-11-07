@@ -1,24 +1,22 @@
-\section{Implementation-Level Validation: Cycle-Accurate RTL}
+\section{Implementation-Level Validation: Decoder RTL and Historical Checks}
 \label{sec:rtl_validation}
 
-The results so far certify \emph{model-level} quantities computed inside one
-cost-model convention; as we note in \cref{app:mfu}, a real measured
-utilization would require an executable implementation of the selected
-hardware/schedule pair. This section supplies that check. We take the
-committed schedule and the datapath geometry the LP sizes, express them as
-\emph{synthesizable} SystemVerilog, simulate them cycle-accurately with
-Verilator~5.050~\citep{snyder_verilator}, and compare against a reference model
-written in C\texttt{++}. We call this \emph{analytical-model-to-RTL cycle
-validation}: the RTL confirms that the LP's schedule is physically
-realizable, that its time-indexed memory constraints hold byte-for-byte in
-hardware, and that the utilization \emph{mechanisms} the LP charges are the
-ones a real datapath exhibits. We do \emph{not} treat RTL cycle counts as
-absolute ground truth (the analytical per-layer cache floors are uniformly
-conservative by $192\times$ to $2475\times$, quantified below), and we make
-no tape-out claim. \Cref{sec:asap7} then closes the remaining gap on the
-cost-model side, taking the sized datapath through logic synthesis and
-placement at a $7$~nm predictive PDK to test the area and power coefficients
-themselves.
+Performance results remain analytical. This appendix separates the new
+BF16/FP32 decoder mechanism tests from the historical schedule-tape and INT8
+experiments. Verilator~\citep{snyder_verilator} executes actual RTL and checks
+its outputs and control faults; simulation ticks do not establish achievable
+frequency, full-chip area or measured model latency. The new decoder tests
+cover arithmetic, selected bank/delivery calendars and a KV transition slice.
+They do not supply a complete decoder or inference controller. The historical
+ASAP7 placement experiment in \cref{sec:asap7} applies to its INT8 tile and
+does not calibrate the new BF16 datapath, SRAM macros or external-memory package.
+
+\input{update/wo24_rtl}
+
+\subsection{Historical schedule-tape and INT8 datapath checks}
+The following experiments retain their original workloads and hardware.
+Their harnesses were rerun in WO23; they were not rerun or reinterpreted as
+BF16 decoder validation in WO24.
 
 \paragraph{Experiment 1: schedule tape replay (realizability and memory
 legality).}
@@ -136,7 +134,7 @@ Absolute cache cycle floors & $192$--$2475\times$ conservative & scope guard \\
 of the cost model}
 \label{sec:asap7}
 
-Experiments 1 and 2 validate the \emph{schedule} the program commits to. A
+Experiments 1 and 2 check the historical tape and INT8 datapath slices. A
 second, independent question is whether the \emph{cost model} that evaluates the
 hardware is itself faithful: the program sizes a chip through the coefficients
 $k_{\mathrm{MAC}}$ (area per MAC) and $\pi_{\mathrm{MAC}}$ (power per MAC), and
@@ -207,11 +205,11 @@ against measured taped-out chips, against post-synthesis extraction, and
 against other frameworks~\citep{mei2021zigzag}. The Timeloop-derived Pareto
 data places this work in the third category and the silicon-anchored
 coefficients in the first; this section supplies the second. Concretely, it
-converts the area side of every gate-legality claim in this paper, and of the
-certified designs in \cref{sec:experiments}, from a literature-shaped constant
-into a quantity extracted from RTL-to-placement at $7$~nm, together with a
-validated scaling law; and it leaves the power side anchored to shipped
-silicon, with an explicit account of why this particular flow overstates it.
+provides an RTL-to-placement check of the historical INT8 array's area scaling
+at $7$~nm. It does not convert every architectural gate into a physically
+validated constraint, and its coefficient cannot be transferred to the new
+BF16/FP32 functional implementation. The new decoder power entries remain
+architectural proxies, with external package costs and physical timing open.
 
 \begin{table}[h]
 \centering

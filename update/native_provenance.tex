@@ -33,9 +33,108 @@ The construction and evidence are recorded in
 \path{systems/cheetah_joint/audits/20261026/BASELINE_FEASIBILITY_REPAIR.md}
 and \path{systems/cheetah_joint/audits/20261026/BASELINE_EXECUTION_CONTRACT.md}.
 
-The corrected DeepSeek chip and its full-domain fixed-chip LP interval are
-reported in Appendix~\ref{app:corrected_native_lp}. Its retimed workload
-remains separate from the historical comparisons below.
+The earlier corrected DeepSeek chip and fixed-chip LP interval are retained
+in Appendix~\ref{app:corrected_native_lp}. The completed expanded-master
+certificate and later recovered chip are identified separately in
+Appendix~\ref{app:expanded_native_certificate}. Historical comparison arms
+retain their own hardware, coefficients and workload boundaries.
+
+\subsection{Current DeepSeek comparison against the vanilla TPU-v3 reference}
+\label{sec:dual_host_baseline}
+Our static arm is FAST recovered as a constraint-disabled case of the master
+program, so the reference denominator must be the one FAST used, or the static
+arm's output is not commensurate with FAST's published output. FAST's modeled
+TPU-v3 supplies operands from 32\,GiB of HBM at 900\,GB/s and carries no
+host-offload term, because every workload in its suite is HBM-resident. We
+therefore report every ratio against a \emph{vanilla} modeled TPU-v3: published
+parameters, ordinary compiler behaviour, no additional fusion pass, and operands
+supplied from HBM at 900\,GB/s. This coincides with FAST's modeled TPU-v3
+column, so our numbers and FAST's are commensurate by construction.
+
+DeepSeek-V3 does not fit in 32\,GiB, so an offload policy is required and FAST's
+workload set gives no precedent for one. We therefore also report a
+\emph{declared-offload} baseline at the 16\,GB/s installed host interface of the
+existing reconstruction, and state the full dependence on that rate. Both
+baselines use the same admitted custom execution, the same 32-request task, the
+same byte ledger and the same schedule; only the reference's declared supply
+rate differs, by the closed form $t'=t+D_{\mathrm{host}}(1/r'-1/r)$ applied per
+phase. No search selects a favourable arm, and because the reference is not
+rescheduled at the higher rate the FAST-matched ratios are upper bounds.
+
+\paragraph{Vanilla TPU-v3 reference (supplied at the published 900\,GB/s).}
+\begin{table}[h]
+\centering\small
+\caption{DeepSeek-V3 whole-task comparison against the vanilla modeled TPU-v3
+reference, supplied at the published 900\,GB/s as FAST's modeled TPU-v3 is.
+This is the reported result. Data supply is 14.22\% of the reference total, so
+the comparison is largely insensitive to the offload assumption.}
+\label{tab:deepseek_vanilla}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Phase & Reference (ms) & Custom (ms) & Ratio \\
+\midrule
+Prefill       & 3{,}258{,}635.335548  & 913{,}985.603595     & $3.565303\times$ \\
+Decode        & 12{,}201{,}159.132793 & 2{,}005{,}614.309161 & $6.083502\times$ \\
+Conversion    & 86{,}333.042308       & 42{,}972.849152      & $2.009014\times$ \\
+\midrule
+Complete task & 15{,}546{,}127.510649 & 2{,}962{,}572.761908 & $\mathbf{5.247509\times}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Archived declared-offload reference (16\,GB/s installed host).}
+\begin{table}[h]
+\centering\small
+\caption{The same comparison under the earlier reconstruction's 16\,GB/s
+installed host interface, retained for provenance and superseded for every
+reported claim. Host service is 90.31\% of the reference total, so 90.9\% of
+the advantage above $1\times$ is attributable to the interface rate alone. The
+rate has no counterpart in FAST's HBM-resident TPU-v3.}
+\label{tab:deepseek_host16}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Phase & Reference (ms) & Custom (ms) & Ratio \\
+\midrule
+Prefill       & 5{,}993{,}513.089228   & 913{,}985.603595     & $6.557557\times$ \\
+Decode        & 131{,}463{,}745.013185 & 2{,}005{,}614.309161 & $65.547870\times$ \\
+Conversion    & 209{,}604.686092       & 42{,}972.849152      & $4.877607\times$ \\
+\midrule
+Complete task & 137{,}666{,}862.788505 & 2{,}962{,}572.761908 & $\mathbf{46.468686\times}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Full dependence on the declared supply rate.}
+\begin{table}[h]
+\centering\small
+\caption{Whole-task ratio as a function of the reference's declared supply rate,
+by the same closed-form reprice. The 900\,GB/s row is the vanilla TPU-v3
+reference used throughout; the infinite row is the supply-independent limit. Between TPU-v3's
+published bandwidth and unlimited supply the ratio moves only from
+$5.248\times$ to $4.501\times$.}
+\label{tab:deepseek_hostsweep}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Reference supply (GB/s) & Reference (ms) & Supply share & Ratio \\
+\midrule
+16       & 137{,}666{,}862.8 & 90.31\% & $46.469\times$ \\
+32       & 75{,}501{,}330.1  & 82.34\% & $25.485\times$ \\
+64       & 44{,}418{,}563.8  & 69.98\% & $14.993\times$ \\
+128      & 28{,}877{,}180.6  & 53.82\% & $9.747\times$ \\
+256      & 21{,}106{,}489.0  & 36.82\% & $7.124\times$ \\
+512      & 17{,}221{,}143.3  & 22.56\% & $5.813\times$ \\
+\textbf{900 (vanilla TPU-v3)} & \textbf{15{,}546{,}127.5} & \textbf{14.22\%} & $\mathbf{5.248\times}$ \\
+1{,}024  & 15{,}278{,}470.4  & 12.72\% & $5.157\times$ \\
+$\infty$ & 13{,}335{,}797.5  & 0\%     & $4.501\times$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Neither rate is a measured DeepSeek offload specification; 900\,GB/s is TPU-v3's
+published HBM bandwidth and 16\,GB/s is a reconstruction parameter. The
+equal-supply reprice exists only for this workload, because the archived vision
+and LLM references in the archived host-backed suite did not retain a per-phase supply ledger;
+their ratios remain stated under their own archived convention.
 
 \subsection{Archived native results}
 \paragraph{Frozen input.}
@@ -125,7 +224,7 @@ The original study varies vector/local service as documented in
 A well-scheduled, fully calibrated TPU serving stack is not established by the
 naive analytical reference.
 
-\paragraph{Solver scope and current bound.}
+\paragraph{Archived working supports and earlier bounds.}
 Three accepted OCS working supports are separately identified:
 \begin{center}\small
 \begin{tabular}{@{}lrrr@{}}
@@ -152,7 +251,9 @@ actual expert imbalance while paying for mixed prefill/decode groups. Signed
 cover and work-mass equality multipliers remain legal; all 45,091 parameter
 families and their original request counts are independently checked. This covers the declared
 library and original event domain, not every intended future implementation.
-It is separate from both integral latency and the later 21-branch main-text family.
+It is separate from integral latency and both later 21-branch and 1,557-branch
+certificates; Appendix~\ref{app:expanded_native_certificate} gives the current
+complete-family result.
 The derivation and independent replay are in
 \path{audits/20261023/NATIVE_REQUEST_COVER_BOUND.md}. The upper transfers the
 already admitted fused columns into the complete fractional-pass witness,
@@ -216,4 +317,5 @@ archives use external content manifests. No original OCS project code is
 modified; experiments use the copied \texttt{systems/OCS\_0.3.2} implementation.
 
 \input{update/native_solve_workflow}
+\input{update/expanded_lp_certificate}
 \input{update/native_lp_certificate}
