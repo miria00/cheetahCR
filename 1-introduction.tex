@@ -21,6 +21,17 @@ round trip and the complete schedule is slower. A slightly slower tile would
 have produced the faster program. No stage of the pipeline can see this
 trade-off, because it exists only in the joint space.
 
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=1.0\linewidth]{figs4/intro3.png}
+% \caption{Heuristics based Sequential design vs Our Unified Optimization Paradigm.
+% (Left) Baseline methods decouple hardware search, operation-level tiling, and static fusion, precluding cross-stage trade-offs.
+% (Right) CHEETAH presents a unified LLM-driven mathematical framework that jointly optimizes tiling, placement, and more while learning from a causal ledger.}
+\caption{Heuristics based sequential design versus our unified optimization paradigm.
+(Left) Baseline methods decouple hardware search, operation-level tiling, and static fusion, precluding cross-stage trade-offs.
+(Right) CHEETAH presents a unified master linear program that jointly optimizes tiling, placement, and more while learning from a causal ledger.}
+\label{fig::workflow}
+\end{figure}
 In this paper we introduce \textbf{\textsc{CHEETAH}}: \acroletter{C}o-designed
 \acroletter{H}ardware \acroletter{E}xploration via \acroletter{E}fficient
 \acroletter{T}hroughput and \acroletter{H}ybrid-search, a mathematically
@@ -60,6 +71,17 @@ and hardware neighborhoods in place of brute-force outer search. The
 hardware--software interactions themselves live in the inner formulation, not
 in the LLM.
 
+% \begin{figure}[ht!]
+%     \centering
+%     \includegraphics[width=1.0\linewidth]{figs4/intro2.png}
+% % \caption{Heuristics based Sequential design vs Our Unified Optimization Paradigm.
+% % (Left) Baseline methods decouple hardware search, operation-level tiling, and static fusion, precluding cross-stage trade-offs.
+% % (Right) CHEETAH presents a unified LLM-driven mathematical framework that jointly optimizes tiling, placement, and more while learning from a causal ledger.}
+% \caption{Heuristics based sequential design versus our unified optimization paradigm.
+% (Left) Baseline methods decouple hardware search, operation-level tiling, and static fusion, precluding cross-stage trade-offs.
+% (Right) CHEETAH presents a unified master linear program that jointly optimizes tiling, placement, and more while learning from a causal ledger.}
+% \label{fig::workflow}
+% \end{figure}
 \paragraph{Contributions.} CHEETAH combines a unified HW/SW design relaxation,
 operator-based optimization and certified bounds with an LLM architect that
 proposes implementations and hardware search neighborhoods.
@@ -89,26 +111,26 @@ proposes implementations and hardware search neighborhoods.
     designs are different chips.
 \end{enumerate}
 
-The following paper is organized as follows. Section~\ref{sec:prelim} summarizes preliminary background and Appendix~\ref{app:related_work} discusses related work,  Section~\ref{sec:methods}
-presents the master LP and its features, and Section~\ref{sec:ocs} describes
-the OCS solver framework, its certificate and hardware search. Section~\ref{sec:experiments}
-reports experimental results and ablations, and the appendix provides containment
-theorems, physical-validation details, co-design blueprints, and reproduction evidence.
+% The following paper is organized as follows. Section~\ref{sec:prelim} summarizes preliminary background and Appendix~\ref{app:related_work} discusses related work,  Section~\ref{sec:methods}
+% presents the master LP and its features, and Section~\ref{sec:ocs} describes
+% the OCS solver framework, its certificate and hardware search. Section~\ref{sec:experiments}
+% reports experimental results and ablations, and the appendix provides containment
+% theorems, physical-validation details, co-design blueprints, and reproduction evidence.
 
 
 % ---- plots restored from the long version, original placement ----
 
-\begin{figure}[t]
-    \centering
-    \includegraphics[width=1.0\linewidth]{figs4/intro2.png}
-% \caption{Heuristics based Sequential design vs Our Unified Optimization Paradigm.
+% \begin{figure}[t]
+%     \centering
+%     \includegraphics[width=1.0\linewidth]{figs4/intro2.png}
+% % \caption{Heuristics based Sequential design vs Our Unified Optimization Paradigm.
+% % (Left) Baseline methods decouple hardware search, operation-level tiling, and static fusion, precluding cross-stage trade-offs.
+% % (Right) CHEETAH presents a unified LLM-driven mathematical framework that jointly optimizes tiling, placement, and more while learning from a causal ledger.}
+% \caption{Heuristics based sequential design versus our unified optimization paradigm.
 % (Left) Baseline methods decouple hardware search, operation-level tiling, and static fusion, precluding cross-stage trade-offs.
-% (Right) CHEETAH presents a unified LLM-driven mathematical framework that jointly optimizes tiling, placement, and more while learning from a causal ledger.}
-\caption{Heuristics based sequential design versus our unified optimization paradigm.
-(Left) Baseline methods decouple hardware search, operation-level tiling, and static fusion, precluding cross-stage trade-offs.
-(Right) CHEETAH presents a unified master linear program that jointly optimizes tiling, placement, and more while learning from a causal ledger.}
-\label{fig::workflow}
-\end{figure}
+% (Right) CHEETAH presents a unified master linear program that jointly optimizes tiling, placement, and more while learning from a causal ledger.}
+% \label{fig::workflow}
+% \end{figure}
 
 \begin{figure}[t]
     \centering

@@ -5,39 +5,39 @@ adds autoregressive decode and phase-specific controls. TPU-v3 provides a
 publicly documented reference baseline consistent with prior
 work~\citep{jouppi2021ten,zhang_fast}. All speedups below are analytical and modeled results.
 
-\paragraph{What a new paradigm should be judged on.}
-A sequential pipeline returns a design. CHEETAH returns a design \emph{and} a
-certified bound \emph{and} a gate record: every reported chip comes with an LP
-lower bound on any design in its declared family, passes six pre-RTL
-feasibility gates whose constants carry an audited provenance trail, and sits in
-a decision space whose coverage is provable (Table~\ref{tab:capability-matrix},
-Theorem~\ref{thm:containment}). Raw speedup over a fixed baseline is the old
-paradigm's criterion. The results below should be read against these three as
-well.
+% \paragraph{What a new paradigm should be judged on.}
+% A sequential pipeline returns a design. CHEETAH returns a design \emph{and} a
+% certified bound \emph{and} a gate record: every reported chip comes with an LP
+% lower bound on any design in its declared family, passes six pre-RTL
+% feasibility gates whose constants carry an audited provenance trail, and sits in
+% a decision space whose coverage is provable (Table~\ref{tab:capability-matrix},
+% Theorem~\ref{thm:containment}). Raw speedup over a fixed baseline is the old
+% paradigm's criterion. The results below should be read against these three as
+% well.
 
-\paragraph{Software alone is physics-capped; co-design is the only route past it.}
-Our first result is a ceiling, not a speedup. For a fixed chip, no scheduler of
-any kind can beat the ratio of the naive streaming time to the
-compute-or-memory roofline floor (Theorem~\ref{thm:deficiency},
-Appendix~\ref{app:deficiency}). On fixed TPU-v3 that ceiling is $2.14\times$,
-$2.14\times$, $2.51\times$ and $2.22\times$ for Llama-1 13B, Llama-1 65B,
-Llama-3 70B and DeepSeek-V3, and CHEETAH's fixed-hardware solutions reach
-exactly $100\%$ of it on all four (Table~\ref{tab:deficiency}; three of the
-four also appear in Table~\ref{tab:fixed_hw}). The modest fixed-hardware gains
-are therefore not a weakness of the method but the physics of the chip:
-software can recover at most about $2.5\times$ on TPU-v3, so the only route to
-the $10$--$25\times$ reported below is to co-design the chip, which is what the
-unified formulation enables and what a sequential pipeline cannot do. The
-two-factor decomposition of Appendix~\ref{app:deficit:twofactor} makes the
-split explicit for the prefill-oriented designs: of Llama-3 70B's
-$40.1\times$, $1.48\times$ comes from scheduling at fixed TPU-v3 silicon and
-$26.85\times$ from MAC provisioning, and the reconstructed product matches the
-headline to within $1\%$ on all four LLMs, so the gain is not an artifact of
-simply adding compute.
+% \paragraph{Software alone is physics-capped; co-design is the only route past it.}
+% Our first result is a ceiling, not a speedup. For a fixed chip, no scheduler of
+% any kind can beat the ratio of the naive streaming time to the
+% compute-or-memory roofline floor (Theorem~\ref{thm:deficiency},
+% Appendix~\ref{app:deficiency}). On fixed TPU-v3 that ceiling is $2.14\times$,
+% $2.14\times$, $2.51\times$ and $2.22\times$ for Llama-1 13B, Llama-1 65B,
+% Llama-3 70B and DeepSeek-V3, and CHEETAH's fixed-hardware solutions reach
+% exactly $100\%$ of it on all four (Table~\ref{tab:deficiency}; three of the
+% four also appear in Table~\ref{tab:fixed_hw}). The modest fixed-hardware gains
+% are therefore not a weakness of the method but the physics of the chip:
+% software can recover at most about $2.5\times$ on TPU-v3, so the only route to
+% the $10$--$25\times$ reported below is to co-design the chip, which is what the
+% unified formulation enables and what a sequential pipeline cannot do. The
+% two-factor decomposition of Appendix~\ref{app:deficit:twofactor} makes the
+% split explicit for the prefill-oriented designs: of Llama-3 70B's
+% $40.1\times$, $1.48\times$ comes from scheduling at fixed TPU-v3 silicon and
+% $26.85\times$ from MAC provisioning, and the reconstructed product matches the
+% headline to within $1\%$ on all four LLMs, so the gain is not an artifact of
+% simply adding compute.
 
 \subsection{Experimental Setup}
 \label{sec:exp_intro}
-The suite comprises EfficientNet-B1--B7, Llama-1 13B/65B, Llama-3 70B,
+Software alone is physics-capped, therefore co-design is the only route past the performance ceiling. The experimental suite comprises EfficientNet-B1--B7, Llama-1 13B/65B, Llama-3 70B,
 DeepSeek-V3~\citep{tan2019efficientnet,llama3modelcard,deepseekv3report} and
 Stable Diffusion~1.5 UNet. DeepSeek-V3 is evaluated on thirty-two 4,096-token
 Wikitext-2 prompts, each decoded greedily for 512 tokens, with FP8 weights

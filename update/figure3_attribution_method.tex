@@ -6,24 +6,25 @@ four slices of a panel sum to the workload's total gain. For the Llamas the
 sequence first extends the compatible mapping menu, then restores active compute
 arrays, off-chip DRAM bandwidth and on-chip delivery bandwidth, each with weight
 and KV residency, paid first imports and installed bank/port reservations held
-fixed; all eight combinations of the three resource limits are repriced, and
-the six release orders move individual shares but not their combined
-contribution. Off-chip bandwidth is the dominant component at $44$--$45\%$ on
-every Llama, with on-chip delivery at $38$--$44\%$; we group delivery with
-tiling because a wider mapping menu is only usable once arrays and ports can
-serve it, and the isolated mapping increments alone account for just
-$0.18$--$0.51\%$, since a better tiling buys nothing while the execution is
-service-bound. Memory capacity with weight/KV residency contributes
-$10$--$16\%$ and compute parallelism about $1\%$: decode on these chips is
-bandwidth-bound, not compute-bound, so adding arrays without delivery yields
-almost nothing. DeepSeek-V3 reverses the picture. Placement and residency
-contribute $64.6\%$ and hardware refinement $26.3\%$, while producer-layout
-storage fusion ($2.1\%$) and scheduling, paid cross-wave prefetch with a second
-FP32 accumulator context ($7.1\%$), matter only after the memory bottleneck is
-removed. As in FAST~\citep{zhang_fast}, the components act in synergy:
-residency and bandwidth remove the memory wall, and only then do tiling, fusion
-and scheduling realize their utilization gains, which is why co-optimizing the
-hardware with the software that uses it recovers gains no single stage exposes.
-These are analytical service-cap controls on the selected designs: a capped
-control claims no smaller chip or power saving, and the fixed-hardware ratios of
-Table~\ref{tab:fixed_hw} are not subtracted from these shares.
+fixed. 
+% all eight combinations of the three resource limits are repriced, and
+% the six release orders move individual shares but not their combined
+% contribution. Off-chip bandwidth is the dominant component at $44$--$45\%$ on
+% every Llama, with on-chip delivery at $38$--$44\%$; we group delivery with
+% tiling because a wider mapping menu is only usable once arrays and ports can
+% serve it, and the isolated mapping increments alone account for just
+% $0.18$--$0.51\%$, since a better tiling buys nothing while the execution is
+% service-bound. Memory capacity with weight/KV residency contributes
+% $10$--$16\%$ and compute parallelism about $1\%$: decode on these chips is
+% bandwidth-bound, not compute-bound, so adding arrays without delivery yields
+% almost nothing. DeepSeek-V3 reverses the picture. Placement and residency
+% contribute $64.6\%$ and hardware refinement $26.3\%$, while producer-layout
+% storage fusion ($2.1\%$) and scheduling, paid cross-wave prefetch with a second
+% FP32 accumulator context ($7.1\%$), matter only after the memory bottleneck is
+% removed. As in FAST~\citep{zhang_fast}, the components act in synergy:
+% residency and bandwidth remove the memory wall, and only then do tiling, fusion
+% and scheduling realize their utilization gains, which is why co-optimizing the
+% hardware with the software that uses it recovers gains no single stage exposes.
+% These are analytical service-cap controls on the selected designs: a capped
+% control claims no smaller chip or power saving, and the fixed-hardware ratios of
+% Table~\ref{tab:fixed_hw} are not subtracted from these shares.
