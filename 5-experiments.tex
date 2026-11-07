@@ -161,3 +161,10 @@ decision families each decoder design actually exercises. These finite-family
 controls do not certify unrestricted placement, rematerialization or scheduling
 optima.
 
+\paragraph{Full-inference DeepSeek-V3.}
+Appendix~\ref{sec:decode_decomp} evaluates the complete 32-request task, 4,096
+prompt and 512 output tokens each, against the vanilla simulated TPU-v3
+reference: the recovered chip predicts $5.25\times$ end to end, with decode
+contributing $80.45\%$ of the time saved. Appendix~\ref{sec:native_features}
+removes one mechanism at a time on that chip to isolate batching, storage
+fusion, KV retention and time-indexed placement.
