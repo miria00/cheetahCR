@@ -1,0 +1,1405 @@
+{
+  "passed": true,
+  "version": "wo23_dense_delivery_v1",
+  "UTC": "2026-11-06T12:46:18.005386+00:00",
+  "models": [
+    {
+      "model": 13,
+      "cells": {
+        "H0_old": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/control_H0_old_v1_replay/result.json",
+          "sha256": "743ea7d4339221a6af8a21977987f0bd61d61c4cb3ce018219d01586c29cc6e7",
+          "decode_ns": "385832048359852/36699",
+          "area_proxy_mm2": "112180473/125000",
+          "hardware": {
+            "accumulator_bank_bytes": 65536,
+            "array_geometry": [
+              16,
+              16
+            ],
+            "bandwidth": 12233,
+            "bank_control_bytes_per_bank": 0,
+            "endpoint_queue_depth": 512,
+            "host_GBps": 96,
+            "host_interface_units": 3,
+            "legacy_bank_mode": true,
+            "local_GBps": 24576,
+            "local_service_units": 6,
+            "operand_bank_bytes": 65536,
+            "sram_mib": 124.75,
+            "staging_bank_bytes": 65536,
+            "staging_banks": 64,
+            "staging_bytes": 4194304,
+            "staging_control_bytes": 65536,
+            "tiles": 640,
+            "vector_lanes": 4096
+          },
+          "original_research_cap_pass": true,
+          "source_point_origin": "analytical finite-column primal and dual after bounded OCS"
+        },
+        "H0_new": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/control_H0_new_v1_replay/result.json",
+          "sha256": "3b4b9b191215e4c6ba8a218154fef88b9619df40c15e7c1a4922b9e2c7967e5a",
+          "decode_ns": "383014563881372/36699",
+          "area_proxy_mm2": "112180473/125000",
+          "hardware": {
+            "accumulator_bank_bytes": 65536,
+            "array_geometry": [
+              16,
+              16
+            ],
+            "bandwidth": 12233,
+            "bank_control_bytes_per_bank": 0,
+            "endpoint_queue_depth": 512,
+            "host_GBps": 96,
+            "host_interface_units": 3,
+            "legacy_bank_mode": true,
+            "local_GBps": 24576,
+            "local_service_units": 6,
+            "operand_bank_bytes": 65536,
+            "sram_mib": 124.75,
+            "staging_bank_bytes": 65536,
+            "staging_banks": 64,
+            "staging_bytes": 4194304,
+            "staging_control_bytes": 65536,
+            "tiles": 640,
+            "vector_lanes": 4096
+          },
+          "original_research_cap_pass": true,
+          "source_point_origin": "analytical finite-column primal and dual after bounded OCS"
+        },
+        "H1_old": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/control_H1_old_v1_replay/result.json",
+          "sha256": "50378a76fc5e49239ad1fb759ff1ddc39c8d99595d25de84a369df3d50061772",
+          "decode_ns": "348958084216864/32921",
+          "area_proxy_mm2": "38400277/62500",
+          "hardware": {
+            "MACs_per_array": 256,
+            "accumulator_bank_bytes": 1024,
+            "array_fill_cycles": 38,
+            "array_geometry": [
+              8,
+              32
+            ],
+            "bandwidth": 9406,
+            "bank_control_bytes_per_bank": 256,
+            "bank_control_total_bytes": 655360,
+            "endpoint_queue_depth": 512,
+            "host_GBps": 128,
+            "host_interface_units": 4,
+            "installed_bank_count": 2560,
+            "legacy_bank_mode": false,
+            "local_GBps": 28672,
+            "local_service_units": 7,
+            "operand_bank_bytes": 1024,
+            "operand_bank_pairs": 640,
+            "operand_port_width_bytes": 32,
+            "operand_read_ports_per_array": 3,
+            "skew_bytes_per_array": 1088,
+            "sram_mib": 8.3125,
+            "staging_bank_bytes": 65536,
+            "staging_banks": 64,
+            "staging_bytes": 4194304,
+            "staging_control_bytes": 65536,
+            "tiles": 640,
+            "vector_lanes": 2560
+          },
+          "original_research_cap_pass": false,
+          "source_point_origin": "analytical finite-column primal and dual after bounded OCS"
+        },
+        "H1_new": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/control_H1_new_v1_replay/result.json",
+          "sha256": "b30b3fccb2226350c6869607a75eff5ec08ae007c1d881d08e2f5cf2a89c01a9",
+          "decode_ns": "49447551470272/4703",
+          "area_proxy_mm2": "38400277/62500",
+          "hardware": {
+            "MACs_per_array": 256,
+            "accumulator_bank_bytes": 1024,
+            "array_fill_cycles": 38,
+            "array_geometry": [
+              8,
+              32
+            ],
+            "bandwidth": 9406,
+            "bank_control_bytes_per_bank": 256,
+            "bank_control_total_bytes": 655360,
+            "endpoint_queue_depth": 512,
+            "host_GBps": 128,
+            "host_interface_units": 4,
+            "installed_bank_count": 2560,
+            "legacy_bank_mode": false,
+            "local_GBps": 28672,
+            "local_service_units": 7,
+            "operand_bank_bytes": 1024,
+            "operand_bank_pairs": 640,
+            "operand_port_width_bytes": 32,
+            "operand_read_ports_per_array": 3,
+            "skew_bytes_per_array": 1088,
+            "sram_mib": 8.3125,
+            "staging_bank_bytes": 65536,
+            "staging_banks": 64,
+            "staging_bytes": 4194304,
+            "staging_control_bytes": 65536,
+            "tiles": 640,
+            "vector_lanes": 2560
+          },
+          "original_research_cap_pass": true,
+          "source_point_origin": "analytical finite-column primal and dual after bounded OCS"
+        }
+      },
+      "interaction_ns": "10928486306066960/1208167779",
+      "interaction_seconds": 0.009045503858009245,
+      "interaction_sign": "positive means additional joint saving",
+      "hardware_only": {
+        "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/hardware_only_joint_v1_replay/result.json",
+        "sha256": "c0198d72ddfec9825052abb62cac2e6cef9e70559351c9f907271432d06aae11"
+      },
+      "software_only": {
+        "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/control_H0_new_v1_replay/result.json",
+        "sha256": "3b4b9b191215e4c6ba8a218154fef88b9619df40c15e7c1a4922b9e2c7967e5a",
+        "decode_ns": "383014563881372/36699",
+        "area_proxy_mm2": "112180473/125000",
+        "hardware": {
+          "accumulator_bank_bytes": 65536,
+          "array_geometry": [
+            16,
+            16
+          ],
+          "bandwidth": 12233,
+          "bank_control_bytes_per_bank": 0,
+          "endpoint_queue_depth": 512,
+          "host_GBps": 96,
+          "host_interface_units": 3,
+          "legacy_bank_mode": true,
+          "local_GBps": 24576,
+          "local_service_units": 6,
+          "operand_bank_bytes": 65536,
+          "sram_mib": 124.75,
+          "staging_bank_bytes": 65536,
+          "staging_banks": 64,
+          "staging_bytes": 4194304,
+          "staging_control_bytes": 65536,
+          "tiles": 640,
+          "vector_lanes": 4096
+        },
+        "original_research_cap_pass": true,
+        "source_point_origin": "analytical finite-column primal and dual after bounded OCS"
+      },
+      "joint": {
+        "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/control_H1_new_v1_replay/result.json",
+        "sha256": "b30b3fccb2226350c6869607a75eff5ec08ae007c1d881d08e2f5cf2a89c01a9",
+        "decode_ns": "49447551470272/4703",
+        "area_proxy_mm2": "38400277/62500",
+        "hardware": {
+          "MACs_per_array": 256,
+          "accumulator_bank_bytes": 1024,
+          "array_fill_cycles": 38,
+          "array_geometry": [
+            8,
+            32
+          ],
+          "bandwidth": 9406,
+          "bank_control_bytes_per_bank": 256,
+          "bank_control_total_bytes": 655360,
+          "endpoint_queue_depth": 512,
+          "host_GBps": 128,
+          "host_interface_units": 4,
+          "installed_bank_count": 2560,
+          "legacy_bank_mode": false,
+          "local_GBps": 28672,
+          "local_service_units": 7,
+          "operand_bank_bytes": 1024,
+          "operand_bank_pairs": 640,
+          "operand_port_width_bytes": 32,
+          "operand_read_ports_per_array": 3,
+          "skew_bytes_per_array": 1088,
+          "sram_mib": 8.3125,
+          "staging_bank_bytes": 65536,
+          "staging_banks": 64,
+          "staging_bytes": 4194304,
+          "staging_control_bytes": 65536,
+          "tiles": 640,
+          "vector_lanes": 2560
+        },
+        "original_research_cap_pass": true,
+        "source_point_origin": "analytical finite-column primal and dual after bounded OCS"
+      },
+      "physical_package_admission": false,
+      "hardware_MAC_and_bank_costs_conditional": true,
+      "primary_area_limit_mm2": 600,
+      "scope": "Supplied finite candidates and25 source mapping options; exact column-pricing closure is separate from raw OCS returned duals and count recovery.",
+      "fallback_cell_area_policy": "H1 is614.404432mm\u00b2 strict-time fallback; not A0/A1.",
+      "primary_area_cells": {
+        "H1_old": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/control_H1_A0_old_v1_replay/result.json",
+          "sha256": "069161edafbc2295b7a62d0be58c7c9a3a7efef7336b13bf3989410735e13266",
+          "decode_ns": "689329645239944/63973",
+          "area_proxy_mm2": "74933463/125000",
+          "original_research_cap_pass": false
+        },
+        "H1_new": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/control_H1_A0_new_v1_replay/result.json",
+          "sha256": "f9e271d7a63b5efd7a7537bf8bcb9a3b45ea99e894e75c0a9e13c25ba5e4d1fd",
+          "decode_ns": "97677534531992/9139",
+          "area_proxy_mm2": "74933463/125000",
+          "original_research_cap_pass": false
+        }
+      },
+      "primary_interaction_ns": "1906987507067920/180595779",
+      "primary_hardware_only": {
+        "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/hardware_only_A0_joint_v1_replay/result.json",
+        "sha256": "42c18fb2a9cd2e2130a389505a89d871658b5901f49222cc50e0587f08a2118e"
+      },
+      "primary_target_met": false,
+      "strict_cap_fallback": {
+        "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/fallback614_OCS_replay_v1/result.json",
+        "sha256": "c3021180a27fc2865d237737149c9edf52aa974e857f2b1057d6c5fa7beefa3f"
+      },
+      "primary_source_point": {
+        "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/control_H1_A0_new_v1_replay/result.json",
+        "sha256": "f9e271d7a63b5efd7a7537bf8bcb9a3b45ea99e894e75c0a9e13c25ba5e4d1fd"
+      },
+      "primary_exact_lower_ns": "97677534531992/9139",
+      "primary_target_exclusion_scope": "Only6compiled600mm\u00b2hardwarebranches withall25compatiblemappingcolumnsandwholeweightstocks; notglobalhardwareimpossibility."
+    },
+    {
+      "model": 65,
+      "cells": {
+        "H0_old": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/65/control_H0_old_v1_replay/result.json",
+          "sha256": "13fb71c7b56b08ee006ae312b7f60ded74e4274d1fadd52632102f3e01b024e8",
+          "decode_ns": "108075750442972/1941",
+          "area_proxy_mm2": "76312431/125000",
+          "hardware": {
+            "accumulator_bank_bytes": 65536,
+            "array_geometry": [
+              16,
+              16
+            ],
+            "bandwidth": 8411,
+            "bank_control_bytes_per_bank": 0,
+            "endpoint_queue_depth": 512,
+            "host_GBps": 96,
+            "host_interface_units": 3,
+            "legacy_bank_mode": true,
+            "local_GBps": 24576,
+            "local_service_units": 6,
+            "operand_bank_bytes": 65536,
+            "sram_mib": 72.625,
+            "staging_bank_bytes": 65536,
+            "staging_banks": 32,
+            "staging_bytes": 2097152,
+            "staging_control_bytes": 65536,
+            "tiles": 352,
+            "vector_lanes": 896
+          },
+          "original_research_cap_pass": true,
+          "source_point_origin": "analytical finite-column primal and dual after bounded OCS"
+        },
+        "H0_new": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/65/control_H0_new_v1_replay/result.json",
+          "sha256": "3ef8252917fd5a58d6ba3cc4610b0900114bbcdaaf908381a453ca2edc71a43a",
+          "decode_ns": "468157272659812/8411",
+          "area_proxy_mm2": "76312431/125000",
+          "hardware": {
+            "accumulator_bank_bytes": 65536,
+            "array_geometry": [
+              16,
+              16
+            ],
+            "bandwidth": 8411,
+            "bank_control_bytes_per_bank": 0,
+            "endpoint_queue_depth": 512,
+            "host_GBps": 96,
+            "host_interface_units": 3,
+            "legacy_bank_mode": true,
+            "local_GBps": 24576,
+            "local_service_units": 6,
+            "operand_bank_bytes": 65536,
+            "sram_mib": 72.625,
+            "staging_bank_bytes": 65536,
+            "staging_banks": 32,
+            "staging_bytes": 2097152,
+            "staging_control_bytes": 65536,
+            "tiles": 352,
+            "vector_lanes": 896
+          },
+          "original_research_cap_pass": true,
+          "source_point_origin": "analytical finite-column primal and dual after bounded OCS"
+        },
+        "H1_old": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/65/control_H1_old_v1_replay/result.json",
+          "sha256": "b4d47b98bfdf576c945fa4887ce537addf122d2f8a84a7c6e7b6ba1290342d56",
+          "decode_ns": "283740945199/7",
+          "area_proxy_mm2": "9341219/15625",
+          "hardware": {
+            "MACs_per_array": 256,
+            "accumulator_bank_bytes": 2048,
+            "array_fill_cycles": 38,
+            "array_geometry": [
+              8,
+              32
+            ],
+            "bandwidth": 8960,
+            "bank_control_bytes_per_bank": 256,
+            "bank_control_total_bytes": 524288,
+            "endpoint_queue_depth": 512,
+            "host_GBps": 192,
+            "host_interface_units": 6,
+            "installed_bank_count": 2048,
+            "legacy_bank_mode": false,
+            "local_GBps": 32768,
+            "local_service_units": 8,
+            "operand_bank_bytes": 2048,
+            "operand_bank_pairs": 512,
+            "operand_port_width_bytes": 32,
+            "operand_read_ports_per_array": 3,
+            "skew_bytes_per_array": 1088,
+            "sram_mib": 9.625,
+            "staging_bank_bytes": 65536,
+            "staging_banks": 64,
+            "staging_bytes": 4194304,
+            "staging_control_bytes": 65536,
+            "tiles": 512,
+            "vector_lanes": 2048
+          },
+          "original_research_cap_pass": true,
+          "source_point_origin": "analytical finite-column primal and dual after bounded OCS"
+        },
+        "H1_new": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/65/control_H1_new_v1_replay/result.json",
+          "sha256": "42d497c963c788e4bd981beba2e66d78d67889142f15ac909b17a0adec566f21",
+          "decode_ns": "1404992478347/35",
+          "area_proxy_mm2": "9341219/15625",
+          "hardware": {
+            "MACs_per_array": 256,
+            "accumulator_bank_bytes": 2048,
+            "array_fill_cycles": 38,
+            "array_geometry": [
+              8,
+              32
+            ],
+            "bandwidth": 8960,
+            "bank_control_bytes_per_bank": 256,
+            "bank_control_total_bytes": 524288,
+            "endpoint_queue_depth": 512,
+            "host_GBps": 192,
+            "host_interface_units": 6,
+            "installed_bank_count": 2048,
+            "legacy_bank_mode": false,
+            "local_GBps": 32768,
+            "local_service_units": 8,
+            "operand_bank_bytes": 2048,
+            "operand_bank_pairs": 512,
+            "operand_port_width_bytes": 32,
+            "operand_read_ports_per_array": 3,
+            "skew_bytes_per_array": 1088,
+            "sram_mib": 9.625,
+            "staging_bank_bytes": 65536,
+            "staging_banks": 64,
+            "staging_bytes": 4194304,
+            "staging_control_bytes": 65536,
+            "tiles": 512,
+            "vector_lanes": 2048
+          },
+          "original_research_cap_pass": true,
+          "source_point_origin": "analytical finite-column primal and dual after bounded OCS"
+        }
+      },
+      "interaction_ns": "328048322629984/883155",
+      "interaction_seconds": 0.37145045052112485,
+      "interaction_sign": "positive means additional joint saving",
+      "hardware_only": {
+        "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/65/hardware_only_joint_v1_replay/result.json",
+        "sha256": "69a75c26acc95eeee12a2f745b55e2f2e77a212744b0a2c681c9a012cfe48478"
+      },
+      "software_only": {
+        "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/65/control_H0_new_v1_replay/result.json",
+        "sha256": "3ef8252917fd5a58d6ba3cc4610b0900114bbcdaaf908381a453ca2edc71a43a",
+        "decode_ns": "468157272659812/8411",
+        "area_proxy_mm2": "76312431/125000",
+        "hardware": {
+          "accumulator_bank_bytes": 65536,
+          "array_geometry": [
+            16,
+            16
+          ],
+          "bandwidth": 8411,
+          "bank_control_bytes_per_bank": 0,
+          "endpoint_queue_depth": 512,
+          "host_GBps": 96,
+          "host_interface_units": 3,
+          "legacy_bank_mode": true,
+          "local_GBps": 24576,
+          "local_service_units": 6,
+          "operand_bank_bytes": 65536,
+          "sram_mib": 72.625,
+          "staging_bank_bytes": 65536,
+          "staging_banks": 32,
+          "staging_bytes": 2097152,
+          "staging_control_bytes": 65536,
+          "tiles": 352,
+          "vector_lanes": 896
+        },
+        "original_research_cap_pass": true,
+        "source_point_origin": "analytical finite-column primal and dual after bounded OCS"
+      },
+      "joint": {
+        "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/65/control_H1_new_v1_replay/result.json",
+        "sha256": "42d497c963c788e4bd981beba2e66d78d67889142f15ac909b17a0adec566f21",
+        "decode_ns": "1404992478347/35",
+        "area_proxy_mm2": "9341219/15625",
+        "hardware": {
+          "MACs_per_array": 256,
+          "accumulator_bank_bytes": 2048,
+          "array_fill_cycles": 38,
+          "array_geometry": [
+            8,
+            32
+          ],
+          "bandwidth": 8960,
+          "bank_control_bytes_per_bank": 256,
+          "bank_control_total_bytes": 524288,
+          "endpoint_queue_depth": 512,
+          "host_GBps": 192,
+          "host_interface_units": 6,
+          "installed_bank_count": 2048,
+          "legacy_bank_mode": false,
+          "local_GBps": 32768,
+          "local_service_units": 8,
+          "operand_bank_bytes": 2048,
+          "operand_bank_pairs": 512,
+          "operand_port_width_bytes": 32,
+          "operand_read_ports_per_array": 3,
+          "skew_bytes_per_array": 1088,
+          "sram_mib": 9.625,
+          "staging_bank_bytes": 65536,
+          "staging_banks": 64,
+          "staging_bytes": 4194304,
+          "staging_control_bytes": 65536,
+          "tiles": 512,
+          "vector_lanes": 2048
+        },
+        "original_research_cap_pass": true,
+        "source_point_origin": "analytical finite-column primal and dual after bounded OCS"
+      },
+      "physical_package_admission": false,
+      "hardware_MAC_and_bank_costs_conditional": true,
+      "primary_area_limit_mm2": 600,
+      "scope": "Supplied finite candidates and25 source mapping options; exact column-pricing closure is separate from raw OCS returned duals and count recovery.",
+      "primary_target_met": true,
+      "primary_source_point": {
+        "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/65/control_H1_new_v1_replay/result.json",
+        "sha256": "42d497c963c788e4bd981beba2e66d78d67889142f15ac909b17a0adec566f21"
+      },
+      "finite_family_composition": {
+        "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/65/global_composition_v1/result.json",
+        "sha256": "ba529303b66d312b650e31cb60968d0cbc2f32efdaacf0f8badf934c6b652aa7"
+      }
+    },
+    {
+      "model": 70,
+      "cells": {
+        "H0_old": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/70/control_H0_old_v1_replay/result.json",
+          "sha256": "81aba0b5d3b4cad85b0a6251041b6d1af20288615a1fb1b4024baa38541dcb95",
+          "decode_ns": "70424789378063/1343",
+          "area_proxy_mm2": "593337/1250",
+          "hardware": {
+            "accumulator_bank_bytes": 65536,
+            "array_geometry": [
+              16,
+              16
+            ],
+            "bandwidth": 5372,
+            "bank_control_bytes_per_bank": 0,
+            "endpoint_queue_depth": 512,
+            "host_GBps": 192,
+            "host_interface_units": 6,
+            "legacy_bank_mode": true,
+            "local_GBps": 20480,
+            "local_service_units": 5,
+            "operand_bank_bytes": 65536,
+            "sram_mib": 68.75,
+            "staging_bank_bytes": 65536,
+            "staging_banks": 32,
+            "staging_bytes": 2097152,
+            "staging_control_bytes": 65536,
+            "tiles": 352,
+            "vector_lanes": 2048
+          },
+          "original_research_cap_pass": true,
+          "source_point_origin": "analytical finite-column primal and dual after bounded OCS"
+        },
+        "H0_new": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/70/control_H0_new_v1_replay/result.json",
+          "sha256": "ec82bc0d2789f290e86d99a8662f91eb321086bf9d8177a1365c8de38e619b3f",
+          "decode_ns": "70249271530511/1343",
+          "area_proxy_mm2": "593337/1250",
+          "hardware": {
+            "accumulator_bank_bytes": 65536,
+            "array_geometry": [
+              16,
+              16
+            ],
+            "bandwidth": 5372,
+            "bank_control_bytes_per_bank": 0,
+            "endpoint_queue_depth": 512,
+            "host_GBps": 192,
+            "host_interface_units": 6,
+            "legacy_bank_mode": true,
+            "local_GBps": 20480,
+            "local_service_units": 5,
+            "operand_bank_bytes": 65536,
+            "sram_mib": 68.75,
+            "staging_bank_bytes": 65536,
+            "staging_banks": 32,
+            "staging_bytes": 2097152,
+            "staging_control_bytes": 65536,
+            "tiles": 352,
+            "vector_lanes": 2048
+          },
+          "original_research_cap_pass": true,
+          "source_point_origin": "analytical finite-column primal and dual after bounded OCS"
+        },
+        "H1_old": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/70/control_H1_old_v1_replay/result.json",
+          "sha256": "44ae92e070c9c4f35aa231cfb1dea97fc1b33ee30dd599d9ff80b80efcde36f5",
+          "decode_ns": "152325226622881/4435",
+          "area_proxy_mm2": "37396501/62500",
+          "hardware": {
+            "MACs_per_array": 256,
+            "accumulator_bank_bytes": 2048,
+            "array_fill_cycles": 38,
+            "array_geometry": [
+              8,
+              32
+            ],
+            "bandwidth": 8870,
+            "bank_control_bytes_per_bank": 256,
+            "bank_control_total_bytes": 524288,
+            "endpoint_queue_depth": 512,
+            "host_GBps": 192,
+            "host_interface_units": 6,
+            "installed_bank_count": 2048,
+            "legacy_bank_mode": false,
+            "local_GBps": 32768,
+            "local_service_units": 8,
+            "operand_bank_bytes": 2048,
+            "operand_bank_pairs": 512,
+            "operand_port_width_bytes": 32,
+            "operand_read_ports_per_array": 3,
+            "skew_bytes_per_array": 1088,
+            "sram_mib": 9.625,
+            "staging_bank_bytes": 65536,
+            "staging_banks": 64,
+            "staging_bytes": 4194304,
+            "staging_control_bytes": 65536,
+            "tiles": 512,
+            "vector_lanes": 4096
+          },
+          "original_research_cap_pass": true,
+          "source_point_origin": "analytical finite-column primal and dual after bounded OCS"
+        },
+        "H1_new": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/70/control_H1_new_v1_replay/result.json",
+          "sha256": "f36d06ddc805fa5b70b9e340630b81c4a78b7e9e5e8e36abfa0746d80a1b922c",
+          "decode_ns": "150193403141761/4435",
+          "area_proxy_mm2": "37396501/62500",
+          "hardware": {
+            "MACs_per_array": 256,
+            "accumulator_bank_bytes": 2048,
+            "array_fill_cycles": 38,
+            "array_geometry": [
+              8,
+              32
+            ],
+            "bandwidth": 8870,
+            "bank_control_bytes_per_bank": 256,
+            "bank_control_total_bytes": 524288,
+            "endpoint_queue_depth": 512,
+            "host_GBps": 192,
+            "host_interface_units": 6,
+            "installed_bank_count": 2048,
+            "legacy_bank_mode": false,
+            "local_GBps": 32768,
+            "local_service_units": 8,
+            "operand_bank_bytes": 2048,
+            "operand_bank_pairs": 512,
+            "operand_port_width_bytes": 32,
+            "operand_read_ports_per_array": 3,
+            "skew_bytes_per_array": 1088,
+            "sram_mib": 9.625,
+            "staging_bank_bytes": 65536,
+            "staging_banks": 64,
+            "staging_bytes": 4194304,
+            "staging_control_bytes": 65536,
+            "tiles": 512,
+            "vector_lanes": 4096
+          },
+          "original_research_cap_pass": true,
+          "source_point_origin": "analytical finite-column primal and dual after bounded OCS"
+        }
+      },
+      "interaction_ns": "416923456250208/1191241",
+      "interaction_seconds": 0.34999085512520806,
+      "interaction_sign": "positive means additional joint saving",
+      "hardware_only": {
+        "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/70/hardware_only_joint_v1_replay/result.json",
+        "sha256": "6d85f7a1bc987c517cbcbc62f225e6801929e354c3650ba07150e80ec69c6de8"
+      },
+      "software_only": {
+        "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/70/control_H0_new_v1_replay/result.json",
+        "sha256": "ec82bc0d2789f290e86d99a8662f91eb321086bf9d8177a1365c8de38e619b3f",
+        "decode_ns": "70249271530511/1343",
+        "area_proxy_mm2": "593337/1250",
+        "hardware": {
+          "accumulator_bank_bytes": 65536,
+          "array_geometry": [
+            16,
+            16
+          ],
+          "bandwidth": 5372,
+          "bank_control_bytes_per_bank": 0,
+          "endpoint_queue_depth": 512,
+          "host_GBps": 192,
+          "host_interface_units": 6,
+          "legacy_bank_mode": true,
+          "local_GBps": 20480,
+          "local_service_units": 5,
+          "operand_bank_bytes": 65536,
+          "sram_mib": 68.75,
+          "staging_bank_bytes": 65536,
+          "staging_banks": 32,
+          "staging_bytes": 2097152,
+          "staging_control_bytes": 65536,
+          "tiles": 352,
+          "vector_lanes": 2048
+        },
+        "original_research_cap_pass": true,
+        "source_point_origin": "analytical finite-column primal and dual after bounded OCS"
+      },
+      "joint": {
+        "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/70/control_H1_new_v1_replay/result.json",
+        "sha256": "f36d06ddc805fa5b70b9e340630b81c4a78b7e9e5e8e36abfa0746d80a1b922c",
+        "decode_ns": "150193403141761/4435",
+        "area_proxy_mm2": "37396501/62500",
+        "hardware": {
+          "MACs_per_array": 256,
+          "accumulator_bank_bytes": 2048,
+          "array_fill_cycles": 38,
+          "array_geometry": [
+            8,
+            32
+          ],
+          "bandwidth": 8870,
+          "bank_control_bytes_per_bank": 256,
+          "bank_control_total_bytes": 524288,
+          "endpoint_queue_depth": 512,
+          "host_GBps": 192,
+          "host_interface_units": 6,
+          "installed_bank_count": 2048,
+          "legacy_bank_mode": false,
+          "local_GBps": 32768,
+          "local_service_units": 8,
+          "operand_bank_bytes": 2048,
+          "operand_bank_pairs": 512,
+          "operand_port_width_bytes": 32,
+          "operand_read_ports_per_array": 3,
+          "skew_bytes_per_array": 1088,
+          "sram_mib": 9.625,
+          "staging_bank_bytes": 65536,
+          "staging_banks": 64,
+          "staging_bytes": 4194304,
+          "staging_control_bytes": 65536,
+          "tiles": 512,
+          "vector_lanes": 4096
+        },
+        "original_research_cap_pass": true,
+        "source_point_origin": "analytical finite-column primal and dual after bounded OCS"
+      },
+      "physical_package_admission": false,
+      "hardware_MAC_and_bank_costs_conditional": true,
+      "primary_area_limit_mm2": 600,
+      "scope": "Supplied finite candidates and25 source mapping options; exact column-pricing closure is separate from raw OCS returned duals and count recovery.",
+      "primary_target_met": true,
+      "primary_source_point": {
+        "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/70/control_H1_new_v1_replay/result.json",
+        "sha256": "f36d06ddc805fa5b70b9e340630b81c4a78b7e9e5e8e36abfa0746d80a1b922c"
+      },
+      "finite_family_composition": {
+        "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/70/global_composition_v1/result.json",
+        "sha256": "1bd65156bcfeda4689221c4d981de03b864c7a08705ca04520cb26dd1d0f04c1"
+      }
+    }
+  ],
+  "numerical_method": {
+    "OCS_version": "0.3.2",
+    "stable_fixed_metric": true,
+    "adaptive": false,
+    "CPU_numerical_LP_optimizers": 0,
+    "instances": 25,
+    "saved_completed_updates": 104000,
+    "failed_poststep_packaging_instances": 3,
+    "failed_poststep_packaging_updates": 6000,
+    "all_failed_checkpoints_preserved": true,
+    "analytical_pricing_not_counted_as_OCS": true,
+    "instances_detail": [
+      {
+        "model": 13,
+        "engine_dir": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/area600_v1_run",
+        "operator_check": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/area600_v1_run/operator_check.json",
+          "sha256": "576e30543cf790984ae08649bf392b174c241ace1f8eaa60de9bc52e271f736a"
+        },
+        "checkpoint": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/area600_v1_run/checkpoint.npz",
+          "sha256": "406ba1805faec5cf25dda241e166abc3798156fd9dcc7a2f99e34ccee068e217"
+        },
+        "updates": 4000,
+        "cold_start": true,
+        "warm_start": false,
+        "numerical_result": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/area600_v1_run/result.json",
+          "sha256": "45ab28785ed71c3468a7caf5e1cd5619e2ed1029ac8f4c41f91fcd0a717ead87"
+        },
+        "history": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/area600_v1_run/history.json",
+          "sha256": "90d381291c2ce928aa3d7441ce850eb5db33e18d9a3b5eea8f0f52bbe4885f19"
+        },
+        "poststep_packaging_refused": false,
+        "host": ".53A100",
+        "GPU_index": 0
+      },
+      {
+        "model": 13,
+        "engine_dir": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/control_H0_new_v1_run",
+        "operator_check": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/control_H0_new_v1_run/operator_check.json",
+          "sha256": "1b0f2b394b902def7040fb8456b4ec783852067c2de0dbc0a4406ce460f51159"
+        },
+        "checkpoint": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/control_H0_new_v1_run/checkpoint.npz",
+          "sha256": "118abdca726c6c5d711d5f677326858fbc1d5eb7dda5147afd9364955203a3b9"
+        },
+        "updates": 4000,
+        "cold_start": true,
+        "warm_start": false,
+        "numerical_result": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/control_H0_new_v1_run/result.json",
+          "sha256": "01dd5eac641a1d69158aa186ef77ab9b9930553e66e22b55b8e0a3b9330e4739"
+        },
+        "history": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/control_H0_new_v1_run/history.json",
+          "sha256": "298981e7739dff2b5a44f344cbbabab3217927efbe2f44e4a4a90d88ce77c622"
+        },
+        "poststep_packaging_refused": false,
+        "host": ".53A100",
+        "GPU_index": 0
+      },
+      {
+        "model": 13,
+        "engine_dir": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/control_H0_old_v1_run",
+        "operator_check": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/control_H0_old_v1_run/operator_check.json",
+          "sha256": "33e80bca38b3991c4826f772371bbc244972f3c6127db9ea5e33717bdeab16da"
+        },
+        "checkpoint": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/control_H0_old_v1_run/checkpoint.npz",
+          "sha256": "e461f3c745c4966cde5f6de2721702b225c527e8b561af22139b06081832448b"
+        },
+        "updates": 4000,
+        "cold_start": true,
+        "warm_start": false,
+        "numerical_result": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/control_H0_old_v1_run/result.json",
+          "sha256": "f0fd5f1e3e3237257701ff095f0b4bcf6cf45e68565996afb96204b23aa730e2"
+        },
+        "history": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/control_H0_old_v1_run/history.json",
+          "sha256": "a54884b8dfa9e6b9a4fb03538bb7a53910898887ba218403757a524b2ba4da9c"
+        },
+        "poststep_packaging_refused": false,
+        "host": ".53A100",
+        "GPU_index": 0
+      },
+      {
+        "model": 13,
+        "engine_dir": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/control_H1_A0_new_v1_run",
+        "operator_check": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/control_H1_A0_new_v1_run/operator_check.json",
+          "sha256": "85ca03edf4b3a820f8b7a5b21a20f693fead93897ddc49f95b509c9a8667ce95"
+        },
+        "checkpoint": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/control_H1_A0_new_v1_run/checkpoint.npz",
+          "sha256": "4359c2603ee1d6f0aa1fb955baa49fe3a8894405d30e7f649a1f11e8daa026cd"
+        },
+        "updates": 4000,
+        "cold_start": true,
+        "warm_start": false,
+        "numerical_result": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/control_H1_A0_new_v1_run/result.json",
+          "sha256": "2fcc3a9b4737036fdfba7208095f75d04bd6f02e0fcc5e633ae9616fd49d3590"
+        },
+        "history": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/control_H1_A0_new_v1_run/history.json",
+          "sha256": "912d484a2b4a1666469e20cf8d31943413e14d55f01b99f120275f2bddea5e7f"
+        },
+        "poststep_packaging_refused": false,
+        "host": ".53A100",
+        "GPU_index": 0
+      },
+      {
+        "model": 13,
+        "engine_dir": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/control_H1_A0_old_v1_run",
+        "operator_check": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/control_H1_A0_old_v1_run/operator_check.json",
+          "sha256": "c4b40c8dfc15e8e81c8e488d2c10bb24b60c58d454571722a5afc8ffd91aee38"
+        },
+        "checkpoint": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/control_H1_A0_old_v1_run/checkpoint.npz",
+          "sha256": "572d99350628561a8d2deea0c5900efb6b8c3b6bc26409c6e6d8f667ee84ae49"
+        },
+        "updates": 4000,
+        "cold_start": true,
+        "warm_start": false,
+        "numerical_result": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/control_H1_A0_old_v1_run/result.json",
+          "sha256": "27303c8ccd95fcdeb581b326d95b5a4997a95ac171879d20a6597da9688e47af"
+        },
+        "history": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/control_H1_A0_old_v1_run/history.json",
+          "sha256": "7c85459bcfb0cb1aac50c086beea8520e0f44283a47e580ace0ddf55953520e4"
+        },
+        "poststep_packaging_refused": false,
+        "host": ".53A100",
+        "GPU_index": 0
+      },
+      {
+        "model": 13,
+        "engine_dir": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/control_H1_new_v1_run",
+        "operator_check": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/control_H1_new_v1_run/operator_check.json",
+          "sha256": "95d20c2ca850306aff377338ea92c09800960db14943f9f9bda63d54badf4ad0"
+        },
+        "checkpoint": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/control_H1_new_v1_run/checkpoint.npz",
+          "sha256": "c132b0c6829ac4858cf25ca0ca95dcaa4a57a7fb0511ee846628bfc1f2b5bbd9"
+        },
+        "updates": 4000,
+        "cold_start": true,
+        "warm_start": false,
+        "numerical_result": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/control_H1_new_v1_run/result.json",
+          "sha256": "7edf7342662f1aaf2ee32231cc34db0aef1f3b48d323ded10069254baa7b41c1"
+        },
+        "history": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/control_H1_new_v1_run/history.json",
+          "sha256": "136a4241e86087852ae0a44da590808f49fbb2bc4ff4045e81ac7f85621110cb"
+        },
+        "poststep_packaging_refused": false,
+        "host": ".53A100",
+        "GPU_index": 0
+      },
+      {
+        "model": 13,
+        "engine_dir": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/control_H1_old_v1_run",
+        "operator_check": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/control_H1_old_v1_run/operator_check.json",
+          "sha256": "8d40616d77f48bb9363c1f499bd842b6c91b9927f2e49b8b3f08bd89cf1b1b2c"
+        },
+        "checkpoint": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/control_H1_old_v1_run/checkpoint.npz",
+          "sha256": "21c9a1c867ec1b367e555a2670581db09c575efe534f6f6856a54d8ac013e853"
+        },
+        "updates": 4000,
+        "cold_start": true,
+        "warm_start": false,
+        "numerical_result": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/control_H1_old_v1_run/result.json",
+          "sha256": "57eabcc5da68f6d4b676cd5e82e8ffdd1f9739a73a5a7167d871daa7d26bce2d"
+        },
+        "history": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/control_H1_old_v1_run/history.json",
+          "sha256": "55f051847e7fc4f0ed81dcb509d3d11f2e07292b74fa2b67b976755db31a4dbe"
+        },
+        "poststep_packaging_refused": false,
+        "host": ".53A100",
+        "GPU_index": 0
+      },
+      {
+        "model": 13,
+        "engine_dir": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/fallback614_v1_run",
+        "operator_check": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/fallback614_v1_run/operator_check.json",
+          "sha256": "897f64f86a908dd9b95a585844d0c7e918c0c9db5e9709fa8f5c3f6d779df0a0"
+        },
+        "checkpoint": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/fallback614_v1_run/checkpoint.npz",
+          "sha256": "d3fa9834b6efd7cd21a9412d12c92db5b707f9025e53c670cc85665d59181da3"
+        },
+        "updates": 2000,
+        "cold_start": true,
+        "warm_start": false,
+        "numerical_result": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/fallback614_v1_run/result.json",
+          "sha256": "87b7dba1ce06b10cb9fe29e4758187635255d1c768d28750c2b6203c425b4faa"
+        },
+        "history": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/fallback614_v1_run/history.json",
+          "sha256": "3adb43fb53013543e451f13bed0be3dcce8626f1c5094b047ac673e4c9298890"
+        },
+        "poststep_packaging_refused": false,
+        "host": ".53A100",
+        "GPU_index": 0
+      },
+      {
+        "model": 13,
+        "engine_dir": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/hardware_only_A0_v1_run",
+        "operator_check": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/hardware_only_A0_v1_run/operator_check.json",
+          "sha256": "5f8ba5de116aed4ec400eff4159f8049a7cd76532d08e7a0bb8f99f4fba98670"
+        },
+        "checkpoint": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/hardware_only_A0_v1_run/checkpoint.npz",
+          "sha256": "923c2a32ba0a3b147612fd4a95d81d9fe6ac1ac53c707d8c9ef5e41e67a6c1d3"
+        },
+        "updates": 4000,
+        "cold_start": true,
+        "warm_start": false,
+        "numerical_result": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/hardware_only_A0_v1_run/result.json",
+          "sha256": "3d2be7dfdb7c85c3e2f3b17a22ae0db5ead00f640e609de68670d52b3645febb"
+        },
+        "history": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/hardware_only_A0_v1_run/history.json",
+          "sha256": "55ce256620ba34be5256ef99bd5c649f4d68eb027d2500add6c176012f3b0799"
+        },
+        "poststep_packaging_refused": false,
+        "host": ".53A100",
+        "GPU_index": 0
+      },
+      {
+        "model": 13,
+        "engine_dir": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/hardware_only_v1_run",
+        "operator_check": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/hardware_only_v1_run/operator_check.json",
+          "sha256": "d99fb3f96ea1ba9b287a0e9e3a1a4b66edd89f1ee74c839b08b2ab9bd0bf5625"
+        },
+        "checkpoint": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/hardware_only_v1_run/checkpoint.npz",
+          "sha256": "8086faaec66ba150a731ec9adb09e30086511733459ba4668bdc6c9e093f831e"
+        },
+        "updates": 4000,
+        "cold_start": true,
+        "warm_start": false,
+        "numerical_result": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/hardware_only_v1_run/result.json",
+          "sha256": "995979f0cfa964356a914d8b01df24c85c3343abdf9ecdf6d2f27bd36cdbc68e"
+        },
+        "history": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/hardware_only_v1_run/history.json",
+          "sha256": "e52673025bf96bf75ad5456b12f4c5e261fcb2fa9d0a64e9c01d1ef54a271b9f"
+        },
+        "poststep_packaging_refused": false,
+        "host": ".53A100",
+        "GPU_index": 0
+      },
+      {
+        "model": 13,
+        "engine_dir": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/solve_v1",
+        "operator_check": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/solve_v1/operator_check.json",
+          "sha256": "8e0491e8229a3425f7fb4b95f19a6af27df00dc9de16d85a00edc2090daaf144"
+        },
+        "checkpoint": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/solve_v1/checkpoint.npz",
+          "sha256": "ab0289aae7b73c8a439a85fb94958c3f1a7cef8a92c1f83d83a39d5192cd2b1a"
+        },
+        "updates": 2000,
+        "cold_start": true,
+        "warm_start": false,
+        "numerical_result": null,
+        "history": null,
+        "poststep_packaging_refused": true,
+        "host": ".53A100",
+        "GPU_index": 0
+      },
+      {
+        "model": 65,
+        "engine_dir": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/65/child0_solve_v1",
+        "operator_check": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/65/child0_solve_v1/operator_check.json",
+          "sha256": "c620739bd7ae592a9ddc716ee2ae3efee63f4924fac098a4e517a3aea81eaf5d"
+        },
+        "checkpoint": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/65/child0_solve_v1/checkpoint.npz",
+          "sha256": "e6b7ca8ee90d4a1059ec59d0c1a94636ab842a44361cac02aeb69ba0f72596cb"
+        },
+        "updates": 10000,
+        "cold_start": false,
+        "warm_start": true,
+        "numerical_result": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/65/child0_solve_v1/result.json",
+          "sha256": "b9b4205762cfefe43c936735f5b092aaeb60dd84e6341242740648df89d3251b"
+        },
+        "history": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/65/child0_solve_v1/history.json",
+          "sha256": "8eeaa8035167f059457f64cc0833fcaba0b91e7e45c1640c327b37d979040379"
+        },
+        "poststep_packaging_refused": false,
+        "host": ".53A100",
+        "GPU_index": 1
+      },
+      {
+        "model": 65,
+        "engine_dir": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/65/control_H0_new_v1_run",
+        "operator_check": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/65/control_H0_new_v1_run/operator_check.json",
+          "sha256": "f6ab348438fe3057cbd42bd0015cd24c940c429c453c12438673b8dd0a0652d6"
+        },
+        "checkpoint": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/65/control_H0_new_v1_run/checkpoint.npz",
+          "sha256": "a19597fd1f823ca17d8df1d6a7af814786f4f66a33b88d1cb965566514485c30"
+        },
+        "updates": 4000,
+        "cold_start": true,
+        "warm_start": false,
+        "numerical_result": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/65/control_H0_new_v1_run/result.json",
+          "sha256": "cf4aa33ed7c981a11b7d65d0c6f1bc600dabf178ee2466af014a425c7133b28d"
+        },
+        "history": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/65/control_H0_new_v1_run/history.json",
+          "sha256": "498991c9836995a07b3e63afaa01ba7214778d7883b829d2f10821cf548af5da"
+        },
+        "poststep_packaging_refused": false,
+        "host": ".53A100",
+        "GPU_index": 1
+      },
+      {
+        "model": 65,
+        "engine_dir": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/65/control_H0_old_v1_run",
+        "operator_check": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/65/control_H0_old_v1_run/operator_check.json",
+          "sha256": "430861885edeba9dddcc0d0a05ab06a983e0113912b0ad824393aef32a886f57"
+        },
+        "checkpoint": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/65/control_H0_old_v1_run/checkpoint.npz",
+          "sha256": "16ca3ad470cb1b056230ecba7fd29785d330277d75d7d67eb43d24f0c70601f6"
+        },
+        "updates": 4000,
+        "cold_start": true,
+        "warm_start": false,
+        "numerical_result": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/65/control_H0_old_v1_run/result.json",
+          "sha256": "182805d7ad0078f10e31bdd979db97e976c7416d6f214bc379411f69b8f96288"
+        },
+        "history": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/65/control_H0_old_v1_run/history.json",
+          "sha256": "86a8e9af135d1822178d350c3ca1a8baa6383b7cfab70e46a0b8f31e211f7182"
+        },
+        "poststep_packaging_refused": false,
+        "host": ".53A100",
+        "GPU_index": 1
+      },
+      {
+        "model": 65,
+        "engine_dir": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/65/control_H1_new_v1_run",
+        "operator_check": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/65/control_H1_new_v1_run/operator_check.json",
+          "sha256": "7c245e1cdb2e8638d95a10f946caacbaf307fbd82c6e2ce8a205a029a22d1f94"
+        },
+        "checkpoint": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/65/control_H1_new_v1_run/checkpoint.npz",
+          "sha256": "78de52a26783ab0af569068790e3454d007c5ad0d540477b0a1d9e0f2d1addc0"
+        },
+        "updates": 4000,
+        "cold_start": true,
+        "warm_start": false,
+        "numerical_result": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/65/control_H1_new_v1_run/result.json",
+          "sha256": "6a79fbb5d9e63959c7c5b39d4159cb7a2cf3f8f9b6b4e587f2b4e56b2316963b"
+        },
+        "history": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/65/control_H1_new_v1_run/history.json",
+          "sha256": "a36f57abfe491167704e84fb7c1b4e5849d1cdea259c75010be64b8b14ed4043"
+        },
+        "poststep_packaging_refused": false,
+        "host": ".53A100",
+        "GPU_index": 1
+      },
+      {
+        "model": 65,
+        "engine_dir": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/65/control_H1_old_v1_run",
+        "operator_check": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/65/control_H1_old_v1_run/operator_check.json",
+          "sha256": "38d293fda8e65890217478f13b7df0dfa61864a3ff889987f551e1dd6ff46022"
+        },
+        "checkpoint": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/65/control_H1_old_v1_run/checkpoint.npz",
+          "sha256": "c9c6602ebf98cb6d3083fddc3de9457a829c6425bfaebb377a2534bfa17dae99"
+        },
+        "updates": 4000,
+        "cold_start": true,
+        "warm_start": false,
+        "numerical_result": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/65/control_H1_old_v1_run/result.json",
+          "sha256": "a010f5dd65f67cda3bd306ac66ec829c9b41b11f0475577893ebd3861e2ca7b4"
+        },
+        "history": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/65/control_H1_old_v1_run/history.json",
+          "sha256": "59e4a90c4d34a8d9e96b0d979bd2beeab629f280bd3a969c390b861f31d27cb9"
+        },
+        "poststep_packaging_refused": false,
+        "host": ".53A100",
+        "GPU_index": 1
+      },
+      {
+        "model": 65,
+        "engine_dir": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/65/hardware_only_v1_run",
+        "operator_check": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/65/hardware_only_v1_run/operator_check.json",
+          "sha256": "0e6e038145390285551ab9be678ebc7b0b12e29111d3dcdda1d3678052835146"
+        },
+        "checkpoint": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/65/hardware_only_v1_run/checkpoint.npz",
+          "sha256": "23170c680637ca9f1a4c1fb78d02cc236abbe410130c4dedf34dda83914ad6f0"
+        },
+        "updates": 4000,
+        "cold_start": true,
+        "warm_start": false,
+        "numerical_result": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/65/hardware_only_v1_run/result.json",
+          "sha256": "4e416903787e67c9fb6e78c8570e282ccae96180d4e8412b062257a2d206ff72"
+        },
+        "history": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/65/hardware_only_v1_run/history.json",
+          "sha256": "c10fa15c25c99985ef093f7507615f5fa48d7993716ab101d72c528268034ae4"
+        },
+        "poststep_packaging_refused": false,
+        "host": ".53A100",
+        "GPU_index": 1
+      },
+      {
+        "model": 65,
+        "engine_dir": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/65/solve_v1",
+        "operator_check": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/65/solve_v1/operator_check.json",
+          "sha256": "70d4326d65d4d4e9ea5b649d99fbe981cbaf87b5d82d5db58431f8f1ae5a5e5b"
+        },
+        "checkpoint": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/65/solve_v1/checkpoint.npz",
+          "sha256": "90b5c459a4b7572531e054fafce324ea9968abaaaf8c99df6a4f21aa855bad29"
+        },
+        "updates": 2000,
+        "cold_start": true,
+        "warm_start": false,
+        "numerical_result": null,
+        "history": null,
+        "poststep_packaging_refused": true,
+        "host": ".53A100",
+        "GPU_index": 1
+      },
+      {
+        "model": 70,
+        "engine_dir": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/70/child0_solve_v1",
+        "operator_check": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/70/child0_solve_v1/operator_check.json",
+          "sha256": "def3727dd797daccbdc3231c8e94f2ece9fa711d4e087511af3f6c0c5975ac31"
+        },
+        "checkpoint": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/70/child0_solve_v1/checkpoint.npz",
+          "sha256": "9f894ecf10f06a58cc10af661d20712ce55d2816894166632845468e73fd4752"
+        },
+        "updates": 10000,
+        "cold_start": false,
+        "warm_start": true,
+        "numerical_result": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/70/child0_solve_v1/result.json",
+          "sha256": "d6e48e0fdd01251012033a405368fdc247919d7039d28bafb2955271a35241da"
+        },
+        "history": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/70/child0_solve_v1/history.json",
+          "sha256": "95282f973f7e32cb3bf2d22e0d572a4bae31623a29860846e7ae73c753ce5a49"
+        },
+        "poststep_packaging_refused": false,
+        "host": "Kevin5090",
+        "GPU_index": 0
+      },
+      {
+        "model": 70,
+        "engine_dir": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/70/control_H0_new_v1_run",
+        "operator_check": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/70/control_H0_new_v1_run/operator_check.json",
+          "sha256": "ca3c153bb05f45f5d4f25443cca1f3f5adc76356fea14e552ea8abcf4ae4966a"
+        },
+        "checkpoint": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/70/control_H0_new_v1_run/checkpoint.npz",
+          "sha256": "f7cbba60d484afc6ab447b073f5587c8577a6f31d7d83f7d5ca5942933d0c69d"
+        },
+        "updates": 4000,
+        "cold_start": true,
+        "warm_start": false,
+        "numerical_result": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/70/control_H0_new_v1_run/result.json",
+          "sha256": "1909ac9da6de7970d91d70bf8b1443d187bb1585e3a1b56a46c726080cd2c254"
+        },
+        "history": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/70/control_H0_new_v1_run/history.json",
+          "sha256": "5bb1808534781a35e26bf5d5e20b96ce9aaefbdf93ccc6dbf23ef6ba51828f96"
+        },
+        "poststep_packaging_refused": false,
+        "host": "Kevin5090",
+        "GPU_index": 0
+      },
+      {
+        "model": 70,
+        "engine_dir": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/70/control_H0_old_v1_run",
+        "operator_check": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/70/control_H0_old_v1_run/operator_check.json",
+          "sha256": "35666a4da43816ba52f345c16296e3d377f25139b79655b520cd3507a20a3afc"
+        },
+        "checkpoint": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/70/control_H0_old_v1_run/checkpoint.npz",
+          "sha256": "a44047f319b3e44200f2d242ceb0695d941fe4017ba00bafcf5c904b3b71771e"
+        },
+        "updates": 4000,
+        "cold_start": true,
+        "warm_start": false,
+        "numerical_result": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/70/control_H0_old_v1_run/result.json",
+          "sha256": "0b63ad6fb7046c658b5d8e3ef95f79ea96824de191c405c77b8a93e6e2284b75"
+        },
+        "history": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/70/control_H0_old_v1_run/history.json",
+          "sha256": "6eccd6ab41b3768998b6324ae4f6132006371dba8756b8acf6f039b718a24434"
+        },
+        "poststep_packaging_refused": false,
+        "host": "Kevin5090",
+        "GPU_index": 0
+      },
+      {
+        "model": 70,
+        "engine_dir": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/70/control_H1_new_v1_run",
+        "operator_check": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/70/control_H1_new_v1_run/operator_check.json",
+          "sha256": "b4c627c514a7a82256ecb1c1891cc71998c758c279443f4e679a68785bfe5330"
+        },
+        "checkpoint": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/70/control_H1_new_v1_run/checkpoint.npz",
+          "sha256": "5f92439fed5e2e47ad1b3cba75eab977c7c8932d33478388cfd2be684ddd8c6e"
+        },
+        "updates": 4000,
+        "cold_start": true,
+        "warm_start": false,
+        "numerical_result": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/70/control_H1_new_v1_run/result.json",
+          "sha256": "da0aa896227b1e5422857523251dc9e877c7c6da0cfd9639fb5826bda327f435"
+        },
+        "history": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/70/control_H1_new_v1_run/history.json",
+          "sha256": "1bab997a3fcfce701d2d7291abe01e0b1600e000a89dc748215129617fc7be88"
+        },
+        "poststep_packaging_refused": false,
+        "host": "Kevin5090",
+        "GPU_index": 0
+      },
+      {
+        "model": 70,
+        "engine_dir": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/70/control_H1_old_v1_run",
+        "operator_check": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/70/control_H1_old_v1_run/operator_check.json",
+          "sha256": "882c27090c8bc4ac8e79fe0772d2ec63266ea2486b1c3df5cd04bbc856425a55"
+        },
+        "checkpoint": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/70/control_H1_old_v1_run/checkpoint.npz",
+          "sha256": "706edc8ef5321329c27a06601f3a6036649bd76fea6b556cb89267b0bd42f7a4"
+        },
+        "updates": 4000,
+        "cold_start": true,
+        "warm_start": false,
+        "numerical_result": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/70/control_H1_old_v1_run/result.json",
+          "sha256": "eb1bb7e68f7b19447f09cde156cc9fa555ef0c7491bf28d9214367324aa83aa8"
+        },
+        "history": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/70/control_H1_old_v1_run/history.json",
+          "sha256": "2d60a5105e35200c99b07050dbac1da2ecd7e071dd29203812c9b8c37f5aeaa4"
+        },
+        "poststep_packaging_refused": false,
+        "host": "Kevin5090",
+        "GPU_index": 0
+      },
+      {
+        "model": 70,
+        "engine_dir": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/70/hardware_only_v1_run",
+        "operator_check": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/70/hardware_only_v1_run/operator_check.json",
+          "sha256": "732c935de7cd2b9ad146dc37ec220d5f97f893eea85c108826e080430edfda40"
+        },
+        "checkpoint": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/70/hardware_only_v1_run/checkpoint.npz",
+          "sha256": "549a956b63250e4ee26d7b13c4e6fe85a25a22efbed1c97d74c4d07cce6c58e5"
+        },
+        "updates": 4000,
+        "cold_start": true,
+        "warm_start": false,
+        "numerical_result": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/70/hardware_only_v1_run/result.json",
+          "sha256": "2c747c27457adc98e09042f638e1134934c7ce6dc0abc2ede6bc2576fa53c0b9"
+        },
+        "history": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/70/hardware_only_v1_run/history.json",
+          "sha256": "bc4dd05979990fc9608736331aff12534c328ec7f57df29e7811048fe7786955"
+        },
+        "poststep_packaging_refused": false,
+        "host": "Kevin5090",
+        "GPU_index": 0
+      },
+      {
+        "model": 70,
+        "engine_dir": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/70/solve_v1",
+        "operator_check": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/70/solve_v1/operator_check.json",
+          "sha256": "6f542954056b2f9e7e2f43bccea4e5703a0650df8455dd456838ceaf0efbffa5"
+        },
+        "checkpoint": {
+          "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/70/solve_v1/checkpoint.npz",
+          "sha256": "93340710f30287dd528fb21d22b717c7a534ab2e6c849fe03a294c5dc2ebb1f1"
+        },
+        "updates": 2000,
+        "cold_start": true,
+        "warm_start": false,
+        "numerical_result": null,
+        "history": null,
+        "poststep_packaging_refused": true,
+        "host": "Kevin5090",
+        "GPU_index": 0
+      }
+    ]
+  },
+  "arithmetic_control": {
+    "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/arithmetic_controls_v1/result.json",
+    "sha256": "3ab4edbe8f2014da6314effcfc291560f637b4b77b09d4c183130d788c397f2a"
+  },
+  "terminal_probes": [
+    {
+      "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/terminal_v1/A100_53.txt",
+      "sha256": "bc23a9caf322a4f5104a636be1ec2fca5dd16107fd086587884f2482a7453784"
+    },
+    {
+      "path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/terminal_v1/Kevin.txt",
+      "sha256": "ba58079def060e6d53464e918636447679ef6eb89d44475aca10e412f68ef9cc"
+    }
+  ],
+  "historical_prefill_rows_unchanged": true,
+  "actual_samechip_prefill_preparation_priced": true,
+  "hardware_scope": "Uncalibrated native arithmetic/SRAM/ports proxy plus historicalGDDR6XPHYsensitivity appliedtoGDDR7. No calibratedN7/N5 macro,routing,controller or peak externalpower admission.",
+  "software_scope": "Original BF16/orderedFP32 full-K kernels and original task; independent mapping counts and wholeweight stocks, originalKV retained. No directstagingMACbypass,newoverlaporchangedarithmetic.",
+  "notes": [
+    "Existingoriginal v1 replay profile_checks bundle denotes inherited16\u00d716sourcebundle; v2/v3 write physical_bundle explicitly. Actualdurationandissuedcounters alwaysused physicalgeometry.",
+    "Legacy64KiB-plus8\u00d732 API combination is not selected; v3/v4compiler explicitlyrejects it. Allnew8\u00d732rows charge3operandports plus1088Bskew.",
+    "source_mode_family describes qualified25optionuniverse; actualold/newrestrictedmenu is compiledmanifest.software_menu."
+  ]
+}

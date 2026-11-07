@@ -1,0 +1,18 @@
+{
+  "completed_utc": "2026-11-06T23:05:37.487261+00:00",
+  "request": "Keep Figure 3 pie chart and place current twelve-workload performance and matched feature controls below it.",
+  "workloads": 12,
+  "matched_controls": 10,
+  "figure_number": 3,
+  "table_number": 8,
+  "page": 14,
+  "original_pie_unchanged": true,
+  "regeneration_identical": true,
+  "compile_passed": true,
+  "no_undefined_references": true,
+  "no_overfull_boxes": true,
+  "visual_check_passed": true,
+  "pdf_sha256": "af52a1c819916afcaf5a01b3fac48c01824f8f812e7e89aa1dd24b43d4486834",
+  "table_sha256": "9dadd413a6e1f1ffabe124f63b1040baadd153c663f134211ea4be182c84ad15",
+  "scope": "WO24 selected results plus explicitly retained earlier results. Conditional ablations are not additive; NR is not a zero gain."
+}

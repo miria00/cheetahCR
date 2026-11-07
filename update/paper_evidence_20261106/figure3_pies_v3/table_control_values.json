@@ -1,0 +1,410 @@
+{
+  "sources": {
+    "/home/miria/CORGIsolve/Results/Blueprints/WO24/records/efficientnet_b1.json": {
+      "file": "inputs/9f3b77966c2e_efficientnet_b1.json",
+      "sha256": "95dcb551fd32caf9ebed17e28f6b4f358f2036cd60c2c4ccc5682062e48c1012"
+    },
+    "/home/miria/CORGIsolve/Results/Blueprints/WO24/records/efficientnet_b2.json": {
+      "file": "inputs/f0c4237bc2d2_efficientnet_b2.json",
+      "sha256": "7a4f63d98b16431c11e08737c11d0c732d2078d2f589cbcb7bfccee361e1ed0a"
+    },
+    "/home/miria/CORGIsolve/Results/Blueprints/WO24/records/efficientnet_b3.json": {
+      "file": "inputs/1b90a7dadd75_efficientnet_b3.json",
+      "sha256": "fc6f894b674215d70ffdad9b72b544db2a09e120ad7e304122dc1d6464132b14"
+    },
+    "/home/miria/CORGIsolve/Results/Blueprints/WO24/records/efficientnet_b4.json": {
+      "file": "inputs/674694fefc66_efficientnet_b4.json",
+      "sha256": "3b186c948964117fce489e927502a3f60e2cdd3d574f53fefb3f6d29a345433b"
+    },
+    "/home/miria/CORGIsolve/Results/Blueprints/WO24/records/efficientnet_b5.json": {
+      "file": "inputs/64eb9257f310_efficientnet_b5.json",
+      "sha256": "984e20693237e79881877baaa011d4358086e51811beea2ff05d34ffaf1a183e"
+    },
+    "/home/miria/CORGIsolve/Results/Blueprints/WO24/records/efficientnet_b6.json": {
+      "file": "inputs/1b64bbf7949b_efficientnet_b6.json",
+      "sha256": "02cc450b60221f46e97c93301eb4a26657fd5847ed2cffbf35b1c5ff41cb603f"
+    },
+    "/home/miria/CORGIsolve/Results/Blueprints/WO24/records/efficientnet_b7.json": {
+      "file": "inputs/c34139258ba3_efficientnet_b7.json",
+      "sha256": "fca5f81dbb1181bcf8fb937609f9a5a56cb29773e157c7e284158709ad512484"
+    },
+    "/home/miria/CORGIsolve/Results/Blueprints/WO24/records/unet.json": {
+      "file": "inputs/c61ff92ce9a1_unet.json",
+      "sha256": "084b56a9a4ae7eee38ac6e5f6eadb201ecd45b7aa183d08550c450169bd53a73"
+    },
+    "/home/miria/CORGIsolve/Results/Blueprints/WO24/records/deepseek_v3.json": {
+      "file": "inputs/eaa8b28fa1d0_deepseek_v3.json",
+      "sha256": "9e32e12c8f88356fb856c704f0cfbdaa02bbc1b8452a30bd2938e070932226d0"
+    },
+    "/home/miria/CORGIsolve/Results/Blueprints/WO24/records/llama1_13b.json": {
+      "file": "inputs/1e908e59f521_llama1_13b.json",
+      "sha256": "f9d39315c366f2bd0a1acf0d0b1e3d48c02428feb0f7d292ad676fbe47a34c16"
+    },
+    "/home/miria/CORGIsolve/Results/Blueprints/WO24/records/llama1_65b.json": {
+      "file": "inputs/dc51470c859d_llama1_65b.json",
+      "sha256": "f9f683cde6a0874e99e9d500f091ba5852ac71df700eb57edb25c71f3e87ede4"
+    },
+    "/home/miria/CORGIsolve/Results/Blueprints/WO24/records/llama3_70b.json": {
+      "file": "inputs/8d5eb69f9f82_llama3_70b.json",
+      "sha256": "1986776c1c141117227c8d2fce19c463a6ef0614c9ea103244f73cab241ea4d6"
+    },
+    "/tmp/cheetah_wo13_20261104_v1/cnn/mazeppa/efficientnet_b1_whole_owner_parent_v1/result.json": {
+      "file": "inputs/ec2aaf2d87fb_result.json",
+      "sha256": "0c3bf2284e72533b76f5498abbeddec59b30594d038cda28ff9e9fa1f9d947ef"
+    },
+    "/tmp/cheetah_wo13_20261104_v1/cnn/a100_42/efficientnet_b3_whole_owner_parent_v1/result.json": {
+      "file": "inputs/32db5a81b40b_result.json",
+      "sha256": "a108c5dd5341e030f09bf1a00da3df62108e0cd029c84c611390ebe69e0f487d"
+    },
+    "/tmp/cheetah_wo13_20261104_v1/cnn/kevin/efficientnet_b5_whole_owner_new_ocs_v1/result.json": {
+      "file": "inputs/a6ea9d77b633_result.json",
+      "sha256": "0dfca8165f35898111e7fad4b49295beeb07b6a83ae31ab776bcdfde4107d64d"
+    },
+    "/tmp/cheetah_wo13_20261104_v1/cnn/kevin/efficientnet_b7_whole_owner_new_ocs_v1/result.json": {
+      "file": "inputs/163a440f44ad_result.json",
+      "sha256": "75a15bd4afd2e96d8454720a3861f2b879c85ec9d899cc00bc9e3386a21b3158"
+    },
+    "/tmp/cheetah_wo14_20261105_v1/cnn/b2_actual_mode_response_v4/result.json": {
+      "file": "inputs/f16d0c44448a_result.json",
+      "sha256": "f545fe2faa516b7268bc70da31275079c955667dc46f9d25c9fa78daabcdefa2"
+    },
+    "/tmp/cheetah_wo14_20261105_v1/cnn/b4_flattened_prepared_v4/family.json": {
+      "file": "inputs/e9c858be6801_family.json",
+      "sha256": "8282e87c77abd9a6618eaec7ead0dd4ba25814de75e54b0c36a76fdfd63e8745"
+    },
+    "/tmp/cheetah_wo14_20261105_v1/cnn/b6_admission/prepared_v4/family.json": {
+      "file": "inputs/d400f4da2cea_family.json",
+      "sha256": "81675aac46a5a4008e4f221f2f35a0f6482d59a4a82a4353912efcecfa1ebbf1"
+    },
+    "/tmp/cheetah_wo23_20261106_v1/unet_lane_v1/delivery_v1/result.json": {
+      "file": "inputs/dda781883cfd_result.json",
+      "sha256": "4e1d8cb5e94ca3d1a0e249b50bf6f1367fa99667de41d91766e53c3de8af8eeb"
+    },
+    "/tmp/cheetah_wo24_20261106_v1/authoritative_dataset_v1/result.json": {
+      "file": "inputs/7098d49c6c72_result.json",
+      "sha256": "8262d444cf7e02af8f82aacf8374a8787dd678caafd3ab194eb948f42a9c6b2b"
+    },
+    "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/delivery_v1/result.json": {
+      "file": "inputs/3c96da7d7e3a_result.json",
+      "sha256": "9694dd4b78ac27455d69ed8388828556aedd98333955686c8ce4e4d77a1298f7"
+    },
+    "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/65/features_selected_v1/result.json": {
+      "file": "inputs/8e16baa9da24_result.json",
+      "sha256": "d1283e622ee372e1dd9e4c054f9a0b08751ae255a44f4e9d4c21ecf45c5eed1b"
+    },
+    "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/70/features_selected_v1/result.json": {
+      "file": "inputs/b544a4236302_result.json",
+      "sha256": "c2db44d2fd70acf967bc4d5286e86dc678c7fea40235b36c60de91ea311dadf7"
+    },
+    "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/65/KV_off_selected_v1/result.json": {
+      "file": "inputs/308a8cad708a_result.json",
+      "sha256": "7c7a273428ffb9ff71bd5a28d38b8f2bfe6f4a4a08b52702b0602f9c11f03cd2"
+    },
+    "/home/miria/CORGIsolve/cheetahCR/update/paper_evidence_20261106/figure3_pies_v3/controls_13/result.json": {
+      "file": "inputs/1265f084bb46_result.json",
+      "sha256": "59a678af4bf7980b873d947c0fbb82cbc681e1a653e9f66298bcfc5ab39bc4a4"
+    },
+    "/home/miria/CORGIsolve/cheetahCR/update/paper_evidence_20261106/figure3_pies_v3/controls_70/result.json": {
+      "file": "inputs/51c815de380c_result.json",
+      "sha256": "9f397e7906ef85aa557867e0f0851b3cf2d111599ea8267dfb7da2c8f7db985c"
+    }
+  },
+  "groups": [
+    "hardware",
+    "tiling",
+    "storage",
+    "fusion"
+  ],
+  "performance": {
+    "efficientnet_b1": {
+      "reference_ratio": 11.848610308453322,
+      "status": "INHERITED_UNCHANGED"
+    },
+    "efficientnet_b2": {
+      "reference_ratio": 6.679988602614596,
+      "status": "INHERITED_UNCHANGED"
+    },
+    "efficientnet_b3": {
+      "reference_ratio": 11.427333650211226,
+      "status": "INHERITED_UNCHANGED"
+    },
+    "efficientnet_b4": {
+      "reference_ratio": 9.620538774036207,
+      "status": "INHERITED_UNCHANGED"
+    },
+    "efficientnet_b5": {
+      "reference_ratio": 9.936807558544766,
+      "status": "INHERITED_UNCHANGED"
+    },
+    "efficientnet_b6": {
+      "reference_ratio": 7.803333523248506,
+      "status": "INHERITED_UNCHANGED"
+    },
+    "efficientnet_b7": {
+      "reference_ratio": 7.799624193093018,
+      "status": "INHERITED_UNCHANGED"
+    },
+    "unet": {
+      "reference_ratio": 2.245597789576985,
+      "status": "RETAINED_WO23_SOURCE_COST_POINT"
+    },
+    "deepseek_v3": {
+      "reference_ratio": 7.822551697606888,
+      "status": "WO24_SOURCE_CHECKED_ANALYTICAL_RESEARCH_POINT_PHYSICAL_UNQUALIFIED"
+    },
+    "llama1_13b": {
+      "reference_ratio": 11.09173813918838,
+      "status": "WO24_SOURCE_CHECKED_ANALYTICAL_RESEARCH_POINT_PHYSICAL_UNQUALIFIED"
+    },
+    "llama1_65b": {
+      "reference_ratio": 13.985218058189174,
+      "status": "RETAINED_WO23_SOURCE_COST_POINT"
+    },
+    "llama3_70b": {
+      "reference_ratio": 17.932222859330256,
+      "status": "RETAINED_WO23_SOURCE_COST_POINT"
+    }
+  },
+  "controls": {
+    "efficientnet_b1": [
+      {
+        "label": "Owners",
+        "group": "storage",
+        "off_ns": "18277253580343613/5000000000",
+        "on_ns": "520401851691163/200000000",
+        "saved_ns": "2633603644032269/2500000000",
+        "factor": "18277253580343613/13010046292279075",
+        "scope": "OCS-ranked whole-owner analytical recovery with concrete SRAM owner intervals; fixed hardware/mapping, original costs, no global optimality"
+      }
+    ],
+    "efficientnet_b2": [
+      {
+        "label": "Owners/mode",
+        "group": "storage",
+        "off_ns": "5150315069844611/500000000",
+        "on_ns": "7454681562134639/1000000000",
+        "saved_ns": "2845948577554583/1000000000",
+        "factor": "10300630139689222/7454681562134639",
+        "scope": "fixed admitted hardware, unchanged integral owner lifetimes; original source costs and rows; no full-master or automatic OCS solve claim"
+      }
+    ],
+    "efficientnet_b3": [
+      {
+        "label": "Owners",
+        "group": "storage",
+        "off_ns": "4125484426794619/200000000",
+        "on_ns": "4318588540081169/500000000",
+        "saved_ns": "11990245053810757/1000000000",
+        "factor": "20627422133973095/8637177080162338",
+        "scope": "OCS-ranked whole-owner analytical recovery with concrete SRAM owner intervals; fixed hardware/mapping, original costs, no global optimality"
+      }
+    ],
+    "efficientnet_b4": [
+      {
+        "label": "Spatial + buffers",
+        "group": "tiling",
+        "off_ns": "4026220410295962345578125/144115188075855872",
+        "on_ns": "2511179439176376895062671119988526900749/102588427775270145545560683184128",
+        "saved_ns": "86642194815445145236093676187478681/25046002874821812877334151168",
+        "factor": "409437981305777172849958688236062796875/358739919882339556437524445712646700107",
+        "scope": "Joint mapping/buffering recipe on the retained fixed chip; no separate credits for its parts."
+      }
+    ],
+    "efficientnet_b5": [
+      {
+        "label": "Owners",
+        "group": "storage",
+        "off_ns": "567451204151867/6250000",
+        "on_ns": "1302879794762317/20000000",
+        "saved_ns": "2564820292618287/100000000",
+        "factor": "9079219266429872/6514398973811585",
+        "scope": "OCS-ranked whole-owner analytical recovery with concrete SRAM owner intervals; fixed hardware/mapping, original costs, no global optimality"
+      }
+    ],
+    "efficientnet_b6": [
+      {
+        "label": "Spatial + buffers",
+        "group": "tiling",
+        "off_ns": "88152026223405729666234375/576460752303423488",
+        "on_ns": "480915182473047750988313605971999574396517/3419614259175671518185356106137600",
+        "saved_ns": "2564095570947574515300761798457649387/208716690623515107311117926400",
+        "factor": "522925324307452811847001287277929701953125/480915182473047750988313605971999574396517",
+        "scope": "Joint mapping/buffering recipe on the retained fixed chip; no separate credits for its parts."
+      }
+    ],
+    "efficientnet_b7": [
+      {
+        "label": "Owners",
+        "group": "storage",
+        "off_ns": "26927804508946923/100000000",
+        "on_ns": "23765778100531193/100000000",
+        "saved_ns": "316202640841573/10000000",
+        "factor": "26927804508946923/23765778100531193",
+        "scope": "OCS-ranked whole-owner analytical recovery with concrete SRAM owner intervals; fixed hardware/mapping, original costs, no global optimality"
+      }
+    ],
+    "unet": [
+      {
+        "label": "Cast",
+        "group": "fusion",
+        "off_ns": "2163814390860631218351978950936100499639/21993521274452904432909051494400",
+        "on_ns": "691767681294251064350904757070807180969/7331173758150968144303017164800",
+        "saved_ns": "22127836744469506324816169930919739183/5498380318613226108227262873600",
+        "factor": "2163814390860631218351978950936100499639/2075303043882753193052714271212421542907",
+        "scope": "Buffering enabled; original output stores and rounding retained."
+      },
+      {
+        "label": "Buffers",
+        "group": "fusion",
+        "off_ns": "1128159033525/8992",
+        "on_ns": "691767681294251064350904757070807180969/7331173758150968144303017164800",
+        "saved_ns": "228019896730597502455140013767966579031/7331173758150968144303017164800",
+        "factor": "919787578024848566806044770838773760000/691767681294251064350904757070807180969",
+        "scope": "Cast/epilogue storage enabled; gains are conditional, not additive."
+      }
+    ],
+    "deepseek_v3": [
+      {
+        "label": "Producer",
+        "group": "fusion",
+        "off_ns": "1538633429060566/23549",
+        "on_ns": "1506875157083872/23549",
+        "saved_ns": "31758271976694/23549",
+        "factor": "769316714530283/753437578541936",
+        "scope": "Same current chip, other feature retained, declared feature-off menu reoptimized."
+      },
+      {
+        "label": "Delivery",
+        "group": "fusion",
+        "off_ns": "1606023197887240/23549",
+        "on_ns": "1506875157083872/23549",
+        "saved_ns": "99148040803368/23549",
+        "factor": "200752899735905/188359394635484",
+        "scope": "Same current chip, other feature retained, declared feature-off menu reoptimized."
+      },
+      {
+        "label": "HW menu",
+        "group": "hardware",
+        "off_ns": "2881297657397/45",
+        "on_ns": "1506875157083872/23549",
+        "saved_ns": "42296465267713/1059705",
+        "factor": "67851678534041953/67809382068774240",
+        "scope": "Old versus new whole-chip branch with the new software menu available in both; hardware changes."
+      }
+    ],
+    "llama1_13b": [
+      {
+        "label": "25 to 31 maps",
+        "group": "tiling",
+        "off_ns": "90321065316245/8601",
+        "on_ns": "29935343674115/2867",
+        "saved_ns": "515034293900/8601",
+        "factor": "18064213063249/17961206204469",
+        "scope": "Old 25 versus new 31 mapping choices reoptimized on the selected WO24 chip."
+      },
+      {
+        "label": "HW menu",
+        "group": "hardware",
+        "off_ns": "97124497335992/9139",
+        "on_ns": "29935343674115/2867",
+        "saved_ns": "4876828024552079/26201513",
+        "factor": "278455933862289064/273579105837736985",
+        "scope": "Old versus new whole-chip branch with the new software menu available in both; hardware changes."
+      },
+      {
+        "label": "Weights",
+        "group": "storage",
+        "off_ns": "309065686013215/2867",
+        "on_ns": "29935343674115/2867",
+        "saved_ns": "279130342339100/2867",
+        "factor": "61813137202643/5987068734823",
+        "scope": "Restore all original descriptor imports with setup, two staging passes and DRAM writes. Kernel weight reads and first imports stay paid; import constants are independent of mapping."
+      },
+      {
+        "label": "KV",
+        "group": "storage",
+        "off_ns": "572887871540615/2867",
+        "on_ns": "29935343674115/2867",
+        "saved_ns": "542952527866500/2867",
+        "factor": "114577574308123/5987068734823",
+        "scope": "Original indexed KV reload contract on current WO24 hardware. All original cat work, initial writes and tails remain paid; same original head-major operands restored. Original lifetime proof inherited; extra imports and mapping costs rechecked."
+      }
+    ],
+    "llama1_65b": [
+      {
+        "label": "14 to 25 maps",
+        "group": "tiling",
+        "off_ns": "283740945199/7",
+        "on_ns": "1404992478347/35",
+        "saved_ns": "13712247648/35",
+        "factor": "1418704725995/1404992478347",
+        "scope": "WO23 mapping-menu control on the same chip retained by WO24; other policies fixed."
+      },
+      {
+        "label": "HW menu",
+        "group": "hardware",
+        "off_ns": "468157272659812/8411",
+        "on_ns": "1404992478347/35",
+        "saved_ns": "4568112807716803/294385",
+        "factor": "16385504543093420/11817391735376617",
+        "scope": "WO23 old/new hardware branches with the new mapping menu in both; old 65B hardware exceeds the primary area bound."
+      },
+      {
+        "label": "Weights",
+        "group": "storage",
+        "off_ns": "16193797507547/35",
+        "on_ns": "1404992478347/35",
+        "saved_ns": "2957761005840/7",
+        "factor": "16193797507547/1404992478347",
+        "scope": "Same selected chip/mapping, restore all original nonresident weight imports and writes."
+      },
+      {
+        "label": "KV",
+        "group": "storage",
+        "off_ns": "19956799188427/35",
+        "on_ns": "1404992478347/35",
+        "saved_ns": "530051620288",
+        "factor": "19956799188427/1404992478347",
+        "scope": "Same selected chip; canonical prefixes restored by qualified indexed-copy recipe; initial/tail writes still paid."
+      }
+    ],
+    "llama3_70b": [
+      {
+        "label": "14 to 25 maps",
+        "group": "tiling",
+        "off_ns": "152325226622881/4435",
+        "on_ns": "150193403141761/4435",
+        "saved_ns": "426364696224/887",
+        "factor": "152325226622881/150193403141761",
+        "scope": "WO23 mapping-menu control on the same chip retained by WO24; other policies fixed."
+      },
+      {
+        "label": "HW menu",
+        "group": "hardware",
+        "off_ns": "70249271530511/1343",
+        "on_ns": "150193403141761/4435",
+        "saved_ns": "109845778818431262/5956205",
+        "factor": "311555519237816285/201709740419385023",
+        "scope": "WO23 old/new hardware branches with the new mapping menu in both; old 65B hardware exceeds the primary area bound."
+      },
+      {
+        "label": "Weights",
+        "group": "storage",
+        "off_ns": "2153914001794207/4435",
+        "on_ns": "150193403141761/4435",
+        "saved_ns": "2003720598652446/4435",
+        "factor": "2153914001794207/150193403141761",
+        "scope": "Same selected chip/mapping, restore all original nonresident weight imports and writes."
+      },
+      {
+        "label": "GQA",
+        "group": "tiling",
+        "off_ns": "290025455719041/4435",
+        "on_ns": "150193403141761/4435",
+        "saved_ns": "27966410515456/887",
+        "factor": "5918886851409/3065171492689",
+        "scope": "Same-chip group-eight versus original independent-head group-one responses, reprice all 25 mappings and unchanged imports. Full original K order, owners, output coordinates and stores remain. This is KV-read reuse, not a KV-retention/offload control; semantic proof is inherited."
+      }
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "updated_utc": "2026-11-06T22:59:20.800700+00:00",
+  "change": "Original Figure 3 converted to historical-data table; current ablations retained separately",
+  "table_source": "update/figure3_table.tex",
+  "table_number": 8,
+  "page": 14,
+  "values": "Transcribed rounded displayed labels; dash means no displayed slice",
+  "compile_passed": true,
+  "layout_visually_checked": true,
+  "unresolved_references": 0,
+  "overfull_boxes": 0,
+  "original_artwork_unchanged": true,
+  "sha256": {
+    "5-experiments.tex": "13f29761f4a465b7b728dea7c5c7a37041e77ed95b9531af7d02bdb822e68f54",
+    "update/figure3_table.tex": "37b134e38e632f9ed8ac2beda44c274c7d1863b948bbe196ba95940e88a32742",
+    "neurips_2026.pdf": "5712fde26f2377e81e9a8b304618dfd84815f5a1866eda535fe9baca07236717",
+    "fig3/speedup_decomposition_final_v4.png": "5d46203bfbe81cbaab1f4d6fc5e395aa4475595f40e9f7a5408dbc2f989ae463"
+  },
+  "preservation": "/media/miria/Elements/cheetah_paper_figure3_table_20261106T225839Z",
+  "preservation_readback_passed": true
+}

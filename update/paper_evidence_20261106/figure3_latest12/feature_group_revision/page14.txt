@@ -1,0 +1,50 @@
+Figure 3: Retained historical prefill attribution under the original campaign’s numerical and traffic
+conventions. The artwork’s V1 label denotes joint tiling and fusion. Table 8 groups the latest
+twelve-workload feature contributions into four LP decision families, separately from the historical
+percentages above.
+
+
+
+Table 8: Per-workload contributions grouped by four types of LP decisions. Each feature cell names
+the tested choice and its conditional speedup factor. Total is the selected design’s acceleration over
+unchanged Baseline 2 (modeled TPU-v3); the feature factors do not partition that total.
+Workload              Total Hardware / datapath      Mapping / tiling        Placement / residency Fusion / overlap
+                                                                             Owners
+EfficientNet-B1 11.849× Fixed; NR                    Inherited; NR           1.4049×                 No new recipe
+                                                                             Owners/mode
+EfficientNet-B2    6.680× Fixed; NR                  Inherited; NR           1.3818×                 No new recipe
+                                                                             Owners
+EfficientNet-B3 11.427× Fixed; NR                    Inherited; NR           2.3882×                 No new recipe
+                                                     Spatial + buffers†
+EfficientNet-B4    9.621× Fixed; NR                  1.1413×                 Owners; NR              With tiling†
+                                                                             Owners
+EfficientNet-B5    9.937× Fixed; NR                  Inherited; NR           1.3937×                 No new recipe
+                                                     Spatial + buffers†
+EfficientNet-B6    7.803× Fixed; NR                  1.0874×                 Owners; NR              With tiling†
+                                                                             Owners
+EfficientNet-B7    7.800× Fixed; NR                  Inherited; NR           1.1330×                 No new recipe
+                                                                                                     Cast 1.0426×
+SD1.5 UNet         2.246× Unchanged; NR              Matrix modes; NR        Resident; fixed         Buffers 1.3296×
+                          HW menu                                                                    Producer 1.0211×
+DeepSeek-V3        7.823× 1.0006×                    Full-K; NR              Resident; fixed         Delivery 1.0658×
+                          HW menu                    25 to 31 maps
+Llama-1 13B       11.092× 1.0178×                    1.0057×                 Retention; NR           No new recipe
+                          HW menu                    14 to 25 maps           Weights 11.5259×
+Llama-1 65B       13.985× 1.3866×                    1.0098×                 KV 14.2042×             No new recipe
+                          HW menu                    14 to 25 maps           Weights
+Llama-3 70B       17.932× 1.5446×                    1.0142×                 14.3409×                No new recipe
+EfficientNets: forward; UNet: one denoiser call; LLMs: decode. Software factors are Toff /Ton on the selected chip. Hardware
+factors compare old/new chip branches with the same new software menu; the 65B old-chip control exceeds the primary area
+bound. Mapping factors measure the stated menu extension, not all tiling benefit. Owners denotes whole-tensor retention;
+Producer denotes rounded attention-layout fusion; Delivery includes paid prefetch/two contexts. Weights and KV are separate
+retention controls. † B4/B6 mapping and buffering are one combined control, credited once. Factors must not be added
+or multiplied; they are conditional, not an exhaustive decomposition. NR means not isolated, not zero. Fixed/inherited
+policies are not newly free selectors. Rematerialization belongs to the placement/lifetime group, but no new decoder recipe
+or gain is established. WO24 updates DeepSeek/13B; the other ten points retain earlier results. All totals use analytical
+matrix-and-associated-traffic accounting and separate chips; physical decoder qualification remains open.
+
+
+
+
+                                                            14
+

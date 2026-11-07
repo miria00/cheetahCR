@@ -1,0 +1,153 @@
+{
+  "area600_proxy_pass": true,
+  "area_proxy_mm2": "74881501/125000",
+  "authoritative_dataset_path": "/tmp/cheetah_wo24_20261106_v1/authoritative_dataset_v1/result.json",
+  "authoritative_dataset_sha256": "8262d444cf7e02af8f82aacf8374a8787dd678caafd3ab194eb948f42a9c6b2b",
+  "baseline": "Unchanged paper Baseline2",
+  "chip_id": "wo24_llama1_13b_v1",
+  "chip_power_proxy_W": "1601967/4000",
+  "feature_scope": {
+    "KV_retention": "Original admitted KV owners/appends fixed and fully charged.",
+    "MoE_residency": "Not applicable.",
+    "activation_placement": "Inherited ordinary dense DRAM arenas and original operator boundaries; no new attention-producer layout alternative.",
+    "fusion": "Inherited original semantic/storage boundaries; no new dense fusion implementation.",
+    "hardware_identity": "Selected: one of the declared whole-chip alternatives; one chip across each actual decode execution.",
+    "implementation_tiling": "Selectable: complete compatible priced mapping menus; original full-K reduction and rounded outputs.",
+    "rematerialization": "Missing new general implementation; no recomputation credit.",
+    "serving": "Decode-only objective and original starting KV/task; general request scheduling fixed.",
+    "supported_concurrency": "Ordinary serial DRAM kernels; no new overlap or staging-to-MAC path.",
+    "tiling_placement_coupling": "Mapping footprint/ports and selected chip are checked jointly; general lifetime-dependent capacity exchange remains absent.",
+    "weight_residency": "Eligible dense whole-owner retention stocks within the declared package; selected source point replays all initial loads."
+  },
+  "full_master_solved": false,
+  "full_native_serving": false,
+  "hardware": {
+    "MACs_per_array": 256,
+    "accumulator_bank_bytes": 1024,
+    "array_fill_cycles": 38,
+    "array_geometry": [
+      8,
+      32
+    ],
+    "bandwidth": 8601,
+    "bank_control_bytes_per_bank": 256,
+    "bank_control_total_bytes": 655360,
+    "endpoint_queue_depth": 512,
+    "host_GBps": 192,
+    "host_interface_units": 6,
+    "installed_bank_count": 2560,
+    "legacy_bank_mode": false,
+    "local_GBps": 32768,
+    "local_service_units": 8,
+    "operand_bank_bytes": 1024,
+    "operand_bank_pairs": 640,
+    "operand_port_width_bytes": 32,
+    "operand_read_ports_per_array": 3,
+    "skew_bytes_per_array": 1088,
+    "sram_mib": 6.375,
+    "staging_bank_bytes": 65536,
+    "staging_banks": 32,
+    "staging_bytes": 2097152,
+    "staging_control_bytes": 65536,
+    "tiles": 640,
+    "vector_lanes": 2560
+  },
+  "historical_admitted_record_replaced": false,
+  "historical_dependencies": {
+    "node_input": {
+      "original_path": "/tmp/cheetah_wo23_20261106_v1/node_view_inputs_v1/decoder_input.json",
+      "path": "inputs/decoder_input.json",
+      "sha256": "45a0804d017ed858b270e9409af82d32e0fa1202a19f2d6acceae14a2378177e"
+    },
+    "node_input_pointer": "/decoders/1",
+    "source_replay": {
+      "original_path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/control_H1_A0_new_v1_replay/result.json",
+      "path": "inputs/llama1_13b_replay.json",
+      "sha256": "f9e271d7a63b5efd7a7537bf8bcb9a3b45ea99e894e75c0a9e13c25ba5e4d1fd"
+    },
+    "source_result": {
+      "original_path": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/13/control_H1_A0_new_v1_replay/result.json",
+      "path": "inputs/llama1_13b_source_result.json",
+      "sha256": "f9e271d7a63b5efd7a7537bf8bcb9a3b45ea99e894e75c0a9e13c25ba5e4d1fd"
+    }
+  },
+  "latency_ns": "29935343674115/2867",
+  "latency_seconds": 10.441347636594001,
+  "metrics": {
+    "decomposition_ns": {
+      "HBM_kernel": "37755339489280/8601",
+      "KV_tail_writes": "4302434897920/8601",
+      "array": "2997518246",
+      "imports": "1641943190230/8601",
+      "local_kernel": "2304403045",
+      "vector": "58654624"
+    },
+    "full_decode_useful_MFU": 0.12985946711015756,
+    "issued_utilization": 0.1894258470111799,
+    "peak_live_DRAM_bytes": 80014911232,
+    "traffic_decode": {
+      "HBM": 37794438266880,
+      "HOST": 39098777600,
+      "local_kernel": 75510678978560,
+      "physical_issued_MAC": 324052765900800,
+      "useful_MAC": 222151940505600,
+      "vector_ops": 150155837440
+    },
+    "useful_issued_fraction": 0.6855424914768535
+  },
+  "new_search": true,
+  "node_qualified": false,
+  "objective": "decode",
+  "package_or_physical_assumptions": {
+    "HOST_proxy_pins": 300,
+    "PHY_per_channel_mm2": "7/2",
+    "capacity_bytes": 309237645312,
+    "controller_PHY_area_mm2": "336",
+    "data_wires": 3072,
+    "delivered_efficiency": "4/5",
+    "device_capacity_bytes": 3221225472,
+    "devices": 96,
+    "external_average_energy_illustration_W": "77409/250",
+    "external_peak_power_W": null,
+    "kind": "conditional GDDR7 80% delivery with historical GDDR6X PHY sensitivity",
+    "macro_calibrated": false,
+    "physical_admission": false,
+    "raw_GBps_per_device": 112,
+    "replaced_legacy_PHY_area_mm2": "8601/160",
+    "retained_DMA_NoC_area_mm2": "8601/1000",
+    "whole_package_pin_count": null
+  },
+  "phase": "decode",
+  "physical_chip_qualified": false,
+  "reference_ns": "62176466544446484375/536870912",
+  "reference_ratio": 11.09173813918838,
+  "reference_ratio_exact": "35651985916585614140625/3214283051871110168576",
+  "scope": "Matrix and paid associated traffic only; original arithmetic/task preserved. Separate chip per workload. Exact family source accounting does not establish silicon or unrestricted master optimality.",
+  "source": {
+    "original_path": "/tmp/cheetah_wo24_20261106_v1/selected_inputs_v1/llama1_13b_source_replay.json",
+    "path": "/tmp/cheetah_wo24_20261106_v1/authoritative_dataset_v1/inputs/llama1_13b_selected_source.json",
+    "sha256": "a07c8a0b0097922f5687365bf69fc7200652bb19000c914f6401ad0ef1aca8dd"
+  },
+  "source_accounting_qualified": true,
+  "source_point_origin": "Exact source-cost feasible seed, separately replayed; OCS attribution reported independently",
+  "source_replay": {
+    "original_path": "/tmp/cheetah_wo24_20261106_v1/selected_inputs_v1/llama1_13b_source_replay.json",
+    "path": "/tmp/cheetah_wo24_20261106_v1/authoritative_dataset_v1/inputs/llama1_13b_selected_source.json",
+    "sha256": "a07c8a0b0097922f5687365bf69fc7200652bb19000c914f6401ad0ef1aca8dd"
+  },
+  "source_result": {
+    "original_path": "/tmp/cheetah_wo24_20261106_v1/selected_inputs_v1/llama1_13b_source_replay.json",
+    "path": "/tmp/cheetah_wo24_20261106_v1/authoritative_dataset_v1/inputs/llama1_13b_selected_source.json",
+    "sha256": "a07c8a0b0097922f5687365bf69fc7200652bb19000c914f6401ad0ef1aca8dd"
+  },
+  "status": "WO24_SOURCE_CHECKED_ANALYTICAL_RESEARCH_POINT_PHYSICAL_UNQUALIFIED",
+  "strict_research_cap_ns": "13321302262684/1267",
+  "strict_research_cap_pass": true,
+  "task": {
+    "decode_forwards": 511,
+    "outputs": 512,
+    "prompt_tokens": 1536,
+    "requests": 32
+  },
+  "workload_id": "llama1_13b"
+}

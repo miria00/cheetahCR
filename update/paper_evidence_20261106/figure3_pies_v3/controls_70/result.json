@@ -1,0 +1,66 @@
+{
+  "passed": true,
+  "workload": "llama3_70b",
+  "hardware": {
+    "MACs_per_array": 256,
+    "accumulator_bank_bytes": 2048,
+    "array_fill_cycles": 38,
+    "array_geometry": [
+      8,
+      32
+    ],
+    "bandwidth": 8870,
+    "bank_control_bytes_per_bank": 256,
+    "bank_control_total_bytes": 524288,
+    "endpoint_queue_depth": 512,
+    "host_GBps": 192,
+    "host_interface_units": 6,
+    "installed_bank_count": 2048,
+    "legacy_bank_mode": false,
+    "local_GBps": 32768,
+    "local_service_units": 8,
+    "operand_bank_bytes": 2048,
+    "operand_bank_pairs": 512,
+    "operand_port_width_bytes": 32,
+    "operand_read_ports_per_array": 3,
+    "skew_bytes_per_array": 1088,
+    "sram_mib": 9.625,
+    "staging_bank_bytes": 65536,
+    "staging_banks": 64,
+    "staging_bytes": 4194304,
+    "staging_control_bytes": 65536,
+    "tiles": 512,
+    "vector_lanes": 4096
+  },
+  "base_ns": "150193403141761/4435",
+  "controls": {
+    "Weight residency": {
+      "off_ns": "2153914001794207/4435",
+      "on_ns": "150193403141761/4435",
+      "saved_ns": "2003720598652446/4435",
+      "scope": "Restore all original descriptor imports with setup, two staging passes and DRAM writes. Kernel weight reads and first imports stay paid; import constants are independent of mapping."
+    },
+    "KV-head reuse (GQA)": {
+      "off_ns": "290025455719041/4435",
+      "on_ns": "150193403141761/4435",
+      "saved_ns": "27966410515456/887",
+      "original_shape_classes": 1022,
+      "original_invocations": 2616320,
+      "scope": "Same-chip group-eight versus original independent-head group-one responses, reprice all 25 mappings and unchanged imports. Full original K order, owners, output coordinates and stores remain. This is KV-read reuse, not a KV-retention/offload control; semantic proof is inherited."
+    }
+  },
+  "eligible_weights": 561,
+  "bindings": {
+    "/home/miria/CORGIsolve/Results/Blueprints/WO24/records/llama3_70b.json": "1986776c1c141117227c8d2fce19c463a6ef0614c9ea103244f73cab241ea4d6",
+    "/tmp/cheetah_wo24_20261106_v1/selected_inputs_v1/llama3_70b_source_replay.json": "f36d06ddc805fa5b70b9e340630b81c4a78b7e9e5e8e36abfa0746d80a1b922c",
+    "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/70/mapping_source_v1/source.json": "833fd60077a912be13a0d9882c5ad9c2414b97f9a70df00e5f50639a7237ffce",
+    "/home/miria/CORGIsolve/systems/cheetah_joint/wo22_dense_staging.py": "d33eae7b7bcfe4d42008113eb771ef529f523c971dba4fb819e6a7ffceada9e1",
+    "/home/miria/CORGIsolve/systems/cheetah_joint/wo23_dense_mapping.py": "8495779753256a596cd51e4d83bec44f8e6fe5740f13d32b98aab4aea80566a3",
+    "/home/miria/CORGIsolve/systems/cheetah_joint/wo24_dense_banks.py": "2ede4d487769ce4275e219f193cb3110f007bf744d9c477e39b61d3b0186e232",
+    "/home/miria/CORGIsolve/systems/cheetah_joint/wo23_dense_banks_geometry_v2.py": "2d5d19478272c710f08f5a077e601a7aa84fb0efa3371d9f64c9512416dbfa5f",
+    "/home/miria/CORGIsolve/systems/cheetah_joint/wo14_gqa_candidate.py": "b74bbd2394d20603c9975bca28883c1f9610b9b810cb94b78b97ab1447ebba91"
+  },
+  "optimizer_calls": 0,
+  "source_admission": "Inherited original source contracts; fresh full finite kernel and descriptor cost controls only. Not new full-model execution, quality or physical timing.",
+  "script_sha256": "4d819df2022ac4a14e145ef722dabfaddb144862a798647b29da6490defeb622"
+}

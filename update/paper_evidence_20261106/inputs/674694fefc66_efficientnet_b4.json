@@ -1,0 +1,54 @@
+{
+  "authoritative_dataset_path": "/tmp/cheetah_wo24_20261106_v1/authoritative_dataset_v1/result.json",
+  "authoritative_dataset_sha256": "8262d444cf7e02af8f82aacf8374a8787dd678caafd3ab194eb948f42a9c6b2b",
+  "hardware": {
+    "V": 313.0,
+    "bw": 2697.6,
+    "memtech": "HBM",
+    "pe_type": [
+      "tcgen05_32x8",
+      256
+    ],
+    "persistent_mib": 5.1727073171011755,
+    "tiles_int": 233
+  },
+  "historical_record": {
+    "baseline": "unchanged paper Baseline2",
+    "forward_ms": 24.478194018894197,
+    "forward_speedup": 9.620538774036207,
+    "full_master_solved": false,
+    "hardware_provider_fields": {
+      "V": 313.0,
+      "bw": 2697.6,
+      "memtech": "HBM",
+      "pe_type": [
+        "tcgen05_32x8",
+        256
+      ],
+      "persistent_mib": 5.1727073171011755,
+      "tiles_int": 233
+    },
+    "objective": "forward",
+    "original_source_replay_rerun_for_this_record": false,
+    "schema": "CHEETAH-per-workload-blueprint-record-v1",
+    "separate_chip_per_workload": true,
+    "software_scope": "New custom flattened-PQ mapping and operand-buffer pipeline, selected by OCS; complete typed-source/finite-schedule replay plus separate review. Historical dense Figure2 workload, fixed admitted chip, unchanged casts/padding/baseline. No old-LP feasibility, full-master, global design optimum, full-network numerical-equivalence or measured-silicon claim.",
+    "source_comparison": "/media/miria/Elements/cheetah_wo14_20261105_v1/comparison_final_v1/result.json",
+    "source_comparison_sha256": "dba57053629466b4e713c8feecc8b5a91faa3df42fd830144e361bdd5c117ec4",
+    "source_receipt": "/tmp/cheetah_wo14_20261105_v1/cnn/adoption_v1/result.json",
+    "status": "inherited_design_record_not_new_search",
+    "workload": "efficientnet_b4"
+  },
+  "latency_seconds": 0.024478194018894197,
+  "new_search": false,
+  "objective": "forward",
+  "physical_chip_qualified": false,
+  "reference_ratio": 9.620538774036207,
+  "source": {
+    "original_path": "/home/miria/CORGIsolve/Results/Blueprints/WO23/records/efficientnet_b4.json",
+    "path": "/tmp/cheetah_wo24_20261106_v1/authoritative_dataset_v1/inputs/efficientnet_b4_wo23_record.json",
+    "sha256": "7dc04bc7ed2590c5d3961d865e7bfd975e9b1a986c0b92e0937e8e512cd5274b"
+  },
+  "status": "INHERITED_UNCHANGED",
+  "workload_id": "efficientnet_b4"
+}

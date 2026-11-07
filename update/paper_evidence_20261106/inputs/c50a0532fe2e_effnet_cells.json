@@ -1,0 +1,232 @@
+{
+ "_doc": "Fixed-HW TPU-v3 joint cells for efficientnet_b1..b6, completing the FAST-convention figure row. SAME convention as grid_completion/FIXED_HW_TABLE.md: cell = T_naive / T_joint on the same chip; naive = per-hw cache Sum_i T_max_c[i,0] (streaming at deployed config c0); joint = V2.1 free-y LP HiGHS Optimal; floor = Sum_i min_c T_min_c. Operating point tpuv3 canonical (900 GB/s, 32 MiB, traffic ref 900). Convention tags: single-pred graph; ws_c/3 uniform workspace fallback (same as the grid's vision cells). Sanity gates passed on all cells: speedup>=1, naive>=floor, T_joint>=floor.",
+ "generated": "2026-08-01",
+ "solved_on": "podA (node-0, 64.247.206.114), HiGHS dual simplex via scipy linprog, JAX_PLATFORMS=cpu",
+ "operating_point": {
+  "template": "tpuv3",
+  "bw_gbps": 900.0,
+  "cgm_mib": 32.0,
+  "traffic_bw_ref_gbps": 900.0
+ },
+ "note_physics": "All six cells solve EXACTLY to the best-config compute floor (T_joint == Sum_i min_c T_min_c): at 900 GB/s these smaller EfficientNets are compute-bound and the joint LP saturates the roofline; speedup = naive/floor. B7 (2.21x, [cap]) remains the capacity-limited member of the family.",
+ "summary_speedups": {
+  "efficientnet_b1": 1.445,
+  "efficientnet_b2": 1.4697,
+  "efficientnet_b3": 1.2849,
+  "efficientnet_b4": 1.2475,
+  "efficientnet_b5": 1.2643,
+  "efficientnet_b6": 1.4233
+ },
+ "cells": [
+  {
+   "cell_key": "efficientnet_b1__tpuv3__bw900_cgm32_ref900_joint",
+   "workload": "efficientnet_b1",
+   "template": "tpuv3",
+   "operating_point": {
+    "bw_gbps": 900.0,
+    "cgm_mib": 32.0,
+    "traffic_bw_ref_gbps": 900.0
+   },
+   "row": "joint",
+   "convention_tag": "single-pred; V2.1 free-y joint LP; naive=cache Sum_i T_max_c[i,0]; floor=Sum_i min_c T_min_c; HiGHS",
+   "T_naive": 873608353.0,
+   "compute_floor_best": 604554486.0,
+   "compute_floor_c0": 707061800.0,
+   "pareto_cache": "efficientnet_b1_pareto_for_tpuv3.npz",
+   "L": 115,
+   "C": 16,
+   "n_vars": 73715,
+   "n_rows": 122067,
+   "b_src": "t_k x bw_ref=900 (per-config, floored at tensor bytes)",
+   "s_src": "ws_c/3 UNIFORM FALLBACK (undecomposed \u2014 conservative split)",
+   "status": "done",
+   "solver_tag": "highs-simplex",
+   "T_joint": 604554486.0,
+   "speedup": 1.445,
+   "wall_clock_s": 0.7,
+   "highs_iters": 2190,
+   "highs_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+   "sanity_pass": true,
+   "sanity_detail": {
+    "speedup_ge_1": true,
+    "naive_ge_floor": true,
+    "Tjoint_ge_floor": true
+   }
+  },
+  {
+   "cell_key": "efficientnet_b2__tpuv3__bw900_cgm32_ref900_joint",
+   "workload": "efficientnet_b2",
+   "template": "tpuv3",
+   "operating_point": {
+    "bw_gbps": 900.0,
+    "cgm_mib": 32.0,
+    "traffic_bw_ref_gbps": 900.0
+   },
+   "row": "joint",
+   "convention_tag": "single-pred; V2.1 free-y joint LP; naive=cache Sum_i T_max_c[i,0]; floor=Sum_i min_c T_min_c; HiGHS",
+   "T_naive": 1583045817.0,
+   "compute_floor_best": 1077123455.0,
+   "compute_floor_c0": 1339289680.0,
+   "pareto_cache": "efficientnet_b2_pareto_for_tpuv3.npz",
+   "L": 115,
+   "C": 16,
+   "n_vars": 73715,
+   "n_rows": 122067,
+   "b_src": "t_k x bw_ref=900 (per-config, floored at tensor bytes)",
+   "s_src": "ws_c/3 UNIFORM FALLBACK (undecomposed \u2014 conservative split)",
+   "status": "done",
+   "solver_tag": "highs-simplex",
+   "T_joint": 1077123455.0,
+   "speedup": 1.4697,
+   "wall_clock_s": 0.69,
+   "highs_iters": 1870,
+   "highs_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+   "sanity_pass": true,
+   "sanity_detail": {
+    "speedup_ge_1": true,
+    "naive_ge_floor": true,
+    "Tjoint_ge_floor": true
+   }
+  },
+  {
+   "cell_key": "efficientnet_b3__tpuv3__bw900_cgm32_ref900_joint",
+   "workload": "efficientnet_b3",
+   "template": "tpuv3",
+   "operating_point": {
+    "bw_gbps": 900.0,
+    "cgm_mib": 32.0,
+    "traffic_bw_ref_gbps": 900.0
+   },
+   "row": "joint",
+   "convention_tag": "single-pred; V2.1 free-y joint LP; naive=cache Sum_i T_max_c[i,0]; floor=Sum_i min_c T_min_c; HiGHS",
+   "T_naive": 2296699619.0,
+   "compute_floor_best": 1787472028.0,
+   "compute_floor_c0": 2141053792.0,
+   "pareto_cache": "efficientnet_b3_pareto_for_tpuv3.npz",
+   "L": 130,
+   "C": 16,
+   "n_vars": 93080,
+   "n_rows": 153597,
+   "b_src": "t_k x bw_ref=900 (per-config, floored at tensor bytes)",
+   "s_src": "ws_c/3 UNIFORM FALLBACK (undecomposed \u2014 conservative split)",
+   "status": "done",
+   "solver_tag": "highs-simplex",
+   "T_joint": 1787472028.0,
+   "speedup": 1.2849,
+   "wall_clock_s": 0.89,
+   "highs_iters": 2543,
+   "highs_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+   "sanity_pass": true,
+   "sanity_detail": {
+    "speedup_ge_1": true,
+    "naive_ge_floor": true,
+    "Tjoint_ge_floor": true
+   }
+  },
+  {
+   "cell_key": "efficientnet_b4__tpuv3__bw900_cgm32_ref900_joint",
+   "workload": "efficientnet_b4",
+   "template": "tpuv3",
+   "operating_point": {
+    "bw_gbps": 900.0,
+    "cgm_mib": 32.0,
+    "traffic_bw_ref_gbps": 900.0
+   },
+   "row": "joint",
+   "convention_tag": "single-pred; V2.1 free-y joint LP; naive=cache Sum_i T_max_c[i,0]; floor=Sum_i min_c T_min_c; HiGHS",
+   "T_naive": 5490858405.0,
+   "compute_floor_best": 4401641794.0,
+   "compute_floor_c0": 4991301141.0,
+   "pareto_cache": "efficientnet_b4_pareto_for_tpuv3.npz",
+   "L": 160,
+   "C": 16,
+   "n_vars": 138560,
+   "n_rows": 227457,
+   "b_src": "t_k x bw_ref=900 (per-config, floored at tensor bytes)",
+   "s_src": "ws_c/3 UNIFORM FALLBACK (undecomposed \u2014 conservative split)",
+   "status": "done",
+   "solver_tag": "highs-simplex",
+   "T_joint": 4401641794.0,
+   "speedup": 1.2475,
+   "wall_clock_s": 1.37,
+   "highs_iters": 4065,
+   "highs_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+   "sanity_pass": true,
+   "sanity_detail": {
+    "speedup_ge_1": true,
+    "naive_ge_floor": true,
+    "Tjoint_ge_floor": true
+   }
+  },
+  {
+   "cell_key": "efficientnet_b5__tpuv3__bw900_cgm32_ref900_joint",
+   "workload": "efficientnet_b5",
+   "template": "tpuv3",
+   "operating_point": {
+    "bw_gbps": 900.0,
+    "cgm_mib": 32.0,
+    "traffic_bw_ref_gbps": 900.0
+   },
+   "row": "joint",
+   "convention_tag": "single-pred; V2.1 free-y joint LP; naive=cache Sum_i T_max_c[i,0]; floor=Sum_i min_c T_min_c; HiGHS",
+   "T_naive": 10515621123.0,
+   "compute_floor_best": 8317624267.0,
+   "compute_floor_c0": 9315285801.0,
+   "pareto_cache": "efficientnet_b5_pareto_for_tpuv3.npz",
+   "L": 194,
+   "C": 16,
+   "n_vars": 200984,
+   "n_rows": 328573,
+   "b_src": "t_k x bw_ref=900 (per-config, floored at tensor bytes)",
+   "s_src": "ws_c/3 UNIFORM FALLBACK (undecomposed \u2014 conservative split)",
+   "status": "done",
+   "solver_tag": "highs-simplex",
+   "T_joint": 8317624267.0,
+   "speedup": 1.2643,
+   "wall_clock_s": 1.99,
+   "highs_iters": 4324,
+   "highs_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+   "sanity_pass": true,
+   "sanity_detail": {
+    "speedup_ge_1": true,
+    "naive_ge_floor": true,
+    "Tjoint_ge_floor": true
+   }
+  },
+  {
+   "cell_key": "efficientnet_b6__tpuv3__bw900_cgm32_ref900_joint",
+   "workload": "efficientnet_b6",
+   "template": "tpuv3",
+   "operating_point": {
+    "bw_gbps": 900.0,
+    "cgm_mib": 32.0,
+    "traffic_bw_ref_gbps": 900.0
+   },
+   "row": "joint",
+   "convention_tag": "single-pred; V2.1 free-y joint LP; naive=cache Sum_i T_max_c[i,0]; floor=Sum_i min_c T_min_c; HiGHS",
+   "T_naive": 31302539603.0,
+   "compute_floor_best": 21992895847.0,
+   "compute_floor_c0": 28274771363.0,
+   "pareto_cache": "efficientnet_b6_pareto_for_tpuv3.npz",
+   "L": 224,
+   "C": 16,
+   "n_vars": 265664,
+   "n_rows": 433153,
+   "b_src": "t_k x bw_ref=900 (per-config, floored at tensor bytes)",
+   "s_src": "ws_c/3 UNIFORM FALLBACK (undecomposed \u2014 conservative split)",
+   "status": "done",
+   "solver_tag": "highs-simplex",
+   "T_joint": 21992895847.0,
+   "speedup": 1.4233,
+   "wall_clock_s": 2.62,
+   "highs_iters": 5012,
+   "highs_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+   "sanity_pass": true,
+   "sanity_detail": {
+    "speedup_ge_1": true,
+    "naive_ge_floor": true,
+    "Tjoint_ge_floor": true
+   }
+  }
+ ]
+}

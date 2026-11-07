@@ -1,0 +1,208 @@
+% table10.tex -- provenance of Table~\ref{tab:native_phases} (Table 10).
+%
+% This is a provenance note, not body text. It records what produced the
+% DeepSeek numbers in Table 10, traced 2026-11-03 from the sealed receipts.
+% Include with \input{table10} inside the appendix if wanted; it is written as
+% a self-contained section and is not referenced by any other file.
+%
+% Collected receipts: /media/miria/Elements/table10_provenance_20261103/
+% (INDEX.md, MANIFEST.json, and the execution/comparison/fixed_chip_LP receipts).
+
+\section{Provenance of the DeepSeek phase table}
+\label{app:table10_provenance}
+
+Table~\ref{tab:native_phases} is Table~10 of this paper, confirmed from
+\path{neurips_2026.aux}. Its source is \path{update/decode_decomp.tex}. This
+section records what produced its numbers, because the answer is not what the
+surrounding text implies.
+
+\paragraph{No LP solve produced the table.}
+The custom-chip column is a \emph{replayed saved retiming} of an
+already-admitted execution, evaluated by the analytical service evaluator. The
+sealed closure receipt records that row under the key
+\path{all_results.old_uniform_retiming} and reports
+\path{new_optimizer_calls}~$=0$. The producing audit describes it as
+``replayed saved uniform retiming'' and states that no optimizer, hardware
+search, numerical format or kernel implementation was used. A fixed-chip LP
+certificate does exist for the same chip, and is cited one paragraph below the
+table, but it is a different quantity: its continuous upper lies a factor
+$2.7055$ \emph{below} the latency printed in the table, it was also obtained
+without an optimizer call, and the chip itself lies outside the certified LP
+family.
+
+\subsection{The three execution variants}
+The closure receipt carries all three analytical executions of the same task
+(32 requests, 4,096 prompt and 512 output tokens, 61 layers, 61,985,244 logical
+invocations). Only the first is in Table~\ref{tab:native_phases}.
+
+\begin{table}[t]
+\centering\small
+\caption{Analytical executions in the sealed closure receipt (ms). The first row
+is Table~\ref{tab:native_phases}; the second supersedes it; the third is the
+only genuinely LP-derived hardware.}
+\label{tab:table10_variants}
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Receipt key & Prefill & Decode & Conversion & Total \\
+\midrule
+\path{old_uniform_retiming} & 1,078,913.842 & 2,074,998.907 & 42,972.849 & 3,196,885.598 \\
+\path{retained_integral} & 913,989.589 & 2,074,998.907 & 39,920.585 & \textbf{3,028,909.081} \\
+\path{rounded_LP_hardware} & 1,047,788.641 & 3,405,889.963 & 40,747.951 & 4,494,426.555 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{The table is one revision stale.}
+The same 2026-10-27 closure replaced the unnecessary uniform dilation of prefill
+and conversion kernel services with the supported scalar evaluator, tightening
+the bound by $167{,}976.516589$~ms on the same design. Decode was untouched
+(\path{decode_unchanged}~$=$~true), which is why Table~\ref{tab:native_phases}
+still agrees on decode and no longer agrees on prefill or preparation. Against
+the same reference column the two give
+
+\begin{table}[t]
+\centering\small
+\caption{Printed versus current ratios against the identical reference column.}
+\label{tab:table10_stale}
+\begin{tabular}{@{}lrr@{}}
+\toprule
+Phase & Table~\ref{tab:native_phases} & Current receipt \\
+\midrule
+Prefill & $12.408\times$ & $\mathbf{14.647\times}$ \\
+Decode & $25.582\times$ & $25.582\times$ \\
+Preparation & $3.054\times$ & $\mathbf{3.288\times}$ \\
+\midrule
+Total & $20.833\times$ & $\mathbf{21.989\times}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent
+so the printed table understates its own result. The LP appendix also still
+cites the superseded $3{,}196{,}885.598$-ms latency.
+
+\paragraph{The LP-derived hardware is slower.}
+The rounded-LP candidate uses 128 arrays, 4,096 vector lanes, 1,597~GB/s DRAM
+and 1,024~GB/s host, and passes the same physical scenario at $313.651658$~mm$^2$
+and $298.3871$~W. Its execution is $4{,}494{,}426.555$~ms, a factor $1.4838$
+slower than the retained chip; its untightened bound was $5{,}509{,}427.509$~ms.
+The larger recovered chip was retained on that basis.
+
+\subsection{The reference column and its sensitivity}
+The reference column of Table~\ref{tab:native_phases} is the retained
+host-backed analytical extension: $13{,}387{,}192.863$~ms prefill,
+$53{,}083{,}323.571$~ms decode, $131{,}252.321$~ms conversion,
+$66{,}601{,}768.756$~ms total. Its comparison receipt carries
+\path{numerical_optimizer_calls}~$=0$, \path{inference_calls}~$=0$,
+\path{headline_speedup_admitted}~$=$~false,
+\path{verified_FAST_modeled_TPUv3_comparison}~$=$~false and
+\path{FAST_method_comparison}~$=$~false.
+
+The headline depends on an assumed reference interface rate. The receipt's
+sensitivity set holds eighteen cases, nine at each assumed host rate; recomputed
+from its exact fractions against the current $3{,}028{,}909.081$-ms execution:
+
+\begin{table}[t]
+\centering\small
+\caption{Overall ratio under the receipt's own reference sensitivity set.}
+\label{tab:table10_sensitivity}
+\begin{tabular}{@{}lrr@{}}
+\toprule
+Assumed reference host rate & Range & Median \\
+\midrule
+32~GB/s & $21.90491$--$22.15628\times$ & $21.98870\times$ \\
+1,024~GB/s & $4.42769$--$4.67907\times$ & $4.51148\times$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent
+Table~\ref{tab:native_phases} uses the 32~GB/s case with 8,192~B/ns local
+service and 2,048 vector primitive cycles/ns. The result therefore moves by a
+factor of roughly $4.9$ on a reference interface assumption alone, which is why
+the producing audit declines to promote it to a FAST-baseline headline.
+
+\subsection{The fixed-chip LP, and why it is a separate fact}
+The certificate cited beside the table has source identity
+\path{577942e1db9ffbe4f6582d27a69a418765e60deec584e04465f70b4f7a558604} over the
+original source
+\path{831edc6f8cde9bd2091541b55beaa00fae2736035badb3937236ba32c66104e3}. It
+retains all $15{,}044{,}386{,}833$ implementation choices, $61{,}985{,}244$
+invocations and $5{,}809{,}955{,}157$ original event labels as independent, and
+fixes the hardware to the chip in Table~\ref{tab:native_phases}. Its checked
+endpoints are
+\[
+ \begin{gathered}
+ L=1{,}180{,}606.049320422\ \mathrm{ms},\qquad
+ U=1{,}181{,}606.6831816933\ \mathrm{ms},\\
+ 100(U-L)/U=0.0846841741\%,
+ \end{gathered}
+\]
+with status \path{COMPLETE_FIXED_CHIP_NATIVE_INTERVAL} and
+\path{optimizer_calls}~$=0$. The lower is constructed analytically as
+$L=\kappa\sum_i\pi_i/B_h$ with $B_h=1630$, from the exact resource row
+$Q^B_e\le B_h d_e$ and the already-checked coverage prices $\pi_i$; it transfers
+a row proof rather than an earlier scalar bound. The upper retains the admitted
+point's candidate, lifecycle, storage and translation fields, recomputes
+services at the new rates, and takes the resource maximum after temporal mixing
+under a conservative host factor $8/5$. The checker covers $197{,}075$ source
+service cases, $791{,}997$ shared row instances and all $19{,}317$ point service
+classes; admission takes $94.626$~s and the replay's admission $96.503$~s.
+
+Three facts keep this certificate separate from Table~\ref{tab:native_phases}.
+
+\begin{enumerate}
+\item \textbf{Scale.} $U=1{,}181.607$~s against the table's $3{,}196.886$~s, a
+factor $2.7055$. The continuous upper is not an executable latency.
+\item \textbf{The chip is outside the certified family.} The retained chip uses
+20 host interface units, while the frozen target
+\path{1946a0a176e74c6fbad85a88b58d83e95adf6beeaecf98bfa1519866acad91c0} contains
+fixed host-interface branches with 1, 32 or 34 units only. The LP was not
+enlarged, so no executable optimality interval follows from pairing its lower
+with this execution.
+\item \textbf{The LP's own hardware loses.} See
+Table~\ref{tab:table10_variants}, third row.
+\end{enumerate}
+
+\noindent
+Recorded alongside: the relaxed fractional witness is $1{,}205{,}554.982396$~ms,
+and at exact installed rates the same fractional choices cost
+$1{,}477{,}032.945143$~ms. Neither fractional point is the integral execution.
+
+\subsection{What actually selected the chip and schedule}
+A recovery-and-replay pipeline, not a solve.
+
+\begin{enumerate}
+\item An integral chip and complete execution were recovered earlier and saved.
+\item The 2026-10-27 closure replayed that saved design against the current
+physical screens: $61{,}985{,}244$ logical invocations, $68{,}800{,}988$ original
+owners, $13{,}042{,}436$ weighted occurrences, $281{,}872$ retained gaps,
+$19{,}230$ original DRAM imports and leases, and all $384$ selected pipeline
+recipe types regenerated and independently replayed. Capacity was recounted:
+decode DRAM $68{,}462{,}901{,}448$ of $68{,}719{,}476{,}736$ bytes, SRAM
+$62{,}078{,}976$ of $82{,}051{,}072$, host address space
+$2{,}046{,}265{,}271{,}296$ of $2{,}199{,}023{,}255{,}552$.
+\item Phase accounting was then tightened as described above.
+\item The fixed-chip LP interval was constructed separately for the same chip.
+\end{enumerate}
+
+\noindent
+The chip has 320 $16\times16$ BF16 MAC arrays, 5,248 vector lanes, 1,024
+conversion lanes, 78.25~MiB SRAM, 64~GiB DRAM and 2~TiB host backing, with
+1,630~GB/s DRAM, 640~GB/s host and 20,480~GB/s local service at a 1~ns clock. It
+evaluates to $321.686108$~mm$^2$ and $298.6865$~W under the BF16 area-scale-four
+scenario and passes every physical predicate there. These remain uncalibrated
+architectural coefficients, not physical-design sign-off.
+
+\subsection{How to quote the table}
+\begin{itemize}
+\item The decode ratio $25.582\times$ is current and survives the retiming
+change.
+\item The total should be $21.989\times$ and prefill $14.647\times$; the printed
+$20.833\times$ and $12.408\times$ predate the 2026-10-27 tightening.
+\item Both are measured against an assumed 32~GB/s host reference. At
+1,024~GB/s the same design gives $4.511\times$. The assumption belongs in the
+same sentence as the ratio.
+\item It is not an LP optimum, not a certified gap and not a comparison against
+FAST's modeled TPU-v3 baseline; the receipt denies the last two explicitly.
+\end{itemize}

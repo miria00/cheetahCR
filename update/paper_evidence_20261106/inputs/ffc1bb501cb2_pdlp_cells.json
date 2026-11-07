@@ -1,0 +1,2613 @@
+[
+  {
+    "cell_key": "deepseek_v3__compact_npu__bw64_cgm8_ref64_joint",
+    "workload": "deepseek_v3",
+    "template": "compact_npu",
+    "row": "joint",
+    "operating_point": {
+      "bw_gbps": 64.0,
+      "cgm_mib": 8,
+      "traffic_bw_ref": 64.0
+    },
+    "T_joint": 4336310000000.0,
+    "gap_tag": "corgi-gap=6.60e-02",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "compact_retry",
+    "iters": 21600,
+    "wall_s": 354.0,
+    "src": "build=single-pred; pareto=compact_npu; ref=64.0",
+    "T_naive": 23124862042276.0,
+    "naive_key": "naive_cache_sum_Tmax_c0 (native ref64, vetted)",
+    "speedup": 5.3328,
+    "compute_floor_best": 982847586651.0,
+    "sanity_pass": true,
+    "sanity_detail": {
+      "naive_ge_floor": true,
+      "speedup_ge_1": true
+    }
+  },
+  {
+    "cell_key": "llama3_70b__rtx5090__bw1792_cgm98_ref1792_A",
+    "workload": "llama3_70b",
+    "template": "rtx5090",
+    "row": "A",
+    "operating_point": {
+      "bw_gbps": 1792.0,
+      "cgm_mib": 98.0,
+      "traffic_bw_ref": 1792.0
+    },
+    "T_joint": 2003810000000.0,
+    "gap_tag": "corgi-gap=4.32e-02",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "canonical",
+    "iters": 650000,
+    "wall_s": 163.1,
+    "src": "build=single-pred; pareto=rtx5090; ref=1792.0"
+  },
+  {
+    "cell_key": "llama3_70b__h100__bw256_cgm16_ref3350_joint",
+    "workload": "llama3_70b",
+    "template": "h100",
+    "row": "joint",
+    "operating_point": {
+      "bw_gbps": 256.0,
+      "cgm_mib": 16.0,
+      "traffic_bw_ref": 3350.0
+    },
+    "T_joint": 11969000000000.0,
+    "gap_tag": "corgi-gap=8.68e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 568400,
+    "wall_s": 623.8,
+    "src": "build=single-pred; pareto=h100; ref=3350.0",
+    "T_naive": "compute-at-merge (non-native ladder bw)"
+  },
+  {
+    "cell_key": "deepseek_v3__rtx5090__bw1792_cgm32_ref1792_joint",
+    "workload": "deepseek_v3",
+    "template": "rtx5090",
+    "row": "joint",
+    "operating_point": {
+      "bw_gbps": 1792.0,
+      "cgm_mib": 32.0,
+      "traffic_bw_ref": 1792.0
+    },
+    "T_joint": 156480000000000.0,
+    "gap_tag": "corgi-gap=9.99e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 57000,
+    "wall_s": 352.7,
+    "src": "build=single-pred; pareto=rtx5090; ref=1792.0",
+    "T_naive": 1406045173786.0,
+    "naive_key": "naive_cache_sum_Tmax_c0",
+    "speedup": 0.009,
+    "compute_floor_best": 954602750326.0,
+    "sanity_pass": false,
+    "sanity_detail": {
+      "naive_ge_floor": true,
+      "speedup_ge_1": false
+    }
+  },
+  {
+    "cell_key": "deepseek_v3__h100__bw256_cgm16_ref3350_B",
+    "workload": "deepseek_v3",
+    "template": "h100",
+    "row": "B",
+    "operating_point": {
+      "bw_gbps": 256.0,
+      "cgm_mib": 16.0,
+      "traffic_bw_ref": 3350.0
+    },
+    "T_joint": 1198390000000000.0,
+    "gap_tag": "corgi-gap=1.00e+00",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 2200,
+    "wall_s": 292.2,
+    "src": "build=single-pred; pareto=h100; ref=3350.0"
+  },
+  {
+    "cell_key": "llama1_13b__compact_npu__bw64_cgm8_ref900_joint",
+    "workload": "llama1_13b",
+    "template": "compact_npu",
+    "row": "joint",
+    "operating_point": {
+      "bw_gbps": 64.0,
+      "cgm_mib": 8,
+      "traffic_bw_ref": 900.0
+    },
+    "T_joint": 255498000000000.0,
+    "gap_tag": "corgi-gap=1.00e+00",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "compact_retry",
+    "iters": 70400,
+    "wall_s": 180.5,
+    "src": "build=single-pred; pareto=compact_npu; ref=900.0",
+    "T_naive": 412101541911155.7,
+    "naive_key": "naive_lp_convention_c0 (ref900, package-continuity)",
+    "speedup": 1.6129,
+    "compute_floor_best": 401122197569.0,
+    "sanity_pass": true,
+    "sanity_detail": {
+      "naive_ge_floor": true,
+      "speedup_ge_1": true
+    }
+  },
+  {
+    "cell_key": "efficientnet_b7__rtx5090__bw1792_cgm98_ref1792_joint",
+    "workload": "efficientnet_b7",
+    "template": "rtx5090",
+    "row": "joint",
+    "operating_point": {
+      "bw_gbps": 1792.0,
+      "cgm_mib": 98.0,
+      "traffic_bw_ref": 1792.0
+    },
+    "T_joint": 1032060000000.0,
+    "gap_tag": "corgi-gap=9.75e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "canonical",
+    "iters": 191400,
+    "wall_s": 50.6,
+    "src": "build=single-pred; pareto=rtx5090; ref=1792.0",
+    "T_naive": 67746223344.0,
+    "naive_key": "naive_cache_sum_Tmax_c0",
+    "speedup": 0.0656,
+    "compute_floor_best": 33838439027.0,
+    "sanity_pass": false,
+    "sanity_detail": {
+      "naive_ge_floor": true,
+      "speedup_ge_1": false
+    }
+  },
+  {
+    "cell_key": "efficientnet_b7__tpuv3__bw900_cgm32_ref900_A",
+    "workload": "efficientnet_b7",
+    "template": "tpuv3",
+    "row": "A",
+    "operating_point": {
+      "bw_gbps": 900.0,
+      "cgm_mib": 32.0,
+      "traffic_bw_ref": 900.0
+    },
+    "T_joint": 120953000000.0,
+    "gap_tag": "corgi-gap=1.00e+00",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "canonical",
+    "iters": 196800,
+    "wall_s": 28.9,
+    "src": "build=single-pred; pareto=tpuv3; ref=900.0"
+  },
+  {
+    "cell_key": "deepseek_v3__h100__bw3350_cgm50_ref3350_A",
+    "workload": "deepseek_v3",
+    "template": "h100",
+    "row": "A",
+    "operating_point": {
+      "bw_gbps": 3350.0,
+      "cgm_mib": 50.0,
+      "traffic_bw_ref": 3350.0
+    },
+    "T_joint": 15034000000000.0,
+    "gap_tag": "corgi-gap=1.00e+00",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "canonical",
+    "iters": 90400,
+    "wall_s": 88.2,
+    "src": "build=single-pred; pareto=h100; ref=3350.0"
+  },
+  {
+    "cell_key": "llama1_13b__h100__bw128_cgm16_ref3350_joint",
+    "workload": "llama1_13b",
+    "template": "h100",
+    "row": "joint",
+    "operating_point": {
+      "bw_gbps": 128.0,
+      "cgm_mib": 16.0,
+      "traffic_bw_ref": 3350.0
+    },
+    "T_joint": 8766570000000.0,
+    "gap_tag": "corgi-gap=9.25e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 627400,
+    "wall_s": 176.5,
+    "src": "build=single-pred; pareto=h100; ref=3350.0",
+    "T_naive": "compute-at-merge (non-native ladder bw)"
+  },
+  {
+    "cell_key": "llama3_70b__rtx5090__bw128_cgm16_ref1792_joint",
+    "workload": "llama3_70b",
+    "template": "rtx5090",
+    "row": "joint",
+    "operating_point": {
+      "bw_gbps": 128.0,
+      "cgm_mib": 16.0,
+      "traffic_bw_ref": 1792.0
+    },
+    "T_joint": 19921600000000.0,
+    "gap_tag": "corgi-gap=9.43e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 32600,
+    "wall_s": 1081.6,
+    "src": "build=single-pred; pareto=rtx5090; ref=1792.0",
+    "T_naive": "compute-at-merge (non-native ladder bw)"
+  },
+  {
+    "cell_key": "deepseek_v3__h100__bw256_cgm16_ref3350_A",
+    "workload": "deepseek_v3",
+    "template": "h100",
+    "row": "A",
+    "operating_point": {
+      "bw_gbps": 256.0,
+      "cgm_mib": 16.0,
+      "traffic_bw_ref": 3350.0
+    },
+    "T_joint": 1351260000000.0,
+    "gap_tag": "corgi-gap=1.00e+00",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 7200,
+    "wall_s": 88.4,
+    "src": "build=single-pred; pareto=h100; ref=3350.0"
+  },
+  {
+    "cell_key": "efficientnet_b7__h100__bw128_cgm16_ref3350_B",
+    "workload": "efficientnet_b7",
+    "template": "h100",
+    "row": "B",
+    "operating_point": {
+      "bw_gbps": 128.0,
+      "cgm_mib": 16.0,
+      "traffic_bw_ref": 3350.0
+    },
+    "T_joint": 993067000000.0,
+    "gap_tag": "corgi-gap=9.57e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 29800,
+    "wall_s": 45.2,
+    "src": "build=single-pred; pareto=h100; ref=3350.0"
+  },
+  {
+    "cell_key": "efficientnet_b7__h100__bw3350_cgm32_ref3350_B",
+    "workload": "efficientnet_b7",
+    "template": "h100",
+    "row": "B",
+    "operating_point": {
+      "bw_gbps": 3350.0,
+      "cgm_mib": 32.0,
+      "traffic_bw_ref": 3350.0
+    },
+    "T_joint": 2266090000000.0,
+    "gap_tag": "corgi-gap=1.00e+00",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 152000,
+    "wall_s": 45.1,
+    "src": "build=single-pred; pareto=h100; ref=3350.0"
+  },
+  {
+    "cell_key": "llama1_13b__rtx5090__bw128_cgm16_ref1792_B",
+    "workload": "llama1_13b",
+    "template": "rtx5090",
+    "row": "B",
+    "operating_point": {
+      "bw_gbps": 128.0,
+      "cgm_mib": 16.0,
+      "traffic_bw_ref": 1792.0
+    },
+    "T_joint": 855448000000.0,
+    "gap_tag": "corgi-gap=1.82e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 536000,
+    "wall_s": 134.1,
+    "src": "build=single-pred; pareto=rtx5090; ref=1792.0"
+  },
+  {
+    "cell_key": "llama1_13b__rtx5090__bw1792_cgm32_ref1792_B",
+    "workload": "llama1_13b",
+    "template": "rtx5090",
+    "row": "B",
+    "operating_point": {
+      "bw_gbps": 1792.0,
+      "cgm_mib": 32.0,
+      "traffic_bw_ref": 1792.0
+    },
+    "T_joint": 24349800000000.0,
+    "gap_tag": "corgi-gap=1.00e+00",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 3600,
+    "wall_s": 137.4,
+    "src": "build=single-pred; pareto=rtx5090; ref=1792.0"
+  },
+  {
+    "cell_key": "llama1_13b__compact_npu__bw64_cgm32_ref64_joint",
+    "workload": "llama1_13b",
+    "template": "compact_npu",
+    "row": "joint",
+    "operating_point": {
+      "bw_gbps": 64.0,
+      "cgm_mib": 32,
+      "traffic_bw_ref": 64.0
+    },
+    "T_joint": 446340000000.0,
+    "gap_tag": "corgi-gap=7.82e-02",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "compact_retry",
+    "iters": 116200,
+    "wall_s": 171.7,
+    "src": "build=single-pred; pareto=compact_npu; ref=64.0",
+    "T_naive": 18141786406914.0,
+    "naive_key": "naive_cache_sum_Tmax_c0 (native ref64, vetted)",
+    "speedup": 40.6457,
+    "compute_floor_best": 401122197569.0,
+    "sanity_pass": true,
+    "sanity_detail": {
+      "naive_ge_floor": true,
+      "speedup_ge_1": true
+    }
+  },
+  {
+    "cell_key": "deepseek_v3__rtx5090__bw1792_cgm98_ref1792_joint",
+    "workload": "deepseek_v3",
+    "template": "rtx5090",
+    "row": "joint",
+    "operating_point": {
+      "bw_gbps": 1792.0,
+      "cgm_mib": 98.0,
+      "traffic_bw_ref": 1792.0
+    },
+    "T_joint": 158119000000000.0,
+    "gap_tag": "corgi-gap=9.99e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "canonical",
+    "iters": 44000,
+    "wall_s": 351.8,
+    "src": "build=single-pred; pareto=rtx5090; ref=1792.0",
+    "T_naive": 1406045173786.0,
+    "naive_key": "naive_cache_sum_Tmax_c0",
+    "speedup": 0.0089,
+    "compute_floor_best": 954602750326.0,
+    "sanity_pass": false,
+    "sanity_detail": {
+      "naive_ge_floor": true,
+      "speedup_ge_1": false
+    }
+  },
+  {
+    "cell_key": "llama1_13b__h100__bw256_cgm16_ref3350_joint",
+    "workload": "llama1_13b",
+    "template": "h100",
+    "row": "joint",
+    "operating_point": {
+      "bw_gbps": 256.0,
+      "cgm_mib": 16.0,
+      "traffic_bw_ref": 3350.0
+    },
+    "T_joint": 8279450000000.0,
+    "gap_tag": "corgi-gap=9.94e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 179000,
+    "wall_s": 167.2,
+    "src": "build=single-pred; pareto=h100; ref=3350.0",
+    "T_naive": "compute-at-merge (non-native ladder bw)"
+  },
+  {
+    "cell_key": "efficientnet_b7__rtx5090__bw256_cgm16_ref1792_joint",
+    "workload": "efficientnet_b7",
+    "template": "rtx5090",
+    "row": "joint",
+    "operating_point": {
+      "bw_gbps": 256.0,
+      "cgm_mib": 16.0,
+      "traffic_bw_ref": 1792.0
+    },
+    "T_joint": 2597770000000.0,
+    "gap_tag": "corgi-gap=9.90e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 199800,
+    "wall_s": 47.8,
+    "src": "build=single-pred; pareto=rtx5090; ref=1792.0",
+    "T_naive": "compute-at-merge (non-native ladder bw)"
+  },
+  {
+    "cell_key": "llama1_13b__rtx5090__bw1792_cgm32_ref1792_joint",
+    "workload": "llama1_13b",
+    "template": "rtx5090",
+    "row": "joint",
+    "operating_point": {
+      "bw_gbps": 1792.0,
+      "cgm_mib": 32.0,
+      "traffic_bw_ref": 1792.0
+    },
+    "T_joint": 88545600000000.0,
+    "gap_tag": "corgi-gap=9.97e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 38400,
+    "wall_s": 166.0,
+    "src": "build=single-pred; pareto=rtx5090; ref=1792.0",
+    "T_naive": 587514136942.0,
+    "naive_key": "naive_cache_sum_Tmax_c0",
+    "speedup": 0.0066,
+    "compute_floor_best": 447330123854.0,
+    "sanity_pass": false,
+    "sanity_detail": {
+      "naive_ge_floor": true,
+      "speedup_ge_1": false
+    }
+  },
+  {
+    "cell_key": "llama3_70b__h100__bw256_cgm16_ref3350_A",
+    "workload": "llama3_70b",
+    "template": "h100",
+    "row": "A",
+    "operating_point": {
+      "bw_gbps": 256.0,
+      "cgm_mib": 16.0,
+      "traffic_bw_ref": 3350.0
+    },
+    "T_joint": 10291500000000.0,
+    "gap_tag": "corgi-gap=7.00e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 650000,
+    "wall_s": 133.7,
+    "src": "build=single-pred; pareto=h100; ref=3350.0"
+  },
+  {
+    "cell_key": "llama3_70b__rtx5090__bw256_cgm16_ref1792_A",
+    "workload": "llama3_70b",
+    "template": "rtx5090",
+    "row": "A",
+    "operating_point": {
+      "bw_gbps": 256.0,
+      "cgm_mib": 16.0,
+      "traffic_bw_ref": 1792.0
+    },
+    "T_joint": 3323040000000.0,
+    "gap_tag": "corgi-gap=1.62e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 650000,
+    "wall_s": 133.6,
+    "src": "build=single-pred; pareto=rtx5090; ref=1792.0"
+  },
+  {
+    "cell_key": "deepseek_v3__h100__bw3350_cgm32_ref3350_B",
+    "workload": "deepseek_v3",
+    "template": "h100",
+    "row": "B",
+    "operating_point": {
+      "bw_gbps": 3350.0,
+      "cgm_mib": 32.0,
+      "traffic_bw_ref": 3350.0
+    },
+    "T_joint": 27334000000000.0,
+    "gap_tag": "corgi-gap=9.79e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 16800,
+    "wall_s": 299.8,
+    "src": "build=single-pred; pareto=h100; ref=3350.0"
+  },
+  {
+    "cell_key": "llama1_13b__compact_npu__bw64_cgm16_ref900_joint",
+    "workload": "llama1_13b",
+    "template": "compact_npu",
+    "row": "joint",
+    "operating_point": {
+      "bw_gbps": 64.0,
+      "cgm_mib": 16,
+      "traffic_bw_ref": 900.0
+    },
+    "T_joint": 12796400000000.0,
+    "gap_tag": "corgi-gap=9.98e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "compact_retry",
+    "iters": 94600,
+    "wall_s": 161.5,
+    "src": "build=single-pred; pareto=compact_npu; ref=900.0",
+    "T_naive": 412101541911155.7,
+    "naive_key": "naive_lp_convention_c0 (ref900, package-continuity)",
+    "speedup": 32.2045,
+    "compute_floor_best": 401122197569.0,
+    "sanity_pass": true,
+    "sanity_detail": {
+      "naive_ge_floor": true,
+      "speedup_ge_1": true
+    }
+  },
+  {
+    "cell_key": "llama3_70b__rtx5090__bw1792_cgm98_ref1792_joint",
+    "workload": "llama3_70b",
+    "template": "rtx5090",
+    "row": "joint",
+    "operating_point": {
+      "bw_gbps": 1792.0,
+      "cgm_mib": 98.0,
+      "traffic_bw_ref": 1792.0
+    },
+    "T_joint": 496283000000000.0,
+    "gap_tag": "corgi-gap=1.00e+00",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "canonical",
+    "iters": 245000,
+    "wall_s": 613.4,
+    "src": "build=single-pred; pareto=rtx5090; ref=1792.0",
+    "T_naive": 2009528692202.0,
+    "naive_key": "naive_cache_sum_Tmax_c0",
+    "speedup": 0.004,
+    "compute_floor_best": 1869987774467.0,
+    "sanity_pass": false,
+    "sanity_detail": {
+      "naive_ge_floor": true,
+      "speedup_ge_1": false
+    }
+  },
+  {
+    "cell_key": "llama1_13b__rtx5090__bw1792_cgm98_ref1792_B",
+    "workload": "llama1_13b",
+    "template": "rtx5090",
+    "row": "B",
+    "operating_point": {
+      "bw_gbps": 1792.0,
+      "cgm_mib": 98.0,
+      "traffic_bw_ref": 1792.0
+    },
+    "T_joint": 32138200000000.0,
+    "gap_tag": "corgi-gap=1.00e+00",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "canonical",
+    "iters": 3600,
+    "wall_s": 132.1,
+    "src": "build=single-pred; pareto=rtx5090; ref=1792.0"
+  },
+  {
+    "cell_key": "efficientnet_b7__h100__bw256_cgm16_ref3350_joint",
+    "workload": "efficientnet_b7",
+    "template": "h100",
+    "row": "joint",
+    "operating_point": {
+      "bw_gbps": 256.0,
+      "cgm_mib": 16.0,
+      "traffic_bw_ref": 3350.0
+    },
+    "T_joint": 1465860000000.0,
+    "gap_tag": "corgi-gap=9.88e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 186600,
+    "wall_s": 47.9,
+    "src": "build=single-pred; pareto=h100; ref=3350.0",
+    "T_naive": "compute-at-merge (non-native ladder bw)"
+  },
+  {
+    "cell_key": "llama1_13b__rtx5090__bw128_cgm16_ref1792_joint",
+    "workload": "llama1_13b",
+    "template": "rtx5090",
+    "row": "joint",
+    "operating_point": {
+      "bw_gbps": 128.0,
+      "cgm_mib": 16.0,
+      "traffic_bw_ref": 1792.0
+    },
+    "T_joint": 3654090000000.0,
+    "gap_tag": "corgi-gap=1.00e+00",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 581000,
+    "wall_s": 164.1,
+    "src": "build=single-pred; pareto=rtx5090; ref=1792.0",
+    "T_naive": "compute-at-merge (non-native ladder bw)"
+  },
+  {
+    "cell_key": "efficientnet_b7__rtx5090__bw1792_cgm32_ref1792_joint",
+    "workload": "efficientnet_b7",
+    "template": "rtx5090",
+    "row": "joint",
+    "operating_point": {
+      "bw_gbps": 1792.0,
+      "cgm_mib": 32.0,
+      "traffic_bw_ref": 1792.0
+    },
+    "T_joint": 1033640000000.0,
+    "gap_tag": "corgi-gap=9.75e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 189200,
+    "wall_s": 50.6,
+    "src": "build=single-pred; pareto=rtx5090; ref=1792.0",
+    "T_naive": 67746223344.0,
+    "naive_key": "naive_cache_sum_Tmax_c0",
+    "speedup": 0.0655,
+    "compute_floor_best": 33838439027.0,
+    "sanity_pass": false,
+    "sanity_detail": {
+      "naive_ge_floor": true,
+      "speedup_ge_1": false
+    }
+  },
+  {
+    "cell_key": "deepseek_v3__h100__bw128_cgm16_ref3350_A",
+    "workload": "deepseek_v3",
+    "template": "h100",
+    "row": "A",
+    "operating_point": {
+      "bw_gbps": 128.0,
+      "cgm_mib": 16.0,
+      "traffic_bw_ref": 3350.0
+    },
+    "T_joint": 920575000000.0,
+    "gap_tag": "corgi-gap=1.00e+00",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 49400,
+    "wall_s": 89.7,
+    "src": "build=single-pred; pareto=h100; ref=3350.0"
+  },
+  {
+    "cell_key": "deepseek_v3__rtx5090__bw256_cgm16_ref1792_A",
+    "workload": "deepseek_v3",
+    "template": "rtx5090",
+    "row": "A",
+    "operating_point": {
+      "bw_gbps": 256.0,
+      "cgm_mib": 16.0,
+      "traffic_bw_ref": 1792.0
+    },
+    "T_joint": 1002670000000.0,
+    "gap_tag": "corgi-gap=7.82e-02",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 17200,
+    "wall_s": 87.1,
+    "src": "build=single-pred; pareto=rtx5090; ref=1792.0"
+  },
+  {
+    "cell_key": "efficientnet_b7__rtx5090__bw256_cgm16_ref1792_B",
+    "workload": "efficientnet_b7",
+    "template": "rtx5090",
+    "row": "B",
+    "operating_point": {
+      "bw_gbps": 256.0,
+      "cgm_mib": 16.0,
+      "traffic_bw_ref": 1792.0
+    },
+    "T_joint": 3219760000000.0,
+    "gap_tag": "corgi-gap=9.81e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 200000,
+    "wall_s": 40.4,
+    "src": "build=single-pred; pareto=rtx5090; ref=1792.0"
+  },
+  {
+    "cell_key": "llama3_70b__rtx5090__bw1792_cgm32_ref1792_B",
+    "workload": "llama3_70b",
+    "template": "rtx5090",
+    "row": "B",
+    "operating_point": {
+      "bw_gbps": 1792.0,
+      "cgm_mib": 32.0,
+      "traffic_bw_ref": 1792.0
+    },
+    "T_joint": 33057300000000.0,
+    "gap_tag": "corgi-gap=1.00e+00",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 3400,
+    "wall_s": 520.6,
+    "src": "build=single-pred; pareto=rtx5090; ref=1792.0"
+  },
+  {
+    "cell_key": "llama1_13b__compact_npu__bw64_cgm16_ref64_joint",
+    "workload": "llama1_13b",
+    "template": "compact_npu",
+    "row": "joint",
+    "operating_point": {
+      "bw_gbps": 64.0,
+      "cgm_mib": 16,
+      "traffic_bw_ref": 64.0
+    },
+    "T_joint": 577878000000.0,
+    "gap_tag": "corgi-gap=1.25e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "compact_retry",
+    "iters": 429000,
+    "wall_s": 201.0,
+    "src": "build=single-pred; pareto=compact_npu; ref=64.0",
+    "T_naive": 18141786406914.0,
+    "naive_key": "naive_cache_sum_Tmax_c0 (native ref64, vetted)",
+    "speedup": 31.3938,
+    "compute_floor_best": 401122197569.0,
+    "sanity_pass": true,
+    "sanity_detail": {
+      "naive_ge_floor": true,
+      "speedup_ge_1": true
+    }
+  },
+  {
+    "cell_key": "llama1_13b__rtx5090__bw1792_cgm98_ref1792_joint",
+    "workload": "llama1_13b",
+    "template": "rtx5090",
+    "row": "joint",
+    "operating_point": {
+      "bw_gbps": 1792.0,
+      "cgm_mib": 98.0,
+      "traffic_bw_ref": 1792.0
+    },
+    "T_joint": 90156100000000.0,
+    "gap_tag": "corgi-gap=9.96e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "canonical",
+    "iters": 24200,
+    "wall_s": 167.3,
+    "src": "build=single-pred; pareto=rtx5090; ref=1792.0",
+    "T_naive": 587514136942.0,
+    "naive_key": "naive_cache_sum_Tmax_c0",
+    "speedup": 0.0065,
+    "compute_floor_best": 447330123854.0,
+    "sanity_pass": false,
+    "sanity_detail": {
+      "naive_ge_floor": true,
+      "speedup_ge_1": false
+    }
+  },
+  {
+    "cell_key": "llama3_70b__h100__bw3350_cgm50_ref3350_A",
+    "workload": "llama3_70b",
+    "template": "h100",
+    "row": "A",
+    "operating_point": {
+      "bw_gbps": 3350.0,
+      "cgm_mib": 50.0,
+      "traffic_bw_ref": 3350.0
+    },
+    "T_joint": 17859600000000.0,
+    "gap_tag": "corgi-gap=1.00e+00",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "canonical",
+    "iters": 21200,
+    "wall_s": 130.0,
+    "src": "build=single-pred; pareto=h100; ref=3350.0"
+  },
+  {
+    "cell_key": "efficientnet_b7__rtx5090__bw1792_cgm98_ref1792_B",
+    "workload": "efficientnet_b7",
+    "template": "rtx5090",
+    "row": "B",
+    "operating_point": {
+      "bw_gbps": 1792.0,
+      "cgm_mib": 98.0,
+      "traffic_bw_ref": 1792.0
+    },
+    "T_joint": 1246200000000.0,
+    "gap_tag": "corgi-gap=9.53e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "canonical",
+    "iters": 200000,
+    "wall_s": 39.4,
+    "src": "build=single-pred; pareto=rtx5090; ref=1792.0"
+  },
+  {
+    "cell_key": "efficientnet_b7__h100__bw128_cgm16_ref3350_joint",
+    "workload": "efficientnet_b7",
+    "template": "h100",
+    "row": "joint",
+    "operating_point": {
+      "bw_gbps": 128.0,
+      "cgm_mib": 16.0,
+      "traffic_bw_ref": 3350.0
+    },
+    "T_joint": 4092370000000.0,
+    "gap_tag": "corgi-gap=9.96e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 179400,
+    "wall_s": 46.8,
+    "src": "build=single-pred; pareto=h100; ref=3350.0",
+    "T_naive": "compute-at-merge (non-native ladder bw)"
+  },
+  {
+    "cell_key": "deepseek_v3__h100__bw3350_cgm32_ref3350_joint",
+    "workload": "deepseek_v3",
+    "template": "h100",
+    "row": "joint",
+    "operating_point": {
+      "bw_gbps": 3350.0,
+      "cgm_mib": 32.0,
+      "traffic_bw_ref": 3350.0
+    },
+    "T_joint": 58773200000000.0,
+    "gap_tag": "corgi-gap=1.00e+00",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 34800,
+    "wall_s": 453.5,
+    "src": "build=single-pred; pareto=h100; ref=3350.0",
+    "T_naive": 1258798698513.0,
+    "naive_key": "naive_cache_sum_Tmax_c0",
+    "speedup": 0.0214,
+    "compute_floor_best": 916385956161.0,
+    "sanity_pass": false,
+    "sanity_detail": {
+      "naive_ge_floor": true,
+      "speedup_ge_1": false
+    }
+  },
+  {
+    "cell_key": "llama3_70b__h100__bw3350_cgm32_ref3350_A",
+    "workload": "llama3_70b",
+    "template": "h100",
+    "row": "A",
+    "operating_point": {
+      "bw_gbps": 3350.0,
+      "cgm_mib": 32.0,
+      "traffic_bw_ref": 3350.0
+    },
+    "T_joint": 16219100000000.0,
+    "gap_tag": "corgi-gap=1.00e+00",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 402400,
+    "wall_s": 185.2,
+    "src": "build=single-pred; pareto=h100; ref=3350.0"
+  },
+  {
+    "cell_key": "llama1_13b__h100__bw128_cgm16_ref3350_B",
+    "workload": "llama1_13b",
+    "template": "h100",
+    "row": "B",
+    "operating_point": {
+      "bw_gbps": 128.0,
+      "cgm_mib": 16.0,
+      "traffic_bw_ref": 3350.0
+    },
+    "T_joint": 5803060000000.0,
+    "gap_tag": "corgi-gap=8.76e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 646000,
+    "wall_s": 133.7,
+    "src": "build=single-pred; pareto=h100; ref=3350.0"
+  },
+  {
+    "cell_key": "llama1_13b__h100__bw3350_cgm32_ref3350_B",
+    "workload": "llama1_13b",
+    "template": "h100",
+    "row": "B",
+    "operating_point": {
+      "bw_gbps": 3350.0,
+      "cgm_mib": 32.0,
+      "traffic_bw_ref": 3350.0
+    },
+    "T_joint": 53143000000000.0,
+    "gap_tag": "corgi-gap=1.00e+00",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 214800,
+    "wall_s": 140.5,
+    "src": "build=single-pred; pareto=h100; ref=3350.0"
+  },
+  {
+    "cell_key": "llama1_13b__rtx5090__bw256_cgm16_ref1792_B",
+    "workload": "llama1_13b",
+    "template": "rtx5090",
+    "row": "B",
+    "operating_point": {
+      "bw_gbps": 256.0,
+      "cgm_mib": 16.0,
+      "traffic_bw_ref": 1792.0
+    },
+    "T_joint": 604952000000.0,
+    "gap_tag": "corgi-status=done",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": null,
+    "wall_s": 131.3,
+    "src": "build=single-pred; pareto=rtx5090; ref=1792.0"
+  },
+  {
+    "cell_key": "llama1_13b__compact_npu__bw64_cgm8_ref64_joint",
+    "workload": "llama1_13b",
+    "template": "compact_npu",
+    "row": "joint",
+    "operating_point": {
+      "bw_gbps": 64.0,
+      "cgm_mib": 8,
+      "traffic_bw_ref": 64.0
+    },
+    "T_joint": 884199000000.0,
+    "gap_tag": "corgi-gap=8.49e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "compact_retry",
+    "iters": 310800,
+    "wall_s": 170.8,
+    "src": "build=single-pred; pareto=compact_npu; ref=64.0",
+    "T_naive": 18141786406914.0,
+    "naive_key": "naive_cache_sum_Tmax_c0 (native ref64, vetted)",
+    "speedup": 20.5178,
+    "compute_floor_best": 401122197569.0,
+    "sanity_pass": true,
+    "sanity_detail": {
+      "naive_ge_floor": true,
+      "speedup_ge_1": true
+    }
+  },
+  {
+    "cell_key": "sd15_unet__h100__bw3350_cgm50_ref3350_joint",
+    "workload": "sd15_unet",
+    "template": "h100",
+    "row": "joint",
+    "operating_point": {
+      "bw_gbps": 3350.0,
+      "cgm_mib": 50.0,
+      "traffic_bw_ref": 3350.0
+    },
+    "T_joint": 1063290000000.0,
+    "gap_tag": "corgi-gap=1.00e+00",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "dag-clean",
+    "cell_tag": "canonical",
+    "iters": 171200,
+    "wall_s": 67.9,
+    "src": "build=dag-clean; pareto=h100; ref=3350.0",
+    "T_naive": 9735341398.0,
+    "naive_key": "naive_cache_sum_Tmax_c0",
+    "speedup": 0.0092,
+    "compute_floor_best": 6733150449.0,
+    "sanity_pass": false,
+    "sanity_detail": {
+      "naive_ge_floor": true,
+      "speedup_ge_1": false
+    }
+  },
+  {
+    "cell_key": "efficientnet_b7__h100__bw3350_cgm50_ref3350_A",
+    "workload": "efficientnet_b7",
+    "template": "h100",
+    "row": "A",
+    "operating_point": {
+      "bw_gbps": 3350.0,
+      "cgm_mib": 50.0,
+      "traffic_bw_ref": 3350.0
+    },
+    "T_joint": 307131000000.0,
+    "gap_tag": "corgi-gap=1.00e+00",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "canonical",
+    "iters": 10400,
+    "wall_s": 29.2,
+    "src": "build=single-pred; pareto=h100; ref=3350.0"
+  },
+  {
+    "cell_key": "efficientnet_b7__rtx5090__bw1792_cgm98_ref1792_A",
+    "workload": "efficientnet_b7",
+    "template": "rtx5090",
+    "row": "A",
+    "operating_point": {
+      "bw_gbps": 1792.0,
+      "cgm_mib": 98.0,
+      "traffic_bw_ref": 1792.0
+    },
+    "T_joint": 94194300000.0,
+    "gap_tag": "corgi-gap=5.64e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "canonical",
+    "iters": 124200,
+    "wall_s": 29.8,
+    "src": "build=single-pred; pareto=rtx5090; ref=1792.0"
+  },
+  {
+    "cell_key": "sd15_unet__tpuv3__bw900_cgm32_ref900_B",
+    "workload": "sd15_unet",
+    "template": "tpuv3",
+    "row": "B",
+    "operating_point": {
+      "bw_gbps": 900.0,
+      "cgm_mib": 32.0,
+      "traffic_bw_ref": 900.0
+    },
+    "T_joint": 425723000000.0,
+    "gap_tag": "corgi-gap=9.66e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "dag-clean",
+    "cell_tag": "canonical",
+    "iters": 199200,
+    "wall_s": 60.7,
+    "src": "build=dag-clean; pareto=tpuv3; ref=900.0"
+  },
+  {
+    "cell_key": "deepseek_v3__rtx5090__bw1792_cgm98_ref1792_B",
+    "workload": "deepseek_v3",
+    "template": "rtx5090",
+    "row": "B",
+    "operating_point": {
+      "bw_gbps": 1792.0,
+      "cgm_mib": 98.0,
+      "traffic_bw_ref": 1792.0
+    },
+    "T_joint": 9966100000000.0,
+    "gap_tag": "corgi-gap=8.48e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "canonical",
+    "iters": 185800,
+    "wall_s": 297.8,
+    "src": "build=single-pred; pareto=rtx5090; ref=1792.0"
+  },
+  {
+    "cell_key": "deepseek_v3__rtx5090__bw128_cgm16_ref1792_joint",
+    "workload": "deepseek_v3",
+    "template": "rtx5090",
+    "row": "joint",
+    "operating_point": {
+      "bw_gbps": 128.0,
+      "cgm_mib": 16.0,
+      "traffic_bw_ref": 1792.0
+    },
+    "T_joint": 194945000000000.0,
+    "gap_tag": "corgi-gap=9.93e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 197400,
+    "wall_s": 347.3,
+    "src": "build=single-pred; pareto=rtx5090; ref=1792.0",
+    "T_naive": "compute-at-merge (non-native ladder bw)"
+  },
+  {
+    "cell_key": "llama3_70b__rtx5090__bw128_cgm16_ref1792_A",
+    "workload": "llama3_70b",
+    "template": "rtx5090",
+    "row": "A",
+    "operating_point": {
+      "bw_gbps": 128.0,
+      "cgm_mib": 16.0,
+      "traffic_bw_ref": 1792.0
+    },
+    "T_joint": 2608320000000.0,
+    "gap_tag": "corgi-status=done",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": null,
+    "wall_s": 44.0,
+    "src": "build=single-pred; pareto=rtx5090; ref=1792.0"
+  },
+  {
+    "cell_key": "llama1_13b__h100__bw256_cgm16_ref3350_B",
+    "workload": "llama1_13b",
+    "template": "h100",
+    "row": "B",
+    "operating_point": {
+      "bw_gbps": 256.0,
+      "cgm_mib": 16.0,
+      "traffic_bw_ref": 3350.0
+    },
+    "T_joint": 853838000000.0,
+    "gap_tag": "corgi-gap=3.66e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 349600,
+    "wall_s": 133.4,
+    "src": "build=single-pred; pareto=h100; ref=3350.0"
+  },
+  {
+    "cell_key": "llama3_70b__rtx5090__bw128_cgm16_ref1792_B",
+    "workload": "llama3_70b",
+    "template": "rtx5090",
+    "row": "B",
+    "operating_point": {
+      "bw_gbps": 128.0,
+      "cgm_mib": 16.0,
+      "traffic_bw_ref": 1792.0
+    },
+    "T_joint": 2589560000000.0,
+    "gap_tag": "corgi-gap=1.54e-02",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 644800,
+    "wall_s": 530.9,
+    "src": "build=single-pred; pareto=rtx5090; ref=1792.0"
+  },
+  {
+    "cell_key": "llama1_13b__compact_npu__bw64_cgm32_ref900_joint",
+    "workload": "llama1_13b",
+    "template": "compact_npu",
+    "row": "joint",
+    "operating_point": {
+      "bw_gbps": 64.0,
+      "cgm_mib": 32,
+      "traffic_bw_ref": 900.0
+    },
+    "T_joint": 691897000000.0,
+    "gap_tag": "corgi-gap=2.79e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "compact_retry",
+    "iters": 25400,
+    "wall_s": 176.8,
+    "src": "build=single-pred; pareto=compact_npu; ref=900.0",
+    "T_naive": 412101541911155.7,
+    "naive_key": "naive_lp_convention_c0 (ref900, package-continuity)",
+    "speedup": 595.6111,
+    "compute_floor_best": 401122197569.0,
+    "sanity_pass": true,
+    "sanity_detail": {
+      "naive_ge_floor": true,
+      "speedup_ge_1": true
+    }
+  },
+  {
+    "cell_key": "sd15_unet__rtx5090__bw1792_cgm98_ref1792_joint",
+    "workload": "sd15_unet",
+    "template": "rtx5090",
+    "row": "joint",
+    "operating_point": {
+      "bw_gbps": 1792.0,
+      "cgm_mib": 98.0,
+      "traffic_bw_ref": 1792.0
+    },
+    "T_joint": 1866980000000.0,
+    "gap_tag": "corgi-gap=1.00e+00",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "dag-clean",
+    "cell_tag": "canonical",
+    "iters": 199200,
+    "wall_s": 70.9,
+    "src": "build=dag-clean; pareto=rtx5090; ref=1792.0",
+    "T_naive": 10192332119.0,
+    "naive_key": "naive_cache_sum_Tmax_c0",
+    "speedup": 0.0055,
+    "compute_floor_best": 7590037564.0,
+    "sanity_pass": false,
+    "sanity_detail": {
+      "naive_ge_floor": true,
+      "speedup_ge_1": false
+    }
+  },
+  {
+    "cell_key": "llama1_13b__h100__bw3350_cgm50_ref3350_A",
+    "workload": "llama1_13b",
+    "template": "h100",
+    "row": "A",
+    "operating_point": {
+      "bw_gbps": 3350.0,
+      "cgm_mib": 50.0,
+      "traffic_bw_ref": 3350.0
+    },
+    "T_joint": 828826000000.0,
+    "gap_tag": "corgi-gap=1.00e+00",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "canonical",
+    "iters": 604400,
+    "wall_s": 70.8,
+    "src": "build=single-pred; pareto=h100; ref=3350.0"
+  },
+  {
+    "cell_key": "llama1_13b__rtx5090__bw1792_cgm98_ref1792_A",
+    "workload": "llama1_13b",
+    "template": "rtx5090",
+    "row": "A",
+    "operating_point": {
+      "bw_gbps": 1792.0,
+      "cgm_mib": 98.0,
+      "traffic_bw_ref": 1792.0
+    },
+    "T_joint": 587243000000.0,
+    "gap_tag": "corgi-gap=2.07e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "canonical",
+    "iters": 566200,
+    "wall_s": 80.6,
+    "src": "build=single-pred; pareto=rtx5090; ref=1792.0"
+  },
+  {
+    "cell_key": "deepseek_v3__h100__bw3350_cgm50_ref3350_B",
+    "workload": "deepseek_v3",
+    "template": "h100",
+    "row": "B",
+    "operating_point": {
+      "bw_gbps": 3350.0,
+      "cgm_mib": 50.0,
+      "traffic_bw_ref": 3350.0
+    },
+    "T_joint": 20511500000000.0,
+    "gap_tag": "corgi-gap=1.00e+00",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "canonical",
+    "iters": 196600,
+    "wall_s": 294.9,
+    "src": "build=single-pred; pareto=h100; ref=3350.0"
+  },
+  {
+    "cell_key": "efficientnet_b7__rtx5090__bw128_cgm16_ref1792_joint",
+    "workload": "efficientnet_b7",
+    "template": "rtx5090",
+    "row": "joint",
+    "operating_point": {
+      "bw_gbps": 128.0,
+      "cgm_mib": 16.0,
+      "traffic_bw_ref": 1792.0
+    },
+    "T_joint": 6202130000000.0,
+    "gap_tag": "corgi-gap=9.95e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 176000,
+    "wall_s": 50.6,
+    "src": "build=single-pred; pareto=rtx5090; ref=1792.0",
+    "T_naive": "compute-at-merge (non-native ladder bw)"
+  },
+  {
+    "cell_key": "deepseek_v3__rtx5090__bw256_cgm16_ref1792_joint",
+    "workload": "deepseek_v3",
+    "template": "rtx5090",
+    "row": "joint",
+    "operating_point": {
+      "bw_gbps": 256.0,
+      "cgm_mib": 16.0,
+      "traffic_bw_ref": 1792.0
+    },
+    "T_joint": 154859000000000.0,
+    "gap_tag": "corgi-gap=9.92e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 196600,
+    "wall_s": 351.7,
+    "src": "build=single-pred; pareto=rtx5090; ref=1792.0",
+    "T_naive": "compute-at-merge (non-native ladder bw)"
+  },
+  {
+    "cell_key": "deepseek_v3__rtx5090__bw1792_cgm32_ref1792_A",
+    "workload": "deepseek_v3",
+    "template": "rtx5090",
+    "row": "A",
+    "operating_point": {
+      "bw_gbps": 1792.0,
+      "cgm_mib": 32.0,
+      "traffic_bw_ref": 1792.0
+    },
+    "T_joint": 15236800000000.0,
+    "gap_tag": "corgi-gap=8.96e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 200000,
+    "wall_s": 88.6,
+    "src": "build=single-pred; pareto=rtx5090; ref=1792.0"
+  },
+  {
+    "cell_key": "efficientnet_b7__rtx5090__bw1792_cgm32_ref1792_B",
+    "workload": "efficientnet_b7",
+    "template": "rtx5090",
+    "row": "B",
+    "operating_point": {
+      "bw_gbps": 1792.0,
+      "cgm_mib": 32.0,
+      "traffic_bw_ref": 1792.0
+    },
+    "T_joint": 1246200000000.0,
+    "gap_tag": "corgi-gap=9.53e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 200000,
+    "wall_s": 40.8,
+    "src": "build=single-pred; pareto=rtx5090; ref=1792.0"
+  },
+  {
+    "cell_key": "sd15_unet__tpuv3__bw900_cgm32_ref900_joint",
+    "workload": "sd15_unet",
+    "template": "tpuv3",
+    "row": "joint",
+    "operating_point": {
+      "bw_gbps": 900.0,
+      "cgm_mib": 32.0,
+      "traffic_bw_ref": 900.0
+    },
+    "T_joint": 2776690000000.0,
+    "gap_tag": "corgi-gap=9.99e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "dag-clean",
+    "cell_tag": "canonical",
+    "iters": 196200,
+    "wall_s": 118.6,
+    "src": "build=dag-clean; pareto=tpuv3; ref=900.0",
+    "T_naive": 11859241889.0,
+    "naive_key": "naive_cache_sum_Tmax_c0",
+    "speedup": 0.0043,
+    "compute_floor_best": 7623643099.0,
+    "sanity_pass": false,
+    "sanity_detail": {
+      "naive_ge_floor": true,
+      "speedup_ge_1": false
+    }
+  },
+  {
+    "cell_key": "sd15_unet__tpuv3__bw900_cgm32_ref900_A",
+    "workload": "sd15_unet",
+    "template": "tpuv3",
+    "row": "A",
+    "operating_point": {
+      "bw_gbps": 900.0,
+      "cgm_mib": 32.0,
+      "traffic_bw_ref": 900.0
+    },
+    "T_joint": 23314200000.0,
+    "gap_tag": "corgi-gap=5.15e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "dag-clean",
+    "cell_tag": "canonical",
+    "iters": 200000,
+    "wall_s": 58.8,
+    "src": "build=dag-clean; pareto=tpuv3; ref=900.0"
+  },
+  {
+    "cell_key": "sd15_unet__compact_npu__bw64_cgm16_ref64_joint",
+    "workload": "sd15_unet",
+    "template": "compact_npu",
+    "row": "joint",
+    "operating_point": {
+      "bw_gbps": 64.0,
+      "cgm_mib": 16.0,
+      "traffic_bw_ref": 64.0
+    },
+    "T_joint": 33716600000.0,
+    "gap_tag": "corgi-gap=9.99e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "dag-clean",
+    "cell_tag": "sd_lowbw_showcase",
+    "iters": 194600,
+    "wall_s": 78.0,
+    "src": "build=dag-clean; pareto=compact_npu; ref=64.0",
+    "T_naive": 130045709738.125,
+    "naive_key": "naive_cache_sum_Tmax_c0 (native ref64, vetted)",
+    "speedup": 3.857,
+    "compute_floor_best": 4924838134.578125,
+    "sanity_pass": true,
+    "sanity_detail": {
+      "naive_ge_floor": true,
+      "speedup_ge_1": true
+    }
+  },
+  {
+    "cell_key": "sd15_unet__compact_npu__bw64_cgm16_ref900_joint",
+    "workload": "sd15_unet",
+    "template": "compact_npu",
+    "row": "joint",
+    "operating_point": {
+      "bw_gbps": 64.0,
+      "cgm_mib": 16.0,
+      "traffic_bw_ref": 900.0
+    },
+    "T_joint": 3430100000000.0,
+    "gap_tag": "corgi-gap=1.00e+00",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "dag-clean",
+    "cell_tag": "sd_lowbw_showcase",
+    "iters": 194400,
+    "wall_s": 99.3,
+    "src": "build=dag-clean; pareto=compact_npu; ref=900.0",
+    "T_naive": 2458672135902.125,
+    "naive_key": "naive_lp_convention_c0 (ref900, package-continuity)",
+    "speedup": 0.7168,
+    "compute_floor_best": 4924838134.578125,
+    "sanity_pass": false,
+    "sanity_detail": {
+      "naive_ge_floor": true,
+      "speedup_ge_1": false
+    }
+  },
+  {
+    "cell_key": "deepseek_v3__compact_npu__bw64_cgm16_ref900_joint",
+    "workload": "deepseek_v3",
+    "template": "compact_npu",
+    "row": "joint",
+    "operating_point": {
+      "bw_gbps": 64.0,
+      "cgm_mib": 16,
+      "traffic_bw_ref": 900.0
+    },
+    "T_joint": 182825000000000.0,
+    "gap_tag": "corgi-gap=1.00e+00",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "compact_retry",
+    "iters": 185000,
+    "wall_s": 358.2,
+    "src": "build=single-pred; pareto=compact_npu; ref=900.0",
+    "T_naive": 501159756575897.44,
+    "naive_key": "naive_lp_convention_c0 (ref900, package-continuity)",
+    "speedup": 2.7412,
+    "compute_floor_best": 982847586651.0,
+    "sanity_pass": true,
+    "sanity_detail": {
+      "naive_ge_floor": true,
+      "speedup_ge_1": true
+    }
+  },
+  {
+    "cell_key": "efficientnet_b7__tpuv3__bw900_cgm32_ref900_B",
+    "workload": "efficientnet_b7",
+    "template": "tpuv3",
+    "row": "B",
+    "operating_point": {
+      "bw_gbps": 900.0,
+      "cgm_mib": 32.0,
+      "traffic_bw_ref": 900.0
+    },
+    "T_joint": 798665000000.0,
+    "gap_tag": "corgi-gap=9.23e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "canonical",
+    "iters": 200000,
+    "wall_s": 44.6,
+    "src": "build=single-pred; pareto=tpuv3; ref=900.0"
+  },
+  {
+    "cell_key": "llama3_70b__h100__bw3350_cgm50_ref3350_B",
+    "workload": "llama3_70b",
+    "template": "h100",
+    "row": "B",
+    "operating_point": {
+      "bw_gbps": 3350.0,
+      "cgm_mib": 50.0,
+      "traffic_bw_ref": 3350.0
+    },
+    "T_joint": 26747600000000.0,
+    "gap_tag": "corgi-gap=1.00e+00",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "canonical",
+    "iters": 413200,
+    "wall_s": 529.0,
+    "src": "build=single-pred; pareto=h100; ref=3350.0"
+  },
+  {
+    "cell_key": "llama1_13b__h100__bw3350_cgm32_ref3350_joint",
+    "workload": "llama1_13b",
+    "template": "h100",
+    "row": "joint",
+    "operating_point": {
+      "bw_gbps": 3350.0,
+      "cgm_mib": 32.0,
+      "traffic_bw_ref": 3350.0
+    },
+    "T_joint": 9073010000000.0,
+    "gap_tag": "corgi-gap=1.00e+00",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 31000,
+    "wall_s": 159.8,
+    "src": "build=single-pred; pareto=h100; ref=3350.0",
+    "T_naive": 553362260040.0,
+    "naive_key": "naive_cache_sum_Tmax_c0",
+    "speedup": 0.061,
+    "compute_floor_best": 429912358986.0,
+    "sanity_pass": false,
+    "sanity_detail": {
+      "naive_ge_floor": true,
+      "speedup_ge_1": false
+    }
+  },
+  {
+    "cell_key": "llama3_70b__rtx5090__bw256_cgm16_ref1792_joint",
+    "workload": "llama3_70b",
+    "template": "rtx5090",
+    "row": "joint",
+    "operating_point": {
+      "bw_gbps": 256.0,
+      "cgm_mib": 16.0,
+      "traffic_bw_ref": 1792.0
+    },
+    "T_joint": 6316730000000.0,
+    "gap_tag": "corgi-gap=6.10e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 648600,
+    "wall_s": 639.5,
+    "src": "build=single-pred; pareto=rtx5090; ref=1792.0",
+    "T_naive": "compute-at-merge (non-native ladder bw)"
+  },
+  {
+    "cell_key": "llama1_13b__rtx5090__bw128_cgm16_ref1792_A",
+    "workload": "llama1_13b",
+    "template": "rtx5090",
+    "row": "A",
+    "operating_point": {
+      "bw_gbps": 128.0,
+      "cgm_mib": 16.0,
+      "traffic_bw_ref": 1792.0
+    },
+    "T_joint": 645705000000.0,
+    "gap_tag": "corgi-status=done",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": null,
+    "wall_s": 36.2,
+    "src": "build=single-pred; pareto=rtx5090; ref=1792.0"
+  },
+  {
+    "cell_key": "llama1_13b__rtx5090__bw1792_cgm32_ref1792_A",
+    "workload": "llama1_13b",
+    "template": "rtx5090",
+    "row": "A",
+    "operating_point": {
+      "bw_gbps": 1792.0,
+      "cgm_mib": 32.0,
+      "traffic_bw_ref": 1792.0
+    },
+    "T_joint": 610049000000.0,
+    "gap_tag": "corgi-gap=2.07e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 372000,
+    "wall_s": 84.3,
+    "src": "build=single-pred; pareto=rtx5090; ref=1792.0"
+  },
+  {
+    "cell_key": "efficientnet_b7__h100__bw256_cgm16_ref3350_B",
+    "workload": "efficientnet_b7",
+    "template": "h100",
+    "row": "B",
+    "operating_point": {
+      "bw_gbps": 256.0,
+      "cgm_mib": 16.0,
+      "traffic_bw_ref": 3350.0
+    },
+    "T_joint": 1072390000000.0,
+    "gap_tag": "corgi-gap=9.60e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 27600,
+    "wall_s": 46.0,
+    "src": "build=single-pred; pareto=h100; ref=3350.0"
+  },
+  {
+    "cell_key": "efficientnet_b7__rtx5090__bw128_cgm16_ref1792_B",
+    "workload": "efficientnet_b7",
+    "template": "rtx5090",
+    "row": "B",
+    "operating_point": {
+      "bw_gbps": 128.0,
+      "cgm_mib": 16.0,
+      "traffic_bw_ref": 1792.0
+    },
+    "T_joint": 716040000000.0,
+    "gap_tag": "corgi-gap=9.16e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 200000,
+    "wall_s": 45.3,
+    "src": "build=single-pred; pareto=rtx5090; ref=1792.0"
+  },
+  {
+    "cell_key": "deepseek_v3__compact_npu__bw64_cgm16_ref64_joint",
+    "workload": "deepseek_v3",
+    "template": "compact_npu",
+    "row": "joint",
+    "operating_point": {
+      "bw_gbps": 64.0,
+      "cgm_mib": 16,
+      "traffic_bw_ref": 64.0
+    },
+    "T_joint": 2980980000000.0,
+    "gap_tag": "corgi-gap=1.90e-02",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "compact_retry",
+    "iters": 93800,
+    "wall_s": 354.5,
+    "src": "build=single-pred; pareto=compact_npu; ref=64.0",
+    "T_naive": 23124862042276.0,
+    "naive_key": "naive_cache_sum_Tmax_c0 (native ref64, vetted)",
+    "speedup": 7.7575,
+    "compute_floor_best": 982847586651.0,
+    "sanity_pass": true,
+    "sanity_detail": {
+      "naive_ge_floor": true,
+      "speedup_ge_1": true
+    }
+  },
+  {
+    "cell_key": "sd15_unet__rtx5090__bw1792_cgm98_ref1792_A",
+    "workload": "sd15_unet",
+    "template": "rtx5090",
+    "row": "A",
+    "operating_point": {
+      "bw_gbps": 1792.0,
+      "cgm_mib": 98.0,
+      "traffic_bw_ref": 1792.0
+    },
+    "T_joint": 79030500000.0,
+    "gap_tag": "corgi-gap=9.02e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "dag-clean",
+    "cell_tag": "canonical",
+    "iters": 89000,
+    "wall_s": 39.3,
+    "src": "build=dag-clean; pareto=rtx5090; ref=1792.0"
+  },
+  {
+    "cell_key": "sd15_unet__h100__bw3350_cgm50_ref3350_B",
+    "workload": "sd15_unet",
+    "template": "h100",
+    "row": "B",
+    "operating_point": {
+      "bw_gbps": 3350.0,
+      "cgm_mib": 50.0,
+      "traffic_bw_ref": 3350.0
+    },
+    "T_joint": 946933000000.0,
+    "gap_tag": "corgi-gap=9.94e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "dag-clean",
+    "cell_tag": "canonical",
+    "iters": 200000,
+    "wall_s": 62.9,
+    "src": "build=dag-clean; pareto=h100; ref=3350.0"
+  },
+  {
+    "cell_key": "llama3_70b__h100__bw128_cgm16_ref3350_joint",
+    "workload": "llama3_70b",
+    "template": "h100",
+    "row": "joint",
+    "operating_point": {
+      "bw_gbps": 128.0,
+      "cgm_mib": 16.0,
+      "traffic_bw_ref": 3350.0
+    },
+    "T_joint": 64890400000000.0,
+    "gap_tag": "corgi-gap=9.67e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 629000,
+    "wall_s": 629.6,
+    "src": "build=single-pred; pareto=h100; ref=3350.0",
+    "T_naive": "compute-at-merge (non-native ladder bw)"
+  },
+  {
+    "cell_key": "llama3_70b__rtx5090__bw1792_cgm32_ref1792_joint",
+    "workload": "llama3_70b",
+    "template": "rtx5090",
+    "row": "joint",
+    "operating_point": {
+      "bw_gbps": 1792.0,
+      "cgm_mib": 32.0,
+      "traffic_bw_ref": 1792.0
+    },
+    "T_joint": 499693000000000.0,
+    "gap_tag": "corgi-gap=9.99e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 222600,
+    "wall_s": 616.4,
+    "src": "build=single-pred; pareto=rtx5090; ref=1792.0",
+    "T_naive": 2009528692202.0,
+    "naive_key": "naive_cache_sum_Tmax_c0",
+    "speedup": 0.004,
+    "compute_floor_best": 1869987774467.0,
+    "sanity_pass": false,
+    "sanity_detail": {
+      "naive_ge_floor": true,
+      "speedup_ge_1": false
+    }
+  },
+  {
+    "cell_key": "llama3_70b__rtx5090__bw1792_cgm32_ref1792_A",
+    "workload": "llama3_70b",
+    "template": "rtx5090",
+    "row": "A",
+    "operating_point": {
+      "bw_gbps": 1792.0,
+      "cgm_mib": 32.0,
+      "traffic_bw_ref": 1792.0
+    },
+    "T_joint": 2003920000000.0,
+    "gap_tag": "corgi-gap=4.32e-02",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 650000,
+    "wall_s": 163.7,
+    "src": "build=single-pred; pareto=rtx5090; ref=1792.0"
+  },
+  {
+    "cell_key": "efficientnet_b7__h100__bw3350_cgm50_ref3350_joint",
+    "workload": "efficientnet_b7",
+    "template": "h100",
+    "row": "joint",
+    "operating_point": {
+      "bw_gbps": 3350.0,
+      "cgm_mib": 50.0,
+      "traffic_bw_ref": 3350.0
+    },
+    "T_joint": 260523000000.0,
+    "gap_tag": "corgi-gap=9.97e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "canonical",
+    "iters": 186600,
+    "wall_s": 54.1,
+    "src": "build=single-pred; pareto=h100; ref=3350.0",
+    "T_naive": 67613963149.0,
+    "naive_key": "naive_cache_sum_Tmax_c0",
+    "speedup": 0.2595,
+    "compute_floor_best": 30383142892.5,
+    "sanity_pass": false,
+    "sanity_detail": {
+      "naive_ge_floor": true,
+      "speedup_ge_1": false
+    }
+  },
+  {
+    "cell_key": "llama3_70b__h100__bw3350_cgm50_ref3350_joint",
+    "workload": "llama3_70b",
+    "template": "h100",
+    "row": "joint",
+    "operating_point": {
+      "bw_gbps": 3350.0,
+      "cgm_mib": 50.0,
+      "traffic_bw_ref": 3350.0
+    },
+    "T_joint": 19262900000000.0,
+    "gap_tag": "corgi-gap=9.95e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "canonical",
+    "iters": 422600,
+    "wall_s": 635.1,
+    "src": "build=single-pred; pareto=h100; ref=3350.0",
+    "T_naive": 1989865635840.0,
+    "naive_key": "naive_cache_sum_Tmax_c0",
+    "speedup": 0.1033,
+    "compute_floor_best": 1856636780545.0,
+    "sanity_pass": false,
+    "sanity_detail": {
+      "naive_ge_floor": true,
+      "speedup_ge_1": false
+    }
+  },
+  {
+    "cell_key": "llama1_13b__h100__bw3350_cgm50_ref3350_B",
+    "workload": "llama1_13b",
+    "template": "h100",
+    "row": "B",
+    "operating_point": {
+      "bw_gbps": 3350.0,
+      "cgm_mib": 50.0,
+      "traffic_bw_ref": 3350.0
+    },
+    "T_joint": 52938800000000.0,
+    "gap_tag": "corgi-gap=1.00e+00",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "canonical",
+    "iters": 641400,
+    "wall_s": 141.2,
+    "src": "build=single-pred; pareto=h100; ref=3350.0"
+  },
+  {
+    "cell_key": "sd15_unet__rtx5090__bw1792_cgm98_ref1792_B",
+    "workload": "sd15_unet",
+    "template": "rtx5090",
+    "row": "B",
+    "operating_point": {
+      "bw_gbps": 1792.0,
+      "cgm_mib": 98.0,
+      "traffic_bw_ref": 1792.0
+    },
+    "T_joint": 818001000000.0,
+    "gap_tag": "corgi-gap=1.00e+00",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "dag-clean",
+    "cell_tag": "canonical",
+    "iters": 166400,
+    "wall_s": 64.9,
+    "src": "build=dag-clean; pareto=rtx5090; ref=1792.0"
+  },
+  {
+    "cell_key": "deepseek_v3__h100__bw256_cgm16_ref3350_joint",
+    "workload": "deepseek_v3",
+    "template": "h100",
+    "row": "joint",
+    "operating_point": {
+      "bw_gbps": 256.0,
+      "cgm_mib": 16.0,
+      "traffic_bw_ref": 3350.0
+    },
+    "T_joint": 210266000000000.0,
+    "gap_tag": "corgi-gap=9.99e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 117400,
+    "wall_s": 352.7,
+    "src": "build=single-pred; pareto=h100; ref=3350.0",
+    "T_naive": "compute-at-merge (non-native ladder bw)"
+  },
+  {
+    "cell_key": "llama1_13b__h100__bw256_cgm16_ref3350_A",
+    "workload": "llama1_13b",
+    "template": "h100",
+    "row": "A",
+    "operating_point": {
+      "bw_gbps": 256.0,
+      "cgm_mib": 16.0,
+      "traffic_bw_ref": 3350.0
+    },
+    "T_joint": 613379000000.0,
+    "gap_tag": "corgi-gap=2.25e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 645600,
+    "wall_s": 79.3,
+    "src": "build=single-pred; pareto=h100; ref=3350.0"
+  },
+  {
+    "cell_key": "deepseek_v3__h100__bw3350_cgm32_ref3350_A",
+    "workload": "deepseek_v3",
+    "template": "h100",
+    "row": "A",
+    "operating_point": {
+      "bw_gbps": 3350.0,
+      "cgm_mib": 32.0,
+      "traffic_bw_ref": 3350.0
+    },
+    "T_joint": 15040800000000.0,
+    "gap_tag": "corgi-gap=1.00e+00",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 88400,
+    "wall_s": 88.1,
+    "src": "build=single-pred; pareto=h100; ref=3350.0"
+  },
+  {
+    "cell_key": "llama3_70b__h100__bw256_cgm16_ref3350_B",
+    "workload": "llama3_70b",
+    "template": "h100",
+    "row": "B",
+    "operating_point": {
+      "bw_gbps": 256.0,
+      "cgm_mib": 16.0,
+      "traffic_bw_ref": 3350.0
+    },
+    "T_joint": 73167900000000.0,
+    "gap_tag": "corgi-gap=1.00e+00",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 6000,
+    "wall_s": 518.2,
+    "src": "build=single-pred; pareto=h100; ref=3350.0"
+  },
+  {
+    "cell_key": "llama3_70b__compact_npu__bw64_cgm16_ref64_joint",
+    "workload": "llama3_70b",
+    "template": "compact_npu",
+    "row": "joint",
+    "operating_point": {
+      "bw_gbps": 64.0,
+      "cgm_mib": 16.0,
+      "traffic_bw_ref": 64.0
+    },
+    "T_joint": 7215760000000.0,
+    "gap_tag": "corgi-gap=2.82e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "compact_vetted",
+    "iters": 404000,
+    "wall_s": 1004.5,
+    "src": "build=single-pred; pareto=compact_npu; ref=64.0",
+    "T_naive": 48882271649863.0,
+    "naive_key": "naive_cache_sum_Tmax_c0 (native ref64, vetted)",
+    "speedup": 6.7744,
+    "compute_floor_best": 2107882078208.0,
+    "sanity_pass": true,
+    "sanity_detail": {
+      "naive_ge_floor": true,
+      "speedup_ge_1": true
+    }
+  },
+  {
+    "cell_key": "efficientnet_b7__compact_npu__bw64_cgm16_ref64_joint",
+    "workload": "efficientnet_b7",
+    "template": "compact_npu",
+    "row": "joint",
+    "operating_point": {
+      "bw_gbps": 64.0,
+      "cgm_mib": 16.0,
+      "traffic_bw_ref": 64.0
+    },
+    "T_joint": 35553100000.0,
+    "gap_tag": "corgi-gap=2.01e-02",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "compact_vetted",
+    "iters": 52400,
+    "wall_s": 83.3,
+    "src": "build=single-pred; pareto=compact_npu; ref=64.0",
+    "T_naive": 711506063267.0,
+    "naive_key": "naive_cache_sum_Tmax_c0 (native ref64, vetted)",
+    "speedup": 20.0125,
+    "compute_floor_best": 34196339598.0,
+    "sanity_pass": true,
+    "sanity_detail": {
+      "naive_ge_floor": true,
+      "speedup_ge_1": true
+    }
+  },
+  {
+    "cell_key": "efficientnet_b7__compact_npu__bw64_cgm16_ref900_joint",
+    "workload": "efficientnet_b7",
+    "template": "compact_npu",
+    "row": "joint",
+    "operating_point": {
+      "bw_gbps": 64.0,
+      "cgm_mib": 16.0,
+      "traffic_bw_ref": 900.0
+    },
+    "T_joint": 106822000000.0,
+    "gap_tag": "corgi-gap=4.91e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "compact_continuity",
+    "iters": 199600,
+    "wall_s": 82.1,
+    "src": "build=single-pred; pareto=compact_npu; ref=900.0",
+    "T_naive": 16455955800206.562,
+    "naive_key": "naive_lp_convention_c0 (ref900, package-continuity)",
+    "speedup": 154.0502,
+    "compute_floor_best": 34196339598.0,
+    "sanity_pass": true,
+    "sanity_detail": {
+      "naive_ge_floor": true,
+      "speedup_ge_1": true
+    }
+  },
+  {
+    "cell_key": "efficientnet_b7__tpuv3__bw900_cgm32_ref900_joint",
+    "workload": "efficientnet_b7",
+    "template": "tpuv3",
+    "row": "joint",
+    "operating_point": {
+      "bw_gbps": 900.0,
+      "cgm_mib": 32.0,
+      "traffic_bw_ref": 900.0
+    },
+    "T_joint": 2782040000000.0,
+    "gap_tag": "corgi-gap=9.84e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "canonical",
+    "iters": 200000,
+    "wall_s": 54.5,
+    "src": "build=single-pred; pareto=tpuv3; ref=900.0",
+    "T_naive": 71054952340.0,
+    "naive_key": "naive_cache_sum_Tmax_c0",
+    "speedup": 0.0255,
+    "compute_floor_best": 32112738155.0,
+    "sanity_pass": false,
+    "sanity_detail": {
+      "naive_ge_floor": true,
+      "speedup_ge_1": false
+    }
+  },
+  {
+    "cell_key": "llama1_13b__h100__bw3350_cgm50_ref3350_joint",
+    "workload": "llama1_13b",
+    "template": "h100",
+    "row": "joint",
+    "operating_point": {
+      "bw_gbps": 3350.0,
+      "cgm_mib": 50.0,
+      "traffic_bw_ref": 3350.0
+    },
+    "T_joint": 10912500000000.0,
+    "gap_tag": "corgi-gap=1.00e+00",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "canonical",
+    "iters": 54800,
+    "wall_s": 166.2,
+    "src": "build=single-pred; pareto=h100; ref=3350.0",
+    "T_naive": 553362260040.0,
+    "naive_key": "naive_cache_sum_Tmax_c0",
+    "speedup": 0.0507,
+    "compute_floor_best": 429912358986.0,
+    "sanity_pass": false,
+    "sanity_detail": {
+      "naive_ge_floor": true,
+      "speedup_ge_1": false
+    }
+  },
+  {
+    "cell_key": "sd15_unet__h100__bw3350_cgm50_ref3350_A",
+    "workload": "sd15_unet",
+    "template": "h100",
+    "row": "A",
+    "operating_point": {
+      "bw_gbps": 3350.0,
+      "cgm_mib": 50.0,
+      "traffic_bw_ref": 3350.0
+    },
+    "T_joint": 81920100000.0,
+    "gap_tag": "corgi-gap=9.35e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "dag-clean",
+    "cell_tag": "canonical",
+    "iters": 67800,
+    "wall_s": 37.1,
+    "src": "build=dag-clean; pareto=h100; ref=3350.0"
+  },
+  {
+    "cell_key": "efficientnet_b7__h100__bw3350_cgm50_ref3350_B",
+    "workload": "efficientnet_b7",
+    "template": "h100",
+    "row": "B",
+    "operating_point": {
+      "bw_gbps": 3350.0,
+      "cgm_mib": 50.0,
+      "traffic_bw_ref": 3350.0
+    },
+    "T_joint": 2395920000000.0,
+    "gap_tag": "corgi-gap=9.93e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "canonical",
+    "iters": 48400,
+    "wall_s": 44.2,
+    "src": "build=single-pred; pareto=h100; ref=3350.0"
+  },
+  {
+    "cell_key": "llama3_70b__rtx5090__bw1792_cgm98_ref1792_B",
+    "workload": "llama3_70b",
+    "template": "rtx5090",
+    "row": "B",
+    "operating_point": {
+      "bw_gbps": 1792.0,
+      "cgm_mib": 98.0,
+      "traffic_bw_ref": 1792.0
+    },
+    "T_joint": 41564700000000.0,
+    "gap_tag": "corgi-gap=1.00e+00",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "canonical",
+    "iters": 3600,
+    "wall_s": 520.9,
+    "src": "build=single-pred; pareto=rtx5090; ref=1792.0"
+  },
+  {
+    "cell_key": "llama3_70b__h100__bw3350_cgm32_ref3350_joint",
+    "workload": "llama3_70b",
+    "template": "h100",
+    "row": "joint",
+    "operating_point": {
+      "bw_gbps": 3350.0,
+      "cgm_mib": 32.0,
+      "traffic_bw_ref": 3350.0
+    },
+    "T_joint": 110241000000000.0,
+    "gap_tag": "corgi-gap=9.96e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 621200,
+    "wall_s": 690.4,
+    "src": "build=single-pred; pareto=h100; ref=3350.0",
+    "T_naive": 1989865635840.0,
+    "naive_key": "naive_cache_sum_Tmax_c0",
+    "speedup": 0.0181,
+    "compute_floor_best": 1856636780545.0,
+    "sanity_pass": false,
+    "sanity_detail": {
+      "naive_ge_floor": true,
+      "speedup_ge_1": false
+    }
+  },
+  {
+    "cell_key": "efficientnet_b7__h100__bw256_cgm16_ref3350_A",
+    "workload": "efficientnet_b7",
+    "template": "h100",
+    "row": "A",
+    "operating_point": {
+      "bw_gbps": 256.0,
+      "cgm_mib": 16.0,
+      "traffic_bw_ref": 3350.0
+    },
+    "T_joint": 99975500000.0,
+    "gap_tag": "corgi-gap=6.22e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 56400,
+    "wall_s": 29.4,
+    "src": "build=single-pred; pareto=h100; ref=3350.0"
+  },
+  {
+    "cell_key": "llama1_13b__h100__bw3350_cgm32_ref3350_A",
+    "workload": "llama1_13b",
+    "template": "h100",
+    "row": "A",
+    "operating_point": {
+      "bw_gbps": 3350.0,
+      "cgm_mib": 32.0,
+      "traffic_bw_ref": 3350.0
+    },
+    "T_joint": 1239870000000.0,
+    "gap_tag": "corgi-gap=1.00e+00",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 186800,
+    "wall_s": 73.2,
+    "src": "build=single-pred; pareto=h100; ref=3350.0"
+  },
+  {
+    "cell_key": "deepseek_v3__rtx5090__bw128_cgm16_ref1792_A",
+    "workload": "deepseek_v3",
+    "template": "rtx5090",
+    "row": "A",
+    "operating_point": {
+      "bw_gbps": 128.0,
+      "cgm_mib": 16.0,
+      "traffic_bw_ref": 1792.0
+    },
+    "T_joint": 1068370000000.0,
+    "gap_tag": "corgi-gap=2.62e-02",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 25200,
+    "wall_s": 89.3,
+    "src": "build=single-pred; pareto=rtx5090; ref=1792.0"
+  },
+  {
+    "cell_key": "deepseek_v3__h100__bw3350_cgm50_ref3350_joint",
+    "workload": "deepseek_v3",
+    "template": "h100",
+    "row": "joint",
+    "operating_point": {
+      "bw_gbps": 3350.0,
+      "cgm_mib": 50.0,
+      "traffic_bw_ref": 3350.0
+    },
+    "T_joint": 59535900000000.0,
+    "gap_tag": "corgi-gap=1.00e+00",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "canonical",
+    "iters": 23800,
+    "wall_s": 356.7,
+    "src": "build=single-pred; pareto=h100; ref=3350.0",
+    "T_naive": 1258798698513.0,
+    "naive_key": "naive_cache_sum_Tmax_c0",
+    "speedup": 0.0211,
+    "compute_floor_best": 916385956161.0,
+    "sanity_pass": false,
+    "sanity_detail": {
+      "naive_ge_floor": true,
+      "speedup_ge_1": false
+    }
+  },
+  {
+    "cell_key": "deepseek_v3__h100__bw128_cgm16_ref3350_joint",
+    "workload": "deepseek_v3",
+    "template": "h100",
+    "row": "joint",
+    "operating_point": {
+      "bw_gbps": 128.0,
+      "cgm_mib": 16.0,
+      "traffic_bw_ref": 3350.0
+    },
+    "T_joint": 393496000000000.0,
+    "gap_tag": "corgi-gap=9.99e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 196400,
+    "wall_s": 350.1,
+    "src": "build=single-pred; pareto=h100; ref=3350.0",
+    "T_naive": "compute-at-merge (non-native ladder bw)"
+  },
+  {
+    "cell_key": "llama3_70b__h100__bw128_cgm16_ref3350_A",
+    "workload": "llama3_70b",
+    "template": "h100",
+    "row": "A",
+    "operating_point": {
+      "bw_gbps": 128.0,
+      "cgm_mib": 16.0,
+      "traffic_bw_ref": 3350.0
+    },
+    "T_joint": 47543000000000.0,
+    "gap_tag": "corgi-gap=9.51e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 617600,
+    "wall_s": 141.3,
+    "src": "build=single-pred; pareto=h100; ref=3350.0"
+  },
+  {
+    "cell_key": "efficientnet_b7__rtx5090__bw256_cgm16_ref1792_A",
+    "workload": "efficientnet_b7",
+    "template": "rtx5090",
+    "row": "A",
+    "operating_point": {
+      "bw_gbps": 256.0,
+      "cgm_mib": 16.0,
+      "traffic_bw_ref": 1792.0
+    },
+    "T_joint": 103095000000.0,
+    "gap_tag": "corgi-gap=5.36e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 176800,
+    "wall_s": 28.8,
+    "src": "build=single-pred; pareto=rtx5090; ref=1792.0"
+  },
+  {
+    "cell_key": "efficientnet_b7__rtx5090__bw1792_cgm32_ref1792_A",
+    "workload": "efficientnet_b7",
+    "template": "rtx5090",
+    "row": "A",
+    "operating_point": {
+      "bw_gbps": 1792.0,
+      "cgm_mib": 32.0,
+      "traffic_bw_ref": 1792.0
+    },
+    "T_joint": 94194200000.0,
+    "gap_tag": "corgi-gap=5.93e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 124200,
+    "wall_s": 28.6,
+    "src": "build=single-pred; pareto=rtx5090; ref=1792.0"
+  },
+  {
+    "cell_key": "deepseek_v3__h100__bw128_cgm16_ref3350_B",
+    "workload": "deepseek_v3",
+    "template": "h100",
+    "row": "B",
+    "operating_point": {
+      "bw_gbps": 128.0,
+      "cgm_mib": 16.0,
+      "traffic_bw_ref": 3350.0
+    },
+    "T_joint": 4353720000000.0,
+    "gap_tag": "corgi-gap=1.00e+00",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 20200,
+    "wall_s": 401.5,
+    "src": "build=single-pred; pareto=h100; ref=3350.0"
+  },
+  {
+    "cell_key": "deepseek_v3__rtx5090__bw1792_cgm32_ref1792_B",
+    "workload": "deepseek_v3",
+    "template": "rtx5090",
+    "row": "B",
+    "operating_point": {
+      "bw_gbps": 1792.0,
+      "cgm_mib": 32.0,
+      "traffic_bw_ref": 1792.0
+    },
+    "T_joint": 10328400000000.0,
+    "gap_tag": "corgi-gap=8.58e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 198000,
+    "wall_s": 567.9,
+    "src": "build=single-pred; pareto=rtx5090; ref=1792.0"
+  },
+  {
+    "cell_key": "deepseek_v3__compact_npu__bw64_cgm8_ref900_joint",
+    "workload": "deepseek_v3",
+    "template": "compact_npu",
+    "row": "joint",
+    "operating_point": {
+      "bw_gbps": 64.0,
+      "cgm_mib": 8,
+      "traffic_bw_ref": 900.0
+    },
+    "T_joint": 422108000000000.0,
+    "gap_tag": "corgi-gap=1.00e+00",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "compact_retry",
+    "iters": 36200,
+    "wall_s": 355.5,
+    "src": "build=single-pred; pareto=compact_npu; ref=900.0",
+    "T_naive": 501159756575897.44,
+    "naive_key": "naive_lp_convention_c0 (ref900, package-continuity)",
+    "speedup": 1.1873,
+    "compute_floor_best": 982847586651.0,
+    "sanity_pass": true,
+    "sanity_detail": {
+      "naive_ge_floor": true,
+      "speedup_ge_1": true
+    }
+  },
+  {
+    "cell_key": "deepseek_v3__rtx5090__bw1792_cgm98_ref1792_A",
+    "workload": "deepseek_v3",
+    "template": "rtx5090",
+    "row": "A",
+    "operating_point": {
+      "bw_gbps": 1792.0,
+      "cgm_mib": 98.0,
+      "traffic_bw_ref": 1792.0
+    },
+    "T_joint": 15854500000000.0,
+    "gap_tag": "corgi-gap=9.00e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "canonical",
+    "iters": 200000,
+    "wall_s": 88.5,
+    "src": "build=single-pred; pareto=rtx5090; ref=1792.0"
+  },
+  {
+    "cell_key": "efficientnet_b7__h100__bw3350_cgm32_ref3350_joint",
+    "workload": "efficientnet_b7",
+    "template": "h100",
+    "row": "joint",
+    "operating_point": {
+      "bw_gbps": 3350.0,
+      "cgm_mib": 32.0,
+      "traffic_bw_ref": 3350.0
+    },
+    "T_joint": 259469000000.0,
+    "gap_tag": "corgi-gap=1.00e+00",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 185200,
+    "wall_s": 50.4,
+    "src": "build=single-pred; pareto=h100; ref=3350.0",
+    "T_naive": 67613963149.0,
+    "naive_key": "naive_cache_sum_Tmax_c0",
+    "speedup": 0.2606,
+    "compute_floor_best": 30383142892.5,
+    "sanity_pass": false,
+    "sanity_detail": {
+      "naive_ge_floor": true,
+      "speedup_ge_1": false
+    }
+  },
+  {
+    "cell_key": "llama1_13b__rtx5090__bw256_cgm16_ref1792_joint",
+    "workload": "llama1_13b",
+    "template": "rtx5090",
+    "row": "joint",
+    "operating_point": {
+      "bw_gbps": 256.0,
+      "cgm_mib": 16.0,
+      "traffic_bw_ref": 1792.0
+    },
+    "T_joint": 3893170000000.0,
+    "gap_tag": "corgi-gap=1.00e+00",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 221800,
+    "wall_s": 167.9,
+    "src": "build=single-pred; pareto=rtx5090; ref=1792.0",
+    "T_naive": "compute-at-merge (non-native ladder bw)"
+  },
+  {
+    "cell_key": "efficientnet_b7__h100__bw128_cgm16_ref3350_A",
+    "workload": "efficientnet_b7",
+    "template": "h100",
+    "row": "A",
+    "operating_point": {
+      "bw_gbps": 128.0,
+      "cgm_mib": 16.0,
+      "traffic_bw_ref": 3350.0
+    },
+    "T_joint": 36184400000.0,
+    "gap_tag": "corgi-gap=3.03e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 84000,
+    "wall_s": 29.7,
+    "src": "build=single-pred; pareto=h100; ref=3350.0"
+  },
+  {
+    "cell_key": "llama1_13b__h100__bw128_cgm16_ref3350_A",
+    "workload": "llama1_13b",
+    "template": "h100",
+    "row": "A",
+    "operating_point": {
+      "bw_gbps": 128.0,
+      "cgm_mib": 16.0,
+      "traffic_bw_ref": 3350.0
+    },
+    "T_joint": 431721000000.0,
+    "gap_tag": "corgi-status=done",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": null,
+    "wall_s": 59.7,
+    "src": "build=single-pred; pareto=h100; ref=3350.0"
+  },
+  {
+    "cell_key": "efficientnet_b7__h100__bw3350_cgm32_ref3350_A",
+    "workload": "efficientnet_b7",
+    "template": "h100",
+    "row": "A",
+    "operating_point": {
+      "bw_gbps": 3350.0,
+      "cgm_mib": 32.0,
+      "traffic_bw_ref": 3350.0
+    },
+    "T_joint": 307131000000.0,
+    "gap_tag": "corgi-gap=1.00e+00",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 10400,
+    "wall_s": 28.6,
+    "src": "build=single-pred; pareto=h100; ref=3350.0"
+  },
+  {
+    "cell_key": "efficientnet_b7__rtx5090__bw128_cgm16_ref1792_A",
+    "workload": "efficientnet_b7",
+    "template": "rtx5090",
+    "row": "A",
+    "operating_point": {
+      "bw_gbps": 128.0,
+      "cgm_mib": 16.0,
+      "traffic_bw_ref": 1792.0
+    },
+    "T_joint": 45153800000.0,
+    "gap_tag": "corgi-gap=1.10e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 200000,
+    "wall_s": 29.9,
+    "src": "build=single-pred; pareto=rtx5090; ref=1792.0"
+  },
+  {
+    "cell_key": "llama1_13b__rtx5090__bw256_cgm16_ref1792_A",
+    "workload": "llama1_13b",
+    "template": "rtx5090",
+    "row": "A",
+    "operating_point": {
+      "bw_gbps": 256.0,
+      "cgm_mib": 16.0,
+      "traffic_bw_ref": 1792.0
+    },
+    "T_joint": 611934000000.0,
+    "gap_tag": "corgi-gap=1.54e-02",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 205200,
+    "wall_s": 76.6,
+    "src": "build=single-pred; pareto=rtx5090; ref=1792.0"
+  },
+  {
+    "cell_key": "llama3_70b__h100__bw128_cgm16_ref3350_B",
+    "workload": "llama3_70b",
+    "template": "h100",
+    "row": "B",
+    "operating_point": {
+      "bw_gbps": 128.0,
+      "cgm_mib": 16.0,
+      "traffic_bw_ref": 3350.0
+    },
+    "T_joint": 25651100000000.0,
+    "gap_tag": "corgi-gap=9.53e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 565200,
+    "wall_s": 516.2,
+    "src": "build=single-pred; pareto=h100; ref=3350.0"
+  },
+  {
+    "cell_key": "deepseek_v3__rtx5090__bw256_cgm16_ref1792_B",
+    "workload": "deepseek_v3",
+    "template": "rtx5090",
+    "row": "B",
+    "operating_point": {
+      "bw_gbps": 256.0,
+      "cgm_mib": 16.0,
+      "traffic_bw_ref": 1792.0
+    },
+    "T_joint": 4828680000000.0,
+    "gap_tag": "corgi-gap=6.79e-01",
+    "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+    "convention_tag": "single-pred",
+    "cell_tag": "ladder",
+    "iters": 200000,
+    "wall_s": 298.1,
+    "src": "build=single-pred; pareto=rtx5090; ref=1792.0"
+  }
+]

@@ -1,0 +1,33 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "workload": "deepseek_v3",
+      "groups": 4,
+      "exact_total": 1,
+      "display_percent_total": 100
+    },
+    {
+      "workload": "llama1_13b",
+      "groups": 4,
+      "exact_total": 1,
+      "display_percent_total": 100
+    },
+    {
+      "workload": "llama1_65b",
+      "groups": 4,
+      "exact_total": 1,
+      "display_percent_total": 100
+    },
+    {
+      "workload": "llama3_70b",
+      "groups": 4,
+      "exact_total": 1,
+      "display_percent_total": 100
+    }
+  ],
+  "figure2_unchanged": true,
+  "new_control_arithmetic_checked": true,
+  "plot_values_sha256": "f24b6fd0d64d7721d7e9269118a7c88e5199b696bf3d5cfbf1f314a87e59acee",
+  "scope": "Figure arithmetic and hashes, not a fresh source admission or physical validation."
+}

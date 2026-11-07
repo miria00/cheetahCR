@@ -1,0 +1,202 @@
+{
+  "actual_OCS_calls": 0,
+  "all_controls_source_replayed": true,
+  "all_old_modes_retained": true,
+  "context2_incremental_saving_ns": "67603078208872/23549",
+  "controls": {
+    "context2_off_prefetch_retained": {
+      "allowed_modes": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "attention_ns": "546549948107314/23549",
+      "complete_attention_action_traffic": {
+        "attention_scores": {
+          "DRAM_bytes": 218077051224064,
+          "additional_context_output_local_bytes": 0,
+          "issued_MAC_slots": 856520631779328,
+          "local_bytes": 559407707455488,
+          "useful_MAC": 106684370386944
+        },
+        "attention_values": {
+          "DRAM_bytes": 145032748990464,
+          "additional_context_output_local_bytes": 0,
+          "issued_MAC_slots": 571013754519552,
+          "local_bytes": 397273214746624,
+          "useful_MAC": 71122913591296
+        }
+      },
+      "path": "update/paper_evidence_20261106/figure3_pies_v1/replays/deepseek/A384_L65536_V16384_H16_B1K/context2_off_prefetch_retained/result.json",
+      "sha256": "eed3d514981f5b9dd22316e863b885edefa82cbc6b0c1387bd37cf4edb34a5cd"
+    },
+    "producer0_delivery0": {
+      "allowed_modes": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "attention_ns": "609853182678504/23549",
+      "complete_attention_action_traffic": {
+        "attention_scores": {
+          "DRAM_bytes": 218227492519936,
+          "additional_context_output_local_bytes": 0,
+          "issued_MAC_slots": 856520631779328,
+          "local_bytes": 553574269452288,
+          "useful_MAC": 106684370386944
+        },
+        "attention_values": {
+          "DRAM_bytes": 147251374325760,
+          "additional_context_output_local_bytes": 0,
+          "issued_MAC_slots": 571013754519552,
+          "local_bytes": 423928444485632,
+          "useful_MAC": 71122913591296
+        }
+      },
+      "path": "update/paper_evidence_20261106/figure3_pies_v1/replays/deepseek/A384_L65536_V16384_H16_B1K/producer0_delivery0/result.json",
+      "sha256": "d48207b8cffa81555fa3fcc0541dbf27fb3977a595235f3f99b159925519cf03"
+    },
+    "producer0_delivery1": {
+      "allowed_modes": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        10,
+        11
+      ],
+      "attention_ns": "510705141875136/23549",
+      "complete_attention_action_traffic": {
+        "attention_scores": {
+          "DRAM_bytes": 216473575358464,
+          "additional_context_output_local_bytes": 2224382017536,
+          "issued_MAC_slots": 856520631779328,
+          "local_bytes": 564820715765760,
+          "useful_MAC": 106684370386944
+        },
+        "attention_values": {
+          "DRAM_bytes": 147251374325760,
+          "additional_context_output_local_bytes": 65370324992,
+          "issued_MAC_slots": 571013754519552,
+          "local_bytes": 423993814810624,
+          "useful_MAC": 71122913591296
+        }
+      },
+      "path": "update/paper_evidence_20261106/figure3_pies_v1/replays/deepseek/A384_L65536_V16384_H16_B1K/producer0_delivery1/result.json",
+      "sha256": "8e66023249c27707401edceda00ed65b744227ba44ff79ac7d6674eb62f4563c"
+    },
+    "producer1_delivery0": {
+      "allowed_modes": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        8
+      ],
+      "attention_ns": "578094910701810/23549",
+      "complete_attention_action_traffic": {
+        "attention_scores": {
+          "DRAM_bytes": 218227492519936,
+          "additional_context_output_local_bytes": 0,
+          "issued_MAC_slots": 856520631779328,
+          "local_bytes": 553574269452288,
+          "useful_MAC": 106684370386944
+        },
+        "attention_values": {
+          "DRAM_bytes": 145032748990464,
+          "additional_context_output_local_bytes": 0,
+          "issued_MAC_slots": 571013754519552,
+          "local_bytes": 397273214746624,
+          "useful_MAC": 71122913591296
+        }
+      },
+      "path": "update/paper_evidence_20261106/figure3_pies_v1/replays/deepseek/A384_L65536_V16384_H16_B1K/producer1_delivery0/result.json",
+      "sha256": "21a10d7ccf0b57cb88f676cbc2f24681b75390cc73b473963d8f3607433069c3"
+    },
+    "producer1_delivery1": {
+      "allowed_modes": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "attention_ns": "478946869898442/23549",
+      "complete_attention_action_traffic": {
+        "attention_scores": {
+          "DRAM_bytes": 216473575358464,
+          "additional_context_output_local_bytes": 2224382017536,
+          "issued_MAC_slots": 856520631779328,
+          "local_bytes": 564820715765760,
+          "useful_MAC": 106684370386944
+        },
+        "attention_values": {
+          "DRAM_bytes": 145032748990464,
+          "additional_context_output_local_bytes": 65370324992,
+          "issued_MAC_slots": 571013754519552,
+          "local_bytes": 397338585071616,
+          "useful_MAC": 71122913591296
+        }
+      },
+      "path": "update/paper_evidence_20261106/figure3_pies_v1/replays/deepseek/A384_L65536_V16384_H16_B1K/producer1_delivery1/result.json",
+      "sha256": "1ad4eae46d24e2b76a296dad2695e98401c2ab6d1b82d95b62dd45c1d7fe234a"
+    }
+  },
+  "delivery_conditional_saving_ns": "99148040803368/23549",
+  "hardware": {
+    "DRAM_bytes": 2199023255552,
+    "accumulator_banks": 384,
+    "array_columns": 32,
+    "array_rows": 8,
+    "array_workspace_bytes": 4096,
+    "bandwidth": 23549,
+    "clock_GHz": 1,
+    "converter_lanes": 1024,
+    "geometry": "8x32",
+    "host_GBps": 512,
+    "host_bytes": 2199023255552,
+    "host_interface_units": 16,
+    "legacy_bank_control": false,
+    "local_GBps": 65536,
+    "local_service_units": 16,
+    "operand_bank_bytes": 1024,
+    "operand_banks": 2304,
+    "per_bank_control_bytes": 256,
+    "sram_mib": 26.9375,
+    "tiles": 384,
+    "vector_lanes": 16384
+  },
+  "issued_scope": "Analytical scheduled physical256-MAC slots, not measured activity",
+  "passed": true,
+  "physical_qualified": false,
+  "prepared_path": "/tmp/cheetah_wo24_20261106_v1/deepseek_extension_v1/attention_prepared_v2/A384_L65536_V16384_H16_B1K/menu/result.json",
+  "prepared_sha256": "28cd40a5b87dae4bf95f07f21fc28abf4b1242946c13b9be675b4065299fa153",
+  "producer_conditional_saving_ns": "31758271976694/23549",
+  "scope": "Attention-only exact finite reoptimization on one hardware. Fixed initialization/KV updates,expertregions,andotherkernels are external positive terms. No fullphase MFU or aggregate HOST busy time inferred.",
+  "signed_interaction_ns": "0",
+  "useful_attention_MAC": 177807283978240
+}

@@ -1,0 +1,24 @@
+{
+  "passed": true,
+  "case": "unet",
+  "wall_seconds": 0.6932456480572,
+  "optimizer_calls": 0,
+  "new_hardware_search": false,
+  "details": {
+    "scope": "Fresh original cost/calendar functions for 794 selected matrix recipes and four cast/buffer controls; same hardware/mapping, fixed padding inherited.",
+    "matrix_recipes": 794,
+    "controls": {
+      "(0, 0)": "1153486848377/8992",
+      "(0, 1)": "1128159033525/8992",
+      "(1, 0)": "2163814390860631218351978950936100499639/21993521274452904432909051494400",
+      "(1, 1)": "691767681294251064350904757070807180969/7331173758150968144303017164800"
+    }
+  },
+  "bindings": {
+    "/tmp/cheetah_wo23_20261106_v1/unet_lane_v1/prepared_v2/source_program.json": "f9689190ebc1d00992d12c8c550483ab44724d90afb87f281519d4f7a14e3397",
+    "/tmp/cheetah_wo23_20261106_v1/unet_lane_v1/finite_replay_v3/candidate.json": "a1c84cce5942d994222b6acbe46ce3872ff8b15bdd8a43f276f52fd07364de14",
+    "/tmp/cheetah_wo23_20261106_v1/unet_lane_v1/delivery_v1/result.json": "4e1d8cb5e94ca3d1a0e249b50bf6f1367fa99667de41d91766e53c3de8af8eeb",
+    "/home/miria/CORGIsolve/cheetahCR/update/paper_evidence_20261106/figure3_latest12/inputs/c61ff92ce9a1_unet.json": "084b56a9a4ae7eee38ac6e5f6eadb201ecd45b7aa183d08550c450169bd53a73"
+  },
+  "script_sha256": "c054f5602588eab242351dc27a8cb1ee8cec95a10ee5b9408eacda3abb51d42c"
+}

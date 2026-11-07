@@ -1,0 +1,20 @@
+{
+  "passed": true,
+  "case": "deepseek",
+  "wall_seconds": 7.9946498109493405,
+  "optimizer_calls": 0,
+  "new_hardware_search": false,
+  "details": {
+    "scope": "Fresh original finite attention action reoptimization and replay on selected hardware; fixed nonattention terms inherited.",
+    "controls": 5,
+    "hardware": "A384_L65536_V16384_H16_B1K",
+    "producer_saved_ns": "31758271976694/23549",
+    "delivery_saved_ns": "99148040803368/23549"
+  },
+  "bindings": {
+    "/home/miria/CORGIsolve/cheetahCR/update/paper_evidence_20261106/figure3_latest12/inputs/eaa8b28fa1d0_deepseek_v3.json": "9e32e12c8f88356fb856c704f0cfbdaa02bbc1b8452a30bd2938e070932226d0",
+    "/tmp/cheetah_wo24_20261106_v1/deepseek_extension_v1/attention_controls_v1/A384_L65536_V16384_H16_B1K/result.json": "392b9440b783818ed11b448371c46b1caa9d0406a07d78c5768d24b59c09d2a0",
+    "update/paper_evidence_20261106/figure3_pies_v1/replays/deepseek/A384_L65536_V16384_H16_B1K/result.json": "09e57f8c32b73136fbe639db6fcb56c2dd9919e65d8a8635f1c7729f3cd6dcb2"
+  },
+  "script_sha256": "e045a66d779228e2d30930c0d81c529700d2db3ba2f8074d0a7346a82ef06ee2"
+}

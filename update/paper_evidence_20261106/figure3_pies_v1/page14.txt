@@ -1,0 +1,78 @@
+         DeepSeek-V3                              Llama-1 65B                                SD1.5 UNet                                 EfficientNet-B3
+      Decode · 7.823× vs B2                  Decode · 13.985× vs B2                   Denoiser call · 2.246× vs B2                Forward · 11.427× vs B2
+
+
+
+              6.1%                                        4.0%
+                                                                                           24.0%
+                                                                                                                                                     41.9%
+                                              52.6%              41.9%                   3.1%
+                                                                                                                                   58.1%
+                                                                                                          72.9%
+                  92.0%
+
+
+
+   Selected execution        91.95%        Selected execution            3.98%       Selected execution           72.87%        Selected execution        41.87%
+   Hardware change            0.06%        Hardware change               1.54%       Cast fusion                   3.11%        Owner retention           58.13%
+   Producer fusion            1.94%        Tiling extension              0.04%       Operand buffering            24.02%
+   Delivery / overlap         6.05%        Weight residency            41.89%
+                                           KV retention                52.55%
+
+                            Normalized selected time + conditional savings; overlapping effects are counted separately (see caption).
+
+
+Figure 3: Conditional feature contributions for DeepSeek-V3, Llama-1 65B, SD1.5 UNet and
+EfficientNet-B3. Gray represents selected execution time Ton ; each colored weight is the saved Ptime
+∆i = T−i − Ton from its labeled control. Percentages normalize these weights by Ton + i ∆i .
+Effects can overlap: the denominator is an accounting sum, not a claimed all-features-off execution
+or a decomposition of TPU-v3 time. Headline Baseline 2 ratios are reported separately above each
+pie. Software controls retain the selected chip; hardware controls compare chip branches with the
+same new software menu. The 65B old-chip control exceeds the primary area bound. B3 has only
+one isolated feature control, so its two slices exactly partition its same-chip materialized execution.
+Table 8 retains all twelve workloads and each control’s scope.
+
+
+
+Table 8: Per-workload contributions grouped by four types of LP decisions. Each feature cell names
+the tested choice and its conditional speedup factor. Total is the selected design’s acceleration over
+unchanged Baseline 2 (modeled TPU-v3); the feature factors do not partition that total.
+Workload                   Total Hardware / datapath                Mapping / tiling                 Placement / residency Fusion / overlap
+                                                                                                     Owners
+EfficientNet-B1 11.849× Fixed; NR                                   Inherited; NR                    1.4049×                             No new recipe
+                                                                                                     Owners/mode
+EfficientNet-B2          6.680× Fixed; NR                           Inherited; NR                    1.3818×                             No new recipe
+                                                                                                     Owners
+EfficientNet-B3 11.427× Fixed; NR                                   Inherited; NR                    2.3882×                             No new recipe
+                                                                    Spatial + buffers†
+EfficientNet-B4          9.621× Fixed; NR                           1.1413×                          Owners; NR                          With tiling†
+                                                                                                     Owners
+EfficientNet-B5          9.937× Fixed; NR                           Inherited; NR                    1.3937×                             No new recipe
+                                                                    Spatial + buffers†
+EfficientNet-B6          7.803× Fixed; NR                           1.0874×                          Owners; NR                          With tiling†
+                                                                                                     Owners
+EfficientNet-B7          7.800× Fixed; NR                           Inherited; NR                    1.1330×                             No new recipe
+                                                                                                                                         Cast 1.0426×
+SD1.5 UNet               2.246× Unchanged; NR                       Matrix modes; NR                 Resident; fixed                     Buffers 1.3296×
+                                HW menu                                                                                                  Producer 1.0211×
+DeepSeek-V3              7.823× 1.0006×                             Full-K; NR                       Resident; fixed                     Delivery 1.0658×
+                                HW menu                             25 to 31 maps
+Llama-1 13B             11.092× 1.0178×                             1.0057×                          Retention; NR                       No new recipe
+                                HW menu                             14 to 25 maps                    Weights 11.5259×
+Llama-1 65B             13.985× 1.3866×                             1.0098×                          KV 14.2042×                         No new recipe
+                                HW menu                             14 to 25 maps                    Weights
+Llama-3 70B             17.932× 1.5446×                             1.0142×                          14.3409×                            No new recipe
+EfficientNets: forward; UNet: one denoiser call; LLMs: decode. Software factors are Toff /Ton on the selected chip. Hardware
+factors compare old/new chip branches with the same new software menu; the 65B old-chip control exceeds the primary area
+bound. Mapping factors measure the stated menu extension, not all tiling benefit. Owners denotes whole-tensor retention;
+Producer denotes rounded attention-layout fusion; Delivery includes paid prefetch/two contexts. Weights and KV are separate
+retention controls. † B4/B6 mapping and buffering are one combined control, credited once. Factors must not be added
+or multiplied; they are conditional, not an exhaustive decomposition. NR means not isolated, not zero. Fixed/inherited
+policies are not newly free selectors. Rematerialization belongs to the placement/lifetime group, but no new decoder recipe
+or gain is established. WO24 updates DeepSeek/13B; the other ten points retain earlier results. All totals use analytical
+matrix-and-associated-traffic accounting and separate chips; physical decoder qualification remains open.
+
+
+
+                                                                              14
+

@@ -1,0 +1,82 @@
+{
+  "completed_utc": "2026-11-06T22:52:34.546672+00:00",
+  "task": "Requested paper tables, metrics, ablations and Appendix B RTL update",
+  "compile": "latexmk -pdf -interaction=nonstopmode -halt-on-error",
+  "main_pages": 91,
+  "backup_pages": 4,
+  "original_tables_deleted": [
+    4,
+    5
+  ],
+  "original_tables_moved_to_backup": [
+    6,
+    7,
+    10
+  ],
+  "archived_table_contents_checked_exact": true,
+  "all_twelve_models_in_summary": true,
+  "efficiency_reference_and_MFU_arithmetic_independently_checked": true,
+  "exact_ablation_savings_and_factors_checked": true,
+  "new_RTL_groups": 6,
+  "new_experiments_run": false,
+  "unresolved_references": 0,
+  "overfull_boxes": 0,
+  "layout_visual_checks": [
+    4,
+    12,
+    13,
+    14,
+    27
+  ],
+  "label_locations": {
+    "fig:speedup": {
+      "number": "2",
+      "page": 4
+    },
+    "fig:accel_decompose": {
+      "number": "3",
+      "page": 14
+    },
+    "tab:current_phase_speedups": {
+      "number": "1",
+      "page": 4
+    },
+    "tab:decode_efficiency": {
+      "number": "5",
+      "page": 12
+    },
+    "tab:fixed_hw": {
+      "number": "7",
+      "page": 13
+    },
+    "tab:current_features": {
+      "number": "8",
+      "page": 14
+    },
+    "tab:wo24_rtl": {
+      "number": "12",
+      "page": 27
+    },
+    "sec:reported_quantities": {
+      "number": "6.2",
+      "page": 11
+    },
+    "sec:rtl_validation": {
+      "number": "B",
+      "page": 27
+    }
+  },
+  "data_limitations": [
+    "Prefill and decode columns refer to separately identified chips.",
+    "Fixed-hardware table reports existing historical LP-objective ratios, not new full-decode fixed-hardware executions.",
+    "Compact NPU EfficientNet B1-B6 and Llama-1 65B lack supported stored cells; explicitly NR.",
+    "Tokens/s/W uses incomplete chip-power proxy, not complete package TDP.",
+    "New BF16 RTL is functional mechanism coverage, not complete decoder or physical timing."
+  ],
+  "pdf_sha256": {
+    "neurips_2026.pdf": "cdf81e02b361a94e04f1bd4bb1ec279d617ce5e65f35ea07af2695bc73755806",
+    "backup.pdf": "ff1bcbe458a160165b54ea05414ede5509f1d9933a0949800bc01579cb1745fa"
+  },
+  "pre_edit_snapshot": "/home/miria/CORGIsolve/cheetahCR/.edit_backups/paper_update_20261106T224547Z",
+  "remaining_tex_warning": "Historical U/stmry/b/n font shape substitution; no unresolved reference."
+}

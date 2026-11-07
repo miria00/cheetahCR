@@ -1,0 +1,86 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs,tabularx,array,amsmath,float,hyperref}
+\title{CHEETAH: archived comparison tables}
+\date{November 6, 2026}
+\begin{document}
+\maketitle
+These are the original Tables 6, 7 and 10, moved out of the main paper.
+Their original table numbers and contents are preserved below. They use
+historical host-backed reference models and retain their original qualifications;
+they are not the unchanged paper Baseline 2 results in the updated manuscript.
+They do not establish measured TPU-v3 speedups or physically qualified BF16 chips.
+This file is standalone and is not included by \texttt{neurips\_2026.tex}.
+
+\clearpage
+\setcounter{table}{5}
+\begin{table}[H]
+\centering\small
+\caption{Archived ratios over the earlier host-backed TPU-v3-resource reference; baseline and BF16 physical-cost reconciliation remain open. Phase ratios do not add. Dashes denote inapplicable phases.}
+\label{tab:uniform_suite_overview}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Workload & Overall & Prefill & Decode \\
+\midrule
+EfficientNet-B1 & $16.53\times$ & -- & -- \\
+EfficientNet-B2 & $16.94\times$ & -- & -- \\
+EfficientNet-B3 & $18.25\times$ & -- & -- \\
+EfficientNet-B4 & $19.14\times$ & -- & -- \\
+EfficientNet-B5 & $19.79\times$ & -- & -- \\
+EfficientNet-B6 & $20.38\times$ & -- & -- \\
+EfficientNet-B7 & $20.94\times$ & -- & -- \\
+SD1.5 UNet (50 calls) & $40.34\times$ & -- & -- \\
+Llama-1 13B & $122.59\times$ & $48.00\times$ & $148.94\times$ \\
+Llama-1 65B & $68.92\times$ & $25.36\times$ & $80.76\times$ \\
+Llama-3 70B & $91.78\times$ & $47.14\times$ & $105.93\times$ \\
+DeepSeek-V3 & $31.71\times$ & $19.85\times$ & $37.93\times$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\clearpage
+\setcounter{table}{6}
+\begin{table}[H]
+\centering\scriptsize
+\caption{Uniform full-inference predictions in seconds for all 32 requests. Preparation is included in totals. SW keeps TPU-v3 resources fixed.}
+\label{tab:uniform_llama_phases}
+\begin{tabular}{@{}llrrrr@{}}
+\toprule
+Model & Phase & Reference & Reference + SW & Custom & Speedup \\
+\midrule
+Llama-1 13B & Prefill & 980.380 & 720.526 & 20.425 & $48.00\times$ \\
+ & Decode & 17,668.410 & 1,317.840 & 118.631 & $148.94\times$ \\
+ & Total & 18,663.574 & 2,053.150 & 152.245 & $122.59\times$ \\
+\addlinespace
+Llama-1 65B & Prefill & 4,407.777 & pending & 173.827 & $25.36\times$ \\
+ & Decode & 82,145.424 & pending & 1,017.176 & $80.76\times$ \\
+ & Total & 86,627.355 & pending & 1,256.908 & $68.92\times$ \\
+\addlinespace
+Llama-3 70B & Prefill & 15,076.868 & 10,905.168 & 319.824 & $47.14\times$ \\
+ & Decode & 106,905.123 & 7,982.193 & 1,009.241 & $105.93\times$ \\
+ & Total & 121,981.992 & 18,887.361 & 1,329.065 & $91.78\times$ \\
+\addlinespace
+\bottomrule
+\end{tabular}
+\end{table}
+
+\clearpage
+\setcounter{table}{9}
+\begin{table}[H]
+\centering\small
+\caption{Corrected custom-chip predictions (seconds); ratios use the retained, uncalibrated TPU-v3 extension.}
+\label{tab:native_phases}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Phase & TPU-v3 extension & Custom chip & Speedup \\
+\midrule
+Prefill & 13,387.193 & 1,078.914 & $12.408\times$ \\
+Decode & 53,083.324 & 2,074.999 & $25.582\times$ \\
+Preparation & 131.252 & 42.973 & $3.054\times$ \\
+\midrule
+Total & 66,601.769 & 3,196.886 & $\mathbf{20.833\times}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\end{document}

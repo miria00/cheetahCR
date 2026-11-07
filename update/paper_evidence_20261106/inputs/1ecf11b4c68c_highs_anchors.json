@@ -1,0 +1,865 @@
+{
+ "_doc": "HiGHS-optimal LP values already in hand (pre-existing artifacts; no new solves in this pass). These are VALIDATION ANCHORS for the GPU-PDLP agent: any PDLP re-solve of the same cell under the same convention must reproduce these objectives to solver tolerance. cell key = <workload>@<template>(bw_gbps,cgm_mib)/<row>.",
+ "cells": [
+  {
+   "cell": "llama1_13b@tpuv3(900,32)/joint",
+   "objective": 13526630400.0,
+   "convention": "single-predecessor graph; CHEETAH LP (V2 form) at fixed TPU-v3; post-Fix-A; LP objective (fractional)",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/home/miria/CORGIsolve/systems/results/row2_llms_at_tpu_v3/llama1_13b_v2_lp.json",
+   "naive_sum_Tmax": 28973017042.844437,
+   "speedup_vs_naive": 2.1419242032993253,
+   "mfu": 1.0
+  },
+  {
+   "cell": "llama1_65b@tpuv3(900,32)/joint",
+   "objective": 67444408320.0,
+   "convention": "single-predecessor graph; CHEETAH LP (V2 form) at fixed TPU-v3; post-Fix-A; LP objective (fractional)",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/home/miria/CORGIsolve/systems/results/row2_llms_at_tpu_v3/llama1_65b_v2_lp.json",
+   "naive_sum_Tmax": 144483613263.64444,
+   "speedup_vs_naive": 2.1422622996130456,
+   "mfu": 1.0
+  },
+  {
+   "cell": "llama3_70b@tpuv3(900,32)/joint",
+   "objective": 73819757808.3,
+   "convention": "single-predecessor graph; CHEETAH LP (V2 form) at fixed TPU-v3; post-Fix-A; LP objective (fractional)",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/home/miria/CORGIsolve/systems/results/row2_llms_at_tpu_v3/llama3_70b_v2_lp.json",
+   "naive_sum_Tmax": 185193714301.15558,
+   "speedup_vs_naive": 2.5087282835860663,
+   "mfu": 0.9999998996433986
+  },
+  {
+   "cell": "deepseek_v3@tpuv3(900,32)/joint",
+   "objective": 26488605049.2,
+   "convention": "single-predecessor graph; CHEETAH LP (V2 form) at fixed TPU-v3; post-Fix-A; LP objective (fractional)",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/home/miria/CORGIsolve/systems/results/row2_llms_at_tpu_v3/deepseek_v3_v2_lp.json",
+   "naive_sum_Tmax": 58769886850.22221,
+   "speedup_vs_naive": 2.2186856099467254,
+   "mfu": 0.9999999084436498
+  },
+  {
+   "cell": "efficientnet_b7@compact_npu(64,8)/A",
+   "objective": 10584508241850.938,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900 (frozen compact_package convention); LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/root/compact_package.json (node-1); local copy grid_completion/compact_package_node1.json",
+   "note": "wins-package cell; jvf magnitudes UNVETTED (package state, not draft numbers)",
+   "solve_s": 4.37
+  },
+  {
+   "cell": "efficientnet_b7@compact_npu(64,8)/B",
+   "objective": 2753759803879.1367,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900 (frozen compact_package convention); LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/root/compact_package.json (node-1); local copy grid_completion/compact_package_node1.json",
+   "note": "wins-package cell; jvf magnitudes UNVETTED (package state, not draft numbers)",
+   "solve_s": 4.93
+  },
+  {
+   "cell": "efficientnet_b7@compact_npu(64,8)/fixedtile",
+   "objective": 2753759803879.137,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900 (frozen compact_package convention); LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/root/compact_package.json (node-1); local copy grid_completion/compact_package_node1.json",
+   "note": "wins-package cell; jvf magnitudes UNVETTED (package state, not draft numbers)",
+   "solve_s": 5.38
+  },
+  {
+   "cell": "efficientnet_b7@compact_npu(64,8)/joint",
+   "objective": 71591349689.52975,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900 (frozen compact_package convention); LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/root/compact_package.json (node-1); local copy grid_completion/compact_package_node1.json",
+   "note": "wins-package cell; jvf magnitudes UNVETTED (package state, not draft numbers)",
+   "solve_s": 5.82
+  },
+  {
+   "cell": "efficientnet_b7@compact_npu(64,16)/A",
+   "objective": 10584508241850.938,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900 (frozen compact_package convention); LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/root/compact_package.json (node-1); local copy grid_completion/compact_package_node1.json",
+   "note": "wins-package cell; jvf magnitudes UNVETTED (package state, not draft numbers)",
+   "solve_s": 4.51
+  },
+  {
+   "cell": "efficientnet_b7@compact_npu(64,16)/B",
+   "objective": 1826496134037.7556,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900 (frozen compact_package convention); LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/root/compact_package.json (node-1); local copy grid_completion/compact_package_node1.json",
+   "note": "wins-package cell; jvf magnitudes UNVETTED (package state, not draft numbers)",
+   "solve_s": 5.16
+  },
+  {
+   "cell": "efficientnet_b7@compact_npu(64,16)/fixedtile",
+   "objective": 1826496134037.7559,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900 (frozen compact_package convention); LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/root/compact_package.json (node-1); local copy grid_completion/compact_package_node1.json",
+   "note": "wins-package cell; jvf magnitudes UNVETTED (package state, not draft numbers)",
+   "solve_s": 5.6
+  },
+  {
+   "cell": "efficientnet_b7@compact_npu(64,16)/joint",
+   "objective": 36926060044.03288,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900 (frozen compact_package convention); LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/root/compact_package.json (node-1); local copy grid_completion/compact_package_node1.json",
+   "note": "wins-package cell; jvf magnitudes UNVETTED (package state, not draft numbers)",
+   "solve_s": 6.26
+  },
+  {
+   "cell": "efficientnet_b7@compact_npu(64,32)/A",
+   "objective": 10584508241850.938,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900 (frozen compact_package convention); LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/root/compact_package.json (node-1); local copy grid_completion/compact_package_node1.json",
+   "note": "wins-package cell; jvf magnitudes UNVETTED (package state, not draft numbers)",
+   "solve_s": 4.56
+  },
+  {
+   "cell": "efficientnet_b7@compact_npu(64,32)/B",
+   "objective": 1305778249367.5776,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900 (frozen compact_package convention); LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/root/compact_package.json (node-1); local copy grid_completion/compact_package_node1.json",
+   "note": "wins-package cell; jvf magnitudes UNVETTED (package state, not draft numbers)",
+   "solve_s": 5.13
+  },
+  {
+   "cell": "efficientnet_b7@compact_npu(64,32)/fixedtile",
+   "objective": 1305778249367.5771,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900 (frozen compact_package convention); LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/root/compact_package.json (node-1); local copy grid_completion/compact_package_node1.json",
+   "note": "wins-package cell; jvf magnitudes UNVETTED (package state, not draft numbers)",
+   "solve_s": 5.55
+  },
+  {
+   "cell": "efficientnet_b7@compact_npu(64,32)/joint",
+   "objective": 35586649484.79829,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900 (frozen compact_package convention); LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/root/compact_package.json (node-1); local copy grid_completion/compact_package_node1.json",
+   "note": "wins-package cell; jvf magnitudes UNVETTED (package state, not draft numbers)",
+   "solve_s": 6.25
+  },
+  {
+   "cell": "llama3_70b@compact_npu(64,8)/A",
+   "objective": 705545489798935.8,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900 (frozen compact_package convention); LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/root/compact_package.json (node-1); local copy grid_completion/compact_package_node1.json",
+   "note": "wins-package cell; jvf magnitudes UNVETTED (package state, not draft numbers)",
+   "solve_s": 26.78
+  },
+  {
+   "cell": "llama3_70b@compact_npu(64,8)/B",
+   "objective": 623034738084156.6,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900 (frozen compact_package convention); LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/root/compact_package.json (node-1); local copy grid_completion/compact_package_node1.json",
+   "note": "wins-package cell; jvf magnitudes UNVETTED (package state, not draft numbers)",
+   "solve_s": 45.17
+  },
+  {
+   "cell": "llama3_70b@compact_npu(64,8)/fixedtile",
+   "objective": 623034738084156.6,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900 (frozen compact_package convention); LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/root/compact_package.json (node-1); local copy grid_completion/compact_package_node1.json",
+   "note": "wins-package cell; jvf magnitudes UNVETTED (package state, not draft numbers)",
+   "solve_s": 61.3
+  },
+  {
+   "cell": "llama3_70b@compact_npu(64,8)/joint",
+   "objective": 202415126757421.34,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900 (frozen compact_package convention); LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/root/compact_package.json (node-1); local copy grid_completion/compact_package_node1.json",
+   "note": "wins-package cell; jvf magnitudes UNVETTED (package state, not draft numbers)",
+   "solve_s": 65.26
+  },
+  {
+   "cell": "llama3_70b@compact_npu(64,16)/A",
+   "objective": 705545489798935.8,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900 (frozen compact_package convention); LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/root/compact_package.json (node-1); local copy grid_completion/compact_package_node1.json",
+   "note": "wins-package cell; jvf magnitudes UNVETTED (package state, not draft numbers)",
+   "solve_s": 27.11
+  },
+  {
+   "cell": "llama3_70b@compact_npu(64,16)/B",
+   "objective": 532597158426529.2,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900 (frozen compact_package convention); LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/root/compact_package.json (node-1); local copy grid_completion/compact_package_node1.json",
+   "note": "wins-package cell; jvf magnitudes UNVETTED (package state, not draft numbers)",
+   "solve_s": 44.57
+  },
+  {
+   "cell": "llama3_70b@compact_npu(64,16)/fixedtile",
+   "objective": 532597158426529.2,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900 (frozen compact_package convention); LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/root/compact_package.json (node-1); local copy grid_completion/compact_package_node1.json",
+   "note": "wins-package cell; jvf magnitudes UNVETTED (package state, not draft numbers)",
+   "solve_s": 61.72
+  },
+  {
+   "cell": "llama3_70b@compact_npu(64,16)/joint",
+   "objective": 70289043494317.164,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900 (frozen compact_package convention); LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/root/compact_package.json (node-1); local copy grid_completion/compact_package_node1.json",
+   "note": "wins-package cell; jvf magnitudes UNVETTED (package state, not draft numbers)",
+   "solve_s": 66.99
+  },
+  {
+   "cell": "llama3_70b@compact_npu(64,32)/A",
+   "objective": 705545489798935.8,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900 (frozen compact_package convention); LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/root/compact_package.json (node-1); local copy grid_completion/compact_package_node1.json",
+   "note": "wins-package cell; jvf magnitudes UNVETTED (package state, not draft numbers)",
+   "solve_s": 25.48
+  },
+  {
+   "cell": "llama3_70b@compact_npu(64,32)/B",
+   "objective": 351722814614864.3,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900 (frozen compact_package convention); LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/root/compact_package.json (node-1); local copy grid_completion/compact_package_node1.json",
+   "note": "wins-package cell; jvf magnitudes UNVETTED (package state, not draft numbers)",
+   "solve_s": 49.59
+  },
+  {
+   "cell": "llama3_70b@compact_npu(64,32)/fixedtile",
+   "objective": 351722814614864.3,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900 (frozen compact_package convention); LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/root/compact_package.json (node-1); local copy grid_completion/compact_package_node1.json",
+   "note": "wins-package cell; jvf magnitudes UNVETTED (package state, not draft numbers)",
+   "solve_s": 61.62
+  },
+  {
+   "cell": "llama3_70b@compact_npu(64,32)/joint",
+   "objective": 7197213063163.638,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900 (frozen compact_package convention); LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/root/compact_package.json (node-1); local copy grid_completion/compact_package_node1.json",
+   "note": "wins-package cell; jvf magnitudes UNVETTED (package state, not draft numbers)",
+   "solve_s": 63.64
+  },
+  {
+   "cell": "deepseek_v3@compact_npu(64,8)/A",
+   "objective": 186883635040744.38,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900 (frozen compact_package convention); LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/root/compact_package.json (node-1); local copy grid_completion/compact_package_node1.json",
+   "note": "wins-package cell; jvf magnitudes UNVETTED (package state, not draft numbers)",
+   "solve_s": 39.92
+  },
+  {
+   "cell": "deepseek_v3@compact_npu(64,8)/B",
+   "objective": 146807418373123.66,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900 (frozen compact_package convention); LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/root/compact_package.json (node-1); local copy grid_completion/compact_package_node1.json",
+   "note": "wins-package cell; jvf magnitudes UNVETTED (package state, not draft numbers)",
+   "solve_s": 80.46
+  },
+  {
+   "cell": "deepseek_v3@compact_npu(64,8)/fixedtile",
+   "objective": 146807418373123.66,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900 (frozen compact_package convention); LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/root/compact_package.json (node-1); local copy grid_completion/compact_package_node1.json",
+   "note": "wins-package cell; jvf magnitudes UNVETTED (package state, not draft numbers)",
+   "solve_s": 73.05
+  },
+  {
+   "cell": "deepseek_v3@compact_npu(64,32)/A",
+   "objective": 186883635040744.38,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900 (frozen compact_package convention); LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/root/compact_package.json (node-1); local copy grid_completion/compact_package_node1.json",
+   "note": "wins-package cell; jvf magnitudes UNVETTED (package state, not draft numbers)",
+   "solve_s": 40.91
+  },
+  {
+   "cell": "deepseek_v3@compact_npu(64,32)/B",
+   "objective": 92414110242388.05,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900 (frozen compact_package convention); LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/root/compact_package.json (node-1); local copy grid_completion/compact_package_node1.json",
+   "note": "wins-package cell; jvf magnitudes UNVETTED (package state, not draft numbers)",
+   "solve_s": 81.91
+  },
+  {
+   "cell": "deepseek_v3@compact_npu(64,32)/fixedtile",
+   "objective": 92414110242388.05,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900 (frozen compact_package convention); LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/root/compact_package.json (node-1); local copy grid_completion/compact_package_node1.json",
+   "note": "wins-package cell; jvf magnitudes UNVETTED (package state, not draft numbers)",
+   "solve_s": 100.83
+  },
+  {
+   "cell": "deepseek_v3@compact_npu(64,32)/joint",
+   "objective": 20802133628585.094,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900 (frozen compact_package convention); LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/root/compact_package.json (node-1); local copy grid_completion/compact_package_node1.json",
+   "note": "wins-package cell; jvf magnitudes UNVETTED (package state, not draft numbers)",
+   "solve_s": 272.04
+  },
+  {
+   "cell": "sd15_unet@compact_npu(64,8)/A",
+   "objective": 852579060342.6875,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900 (frozen compact_package convention); LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/root/compact_package.json (node-1); local copy grid_completion/compact_package_node1.json",
+   "note": "wins-package cell; jvf magnitudes UNVETTED (package state, not draft numbers)",
+   "solve_s": 5.93
+  },
+  {
+   "cell": "sd15_unet@compact_npu(64,8)/B",
+   "objective": 122044413026.60397,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900 (frozen compact_package convention); LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/root/compact_package.json (node-1); local copy grid_completion/compact_package_node1.json",
+   "note": "wins-package cell; jvf magnitudes UNVETTED (package state, not draft numbers)",
+   "solve_s": 8.0
+  },
+  {
+   "cell": "sd15_unet@compact_npu(64,8)/fixedtile",
+   "objective": 122044413026.60382,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900 (frozen compact_package convention); LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/root/compact_package.json (node-1); local copy grid_completion/compact_package_node1.json",
+   "note": "wins-package cell; jvf magnitudes UNVETTED (package state, not draft numbers)",
+   "solve_s": 8.92
+  },
+  {
+   "cell": "sd15_unet@compact_npu(64,8)/joint",
+   "objective": 51040586422.47705,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900 (frozen compact_package convention); LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/root/compact_package.json (node-1); local copy grid_completion/compact_package_node1.json",
+   "note": "wins-package cell; jvf magnitudes UNVETTED (package state, not draft numbers)",
+   "solve_s": 8.63
+  },
+  {
+   "cell": "sd15_unet@compact_npu(64,16)/A",
+   "objective": 852579060342.6875,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900 (frozen compact_package convention); LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/root/compact_package.json (node-1); local copy grid_completion/compact_package_node1.json",
+   "note": "wins-package cell; jvf magnitudes UNVETTED (package state, not draft numbers)",
+   "solve_s": 5.49
+  },
+  {
+   "cell": "sd15_unet@compact_npu(64,16)/B",
+   "objective": 91362993399.75963,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900 (frozen compact_package convention); LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/root/compact_package.json (node-1); local copy grid_completion/compact_package_node1.json",
+   "note": "wins-package cell; jvf magnitudes UNVETTED (package state, not draft numbers)",
+   "solve_s": 8.15
+  },
+  {
+   "cell": "sd15_unet@compact_npu(64,16)/fixedtile",
+   "objective": 91362993399.75961,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900 (frozen compact_package convention); LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/root/compact_package.json (node-1); local copy grid_completion/compact_package_node1.json",
+   "note": "wins-package cell; jvf magnitudes UNVETTED (package state, not draft numbers)",
+   "solve_s": 9.08
+  },
+  {
+   "cell": "sd15_unet@compact_npu(64,16)/joint",
+   "objective": 5556452992.40108,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900 (frozen compact_package convention); LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/root/compact_package.json (node-1); local copy grid_completion/compact_package_node1.json",
+   "note": "wins-package cell; jvf magnitudes UNVETTED (package state, not draft numbers)",
+   "solve_s": 9.45
+  },
+  {
+   "cell": "deepseek_v3@compact_npu(64,16)/A",
+   "objective": 186883635040744.38,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900 (frozen compact_package convention); LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/root/compact_package.json (node-1); local copy grid_completion/compact_package_node1.json",
+   "note": "wins-package cell; jvf magnitudes UNVETTED (package state, not draft numbers)",
+   "solve_s": 41.98
+  },
+  {
+   "cell": "deepseek_v3@compact_npu(64,16)/B",
+   "objective": 126089086943913.36,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900 (frozen compact_package convention); LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/root/compact_package.json (node-1); local copy grid_completion/compact_package_node1.json",
+   "note": "wins-package cell; jvf magnitudes UNVETTED (package state, not draft numbers)",
+   "solve_s": 68.62
+  },
+  {
+   "cell": "deepseek_v3@compact_npu(64,16)/fixedtile",
+   "objective": 126089086943913.36,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900 (frozen compact_package convention); LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/root/compact_package.json (node-1); local copy grid_completion/compact_package_node1.json",
+   "note": "wins-package cell; jvf magnitudes UNVETTED (package state, not draft numbers)",
+   "solve_s": 73.83
+  },
+  {
+   "cell": "sd15_unet@compact_npu(64,32)/A",
+   "objective": 852579060342.6875,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900 (frozen compact_package convention); LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/root/compact_package.json (node-1); local copy grid_completion/compact_package_node1.json",
+   "note": "wins-package cell; jvf magnitudes UNVETTED (package state, not draft numbers)",
+   "solve_s": 5.63
+  },
+  {
+   "cell": "sd15_unet@compact_npu(64,32)/B",
+   "objective": 83213814643.39697,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900 (frozen compact_package convention); LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/root/compact_package.json (node-1); local copy grid_completion/compact_package_node1.json",
+   "note": "wins-package cell; jvf magnitudes UNVETTED (package state, not draft numbers)",
+   "solve_s": 8.26
+  },
+  {
+   "cell": "sd15_unet@compact_npu(64,32)/fixedtile",
+   "objective": 83213814643.39693,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900 (frozen compact_package convention); LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/root/compact_package.json (node-1); local copy grid_completion/compact_package_node1.json",
+   "note": "wins-package cell; jvf magnitudes UNVETTED (package state, not draft numbers)",
+   "solve_s": 8.88
+  },
+  {
+   "cell": "sd15_unet@compact_npu(64,32)/joint",
+   "objective": 5051331196.521536,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900 (frozen compact_package convention); LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/root/compact_package.json (node-1); local copy grid_completion/compact_package_node1.json",
+   "note": "wins-package cell; jvf magnitudes UNVETTED (package state, not draft numbers)",
+   "solve_s": 8.97
+  },
+  {
+   "cell": "llama1_13b@compact_npu(64,16)/A",
+   "objective": 46469978129073.01,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900 (frozen compact_package convention); LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/root/compact_package.json (node-1); local copy grid_completion/compact_package_node1.json",
+   "note": "wins-package cell; jvf magnitudes UNVETTED (package state, not draft numbers)",
+   "solve_s": 7.34
+  },
+  {
+   "cell": "llama1_13b@compact_npu(64,16)/B",
+   "objective": 30730342510274.45,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900 (frozen compact_package convention); LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/root/compact_package.json (node-1); local copy grid_completion/compact_package_node1.json",
+   "note": "wins-package cell; jvf magnitudes UNVETTED (package state, not draft numbers)",
+   "solve_s": 9.2
+  },
+  {
+   "cell": "llama1_13b@compact_npu(64,16)/fixedtile",
+   "objective": 30730342510274.45,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900 (frozen compact_package convention); LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/root/compact_package.json (node-1); local copy grid_completion/compact_package_node1.json",
+   "note": "wins-package cell; jvf magnitudes UNVETTED (package state, not draft numbers)",
+   "solve_s": 11.68
+  },
+  {
+   "cell": "llama1_13b@compact_npu(64,8)/A",
+   "objective": 46469978129073.01,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900 (frozen compact_package convention); LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/root/compact_package.json (node-1); local copy grid_completion/compact_package_node1.json",
+   "note": "wins-package cell; jvf magnitudes UNVETTED (package state, not draft numbers)",
+   "solve_s": 7.38
+  },
+  {
+   "cell": "llama1_13b@compact_npu(64,8)/B",
+   "objective": 38830546277807.62,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900 (frozen compact_package convention); LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/root/compact_package.json (node-1); local copy grid_completion/compact_package_node1.json",
+   "note": "wins-package cell; jvf magnitudes UNVETTED (package state, not draft numbers)",
+   "solve_s": 10.06
+  },
+  {
+   "cell": "llama1_13b@compact_npu(64,8)/fixedtile",
+   "objective": 38830546277807.62,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900 (frozen compact_package convention); LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/root/compact_package.json (node-1); local copy grid_completion/compact_package_node1.json",
+   "note": "wins-package cell; jvf magnitudes UNVETTED (package state, not draft numbers)",
+   "solve_s": 12.99
+  },
+  {
+   "cell": "llama1_13b@compact_npu(64,32)/A",
+   "objective": 46469978129073.01,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900 (frozen compact_package convention); LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/root/compact_package.json (node-1); local copy grid_completion/compact_package_node1.json",
+   "note": "wins-package cell; jvf magnitudes UNVETTED (package state, not draft numbers)",
+   "solve_s": 6.35
+  },
+  {
+   "cell": "llama1_13b@compact_npu(64,32)/B",
+   "objective": 17253174686445.473,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900 (frozen compact_package convention); LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/root/compact_package.json (node-1); local copy grid_completion/compact_package_node1.json",
+   "note": "wins-package cell; jvf magnitudes UNVETTED (package state, not draft numbers)",
+   "solve_s": 10.24
+  },
+  {
+   "cell": "llama1_13b@compact_npu(64,32)/fixedtile",
+   "objective": 17253174686445.473,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900 (frozen compact_package convention); LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/root/compact_package.json (node-1); local copy grid_completion/compact_package_node1.json",
+   "note": "wins-package cell; jvf magnitudes UNVETTED (package state, not draft numbers)",
+   "solve_s": 13.09
+  },
+  {
+   "cell": "llama1_13b@tpuv3(128,8)/A",
+   "objective": 1215180016591.25,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900; LP objective; pilot ladder row A",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/home/miria/Downloads/rebuttal/pilot/pilot_13b.json"
+  },
+  {
+   "cell": "llama1_13b@tpuv3(128,8)/B",
+   "objective": 1129178901932.0515,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900; LP objective; pilot ladder row B",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/home/miria/Downloads/rebuttal/pilot/pilot_13b.json"
+  },
+  {
+   "cell": "llama1_13b@tpuv3(128,8)/C",
+   "objective": 1129178901932.0515,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900; LP objective; pilot ladder row C",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/home/miria/Downloads/rebuttal/pilot/pilot_13b.json"
+  },
+  {
+   "cell": "llama1_13b@tpuv3(128,8)/D",
+   "objective": 568287132778.9626,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900; LP objective; pilot ladder row D",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/home/miria/Downloads/rebuttal/pilot/pilot_13b.json"
+  },
+  {
+   "cell": "llama1_13b@tpuv3(128,64)/A",
+   "objective": 1215180016591.25,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900; LP objective; pilot ladder row A",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/home/miria/Downloads/rebuttal/pilot/pilot_13b.json"
+  },
+  {
+   "cell": "llama1_13b@tpuv3(128,64)/B",
+   "objective": 902188675740.1562,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900; LP objective; pilot ladder row B",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/home/miria/Downloads/rebuttal/pilot/pilot_13b.json"
+  },
+  {
+   "cell": "llama1_13b@tpuv3(128,64)/C",
+   "objective": 902188675740.1562,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900; LP objective; pilot ladder row C",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/home/miria/Downloads/rebuttal/pilot/pilot_13b.json"
+  },
+  {
+   "cell": "llama1_13b@tpuv3(128,64)/D",
+   "objective": 479466277945.3792,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900; LP objective; pilot ladder row D",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/home/miria/Downloads/rebuttal/pilot/pilot_13b.json"
+  },
+  {
+   "cell": "llama1_13b@tpuv3(128,24)/A",
+   "objective": 1215180016591.25,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900; LP objective; pilot ladder row A",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/home/miria/Downloads/rebuttal/pilot/pilot_13b.json"
+  },
+  {
+   "cell": "llama1_13b@tpuv3(128,24)/B",
+   "objective": 952829687698.8756,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900; LP objective; pilot ladder row B",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/home/miria/Downloads/rebuttal/pilot/pilot_13b.json"
+  },
+  {
+   "cell": "llama1_13b@tpuv3(128,24)/C",
+   "objective": 952829687698.8756,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900; LP objective; pilot ladder row C",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/home/miria/Downloads/rebuttal/pilot/pilot_13b.json"
+  },
+  {
+   "cell": "llama1_13b@tpuv3(128,24)/D",
+   "objective": 481794688581.82184,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900; LP objective; pilot ladder row D",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/home/miria/Downloads/rebuttal/pilot/pilot_13b.json"
+  },
+  {
+   "cell": "deepseek_v3@tpuv3(256,24)/A",
+   "objective": 1309156118234.5996,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900; LP objective; pilot ladder row A",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/home/miria/Downloads/rebuttal/pilot/pilot_dsv3.json"
+  },
+  {
+   "cell": "deepseek_v3@tpuv3(256,24)/B",
+   "objective": 1235396500166.1562,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900; LP objective; pilot ladder row B",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/home/miria/Downloads/rebuttal/pilot/pilot_dsv3.json"
+  },
+  {
+   "cell": "deepseek_v3@tpuv3(256,24)/C",
+   "objective": 1235396500166.1562,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900; LP objective; pilot ladder row C",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/home/miria/Downloads/rebuttal/pilot/pilot_dsv3.json"
+  },
+  {
+   "cell": "deepseek_v3@tpuv3(128,32)/A",
+   "objective": 1762589745263.8848,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900; LP objective; pilot ladder row A",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/home/miria/Downloads/rebuttal/pilot/pilot_dsv3.json"
+  },
+  {
+   "cell": "deepseek_v3@tpuv3(128,32)/B",
+   "objective": 1244402081019.9753,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900; LP objective; pilot ladder row B",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/home/miria/Downloads/rebuttal/pilot/pilot_dsv3.json"
+  },
+  {
+   "cell": "deepseek_v3@tpuv3(128,32)/C",
+   "objective": 1244402081019.9753,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900; LP objective; pilot ladder row C",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/home/miria/Downloads/rebuttal/pilot/pilot_dsv3.json"
+  },
+  {
+   "cell": "deepseek_v3@tpuv3(128,32)/D",
+   "objective": 1068659148101.4735,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900; LP objective; pilot ladder row D",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/home/miria/Downloads/rebuttal/pilot/pilot_dsv3.json"
+  },
+  {
+   "cell": "deepseek_v3@tpuv3(256,32)/A",
+   "objective": 1309156118234.5996,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900; LP objective; pilot ladder row A",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/home/miria/Downloads/rebuttal/pilot/pilot_dsv3.json"
+  },
+  {
+   "cell": "deepseek_v3@tpuv3(256,32)/B",
+   "objective": 1235396500166.1562,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900; LP objective; pilot ladder row B",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/home/miria/Downloads/rebuttal/pilot/pilot_dsv3.json"
+  },
+  {
+   "cell": "deepseek_v3@tpuv3(256,32)/C",
+   "objective": 1235396500166.1562,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900; LP objective; pilot ladder row C",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/home/miria/Downloads/rebuttal/pilot/pilot_dsv3.json"
+  },
+  {
+   "cell": "deepseek_v3@tpuv3(256,32)/D",
+   "objective": 1068362076677.7262,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900; LP objective; pilot ladder row D",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/home/miria/Downloads/rebuttal/pilot/pilot_dsv3.json"
+  },
+  {
+   "cell": "deepseek_v3@tpuv3(128,24)/A",
+   "objective": 1762589745263.8848,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900; LP objective; pilot ladder row A",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/home/miria/Downloads/rebuttal/pilot/pilot_dsv3.json"
+  },
+  {
+   "cell": "deepseek_v3@tpuv3(128,24)/B",
+   "objective": 1268933319235.1094,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900; LP objective; pilot ladder row B",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/home/miria/Downloads/rebuttal/pilot/pilot_dsv3.json"
+  },
+  {
+   "cell": "deepseek_v3@tpuv3(128,24)/C",
+   "objective": 1268933319235.1077,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900; LP objective; pilot ladder row C",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/home/miria/Downloads/rebuttal/pilot/pilot_dsv3.json"
+  },
+  {
+   "cell": "deepseek_v3@tpuv3(128,24)/D",
+   "objective": 1068659148101.4735,
+   "convention": "single-predecessor graph; frozen V2.1 builder; traffic_bw_ref=900; LP objective; pilot ladder row D",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/home/miria/Downloads/rebuttal/pilot/pilot_dsv3.json"
+  },
+  {
+   "cell": "sd15_unet@tpuv3(64,2)/fixedtile_remat_on",
+   "objective": 25758278441.290565,
+   "convention": "tensor-DAG (dag-clean) V2.1-DAG builder; traffic_bw_ref=900; LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/home/miria/Downloads/rebuttal/multi_input_fix/sd_dag_results.json",
+   "jvf": 1.9422
+  },
+  {
+   "cell": "sd15_unet@tpuv3(64,2)/joint_remat_on",
+   "objective": 13262679962.30429,
+   "convention": "tensor-DAG (dag-clean) V2.1-DAG builder; traffic_bw_ref=900; LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/home/miria/Downloads/rebuttal/multi_input_fix/sd_dag_results.json",
+   "jvf": 1.9422
+  },
+  {
+   "cell": "sd15_unet@tpuv3(64,4)/fixedtile_remat_on",
+   "objective": 22454995052.16052,
+   "convention": "tensor-DAG (dag-clean) V2.1-DAG builder; traffic_bw_ref=900; LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/home/miria/Downloads/rebuttal/multi_input_fix/sd_dag_results.json",
+   "jvf": 1.7259
+  },
+  {
+   "cell": "sd15_unet@tpuv3(64,4)/joint_remat_on",
+   "objective": 13010406228.437704,
+   "convention": "tensor-DAG (dag-clean) V2.1-DAG builder; traffic_bw_ref=900; LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/home/miria/Downloads/rebuttal/multi_input_fix/sd_dag_results.json",
+   "jvf": 1.7259
+  },
+  {
+   "cell": "sd15_unet@tpuv3(64,8)/fixedtile_remat_on",
+   "objective": 21852721021.966545,
+   "convention": "tensor-DAG (dag-clean) V2.1-DAG builder; traffic_bw_ref=900; LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/home/miria/Downloads/rebuttal/multi_input_fix/sd_dag_results.json",
+   "jvf": 1.7061
+  },
+  {
+   "cell": "sd15_unet@tpuv3(64,8)/joint_remat_on",
+   "objective": 12808275443.451612,
+   "convention": "tensor-DAG (dag-clean) V2.1-DAG builder; traffic_bw_ref=900; LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/home/miria/Downloads/rebuttal/multi_input_fix/sd_dag_results.json",
+   "jvf": 1.7061
+  },
+  {
+   "cell": "sd15_unet@tpuv3(128,2)/fixedtile_remat_on",
+   "objective": 17383691050.818577,
+   "convention": "tensor-DAG (dag-clean) V2.1-DAG builder; traffic_bw_ref=900; LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/home/miria/Downloads/rebuttal/multi_input_fix/sd_dag_results.json",
+   "jvf": 1.6136
+  },
+  {
+   "cell": "sd15_unet@tpuv3(128,2)/joint_remat_on",
+   "objective": 10773176305.333,
+   "convention": "tensor-DAG (dag-clean) V2.1-DAG builder; traffic_bw_ref=900; LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/home/miria/Downloads/rebuttal/multi_input_fix/sd_dag_results.json",
+   "jvf": 1.6136
+  },
+  {
+   "cell": "sd15_unet@tpuv3(128,4)/fixedtile_remat_on",
+   "objective": 15390700142.996029,
+   "convention": "tensor-DAG (dag-clean) V2.1-DAG builder; traffic_bw_ref=900; LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/home/miria/Downloads/rebuttal/multi_input_fix/sd_dag_results.json",
+   "jvf": 1.4576
+  },
+  {
+   "cell": "sd15_unet@tpuv3(128,4)/joint_remat_on",
+   "objective": 10558838533.303226,
+   "convention": "tensor-DAG (dag-clean) V2.1-DAG builder; traffic_bw_ref=900; LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/home/miria/Downloads/rebuttal/multi_input_fix/sd_dag_results.json",
+   "jvf": 1.4576
+  },
+  {
+   "cell": "sd15_unet@tpuv3(128,8)/fixedtile_remat_on",
+   "objective": 14958058071.63332,
+   "convention": "tensor-DAG (dag-clean) V2.1-DAG builder; traffic_bw_ref=900; LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/home/miria/Downloads/rebuttal/multi_input_fix/sd_dag_results.json",
+   "jvf": 1.4391
+  },
+  {
+   "cell": "sd15_unet@tpuv3(128,8)/joint_remat_on",
+   "objective": 10394193841.638597,
+   "convention": "tensor-DAG (dag-clean) V2.1-DAG builder; traffic_bw_ref=900; LP objective",
+   "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+   "src": "/home/miria/Downloads/rebuttal/multi_input_fix/sd_dag_results.json",
+   "jvf": 1.4391
+  },
+  {
+   "cell": "llama1_13b@tpuv3(128,8)/joint_certified_chainDP",
+   "objective": 1215004020000.0,
+   "convention": "single-predecessor graph; chain-DP exact integral schedule, zero-violation replay certified (greedy-rounding wave)",
+   "solver": "chain-DP exact rounding on HiGHS LP solution",
+   "src": "/home/miria/Downloads/rebuttal/greedy_rounding/REPORT.md",
+   "note": "= D_LP x (1 + 1.138); gap vs D_LP is relaxation looseness, not rounding"
+  },
+  {
+   "cell": "llama1_13b@tpuv3(128,24)/joint_certified_chainDP",
+   "objective": 820488369999.9999,
+   "convention": "single-predecessor graph; chain-DP exact integral schedule, zero-violation replay certified (greedy-rounding wave)",
+   "solver": "chain-DP exact rounding on HiGHS LP solution",
+   "src": "/home/miria/Downloads/rebuttal/greedy_rounding/REPORT.md",
+   "note": "= D_LP x (1 + 0.703); gap vs D_LP is relaxation looseness, not rounding"
+  },
+  {
+   "cell": "llama1_13b@tpuv3(128,64)/joint_certified_chainDP",
+   "objective": 709615600000.0,
+   "convention": "single-predecessor graph; chain-DP exact integral schedule, zero-violation replay certified (greedy-rounding wave)",
+   "solver": "chain-DP exact rounding on HiGHS LP solution",
+   "src": "/home/miria/Downloads/rebuttal/greedy_rounding/REPORT.md",
+   "note": "= D_LP x (1 + 0.480); gap vs D_LP is relaxation looseness, not rounding"
+  },
+  {
+   "cell": "deepseek_v3@tpuv3(128,24)/joint_certified_chainDP",
+   "objective": 1616943100000.0,
+   "convention": "single-predecessor graph; chain-DP exact integral schedule, zero-violation replay certified (greedy-rounding wave)",
+   "solver": "chain-DP exact rounding on HiGHS LP solution",
+   "src": "/home/miria/Downloads/rebuttal/greedy_rounding/REPORT.md",
+   "note": "= D_LP x (1 + 0.513); gap vs D_LP is relaxation looseness, not rounding"
+  },
+  {
+   "cell": "deepseek_v3@tpuv3(128,32)/joint_certified_chainDP",
+   "objective": 1287783500000.0,
+   "convention": "single-predecessor graph; chain-DP exact integral schedule, zero-violation replay certified (greedy-rounding wave)",
+   "solver": "chain-DP exact rounding on HiGHS LP solution",
+   "src": "/home/miria/Downloads/rebuttal/greedy_rounding/REPORT.md",
+   "note": "= D_LP x (1 + 0.205); gap vs D_LP is relaxation looseness, not rounding"
+  }
+ ]
+}

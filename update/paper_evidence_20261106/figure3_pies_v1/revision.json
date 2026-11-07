@@ -1,0 +1,22 @@
+{
+  "completed_utc": "2026-11-06T23:28:51.417572+00:00",
+  "request": "Four new feature-contribution pies with overlap disclosed in caption.",
+  "workloads": [
+    "DeepSeek-V3",
+    "Llama-1 65B",
+    "SD1.5 UNet",
+    "EfficientNet-B3"
+  ],
+  "figure": 3,
+  "page": 14,
+  "table8_retained_below": true,
+  "fresh_CPU_replay_jobs_passed": 5,
+  "new_optimizer_calls": 0,
+  "scope": "DeepSeek original attention-action replay; original dense weight/KV source-cost controls; original UNet cost/calendar re-evaluation; B3 saved timeline reconstruction. Historical full source admission and mapper runs inherited.",
+  "overlap_and_normalization_explicit": true,
+  "build_passed": true,
+  "visual_check_passed": true,
+  "no_overfull_boxes_or_unresolved_references": true,
+  "original_artwork_preserved": true,
+  "pdf_sha256": "265219f42e7ff5d49793752885efa7945b9ab1ab1cc9947633e27bf714876252"
+}

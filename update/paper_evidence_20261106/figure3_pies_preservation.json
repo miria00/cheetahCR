@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "destination": "/media/miria/Elements/cheetah_paper_figure3_pies_20261106T232851Z",
+  "files": 78,
+  "bytes": 189786772,
+  "manifest_sha256": "92e2fa19148a3e490602e9861955075059a6b29166a7cc9da3429b1cb1bb2c96",
+  "all_copied_file_contents_read_back": true,
+  "scope": "Paper, figures, generating code, frozen table/plot inputs, fresh replay outputs and failure logs. Inherited original numerical/source archives remain in their authenticated roots."
+}

@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "case": "llama_weights",
+  "wall_seconds": 0.6688245360273868,
+  "optimizer_calls": 0,
+  "new_hardware_search": false,
+  "details": {
+    "scope": "Fresh original dense source-cost control, complete fixed-chip mapping minimum and original paid import/copy obligations.",
+    "saved_ns": "2957761005840/7"
+  },
+  "bindings": {
+    "update/paper_evidence_20261106/figure3_pies_v1/replays/llama_weights_v2/producer/result.json": "d1283e622ee372e1dd9e4c054f9a0b08751ae255a44f4e9d4c21ecf45c5eed1b",
+    "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/65/features_selected_v1/result.json": "d1283e622ee372e1dd9e4c054f9a0b08751ae255a44f4e9d4c21ecf45c5eed1b",
+    "/home/miria/CORGIsolve/cheetahCR/update/paper_evidence_20261106/figure3_latest12/inputs/dc51470c859d_llama1_65b.json": "f9f683cde6a0874e99e9d500f091ba5852ac71df700eb57edb25c71f3e87ede4"
+  },
+  "script_sha256": "c054f5602588eab242351dc27a8cb1ee8cec95a10ee5b9408eacda3abb51d42c"
+}

@@ -1,0 +1,22 @@
+{
+  "completed_utc": "2026-11-06T23:14:24.112976+00:00",
+  "request": "One row per NN workload; four columns of LP feature groups and their conditional contributions.",
+  "workloads": 12,
+  "feature_groups": [
+    "hardware",
+    "tiling",
+    "storage",
+    "fusion"
+  ],
+  "checked_controls": 21,
+  "table_number": 8,
+  "page": 14,
+  "original_pie_unchanged": true,
+  "exact_control_arithmetic_checked": true,
+  "deterministic_generation": true,
+  "build_passed": true,
+  "visual_check_passed": true,
+  "no_overfull_boxes_or_unresolved_references": true,
+  "pdf_sha256": "ef40d74cbbb6818a76de205c9d1b1fdc77fb96175d6bd946ad2dbaa7a35b9c68",
+  "table_sha256": "476def3c70876ab163d4a943df58217c9d20f84fdea48230a8a0713005b75fd6"
+}

@@ -1,0 +1,224 @@
+{
+  "passed": true,
+  "panels": [
+    {
+      "workload": "deepseek_v3",
+      "label": "DeepSeek-V3",
+      "weights": [
+        {
+          "label": "Hardware change",
+          "color": "#4075ae",
+          "saved_ns": "42296465267713/1059705",
+          "scope": "Old versus new whole-chip branch with the new software menu available in both; hardware changes.",
+          "share_exact": "42296465267713/5933080540370503",
+          "illustrative_share_of_total_speedup_gain": 0.04863743530051352,
+          "display_percent": "0.71"
+        },
+        {
+          "label": "Producer-layout fusion",
+          "color": "#55a67c",
+          "saved_ns": "31758271976694/23549",
+          "scope": "Same current chip, other feature retained, declared feature-off menu reoptimized.",
+          "share_exact": "1429122238951230/5933080540370503",
+          "illustrative_share_of_total_speedup_gain": 1.643372324225283,
+          "display_percent": "24.09"
+        },
+        {
+          "label": "Cross-wave prefetch",
+          "color": "#e5a745",
+          "saved_ns": "31544962594496/23549",
+          "scope": "Enable prefetch with producer fusion on, before adding the second FP32 context; same chip and finite action replay.",
+          "share_exact": "109194101288640/456390810797731",
+          "illustrative_share_of_total_speedup_gain": 1.632334357944906,
+          "display_percent": "23.93"
+        },
+        {
+          "label": "Two accumulator contexts",
+          "color": "#d77969",
+          "saved_ns": "67603078208872/23549",
+          "scope": "Add second FP32 context with producer fusion and prefetch retained; same chip and finite action replay.",
+          "share_exact": "3042138519399240/5933080540370503",
+          "illustrative_share_of_total_speedup_gain": 3.498207580136185,
+          "display_percent": "51.27"
+        }
+      ],
+      "phase": "Decode",
+      "reference_ratio": 7.822551697606888,
+      "normalization_ns": "5933080540370503/1059705"
+    },
+    {
+      "workload": "llama1_13b",
+      "label": "Llama-1 13B",
+      "weights": [
+        {
+          "label": "Hardware change",
+          "color": "#4075ae",
+          "saved_ns": "4876828024552079/26201513",
+          "scope": "Old versus new whole-chip branch with the new software menu available in both; hardware changes.",
+          "share_exact": "14630484073656237/22558383434912543537",
+          "illustrative_share_of_total_speedup_gain": 0.006545106148537156,
+          "display_percent": "0.06"
+        },
+        {
+          "label": "Tiling extension",
+          "color": "#52abc9",
+          "saved_ns": "515034293900/8601",
+          "scope": "Old 25 versus new 31 mapping choices reoptimized on the selected WO24 chip.",
+          "share_exact": "4706898411952100/22558383434912543537",
+          "illustrative_share_of_total_speedup_gain": 0.002105682189427967,
+          "display_percent": "0.02"
+        },
+        {
+          "label": "KV retention",
+          "color": "#b379bc",
+          "saved_ns": "542952527866500/2867",
+          "scope": "Original indexed KV reload contract on current WO24 hardware. All original cat work, initial writes and tails remain paid; same original head-major operands restored. Original lifetime proof inherited; extra imports and mapping costs rechecked.",
+          "share_exact": "14886129456515830500/22558383434912543537",
+          "illustrative_share_of_total_speedup_gain": 6.659471890557428,
+          "display_percent": "65.99"
+        },
+        {
+          "label": "Weight residency",
+          "color": "#7b5ca2",
+          "saved_ns": "279130342339100/2867",
+          "scope": "Restore all original descriptor imports with setup, two staging passes and DRAM writes. Kernel weight reads and first imports stay paid; import constants are independent of mapping.",
+          "share_exact": "7652916595911104700/22558383434912543537",
+          "illustrative_share_of_total_speedup_gain": 3.423615460292987,
+          "display_percent": "33.93"
+        }
+      ],
+      "phase": "Decode",
+      "reference_ratio": 11.09173813918838,
+      "normalization_ns": "22558383434912543537/78604539"
+    },
+    {
+      "workload": "llama1_65b",
+      "label": "Llama-1 65B",
+      "weights": [
+        {
+          "label": "Hardware change",
+          "color": "#4075ae",
+          "saved_ns": "4568112807716803/294385",
+          "scope": "WO23 old/new hardware branches with the new mapping menu in both; old 65B hardware exceeds the primary area bound.",
+          "share_exact": "4568112807716803/285111331861768211",
+          "illustrative_share_of_total_speedup_gain": 0.20805185306127663,
+          "display_percent": "1.60"
+        },
+        {
+          "label": "Tiling extension",
+          "color": "#52abc9",
+          "saved_ns": "13712247648/35",
+          "scope": "WO23 mapping-menu control on the same chip retained by WO24; other policies fixed.",
+          "share_exact": "115333714967328/285111331861768211",
+          "illustrative_share_of_total_speedup_gain": 0.005252802224774057,
+          "display_percent": "0.04"
+        },
+        {
+          "label": "KV retention",
+          "color": "#b379bc",
+          "saved_ns": "530051620288",
+          "scope": "Same selected chip; canonical prefixes restored by qualified indexed-copy recipe; initial/tail writes still paid.",
+          "share_exact": "156039246238482880/285111331861768211",
+          "illustrative_share_of_total_speedup_gain": 7.106710297381475,
+          "display_percent": "54.73"
+        },
+        {
+          "label": "Weight residency",
+          "color": "#7b5ca2",
+          "saved_ns": "2957761005840/7",
+          "scope": "Same selected chip/mapping, restore all original nonresident weight imports and writes.",
+          "share_exact": "124388639100601200/285111331861768211",
+          "illustrative_share_of_total_speedup_gain": 5.665203105521649,
+          "display_percent": "43.63"
+        }
+      ],
+      "phase": "Decode",
+      "reference_ratio": 13.985218058189174,
+      "normalization_ns": "285111331861768211/294385"
+    },
+    {
+      "workload": "llama3_70b",
+      "label": "Llama-3 70B",
+      "weights": [
+        {
+          "label": "Hardware change",
+          "color": "#4075ae",
+          "saved_ns": "109845778818431262/5956205",
+          "scope": "WO23 old/new hardware branches with the new mapping menu in both; old 65B hardware exceeds the primary area bound.",
+          "share_exact": "54922889409215631/1495750014177548720",
+          "illustrative_share_of_total_speedup_gain": 0.6217393245799424,
+          "display_percent": "3.67"
+        },
+        {
+          "label": "Tiling extension",
+          "color": "#52abc9",
+          "saved_ns": "426364696224/887",
+          "scope": "WO23 mapping-menu control on the same chip retained by WO24; other policies fixed.",
+          "share_exact": "293344153191/306506150446219",
+          "illustrative_share_of_total_speedup_gain": 0.016205118784991736,
+          "display_percent": "0.10"
+        },
+        {
+          "label": "KV-head reuse (GQA)",
+          "color": "#b379bc",
+          "saved_ns": "27966410515456/887",
+          "scope": "Same-chip group-eight versus original independent-head group-one responses, reprice all 25 mappings and unchanged imports. Full original K order, owners, output coordinates and stores remain. This is KV-read reuse, not a KV-retention/offload control; semantic proof is inherited.",
+          "share_exact": "1173715291320544/18696875177219359",
+          "illustrative_share_of_total_speedup_gain": 1.0629374533268308,
+          "display_percent": "6.28"
+        },
+        {
+          "label": "Weight residency",
+          "color": "#7b5ca2",
+          "saved_ns": "2003720598652446/4435",
+          "scope": "Same selected chip/mapping, restore all original nonresident weight imports and writes.",
+          "share_exact": "1345498381995117489/1495750014177548720",
+          "illustrative_share_of_total_speedup_gain": 15.231340962638491,
+          "display_percent": "89.95"
+        }
+      ],
+      "phase": "Decode",
+      "reference_ratio": 17.932222859330256,
+      "normalization_ns": "598300005671019488/1191241"
+    }
+  ],
+  "bindings": {
+    "update/paper_evidence_20261106/figure3_pies_v3/table_control_values.json": "ed77f976a91c9f53bdcec42d7310c668c466f7d082c6fd3701926481268c9ead",
+    "update/paper_evidence_20261106/figure3_latest12/inputs/9f3b77966c2e_efficientnet_b1.json": "95dcb551fd32caf9ebed17e28f6b4f358f2036cd60c2c4ccc5682062e48c1012",
+    "update/paper_evidence_20261106/figure3_latest12/inputs/f0c4237bc2d2_efficientnet_b2.json": "7a4f63d98b16431c11e08737c11d0c732d2078d2f589cbcb7bfccee361e1ed0a",
+    "update/paper_evidence_20261106/figure3_latest12/inputs/1b90a7dadd75_efficientnet_b3.json": "fc6f894b674215d70ffdad9b72b544db2a09e120ad7e304122dc1d6464132b14",
+    "update/paper_evidence_20261106/figure3_latest12/inputs/674694fefc66_efficientnet_b4.json": "3b186c948964117fce489e927502a3f60e2cdd3d574f53fefb3f6d29a345433b",
+    "update/paper_evidence_20261106/figure3_latest12/inputs/64eb9257f310_efficientnet_b5.json": "984e20693237e79881877baaa011d4358086e51811beea2ff05d34ffaf1a183e",
+    "update/paper_evidence_20261106/figure3_latest12/inputs/1b64bbf7949b_efficientnet_b6.json": "02cc450b60221f46e97c93301eb4a26657fd5847ed2cffbf35b1c5ff41cb603f",
+    "update/paper_evidence_20261106/figure3_latest12/inputs/c34139258ba3_efficientnet_b7.json": "fca5f81dbb1181bcf8fb937609f9a5a56cb29773e157c7e284158709ad512484",
+    "update/paper_evidence_20261106/figure3_latest12/inputs/c61ff92ce9a1_unet.json": "084b56a9a4ae7eee38ac6e5f6eadb201ecd45b7aa183d08550c450169bd53a73",
+    "update/paper_evidence_20261106/figure3_latest12/inputs/eaa8b28fa1d0_deepseek_v3.json": "9e32e12c8f88356fb856c704f0cfbdaa02bbc1b8452a30bd2938e070932226d0",
+    "update/paper_evidence_20261106/figure3_latest12/inputs/1e908e59f521_llama1_13b.json": "f9d39315c366f2bd0a1acf0d0b1e3d48c02428feb0f7d292ad676fbe47a34c16",
+    "update/paper_evidence_20261106/figure3_latest12/inputs/dc51470c859d_llama1_65b.json": "f9f683cde6a0874e99e9d500f091ba5852ac71df700eb57edb25c71f3e87ede4",
+    "update/paper_evidence_20261106/figure3_latest12/inputs/8d5eb69f9f82_llama3_70b.json": "1986776c1c141117227c8d2fce19c463a6ef0614c9ea103244f73cab241ea4d6",
+    "update/paper_evidence_20261106/figure3_latest12/inputs/ec2aaf2d87fb_result.json": "0c3bf2284e72533b76f5498abbeddec59b30594d038cda28ff9e9fa1f9d947ef",
+    "update/paper_evidence_20261106/figure3_latest12/inputs/32db5a81b40b_result.json": "a108c5dd5341e030f09bf1a00da3df62108e0cd029c84c611390ebe69e0f487d",
+    "update/paper_evidence_20261106/figure3_latest12/inputs/a6ea9d77b633_result.json": "0dfca8165f35898111e7fad4b49295beeb07b6a83ae31ab776bcdfde4107d64d",
+    "update/paper_evidence_20261106/figure3_latest12/inputs/163a440f44ad_result.json": "75a15bd4afd2e96d8454720a3861f2b879c85ec9d899cc00bc9e3386a21b3158",
+    "update/paper_evidence_20261106/figure3_latest12/inputs/f16d0c44448a_result.json": "f545fe2faa516b7268bc70da31275079c955667dc46f9d25c9fa78daabcdefa2",
+    "update/paper_evidence_20261106/figure3_latest12/inputs/e9c858be6801_family.json": "8282e87c77abd9a6618eaec7ead0dd4ba25814de75e54b0c36a76fdfd63e8745",
+    "update/paper_evidence_20261106/figure3_latest12/inputs/d400f4da2cea_family.json": "81675aac46a5a4008e4f221f2f35a0f6482d59a4a82a4353912efcecfa1ebbf1",
+    "update/paper_evidence_20261106/figure3_latest12/inputs/dda781883cfd_result.json": "4e1d8cb5e94ca3d1a0e249b50bf6f1367fa99667de41d91766e53c3de8af8eeb",
+    "update/paper_evidence_20261106/figure3_latest12/inputs/7098d49c6c72_result.json": "8262d444cf7e02af8f82aacf8374a8787dd678caafd3ab194eb948f42a9c6b2b",
+    "update/paper_evidence_20261106/figure3_latest12/inputs/3c96da7d7e3a_result.json": "9694dd4b78ac27455d69ed8388828556aedd98333955686c8ce4e4d77a1298f7",
+    "update/paper_evidence_20261106/figure3_latest12/inputs/8e16baa9da24_result.json": "d1283e622ee372e1dd9e4c054f9a0b08751ae255a44f4e9d4c21ecf45c5eed1b",
+    "update/paper_evidence_20261106/figure3_latest12/inputs/b544a4236302_result.json": "c2db44d2fd70acf967bc4d5286e86dc678c7fea40235b36c60de91ea311dadf7",
+    "update/paper_evidence_20261106/figure3_latest12/inputs/308a8cad708a_result.json": "7c7a273428ffb9ff71bd5a28d38b8f2bfe6f4a4a08b52702b0602f9c11f03cd2",
+    "update/paper_evidence_20261106/figure3_latest12/inputs/1265f084bb46_result.json": "59a678af4bf7980b873d947c0fbb82cbc681e1a653e9f66298bcfc5ab39bc4a4",
+    "update/paper_evidence_20261106/figure3_latest12/inputs/51c815de380c_result.json": "9f397e7906ef85aa557867e0f0851b3cf2d111599ea8267dfb7da2c8f7db985c",
+    "update/paper_evidence_20261106/figure3_pies_v2/input_manifest.json": "6103f959535ca43fdd1dacd037f9763bd6bba0ccf9e386552d0249fabf415b26",
+    "update/paper_evidence_20261106/figure3_pies_v2/inputs/deepseek_controls.json": "09e57f8c32b73136fbe639db6fcb56c2dd9919e65d8a8635f1c7729f3cd6dcb2"
+  },
+  "normalization": "Positive control time savings normalized to sum to one. Displayed percentages also sum to 100.00. These are visual estimates, not an exhaustive partition of the full reference-to-design saving.",
+  "overlap": "Conditional effects can overlap; no sum of independent feature factors or causal coverage claim. DeepSeek prefetch and second-context increments form one ordered split of the delivery control.",
+  "reference_scope": "Headlines are unchanged Baseline 2 analytical decode ratios from the current results table. Historical Figure 2 stays unchanged.",
+  "feature_scope": "13B and 65B isolate the four requested control categories. 70B GQA is KV-read reuse, distinct from KV retention. DeepSeek provides the additional encoded fusion and delivery categories; its resident arenas remain inherited.",
+  "new_optimizer_calls": 0,
+  "new_physical_or_full_source_admission": false,
+  "source_sha256": "c8e38f0856a33dbfd762f851b6bdb3604bc2c4950868e84f21424c4563670156"
+}

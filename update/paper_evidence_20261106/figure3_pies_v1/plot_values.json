@@ -1,0 +1,172 @@
+{
+  "passed": true,
+  "normalization": "w0=T_selected; wi=T_off_i-T_selected; share_i=wi/sum(w). Positive conditional penalties may overlap. Denominator is an accounting sum, not a claimed all-features-off or reference runtime.",
+  "ratio_scope": "Unchanged paper Baseline 2, matrix-and-associated-traffic task; separate chips, analytical performance.",
+  "panels": [
+    {
+      "workload": "deepseek_v3",
+      "label": "DeepSeek-V3",
+      "phase": "Decode",
+      "selected_ns": "1506875157083872/23549",
+      "reference_ratio": 7.822551697606888,
+      "normalization_ns": "73742462609144743/1059705",
+      "weights": [
+        {
+          "label": "Selected execution",
+          "ns": "1506875157083872/23549",
+          "scope": "Current selected execution time.",
+          "share_exact": "67809382068774240/73742462609144743",
+          "percent": 91.95432274642434
+        },
+        {
+          "label": "HW menu",
+          "ns": "42296465267713/1059705",
+          "scope": "Old versus new whole-chip branch with the new software menu available in both; hardware changes.",
+          "share_exact": "42296465267713/73742462609144743",
+          "percent": 0.05735700134113483
+        },
+        {
+          "label": "Producer",
+          "ns": "31758271976694/23549",
+          "scope": "Same current chip, other feature retained, declared feature-off menu reoptimized.",
+          "share_exact": "1429122238951230/73742462609144743",
+          "percent": 1.9379909327492486
+        },
+        {
+          "label": "Delivery",
+          "ns": "99148040803368/23549",
+          "scope": "Same current chip, other feature retained, declared feature-off menu reoptimized.",
+          "share_exact": "4461661836151560/73742462609144743",
+          "percent": 6.050329319485288
+        }
+      ]
+    },
+    {
+      "workload": "llama1_65b",
+      "label": "Llama-1 65B",
+      "phase": "Decode",
+      "selected_ns": "1404992478347/35",
+      "reference_ratio": 13.985218058189174,
+      "normalization_ns": "42418389085306404/42055",
+      "weights": [
+        {
+          "label": "Selected execution",
+          "ns": "1404992478347/35",
+          "scope": "Current selected execution time.",
+          "share_exact": "11817391735376617/296928723597144828",
+          "percent": 3.979874897993954
+        },
+        {
+          "label": "HW menu",
+          "ns": "4568112807716803/294385",
+          "scope": "WO23 old/new hardware branches with the new mapping menu in both; old 65B hardware exceeds the primary area bound.",
+          "share_exact": "4568112807716803/296928723597144828",
+          "percent": 1.5384543308496303
+        },
+        {
+          "label": "14 to 25 maps",
+          "ns": "13712247648/35",
+          "scope": "WO23 mapping-menu control on the same chip retained by WO24; other policies fixed.",
+          "share_exact": "9611142913944/24744060299762069",
+          "percent": 0.038842222325316665
+        },
+        {
+          "label": "Weights",
+          "ns": "2957761005840/7",
+          "scope": "Same selected chip/mapping, restore all original nonresident weight imports and writes.",
+          "share_exact": "10365719925050100/24744060299762069",
+          "percent": 41.89175017953611
+        },
+        {
+          "label": "KV",
+          "ns": "530051620288",
+          "scope": "Same selected chip; canonical prefixes restored by qualified indexed-copy recipe; initial/tail writes still paid.",
+          "share_exact": "5572830222802960/10604597271326601",
+          "percent": 52.55107836929499
+        }
+      ]
+    },
+    {
+      "workload": "unet",
+      "label": "SD1.5 UNet",
+      "phase": "Denoiser call",
+      "selected_ns": "691767681294251064350904757070807180969/7331173758150968144303017164800",
+      "reference_ratio": 2.245597789576985,
+      "normalization_ns": "711968520263105931429349748060000059183/5498380318613226108227262873600",
+      "weights": [
+        {
+          "label": "Selected execution",
+          "ns": "691767681294251064350904757070807180969/7331173758150968144303017164800",
+          "scope": "Current selected execution time.",
+          "share_exact": "2075303043882753193052714271212421542907/2847874081052423725717398992240000236732",
+          "percent": 72.87200855158002
+        },
+        {
+          "label": "Cast",
+          "ns": "22127836744469506324816169930919739183/5498380318613226108227262873600",
+          "scope": "Buffering enabled; original output stores and rounding retained.",
+          "share_exact": "22127836744469506324816169930919739183/711968520263105931429349748060000059183",
+          "percent": 3.10797965284929
+        },
+        {
+          "label": "Buffers",
+          "ns": "228019896730597502455140013767966579031/7331173758150968144303017164800",
+          "scope": "Cast/epilogue storage enabled; gains are conditional, not additive.",
+          "share_exact": "684059690191792507365420041303899737093/2847874081052423725717398992240000236732",
+          "percent": 24.020011795570685
+        }
+      ]
+    },
+    {
+      "workload": "efficientnet_b3",
+      "label": "EfficientNet-B3",
+      "phase": "Forward",
+      "selected_ns": "4318588540081169/500000000",
+      "reference_ratio": 11.427333650211226,
+      "normalization_ns": "4125484426794619/200000000",
+      "weights": [
+        {
+          "label": "Selected execution",
+          "ns": "4318588540081169/500000000",
+          "scope": "Current selected execution time.",
+          "share_exact": "8637177080162338/20627422133973095",
+          "percent": 41.872304857411244
+        },
+        {
+          "label": "Owners",
+          "ns": "11990245053810757/1000000000",
+          "scope": "OCS-ranked whole-owner analytical recovery with concrete SRAM owner intervals; fixed hardware/mapping, original costs, no global optimality",
+          "share_exact": "11990245053810757/20627422133973095",
+          "percent": 58.127695142588756
+        }
+      ]
+    }
+  ],
+  "replays": {
+    "deepseek": {
+      "path": "update/paper_evidence_20261106/figure3_pies_v1/replays/deepseek/result.json",
+      "sha256": "61fc81a144a23af2a54bc15eeb60ed52a14a296a5465726b2d7e9cd6bbeb7428"
+    },
+    "unet": {
+      "path": "update/paper_evidence_20261106/figure3_pies_v1/replays/unet_v2/result.json",
+      "sha256": "dac43b1c769c35d78eb972c388584431b76ef6a6d9b0568f55f6a61809a356ff"
+    },
+    "llama_weights": {
+      "path": "update/paper_evidence_20261106/figure3_pies_v1/replays/llama_weights_v2/result.json",
+      "sha256": "5f0ecf34192e4488976523fbfa13715ef339c7d9c91b3e7dbc45af19cdd50c78"
+    },
+    "llama_kv": {
+      "path": "update/paper_evidence_20261106/figure3_pies_v1/replays/llama_kv_v2/result.json",
+      "sha256": "ed3b86b1eadab94d89b07abb471f303159e3f6c5a1876551a2debb04b8c0006f"
+    },
+    "b3": {
+      "path": "update/paper_evidence_20261106/figure3_pies_v1/replays/b3/result.json",
+      "sha256": "83b9c24b41ac49bfbbfd556556ca8bd55f2f57bfdaa9bd40a601914a04994404"
+    }
+  },
+  "new_optimizer_calls": 0,
+  "full_historical_source_readmission": false,
+  "b3_scope": "Two slices exactly divide the same-chip materialized control; no unmeasured B3 hardware/tiling/fusion attribution.",
+  "table_values_sha256": "146b3656169ae55bf1825074c2ceed12a248f50bde57e322a36e59edbec2d889",
+  "source_sha256": "abd6bc3d0e97d9e95c2d96c4d63ea4b781c30ad39d38a2342e579035032641cb"
+}

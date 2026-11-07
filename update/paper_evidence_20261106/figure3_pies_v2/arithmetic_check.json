@@ -1,0 +1,40 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "workload": "deepseek_v3",
+      "continuous_endpoint_chain": true,
+      "positive_signed_differences": true,
+      "exact_sum": true,
+      "displayed_sum_percent": 100,
+      "groups": 3
+    },
+    {
+      "workload": "llama1_65b",
+      "continuous_endpoint_chain": true,
+      "positive_signed_differences": true,
+      "exact_sum": true,
+      "displayed_sum_percent": 100,
+      "groups": 3
+    },
+    {
+      "workload": "unet",
+      "continuous_endpoint_chain": true,
+      "positive_signed_differences": true,
+      "exact_sum": true,
+      "displayed_sum_percent": 100,
+      "groups": 3
+    },
+    {
+      "workload": "efficientnet_b3",
+      "continuous_endpoint_chain": true,
+      "positive_signed_differences": true,
+      "exact_sum": true,
+      "displayed_sum_percent": 100,
+      "groups": 2
+    }
+  ],
+  "new_numerical_optimizer_calls": 0,
+  "scope": "Independent arithmetic and source hash checks of the emitted figure records; does not repeat source admission.",
+  "plot_values_sha256": "72a21d8e11b9310e91273f622ba14a56486edf80e7899943fc443dd97e133b73"
+}

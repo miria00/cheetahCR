@@ -1,0 +1,164 @@
+{
+  "passed": true,
+  "task": "SD1.5 UNet, batch1 latent64x64 context77, one denoiser call",
+  "phase": "forward_denoiser_only",
+  "baseline": "unchanged approved paper Baseline2 matrix streaming sum",
+  "reference_ns": "116489976703165140625/549755813888",
+  "rows": [
+    {
+      "id": "inherited_WO14",
+      "latency_ns": "705505826180259908655427283154568479263/7331173758150968144303017164800",
+      "latency_ms": 96.23367955177194,
+      "reference_ratio": 2.201869805137878,
+      "provenance": "unchanged original source control"
+    },
+    {
+      "id": "actual_OCS_BB_recovery",
+      "latency_ns": "8399797601369994421573767409718866799711/87974085097811617731636205977600",
+      "latency_ms": 95.48036324595937,
+      "reference_ratio": 2.219242009967198,
+      "provenance": "saved controller incumbent; raw dual gap open"
+    },
+    {
+      "id": "complete_finite_action_recovery",
+      "latency_ns": "691767681294251064350904757070807180969/7331173758150968144303017164800",
+      "latency_ms": 94.35974430767348,
+      "reference_ratio": 2.245597789576985,
+      "provenance": "separate exhaustive exact source action recovery, not OCS convergence"
+    }
+  ],
+  "selected_result": "complete_finite_action_recovery",
+  "candidate_provenance": "exact finite source-priced recovery after actual bounded joint OCS/B&B",
+  "hardware": {
+    "V": 512,
+    "bw": 2697.6,
+    "memtech": "HBM",
+    "pe_type": [
+      "sq16x16",
+      128
+    ],
+    "persistent_mib": 0.0,
+    "tiles_int": 272
+  },
+  "all_eight_original_physical_proxy_gates_passed": true,
+  "full_physical_signoff": false,
+  "original_source_events": 3258,
+  "priced_source_events": 1640,
+  "unpriced_source_events": 1618,
+  "scope": "Complete supplied eight-chip action family and all original priced events; long-lived owners remain DRAM; inherited analytical bank/fabric contract.",
+  "full_semantic_cost": false,
+  "full_image_latency": false,
+  "autoregressive_decode": false,
+  "source_accounting_qualified": true,
+  "new_mechanism": "Three-buffer wave group retains complete FP32 output through its original unique RTE cast; dead operand space stages BF16 before paid DRAM write.",
+  "all_original_outputs_and_rounding_preserved": true,
+  "OCS_calls": 8,
+  "OCS_updates": 6500,
+  "numerical_tree_complete": false,
+  "numerical_replay_lower_ns": "47996476434612705180419705518952250534419716659028768276427/801591955048791972743761864380802491469750547251200",
+  "numerical_replay_upper_ns": "8399797601369994421573767409718866799711/87974085097811617731636205977600",
+  "numerical_relative_gap_exact": "28539814608484688333168723415855238362435656408934252874805/76536291043097393513588428934807488896855373067963021151232",
+  "separate_finite_L_ns": "691767681294251064350904757070807180969/7331173758150968144303017164800",
+  "separate_finite_U_ns": "691767681294251064350904757070807180969/7331173758150968144303017164800",
+  "omitted_hardware_or_actions_bounded": false,
+  "full_master_claim": false,
+  "signed_controls": [
+    {
+      "buffer": 0,
+      "cast": 0,
+      "latency_ns": "1153486848377/8992",
+      "latency_ms": 128.27923135865214,
+      "matrix_pair_DRAM_bytes": 114834458240,
+      "mode_counts": {
+        "serial": 794
+      },
+      "mapping_and_hardware_fixed": true
+    },
+    {
+      "buffer": 0,
+      "cast": 1,
+      "latency_ns": "1128159033525/8992",
+      "latency_ms": 125.46252597030694,
+      "matrix_pair_DRAM_bytes": 106972124288,
+      "mode_counts": {
+        "serial": 135,
+        "epilogue": 659
+      },
+      "mapping_and_hardware_fixed": true
+    },
+    {
+      "buffer": 1,
+      "cast": 0,
+      "latency_ns": "2163814390860631218351978950936100499639/21993521274452904432909051494400",
+      "latency_ms": 98.38417249601868,
+      "matrix_pair_DRAM_bytes": 114834458240,
+      "mode_counts": {
+        "serial": 394,
+        "buffered": 400
+      },
+      "mapping_and_hardware_fixed": true
+    },
+    {
+      "buffer": 1,
+      "cast": 1,
+      "latency_ns": "691767681294251064350904757070807180969/7331173758150968144303017164800",
+      "latency_ms": 94.35974430767348,
+      "matrix_pair_DRAM_bytes": 106972124288,
+      "mode_counts": {
+        "serial": 73,
+        "buffered_cast": 338,
+        "epilogue": 321,
+        "buffered": 62
+      },
+      "mapping_and_hardware_fixed": true
+    }
+  ],
+  "buffer_cast_interaction_ns": "6640519273860458252352576959247777583/5498380318613226108227262873600",
+  "hardware_software_factorial": {
+    "A": "705505826180259908655427283154568479263/7331173758150968144303017164800",
+    "B": "691767681294251064350904757070807180969/7331173758150968144303017164800",
+    "C": "705505826180259908655427283154568479263/7331173758150968144303017164800",
+    "D": "691767681294251064350904757070807180969/7331173758150968144303017164800",
+    "interaction_ns": "0",
+    "selected_hardware_equals_incumbent": true,
+    "hardware_gain_claim": false
+  },
+  "improvement_from_old_ns": "6869072443004422152261263041880649147/3665586879075484072151508582400",
+  "improvement_fraction_exact": "13738144886008844304522526083761298294/705505826180259908655427283154568479263",
+  "metrics": {
+    "DRAM_payload_bytes": 107141870624,
+    "useful_MACs": 401636720640,
+    "analytical_physical_slot_MACs": 438224240640,
+    "useful_MFU_exact": "718864401041450028202873562628882432000/11760050582002268093965380870203722076473",
+    "physical_slot_utilization_exact": "784350110636133551151860263453458432000/11760050582002268093965380870203722076473",
+    "original_owner_peak_bytes": 2066960000,
+    "installed_DRAM_bytes": 34359738368,
+    "private_scratch_peak_per_tile": 16384
+  },
+  "bindings": {
+    "/tmp/cheetah_wo23_20261106_v1/unet_lane_v1/prepared_v2/request.json": "f12b0e7d961d0667f6c6413ab5f30cd8883f798cc7089774cc6d3144a7d42c1c",
+    "/tmp/cheetah_wo23_20261106_v1/unet_lane_v1/prepared_v2/source_program.json": "f9689190ebc1d00992d12c8c550483ab44724d90afb87f281519d4f7a14e3397",
+    "/tmp/cheetah_wo23_20261106_v1/unet_lane_v1/finite_replay_v3/result.json": "cee7c7cbc45a84dacd099cd01b4c599e1c222dea05231fe5160dba624410233f",
+    "/tmp/cheetah_wo23_20261106_v1/unet_lane_v1/finite_replay_v3/candidate.json": "a1c84cce5942d994222b6acbe46ce3872ff8b15bdd8a43f276f52fd07364de14",
+    "/tmp/cheetah_wo23_20261106_v1/unet_lane_v1/finite_replay_v3/finite_certificate.json": "ef89f46cdf45d29ba90474beee063875371cd92e47496065798e485f63c72460",
+    "/tmp/cheetah_wo23_20261106_v1/unet_lane_v1/ocs_replay_v2/result.json": "7cc11ca18f0ac51f2189b0f7840755bc35827af7d552fdfa4808d0ffbea99204",
+    "/tmp/cheetah_wo23_20261106_v1/unet_lane_v1/numerical_v1/result.json": "faedeb827a9a4a0bed2a747d2d7b0e05a7813b478226fc43f09adea85145aba3",
+    "/tmp/cheetah_wo23_20261106_v1/unet_lane_v1/saved_endpoint_audit_v1/result.json": "0e94704ab1be92868b4e292991e92675fccdc0d73e1f88a11602013ead83ac5e",
+    "/tmp/cheetah_wo23_20261106_v1/unet_lane_v1/negative_controls_v1/result.json": "acd482a6c3df55f4dba4cf5b8ad025fbc716b4ec3215d61ef8d92b89410f2cce",
+    "/tmp/cheetah_wo14_20261105_v1/unet_buffered/root/input/reference.json": "e5e034f9a6654dbefe18cc2aa843fe5d26bf0bf96ed5dbf0605262f4ebdae9ca",
+    "/home/miria/CORGIsolve/systems/cheetah_joint/wo23_unet_actions.py": "e1295915e35870b972eb603da5dc747dbd424fa4ffb91dfdcd84f2632ddefee3",
+    "/home/miria/CORGIsolve/systems/cheetah_joint/wo23_unet_check.py": "623d1a0034828714eb3fbbadd4adbdfab6c810390c751f3e024c2a40f3e54618",
+    "/home/miria/CORGIsolve/systems/cheetah_joint/wo23_joint_bnb.py": "d66f35eea47093c64b5d9954765088e81157f73cab1f14f074ef2c9b1730ee9f",
+    "/home/miria/CORGIsolve/systems/cheetah_joint/wo19_memory_adapter.py": "b47600bb977eabf02c932f88308e5198f8c80b242b898e0face599f51a5359c9",
+    "/home/miria/CORGIsolve/systems/cheetah_joint/unet_wave_candidate.py": "e287a891d7ca4288a0afe5899093e1dc77972c38ab64efb8354ec6eba793f27b",
+    "/home/miria/CORGIsolve/systems/cheetah_joint/unet_typed_source.py": "7647555f1cc8e129b56631cd89674921723ac7881c7180eddc679f07c0d0476d",
+    "/home/miria/CORGIsolve/systems/cheetah_joint/wo13_unet_epilogue.py": "579dcb64845f7f6c4db3b74b2f79dd707c896a523668266abdbe4c92e392cad7",
+    "/home/miria/CORGIsolve/systems/cheetah_joint/wo14_unet_buffered.py": "a8fd9ffdee7310066090390c532b521d62a8d158d844d16496d99c18463d65e6",
+    "/home/miria/CORGIsolve/systems/cheetah_joint/physical_model.py": "9dfaef3606a7d3f54bdeff7fd027f2a5810498f23f8409018aab9470fd199892",
+    "/home/miria/CORGIsolve/systems/cheetah_joint/historical_b3_source.py": "c8020cdb87d367d4f59e1b2ad02b94056a8f4a5fccc09e745279780fbb054fde",
+    "/home/miria/CORGIsolve/systems/cheetah_joint/local_fabric.py": "0a677354c9153ec0c460bb94a749da3af3f9ecadf19331ad4936b294fc83585c",
+    "/home/miria/CORGIsolve/systems/cheetah_joint/joint_lp.py": "efe15fcf9c7c2375c96fe1d34dd6aab0a89330e0d390877da1f3a13ffc9895ab",
+    "/home/miria/CORGIsolve/systems/cheetah_joint/build_library.py": "d6cf893e505fc464f05eb0a35d785ab05996df724e44174bf352b52f7db4ce56",
+    "/home/miria/CORGIsolve/systems/cheetah_joint/ocs_lp_backend.py": "289a06d9d47f94f7b684a94bd209a73efe93fe1791c896cdd3f1112243dc04e9"
+  }
+}

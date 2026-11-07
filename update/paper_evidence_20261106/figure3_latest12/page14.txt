@@ -1,0 +1,36 @@
+Figure 3: Retained historical prefill attribution under the original campaign’s numerical and traffic
+conventions. The artwork’s V1 label denotes joint tiling and fusion. Table 8 gives the latest results and
+matched feature controls for all twelve workloads; these are separate from the historical percentages
+above.
+
+
+
+Table 8: Latest twelve-workload performance and matched feature ablations. The total acceleration
+uses unchanged paper Baseline 2 (modeled TPU-v3). Feature factors compare an ablated execution
+with the selected execution on the same chip; they are not shares of the total acceleration.
+Workload          Task            Total Feature removed / restricted                                     Saved, ms       Factor
+EfficientNet-B1   Forward 11.849× Not isolated for this point                                                   NR         NR
+EfficientNet-B2   Forward  6.680× Whole-owner mode                                                            2.846   1.3818×
+EfficientNet-B3   Forward 11.427× Not isolated for this point                                                   NR         NR
+EfficientNet-B4   Forward  9.621× Spatial mapping + buffers                                                   3.459   1.1413×
+EfficientNet-B5   Forward  9.937× Not isolated for this point                                                   NR         NR
+EfficientNet-B6   Forward  7.803× Spatial mapping + buffers                                                  12.285   1.0874×
+EfficientNet-B7   Forward  7.800× Not isolated for this point                                                   NR         NR
+SD1.5 UNet        Denoiser 2.246× Cast/epilogue storage                                                       4.024   1.0426×
+                                  Operand buffering                                                          31.103   1.3296×
+DeepSeek-V3       Decode   7.823× Producer-layout fusion                                                  1,348.604   1.0211×
+                                  Delivery/concurrency                                                    4,210.287   1.0658×
+Llama-1 13B       Decode 11.092× Six new full-K mappings                                                     59.881   1.0057×
+Llama-1 65B       Decode 13.985× Expanded full-K mappings                                                   391.779   1.0098×
+Llama-3 70B       Decode 17.932× Expanded full-K mappings                                                   480.682   1.0142×
+Saved time is Toff − Ton ; factor is Toff /Ton . Conditional gains overlap and must not be added. B4/B6 controls remove a
+combined mapping/buffering recipe. NR means no isolated matched control for the selected point, not zero benefit. The latest
+inventory adds WO24 DeepSeek and 13B results, retaining the WO23 UNet/65B/70B and earlier EfficientNet results. These
+are separate designs and analytical matrix-and-associated-traffic results, not measured TPU-v3 performance. Decoder physical
+qualification is open. Prefill results are separate in Table 1; decoder feature coverage and further controls follow in Table 9.
+
+
+
+
+                                                              14
+

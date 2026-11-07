@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "case": "b3",
+  "wall_seconds": 0.016141260042786598,
+  "optimizer_calls": 0,
+  "new_hardware_search": false,
+  "details": {
+    "scope": "Fresh saved-timeline reconstruction of 287 original operations in both controls; original source admission, owner placement and mapper algorithms inherited.",
+    "operations_per_control": 287,
+    "totals_ms": {
+      "materialized": 20.627422133973095,
+      "whole_owner": 8.637177080162338
+    },
+    "saved_ms": 11.990245053810757
+  },
+  "bindings": {
+    "/home/miria/CORGIsolve/cheetahCR/update/paper_evidence_20261106/figure3_latest12/inputs/1b90a7dadd75_efficientnet_b3.json": "fc6f894b674215d70ffdad9b72b544db2a09e120ad7e304122dc1d6464132b14",
+    "/home/miria/CORGIsolve/cheetahCR/update/paper_evidence_20261106/figure3_latest12/inputs/32db5a81b40b_result.json": "a108c5dd5341e030f09bf1a00da3df62108e0cd029c84c611390ebe69e0f487d"
+  },
+  "script_sha256": "e045a66d779228e2d30930c0d81c529700d2db3ba2f8074d0a7346a82ef06ee2"
+}

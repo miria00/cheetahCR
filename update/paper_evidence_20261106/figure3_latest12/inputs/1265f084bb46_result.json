@@ -1,0 +1,77 @@
+{
+  "passed": true,
+  "workload": "llama1_13b",
+  "hardware": {
+    "MACs_per_array": 256,
+    "accumulator_bank_bytes": 1024,
+    "array_fill_cycles": 38,
+    "array_geometry": [
+      8,
+      32
+    ],
+    "bandwidth": 8601,
+    "bank_control_bytes_per_bank": 256,
+    "bank_control_total_bytes": 655360,
+    "endpoint_queue_depth": 512,
+    "host_GBps": 192,
+    "host_interface_units": 6,
+    "installed_bank_count": 2560,
+    "legacy_bank_mode": false,
+    "local_GBps": 32768,
+    "local_service_units": 8,
+    "operand_bank_bytes": 1024,
+    "operand_bank_pairs": 640,
+    "operand_port_width_bytes": 32,
+    "operand_read_ports_per_array": 3,
+    "skew_bytes_per_array": 1088,
+    "sram_mib": 6.375,
+    "staging_bank_bytes": 65536,
+    "staging_banks": 32,
+    "staging_bytes": 2097152,
+    "staging_control_bytes": 65536,
+    "tiles": 640,
+    "vector_lanes": 2560
+  },
+  "base_ns": "29935343674115/2867",
+  "controls": {
+    "Weight residency": {
+      "off_ns": "309065686013215/2867",
+      "on_ns": "29935343674115/2867",
+      "saved_ns": "279130342339100/2867",
+      "scope": "Restore all original descriptor imports with setup, two staging passes and DRAM writes. Kernel weight reads and first imports stay paid; import constants are independent of mapping."
+    },
+    "KV retention": {
+      "off_ns": "572887871540615/2867",
+      "on_ns": "29935343674115/2867",
+      "saved_ns": "542952527866500/2867",
+      "source_reload_descriptors": 1308160,
+      "scalar_calendar_classes": 511,
+      "service_terms_ns": {
+        "host": "128592343040",
+        "staging": "46906408960",
+        "DRAM_write": "7997148364800/2867",
+        "indexed_vector": "6432201600",
+        "indexed_local": "4659691500"
+      },
+      "scope": "Original indexed KV reload contract on current WO24 hardware. All original cat work, initial writes and tails remain paid; same original head-major operands restored. Original lifetime proof inherited; extra imports and mapping costs rechecked."
+    }
+  },
+  "eligible_weights": 281,
+  "bindings": {
+    "/home/miria/CORGIsolve/Results/Blueprints/WO24/records/llama1_13b.json": "f9d39315c366f2bd0a1acf0d0b1e3d48c02428feb0f7d292ad676fbe47a34c16",
+    "/tmp/cheetah_wo24_20261106_v1/selected_inputs_v1/llama1_13b_source_replay.json": "a07c8a0b0097922f5687365bf69fc7200652bb19000c914f6401ad0ef1aca8dd",
+    "/tmp/cheetah_wo24_20261106_v1/dense_lane_v1/13/mapping_source_v1/source.json": "ff7b9f6dafe07537c645caa78e4bcf2124675af733f3d74b61d80ff2ad280568",
+    "/tmp/cheetah_wo21_20261105_v1/dense/13/exchange_H15_v1/result.json": "2a79b798541756282d9d888876292bdfd8e53b32287a409825dae5a1f5c6fc9b",
+    "/tmp/cheetah_wo21_20261105_v1/dense/13/token_major_source_v3/result.json": "9938f95ee12aadfa5ef625e221570b6cbe921904a98964ddb23c71ee5120a6c7",
+    "/tmp/cheetah_wo13_20261104_v1/llama/prepared13_gap_v1/kv_gap_pages.npy": "9dcc08efba3834685251edca4ae0231f7e99175c78b3c3a09a1802a45939e735",
+    "/tmp/cheetah_wo21_20261105_v1/dense/13/token_major_source_v3/source_schedule.npz": "d8832e6457f1ab30a22a84bada1aa0537e45d955021668085b5d67454b6d6b7f",
+    "/home/miria/CORGIsolve/systems/cheetah_joint/wo22_dense_staging.py": "d33eae7b7bcfe4d42008113eb771ef529f523c971dba4fb819e6a7ffceada9e1",
+    "/home/miria/CORGIsolve/systems/cheetah_joint/wo23_dense_mapping.py": "8495779753256a596cd51e4d83bec44f8e6fe5740f13d32b98aab4aea80566a3",
+    "/home/miria/CORGIsolve/systems/cheetah_joint/wo24_dense_banks.py": "2ede4d487769ce4275e219f193cb3110f007bf744d9c477e39b61d3b0186e232",
+    "/home/miria/CORGIsolve/systems/cheetah_joint/wo23_dense_banks_geometry_v2.py": "2d5d19478272c710f08f5a077e601a7aa84fb0efa3371d9f64c9512416dbfa5f",
+    "/home/miria/CORGIsolve/systems/cheetah_joint/wo14_gqa_candidate.py": "b74bbd2394d20603c9975bca28883c1f9610b9b810cb94b78b97ab1447ebba91"
+  },
+  "optimizer_calls": 0,
+  "source_admission": "Inherited original source contracts; fresh full finite kernel and descriptor cost controls only. Not new full-model execution, quality or physical timing.",
+  "script_sha256": "4d819df2022ac4a14e145ef722dabfaddb144862a798647b29da6490defeb622"
+}

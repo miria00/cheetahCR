@@ -1,0 +1,228 @@
+{
+  "sources": {
+    "/home/miria/CORGIsolve/Results/Blueprints/WO24/records/efficientnet_b1.json": {
+      "file": "inputs/9f3b77966c2e_efficientnet_b1.json",
+      "sha256": "95dcb551fd32caf9ebed17e28f6b4f358f2036cd60c2c4ccc5682062e48c1012"
+    },
+    "/home/miria/CORGIsolve/Results/Blueprints/WO24/records/efficientnet_b2.json": {
+      "file": "inputs/f0c4237bc2d2_efficientnet_b2.json",
+      "sha256": "7a4f63d98b16431c11e08737c11d0c732d2078d2f589cbcb7bfccee361e1ed0a"
+    },
+    "/home/miria/CORGIsolve/Results/Blueprints/WO24/records/efficientnet_b3.json": {
+      "file": "inputs/1b90a7dadd75_efficientnet_b3.json",
+      "sha256": "fc6f894b674215d70ffdad9b72b544db2a09e120ad7e304122dc1d6464132b14"
+    },
+    "/home/miria/CORGIsolve/Results/Blueprints/WO24/records/efficientnet_b4.json": {
+      "file": "inputs/674694fefc66_efficientnet_b4.json",
+      "sha256": "3b186c948964117fce489e927502a3f60e2cdd3d574f53fefb3f6d29a345433b"
+    },
+    "/home/miria/CORGIsolve/Results/Blueprints/WO24/records/efficientnet_b5.json": {
+      "file": "inputs/64eb9257f310_efficientnet_b5.json",
+      "sha256": "984e20693237e79881877baaa011d4358086e51811beea2ff05d34ffaf1a183e"
+    },
+    "/home/miria/CORGIsolve/Results/Blueprints/WO24/records/efficientnet_b6.json": {
+      "file": "inputs/1b64bbf7949b_efficientnet_b6.json",
+      "sha256": "02cc450b60221f46e97c93301eb4a26657fd5847ed2cffbf35b1c5ff41cb603f"
+    },
+    "/home/miria/CORGIsolve/Results/Blueprints/WO24/records/efficientnet_b7.json": {
+      "file": "inputs/c34139258ba3_efficientnet_b7.json",
+      "sha256": "fca5f81dbb1181bcf8fb937609f9a5a56cb29773e157c7e284158709ad512484"
+    },
+    "/home/miria/CORGIsolve/Results/Blueprints/WO24/records/unet.json": {
+      "file": "inputs/c61ff92ce9a1_unet.json",
+      "sha256": "084b56a9a4ae7eee38ac6e5f6eadb201ecd45b7aa183d08550c450169bd53a73"
+    },
+    "/home/miria/CORGIsolve/Results/Blueprints/WO24/records/deepseek_v3.json": {
+      "file": "inputs/eaa8b28fa1d0_deepseek_v3.json",
+      "sha256": "9e32e12c8f88356fb856c704f0cfbdaa02bbc1b8452a30bd2938e070932226d0"
+    },
+    "/home/miria/CORGIsolve/Results/Blueprints/WO24/records/llama1_13b.json": {
+      "file": "inputs/1e908e59f521_llama1_13b.json",
+      "sha256": "f9d39315c366f2bd0a1acf0d0b1e3d48c02428feb0f7d292ad676fbe47a34c16"
+    },
+    "/home/miria/CORGIsolve/Results/Blueprints/WO24/records/llama1_65b.json": {
+      "file": "inputs/dc51470c859d_llama1_65b.json",
+      "sha256": "f9f683cde6a0874e99e9d500f091ba5852ac71df700eb57edb25c71f3e87ede4"
+    },
+    "/home/miria/CORGIsolve/Results/Blueprints/WO24/records/llama3_70b.json": {
+      "file": "inputs/8d5eb69f9f82_llama3_70b.json",
+      "sha256": "1986776c1c141117227c8d2fce19c463a6ef0614c9ea103244f73cab241ea4d6"
+    },
+    "/tmp/cheetah_wo14_20261105_v1/cnn/b2_actual_mode_response_v4/result.json": {
+      "file": "inputs/f16d0c44448a_result.json",
+      "sha256": "f545fe2faa516b7268bc70da31275079c955667dc46f9d25c9fa78daabcdefa2"
+    },
+    "/tmp/cheetah_wo14_20261105_v1/cnn/b4_flattened_prepared_v4/family.json": {
+      "file": "inputs/e9c858be6801_family.json",
+      "sha256": "8282e87c77abd9a6618eaec7ead0dd4ba25814de75e54b0c36a76fdfd63e8745"
+    },
+    "/tmp/cheetah_wo14_20261105_v1/cnn/b6_admission/prepared_v4/family.json": {
+      "file": "inputs/d400f4da2cea_family.json",
+      "sha256": "81675aac46a5a4008e4f221f2f35a0f6482d59a4a82a4353912efcecfa1ebbf1"
+    },
+    "/tmp/cheetah_wo23_20261106_v1/unet_lane_v1/delivery_v1/result.json": {
+      "file": "inputs/dda781883cfd_result.json",
+      "sha256": "4e1d8cb5e94ca3d1a0e249b50bf6f1367fa99667de41d91766e53c3de8af8eeb"
+    },
+    "/tmp/cheetah_wo24_20261106_v1/authoritative_dataset_v1/result.json": {
+      "file": "inputs/7098d49c6c72_result.json",
+      "sha256": "8262d444cf7e02af8f82aacf8374a8787dd678caafd3ab194eb948f42a9c6b2b"
+    },
+    "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/delivery_v1/result.json": {
+      "file": "inputs/3c96da7d7e3a_result.json",
+      "sha256": "9694dd4b78ac27455d69ed8388828556aedd98333955686c8ce4e4d77a1298f7"
+    }
+  },
+  "performance": {
+    "efficientnet_b1": {
+      "reference_ratio": 11.848610308453322,
+      "status": "INHERITED_UNCHANGED"
+    },
+    "efficientnet_b2": {
+      "reference_ratio": 6.679988602614596,
+      "status": "INHERITED_UNCHANGED"
+    },
+    "efficientnet_b3": {
+      "reference_ratio": 11.427333650211226,
+      "status": "INHERITED_UNCHANGED"
+    },
+    "efficientnet_b4": {
+      "reference_ratio": 9.620538774036207,
+      "status": "INHERITED_UNCHANGED"
+    },
+    "efficientnet_b5": {
+      "reference_ratio": 9.936807558544766,
+      "status": "INHERITED_UNCHANGED"
+    },
+    "efficientnet_b6": {
+      "reference_ratio": 7.803333523248506,
+      "status": "INHERITED_UNCHANGED"
+    },
+    "efficientnet_b7": {
+      "reference_ratio": 7.799624193093018,
+      "status": "INHERITED_UNCHANGED"
+    },
+    "unet": {
+      "reference_ratio": 2.245597789576985,
+      "status": "RETAINED_WO23_SOURCE_COST_POINT"
+    },
+    "deepseek_v3": {
+      "reference_ratio": 7.822551697606888,
+      "status": "WO24_SOURCE_CHECKED_ANALYTICAL_RESEARCH_POINT_PHYSICAL_UNQUALIFIED"
+    },
+    "llama1_13b": {
+      "reference_ratio": 11.09173813918838,
+      "status": "WO24_SOURCE_CHECKED_ANALYTICAL_RESEARCH_POINT_PHYSICAL_UNQUALIFIED"
+    },
+    "llama1_65b": {
+      "reference_ratio": 13.985218058189174,
+      "status": "RETAINED_WO23_SOURCE_COST_POINT"
+    },
+    "llama3_70b": {
+      "reference_ratio": 17.932222859330256,
+      "status": "RETAINED_WO23_SOURCE_COST_POINT"
+    }
+  },
+  "controls": {
+    "efficientnet_b1": [],
+    "efficientnet_b2": [
+      {
+        "label": "Whole-owner mode",
+        "off_ns": "5150315069844611/500000000",
+        "on_ns": "7454681562134639/1000000000",
+        "saved_ns": "2845948577554583/1000000000",
+        "factor": "10300630139689222/7454681562134639",
+        "scope": "fixed admitted hardware, unchanged integral owner lifetimes; original source costs and rows; no full-master or automatic OCS solve claim"
+      }
+    ],
+    "efficientnet_b3": [],
+    "efficientnet_b4": [
+      {
+        "label": "Spatial mapping + buffers",
+        "off_ns": "4026220410295962345578125/144115188075855872",
+        "on_ns": "2511179439176376895062671119988526900749/102588427775270145545560683184128",
+        "saved_ns": "86642194815445145236093676187478681/25046002874821812877334151168",
+        "factor": "409437981305777172849958688236062796875/358739919882339556437524445712646700107",
+        "scope": "Joint mapping/buffering recipe on the retained fixed chip; no separate credits for its parts."
+      }
+    ],
+    "efficientnet_b5": [],
+    "efficientnet_b6": [
+      {
+        "label": "Spatial mapping + buffers",
+        "off_ns": "88152026223405729666234375/576460752303423488",
+        "on_ns": "480915182473047750988313605971999574396517/3419614259175671518185356106137600",
+        "saved_ns": "2564095570947574515300761798457649387/208716690623515107311117926400",
+        "factor": "522925324307452811847001287277929701953125/480915182473047750988313605971999574396517",
+        "scope": "Joint mapping/buffering recipe on the retained fixed chip; no separate credits for its parts."
+      }
+    ],
+    "efficientnet_b7": [],
+    "unet": [
+      {
+        "label": "Cast/epilogue storage",
+        "off_ns": "2163814390860631218351978950936100499639/21993521274452904432909051494400",
+        "on_ns": "691767681294251064350904757070807180969/7331173758150968144303017164800",
+        "saved_ns": "22127836744469506324816169930919739183/5498380318613226108227262873600",
+        "factor": "2163814390860631218351978950936100499639/2075303043882753193052714271212421542907",
+        "scope": "Buffering enabled; original output stores and rounding retained."
+      },
+      {
+        "label": "Operand buffering",
+        "off_ns": "1128159033525/8992",
+        "on_ns": "691767681294251064350904757070807180969/7331173758150968144303017164800",
+        "saved_ns": "228019896730597502455140013767966579031/7331173758150968144303017164800",
+        "factor": "919787578024848566806044770838773760000/691767681294251064350904757070807180969",
+        "scope": "Cast/epilogue storage enabled; gains are conditional, not additive."
+      }
+    ],
+    "deepseek_v3": [
+      {
+        "label": "Producer-layout fusion",
+        "off_ns": "1538633429060566/23549",
+        "on_ns": "1506875157083872/23549",
+        "saved_ns": "31758271976694/23549",
+        "factor": "769316714530283/753437578541936",
+        "scope": "Same current chip, other feature retained, declared feature-off menu reoptimized."
+      },
+      {
+        "label": "Delivery/concurrency",
+        "off_ns": "1606023197887240/23549",
+        "on_ns": "1506875157083872/23549",
+        "saved_ns": "99148040803368/23549",
+        "factor": "200752899735905/188359394635484",
+        "scope": "Same current chip, other feature retained, declared feature-off menu reoptimized."
+      }
+    ],
+    "llama1_13b": [
+      {
+        "label": "Six new full-K mappings",
+        "off_ns": "90321065316245/8601",
+        "on_ns": "29935343674115/2867",
+        "saved_ns": "515034293900/8601",
+        "factor": "18064213063249/17961206204469",
+        "scope": "Old 25 versus new 31 mapping choices reoptimized on the selected WO24 chip."
+      }
+    ],
+    "llama1_65b": [
+      {
+        "label": "Expanded full-K mappings",
+        "off_ns": "283740945199/7",
+        "on_ns": "1404992478347/35",
+        "saved_ns": "13712247648/35",
+        "factor": "1418704725995/1404992478347",
+        "scope": "WO23 mapping-menu control on the same chip retained by WO24; other policies fixed."
+      }
+    ],
+    "llama3_70b": [
+      {
+        "label": "Expanded full-K mappings",
+        "off_ns": "152325226622881/4435",
+        "on_ns": "150193403141761/4435",
+        "saved_ns": "426364696224/887",
+        "factor": "152325226622881/150193403141761",
+        "scope": "WO23 mapping-menu control on the same chip retained by WO24; other policies fixed."
+      }
+    ]
+  }
+}

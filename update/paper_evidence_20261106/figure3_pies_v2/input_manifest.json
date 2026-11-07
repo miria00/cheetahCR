@@ -1,0 +1,19 @@
+{
+  "inputs": {
+    "b3_reference": {
+      "original_path": "/media/miria/Elements/cheetah_wo14_20261105_v1/comparison_final_v1/result.json",
+      "path": "inputs/b3_reference.json",
+      "sha256": "dba57053629466b4e713c8feecc8b5a91faa3df42fd830144e361bdd5c117ec4"
+    },
+    "deepseek_controls": {
+      "original_path": "/home/miria/CORGIsolve/cheetahCR/update/paper_evidence_20261106/figure3_pies_v1/replays/deepseek/A384_L65536_V16384_H16_B1K/result.json",
+      "path": "inputs/deepseek_controls.json",
+      "sha256": "09e57f8c32b73136fbe639db6fcb56c2dd9919e65d8a8635f1c7729f3cd6dcb2"
+    }
+  },
+  "unchanged_figure2": {
+    "1-introduction.tex": "4444dcaada2aee11dc1ecf93f232242b7eb80af7eed0b348cd74a3a43b5d847c",
+    "fig3/speedup_final_v3.png": "720bbdc9e461eca89b9d282a99f1a27406b0508bab2b3ed1622944ddd4e299dc"
+  },
+  "backup": "cheetahCR/.edit_backups/figure3_feature_only_20261106T233713Z"
+}

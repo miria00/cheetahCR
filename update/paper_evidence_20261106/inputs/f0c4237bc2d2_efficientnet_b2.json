@@ -1,0 +1,54 @@
+{
+  "authoritative_dataset_path": "/tmp/cheetah_wo24_20261106_v1/authoritative_dataset_v1/result.json",
+  "authoritative_dataset_sha256": "8262d444cf7e02af8f82aacf8374a8787dd678caafd3ab194eb948f42a9c6b2b",
+  "hardware": {
+    "V": 246.0,
+    "bw": 2697.6,
+    "memtech": "HBM",
+    "pe_type": [
+      "wgmma8x32",
+      256
+    ],
+    "persistent_mib": 1.6359797638311193,
+    "tiles_int": 238
+  },
+  "historical_record": {
+    "baseline": "unchanged paper Baseline2",
+    "forward_ms": 7.454681562134639,
+    "forward_speedup": 6.679988602614596,
+    "full_master_solved": false,
+    "hardware_provider_fields": {
+      "V": 246.0,
+      "bw": 2697.6,
+      "memtech": "HBM",
+      "pe_type": [
+        "wgmma8x32",
+        256
+      ],
+      "persistent_mib": 1.6359797638311193,
+      "tiles_int": 238
+    },
+    "objective": "forward",
+    "original_source_replay_rerun_for_this_record": false,
+    "schema": "CHEETAH-per-workload-blueprint-record-v1",
+    "separate_chip_per_workload": true,
+    "software_scope": "Original-source admitted whole-owner response, selected by OCS over two checked complete policies; fixed chip; no new full-master solve",
+    "source_comparison": "/media/miria/Elements/cheetah_wo14_20261105_v1/comparison_final_v1/result.json",
+    "source_comparison_sha256": "dba57053629466b4e713c8feecc8b5a91faa3df42fd830144e361bdd5c117ec4",
+    "source_receipt": "/tmp/cheetah_wo14_20261105_v1/cnn/adoption_v1/result.json",
+    "status": "inherited_design_record_not_new_search",
+    "workload": "efficientnet_b2"
+  },
+  "latency_seconds": 0.0074546815621346395,
+  "new_search": false,
+  "objective": "forward",
+  "physical_chip_qualified": false,
+  "reference_ratio": 6.679988602614596,
+  "source": {
+    "original_path": "/home/miria/CORGIsolve/Results/Blueprints/WO23/records/efficientnet_b2.json",
+    "path": "/tmp/cheetah_wo24_20261106_v1/authoritative_dataset_v1/inputs/efficientnet_b2_wo23_record.json",
+    "sha256": "1ce6cfde7e52d57b10d4527b25e9fdc768585bcadfdbab67c6904ac0a7dc64d4"
+  },
+  "status": "INHERITED_UNCHANGED",
+  "workload_id": "efficientnet_b2"
+}

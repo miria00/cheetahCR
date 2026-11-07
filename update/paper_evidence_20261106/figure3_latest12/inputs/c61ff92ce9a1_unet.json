@@ -1,0 +1,58 @@
+{
+  "all_original_physical_proxy_gates_passed": true,
+  "authoritative_dataset_path": "/tmp/cheetah_wo24_20261106_v1/authoritative_dataset_v1/result.json",
+  "authoritative_dataset_sha256": "8262d444cf7e02af8f82aacf8374a8787dd678caafd3ab194eb948f42a9c6b2b",
+  "autoregressive_decode": false,
+  "baseline": "unchanged approved paper Baseline2 matrix streaming sum",
+  "chip_id": "wo23_unet_H0",
+  "full_image_latency": false,
+  "full_master_solved": false,
+  "full_semantic_cost": false,
+  "hardware": {
+    "V": 512,
+    "bw": 2697.6,
+    "memtech": "HBM",
+    "pe_type": [
+      "sq16x16",
+      128
+    ],
+    "persistent_mib": 0.0,
+    "tiles_int": 272
+  },
+  "historical_admitted_record_replaced": false,
+  "latency_ms": 94.35974430767348,
+  "latency_ns": "691767681294251064350904757070807180969/7331173758150968144303017164800",
+  "latency_seconds": 0.0943597443076735,
+  "new_search": false,
+  "node_qualified": false,
+  "original_source_events": 3258,
+  "phase": "single_denoiser_call",
+  "physical_chip_qualified": false,
+  "priced_source_events": 1640,
+  "reference_ns": "116489976703165140625/549755813888",
+  "reference_ratio": 2.245597789576985,
+  "reference_ratio_exact": "1553431976015166419716767016186834375000/691767681294251064350904757070807180969",
+  "scope": "Complete supplied eight-chip action family and all original priced events; long-lived owners remain DRAM; inherited analytical bank/fabric contract.",
+  "source": {
+    "original_path": "/home/miria/CORGIsolve/Results/Blueprints/WO23/records/unet.json",
+    "path": "/tmp/cheetah_wo24_20261106_v1/authoritative_dataset_v1/inputs/unet_wo23_record.json",
+    "sha256": "636312cf4d8a513aa06a76b48c05aae9fe2ae86f49527373d89d129f6703d921"
+  },
+  "source_accounting_qualified": true,
+  "source_chip_id": "H0",
+  "source_point_origin": "exact finite source-priced recovery after actual bounded joint OCS/B&B",
+  "source_replay": {
+    "original_path": "/tmp/cheetah_wo23_20261106_v1/unet_lane_v1/finite_replay_v3/result.json",
+    "path": "inputs/unet_replay.json",
+    "sha256": "cee7c7cbc45a84dacd099cd01b4c599e1c222dea05231fe5160dba624410233f"
+  },
+  "source_result": {
+    "original_path": "/tmp/cheetah_wo23_20261106_v1/unet_lane_v1/delivery_v1/result.json",
+    "path": "inputs/unet_source_result.json",
+    "sha256": "4e1d8cb5e94ca3d1a0e249b50bf6f1367fa99667de41d91766e53c3de8af8eeb"
+  },
+  "status": "RETAINED_WO23_SOURCE_COST_POINT",
+  "task": "SD1.5 UNet, batch1 latent64x64 context77, one denoiser call",
+  "unpriced_source_events": 1618,
+  "workload_id": "unet"
+}
