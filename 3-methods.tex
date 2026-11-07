@@ -20,7 +20,10 @@ Dominance is tested within the same implementation contract and hardware class:
 a lower isolated latency alone is insufficient. Timeloop or a native analytical
 recipe supplies the retained coefficients once; the solver then selects among
 them without invoking the mapper at each iteration. Reuse across hardware
-settings requires that the same dominance relation remains valid.
+settings requires that the same dominance relation remains valid, which
+Appendix~\ref{app:invar} states precisely: dominance must hold componentwise in
+every resource and interface the branch uses, so a two-axis latency plot alone
+does not license pruning.
 
 Let $i\in\mathcal N$ index logical nodes (invocations and required conversions), $j\in\mathcal J$ storage
 objects, $e\in\mathcal E_b=\{0,\ldots,E_b-1\}$ events in branch $b$, and $\tau$ memory tiers. An implementation
@@ -129,7 +132,9 @@ double-count overlap already represented by the event epigraph. The objective
 covers the declared task boundary, including preparation when that boundary
 requires it. It minimizes latency, not area, energy, Perf/TDP or solver runtime.
 Setting $\lambda_b=1$
-and all other branches to zero preserves that branch's hardware and objective.
+and all other branches to zero preserves that branch's hardware and objective;
+Corollary~\ref{cor:branch_containment} proves this embedding is master-feasible
+for every included branch, so the master bound is at most the best branch bound.
 Fractional branch weights describe an LP relaxation; recovery selects one
 program. Bounds must be recomputed for the chosen family, including every branch.
 \par\endgroup
@@ -145,9 +150,12 @@ $w_{ick}$ represents $y_{ic}p_{\mathrm{assoc}(i,k),o(i)}$ through
 w_{ick}\ge y_{ic}+p-1.
 \label{eq:mccormick}
 \end{equation}
-These McCormick inequalities give the convex hull of one bounded bilinear graph
-and fix the product when either binary-domain factor is integral~\citep{mccormick1976computability}; they do not
-make every fractional solution executable. Tile-dependent footprints use the
+By Proposition~\ref{prop:mccormick_exact} these McCormick inequalities give the
+convex hull of one bounded bilinear graph and fix the product when either
+binary-domain factor is integral~\citep{mccormick1976computability}; they do not
+make every fractional solution executable, and
+Appendix~\ref{app:containment} gives a fractional point satisfying each separate
+envelope while violating the exact-product identity. Tile-dependent footprints use the
 same construction. The displayed unit-bound rows are for a branch at weight
 one; homogenization replaces $1$ by $\lambda_b$. Native fused atoms carry their complete input,
 output, workspace and service recipe, so fusion cannot silently remove work.
@@ -157,7 +165,9 @@ Compute, vector lanes, SRAM, and delivered memory service are shared decisions
 under linear area/power proxies $F_bh_b\le g_b$. Finite implementation or
 technology menus use disaggregated copies with linking equalities and scaled
 bounds. Resource epigraphs charge the maximum of concurrent service demands,
-while demands on the same port add. Native rows aggregate work and transfer
+while demands on the same port add; Corollary~\ref{cor:v3_hull} shows the
+disaggregated perspective form dominates the aggregated maximum-of-sums
+alternative. Native rows aggregate work and transfer
 demands per event before applying the service envelopes. Arbitrary executable
 overlap is not inferred from fractional sharing; native replay uses its
 declared inter-kernel ordering and internal panel pipelines.
@@ -208,6 +218,18 @@ advancing primary logical completion twice. Keeping full KV history in a
 slower tier is therefore different from deleting history. The native results
 credit paid KV restoration and retention; no native recomputation gain or lossy
 KV budget is claimed.
+
+\paragraph{Weight residency and expert supply.}
+A weight tensor is an immutable object with its own residency trajectory
+$p_{j\tau e}$, so retaining it across uses and paying a reload are different
+points of the same rows rather than separate models. First loads and every
+kernel read stay charged; only repeated imports of a retained tensor disappear.
+Capacity couples this to activation placement through the shared
+$\mathsf{Cap}_{b,\tau e}$ row, so weight retention competes with KV and live
+activations for the same tier. Expert weights use the identical object
+identities under the declared routing model: which experts are resident versus
+fetched is a residency choice subject to storage capacity, and a retained
+expert still pays its first import and its per-use reads.
 
 \paragraph{Batching and causal scheduling.}
 A batch column covers several compatible invocations and loads shared parameters
@@ -264,6 +286,12 @@ branch-and-bound, continuous LP certification, and integral recovery.
     \textbf{MoE expert residency/offload}
       & Which expert weights are retained versus fetched, subject to storage
         capacity and the declared routing model.\\
+    \textbf{Fusion and storage}
+      & Which native fused atom is used, and which intermediates it keeps on chip
+        instead of spilling, with its complete port and workspace recipe.\\
+    \textbf{Scheduling and concurrency}
+      & Where each implementation starts and finishes in the event order, and which
+        service demands are therefore concurrent.\\
     \textbf{Serving decisions}
       & How the selected decisions affect the stated prefill/decode task, including
         its actual loading and service costs.\\
@@ -272,6 +300,14 @@ branch-and-bound, continuous LP certification, and integral recovery.
   \caption{Features and the decisions the formulation exposes.}
   \label{tab:pipeline-decisions}
 \end{table}
+
+\paragraph{Serving and phase choice.}
+Prefill and decode are the same master over different event sequences and
+boundary rows, not two models. A decode step inherits the KV prefix its
+attention operations require, and the declared task boundary fixes which
+preparation and loading costs the objective charges. Phase latencies are
+therefore comparable only under one declared boundary, and the selected chip
+is shared across every phase represented in a branch.
 
 \subsection{LLM Architect Diagnostic Outer Search}
 \label{sec:llm_outer}

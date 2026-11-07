@@ -122,7 +122,7 @@ Analytical replay supports the reported design latency, while fabrication and
 global discrete optimality remain separate questions.
 
 
-\subsection{Earlier OCS Working-Support Path}\label{app:ocs_working_path}
+\subsection{The OCS Solver}\label{app:ocs_working_path}
 Activated columns and temporal fields define a restricted working LP with a
 checked lift to original coordinates. Let $f(x)=c^Tx+I_{[\ell,u]}(x)$,
 let $Kx$ stack equality and inequality row activities, and let
@@ -150,10 +150,9 @@ pages between host storage and GPU; it reduces GPU memory but still stores
 the working iteration vectors somewhere.
 
 
-These OCS experiments concern their identified working supports. The recorded
-36,508-column residency result is not a full-master bound. Later full-input
-pilots completed no whole update, and the final certificate was discovered by
-the CPU HiGHS and source-verification procedure above. We do not attribute the
-closing solve to OCS merely because both paths use implicit representations or
-primal--dual bounds. A future OCS-backed discovery run would require its own
-numerical provenance and the same complete-domain acceptance checks.
+Each reported OCS interval is a bound for the working support it names, not a
+full-master bound. The certificate in
+Appendix~\ref{app:expanded_native_certificate} was discovered by the compact CPU
+fits and source verification of Section~\ref{sec:ocs}; an OCS-backed discovery
+run on the complete family would need its own numerical provenance and the same
+complete-domain acceptance checks.

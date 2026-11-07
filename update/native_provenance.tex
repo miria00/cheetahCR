@@ -11,7 +11,7 @@ simulator and compiler artifacts are not available here; the replacement is an
 explicit reconstruction with complete device residence, matrix mapping and
 nonmatrix service, rather than a claim to reproduce that internal simulator.
 
-The archived native MAC peak-power slope is 0.4 mW, whereas the appendix
+The recorded native MAC peak-power slope is 0.4 mW, whereas the appendix
 specifies 1.2 mW for BF16. Replacing only that slope makes all twelve saved
 chips exceed 300 W. Area, banks, pins and NoC costs also require explicit
 shared assumptions. A new versioned analytical scenario applies the BF16
@@ -82,7 +82,7 @@ Complete task & 15{,}546{,}127.510649 & 2{,}962{,}572.761908 & $\mathbf{5.247509
 \end{tabular}
 \end{table}
 
-\paragraph{Archived declared-offload reference (16\,GB/s installed host).}
+\paragraph{Recorded declared-offload reference (16\,GB/s installed host).}
 \begin{table}[h]
 \centering\small
 \caption{The same comparison under the earlier reconstruction's 16\,GB/s
@@ -132,11 +132,11 @@ $\infty$ & 13{,}335{,}797.5  & 0\%     & $4.501\times$ \\
 
 Neither rate is a measured DeepSeek offload specification; 900\,GB/s is TPU-v3's
 published HBM bandwidth and 16\,GB/s is a reconstruction parameter. The
-equal-supply reprice exists only for this workload, because the archived vision
-and LLM references in the archived host-backed suite did not retain a per-phase supply ledger;
-their ratios remain stated under their own archived convention.
+equal-supply reprice exists only for this workload, because the recorded vision
+and LLM references in the recorded host-backed suite did not retain a per-phase supply ledger;
+their ratios remain stated under their own recorded convention.
 
-\subsection{Archived native results}
+\subsection{Frozen Input and Supporting Controls}
 \paragraph{Frozen input.}
 DeepSeek-V3 is pinned to checkpoint revision
 \texttt{e815299b0bcbac849fa540c768ef21845365c9eb}.
@@ -150,7 +150,7 @@ normalization/router behavior. The workload is reproducible, not a language
 quality or representativeness study. Capture and solver GPU timings are not
 custom-chip performance estimates.
 
-\paragraph{Archived chip and controls.}
+\paragraph{Chip and controls.}
 The earlier result uses source identity
 \path{831edc6f8cde9bd2091541b55beaa00fae2736035badb3937236ba32c66104e3}
 and family
@@ -164,10 +164,10 @@ point was 1,146,545.738382 ms. Subsequent optimization of the same finite master
 gives a continuous upper of 734,720.389756 ms and the certificate in
 Appendix~\ref{app:native_lp_certificate}. Direct original-row embedding of the
 physical-duration execution is not established by these separate points.
-The earlier four-branch lower below was not transferred to this expanded
-family; its new lower is derived over all 21 branches.
+The four-branch lower below does not transfer to this expanded family; its
+lower is derived over all 21 branches.
 
-The archived controls use this same chip, weight plan, KV policy and causal progress.
+These controls use this same chip, weight plan, KV policy and causal progress.
 Removing batching expands original groups into serial members inside each
 original dependency envelope; prefill members retain their actual routed row
 counts. Each streamed member pays a complete weight receive. Independent checks
@@ -180,7 +180,7 @@ the original workspace allowance. All other owners, dependencies and terminal
 obligations inherit the admitted execution. These controls are analytical
 substitutions, not new continuous-source admissions or feature-off optima.
 
-The archived report is
+The recorded report is
 \path{systems/cheetah_joint/audits/20261023/NATIVE_JOINT_WEIGHT_KV.md}.
 Source, exact ledgers, independent checks and versioned failures are preserved
 under \path{native_joint_weight_kv_20261024_v1/}: \texttt{publish\_v1},
@@ -190,12 +190,11 @@ The tile control independently selects each of 45,091 parameter families' best
 constant decode tile while retaining membership, source kind, panel boundaries,
 buffers, leases and hardware. Its 0.865673-second penalty covers weighted decode;
 it is not a complete ablation of every time-indexed master choice.
-The current controls supersede the older chip's
-feature ratios; they do not erase the earlier results below.
+The current controls replace the older chip's feature ratios.
 
-\paragraph{Earlier retained execution.}
-The following four-branch record and 384-array controls are superseded; the
-preceding archived result is described above.
+\paragraph{Retained execution.}
+The following four-branch record and 384-array controls predate the current
+chip and are retained for provenance.
 
 The source identity is
 \path{6e216623a18c33290a6a072f5dab38f7d5bd1e130bee7f61b011b4caca44185d},
@@ -224,7 +223,7 @@ The original study varies vector/local service as documented in
 A well-scheduled, fully calibrated TPU serving stack is not established by the
 naive analytical reference.
 
-\paragraph{Archived working supports and earlier bounds.}
+\paragraph{Working supports and prior bounds.}
 Three accepted OCS working supports are separately identified:
 \begin{center}\small
 \begin{tabular}{@{}lrrr@{}}

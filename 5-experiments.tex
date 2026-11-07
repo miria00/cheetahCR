@@ -36,9 +36,14 @@ rounded boundaries, starting KV and paid entry obligations. The reference
 retains the earlier approved timing/precision proxy; this is not a
 precision-faithful native TPU-v3 claim. Standalone nonmatrix service and cold
 preparation outside the phase boundary are not silently included in the ratios.
-Earlier host-backed full-inference comparisons are archived separately.
 
-\paragraph{Physical Design Validation.} Since modeling simulations ultimately present a gap with real world physical performance, we validate all results through a five-level audit process: (i) Roofline Auditor, (ii) Campaign Validator, (iii) Causal Ledger, (iv) solver diagnostics, and (v) six pre-RTL gates. Each CHEETAH design must pass all five audit tiers before it is deemed feasible and reported. 
+\paragraph{Physical Design Validation.} Since modeling simulations ultimately present a gap with real world physical performance, we validate all results through a five-level audit process: (i) Roofline Auditor, (ii) Campaign Validator, (iii) Causal Ledger, (iv) solver diagnostics, and (v) six pre-RTL gates. Each CHEETAH design must pass all five audit tiers before it is deemed feasible and reported.
+Appendix~\ref{app:gates} states the six gates and their thresholds,
+Appendix~\ref{app:coeff_provenance} records where every gate constant and cost
+coefficient comes from, and Appendix~\ref{app:blueprints} gives the complete
+blueprints of the designs that pass them, so each reported chip can be audited
+from its headline speedup down to the provenance of each constant it was
+checked against.
 
 The newer decode-only points are explicitly labeled \emph{relaxed
 co-designed chips}: they are not gate-feasible physical chips. Their chip-power proxies are

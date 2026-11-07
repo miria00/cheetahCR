@@ -1,14 +1,24 @@
 \section{Conclusion}
 \label{sec:conclusion}
-CHEETAH jointly represents hardware, implementation, and temporal memory
-choices in one master LP relaxation. Compact numerical fits, complete-domain
-certificates and integral replay connect the relaxation to concrete designs. Full-input captures and
-matched analytical controls expose prefill, decode and memory-reuse effects.
-The frozen 1,557-branch DeepSeek master is solved to a certified $0.067154\%$
-objective gap, while the recovered chip remains a separately replayed analytical
-design. Broader automation, calibrated cost assumptions and global discrete
-optimality remain open. The accepted original campaign retains its own
-performance comparisons and validation evidence.
+CHEETAH presents a new paradigm for hardware--software co-design: a single
+master LP relaxation that unifies hardware sizing, implementation and tiling,
+fusion, time-indexed placement, weight and KV residency, rematerialization and
+scheduling, decision spaces that prior methods cover only in part
+(Table~\ref{tab:capability-matrix}), with a containment theorem showing that
+it subsumes rather than approximates the fusion search it generalizes.
+Branch and bound over the declared family, compact numerical fits and
+complete-domain certificates connect the relaxation to concrete designs: the
+frozen 1,557-branch DeepSeek master is solved to a certified $0.067154\%$
+objective gap, and every reported chip passes six pre-RTL feasibility gates
+whose constants carry an audited provenance trail. We believe this is a
+promising framework, and much work remains. The reported speedups are
+predictions of an analytical model, not measured silicon; the recovered chips
+are replayed designs rather than certified discrete optima; cross-GEMM fusion,
+unrestricted overlap and the LLM architect's advantage over simpler controllers
+are not yet established; and calibrating the cost model against fabricated
+hardware, automating support discovery for arbitrary instances, and closing the
+gap between the continuous certificate and discrete optimality are open
+directions we hope this formulation makes tractable.
 
 
 \textbf{Acknowledgments.} We gratefully acknowledge support from federal sources: NSF under No. 24-554 (AIMing) and DARPA under No. HR00112520038 (Fallingwater). We also gratefully acknowledge support from Stanford HAI, IBM (Code Generation), Lightspeed, Felicis, and Google. This work was also partially supported by IBM and Felicis as an affiliate member of Stanford Institute for Human-centered Artificial Intelligence (HAI)’s industry program.

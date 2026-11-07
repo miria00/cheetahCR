@@ -45,44 +45,122 @@ be disaggregated consistently; separate product envelopes alone do not prove
 the convex hull of the entire HW/SW problem.
 \end{proof}
 
-\subsection{An Objective-Preserving Embedding}
-\begin{definition}\label{def:seq_scope}
-An included schedule branch is a complete, identified program with its own
-workload, cost coefficients, hardware and boundary convention. A sequential
-control fixes its tile choices and other schedule decisions within that same
-contract. A method using different coefficients or unsupported hardware is
-not included merely because it has a similar pipeline.
-\end{definition}
-Write each included branch as
-$P_b=\{x:E_bx=e_b,\ G_bx\le g_b,\ \ell_b\le x\le u_b\}$.
-The master homogenizes all its rows and finite boxes with $\lambda_b$.
-\begin{theorem}[Containment of every included branch]\label{thm:containment}
-For every included branch $p$ and every $x\in P_p$, the assignment
-$\lambda_p=1$, $x_p=x$, and $\lambda_b=0,x_b=0$ for $b\ne p$ is master-feasible,
-with the same objective and hardware readout.
+\subsection{Containment of Lifted FAST Fusion}
+\label{app:fast_containment}
+This subsection concerns the retained joint tiling--placement block of
+Section~\ref{sec:master_lp}, whose coordinates are the tile selection
+$y_{ic}$, activation residency $p_{et}$, weight residency $p^W_{it}$,
+rematerialization $r_{it}$, the one-hot global-buffer selector
+$h_{\mathrm{GM}}\in[0,1]^K$ over a discrete grid $g_1,\ldots,g_K$, and the
+per-operation latencies $T_i$ that the objective sums. Write that block's
+feasible set at a fixed chip $H$ and workload graph $G$ as
+\begin{equation}
+\mathcal P_V(H,G)=\{x=(y,p,p^W,r,h_{\mathrm{GM}},T):A_Vx\le b_V(H,G)\},
+\label{eq:pv}
+\end{equation}
+with $\sum_cy_{ic}=1$, $\sum_kh_{\mathrm{GM},k}=1$, all selection and residency
+coordinates in $[0,1]$, $T\in\mathbb R^L_{\ge0}$, and Timeloop-derived constants
+$T^{\min}_i(c),T^{\max}_i(c),t^k_i(c)$ at $C$ Pareto tile configurations per
+operation.
+
+\paragraph{The lifted FAST fusion set.}
+FAST runs the mapper first, commits to one tile choice $c^{\mathrm{FAST}}_i$ per
+operation, and only then solves its fusion problem over tensor pinning. To compare
+the two formulations in one variable space we lift FAST's feasible set by encoding
+its committed mapper choice as a singleton one-hot,
+\begin{equation}
+\mathcal F^{\mathrm{lift}}_F(H,G)=\Bigl\{(y,p,p^W,T):
+y_{i,c^{\mathrm{FAST}}_i}=1,\ y_{ic}=0\ \forall c\ne c^{\mathrm{FAST}}_i,\
+\text{$p$ in FAST's consecutive fusion pattern},\ A_Fx\le b_F(H,G)\Bigr\},
+\label{eq:fflift}
+\end{equation}
+where $A_F,b_F$ encode FAST's buffer capacity at its hard-coded $g$, its
+bandwidth, and its per-stage compute floor under the fixed-$y$ projection.
+FAST commits to $r=0$ and to that fixed $g$ by construction. The first
+$LC+ET+LT$ columns of $A_V$ coincide with $A_F$, and both use the same
+bandwidth $b$ and the same mapper cost vectors.
+
+\begin{theorem}[Containment of lifted FAST fusion]\label{thm:containment}
+Fix $H$, $G$, a grid value $g\in\{g_1,\ldots,g_K\}$ and the mapper-derived
+constants, and let $k^\star$ satisfy $g_{k^\star}=g$. The map
+\begin{equation}
+\iota:\mathcal F^{\mathrm{lift}}_F(H,G)\hookrightarrow\mathcal P_V(H,G),\qquad
+\iota(y,p,p^W,T)=\bigl(y,\tilde p,p^W,r=0,h_{\mathrm{GM}}=e_{k^\star},T\bigr),
+\label{eq:iota}
+\end{equation}
+with $\tilde p_{et}=1$ exactly on the timesteps covered by FAST's consecutive
+fusion region for the edge supplying $e$ and zero elsewhere, is well defined and
+injective, and it preserves the objective:
+$\mathbf c^\top\iota(x)=\mathbf c^\top x$ for every
+$x\in\mathcal F^{\mathrm{lift}}_F(H,G)$.
 \end{theorem}
 \begin{proof}
-Every active-branch row and bound becomes its original constraint. Every
-inactive-branch row has zero left and right sides; zero satisfies each
-homogenized finite box. The branch weights sum to one, active hardware
-coordinates are unchanged, and $\sum_b c_b^Tx_b=c_p^Tx$. The argument applies to fractional
-points as well as integral schedules.
+\emph{Feasibility.} The integer cube embeds into the LP cube,
+$\{0,1\}^d\subset[0,1]^d$, so any integer-feasible $(y,p,p^W)$ lies in
+$\mathcal P_V$ along the shared coordinates. The lifted $\tilde p$ is zero off
+FAST's consecutive fusion region by construction, so the activation-persistence
+and capacity rows of $\mathcal P_V$ reduce to FAST's. Setting $r=0$ disables
+rematerialization and $h_{\mathrm{GM}}=e_{k^\star}$ pins the buffer-capacity row
+to FAST's $g$. The per-stage compute floor evaluates identically because both
+sets consume the same mapper cost vectors under the singleton-$y$ projection.
+Hence $\iota(x)\in\mathcal P_V$.
+\emph{Injectivity.} $\iota$ is the identity on the shared coordinates and
+constant on the new ones, so $\iota(x)=\iota(x')$ implies $x=x'$.
+\emph{Objective preservation.} The objective $\sum_iT_i$ depends only on the
+shared coordinate $T$, so $\mathbf c^\top\iota(x)=\mathbf c^\top x$. If the
+objective additionally carries an $\varepsilon$-tiebreaker
+$\varepsilon\sum_kk\,h_{\mathrm{GM},k}$, that term equals the constant
+$\varepsilon k^\star$ on $\iota(x)$ and changes neither the optimum nor its
+minimizer at fixed $g$.
 \end{proof}
-\begin{corollary}\label{cor:optimum}
-$\inf_{z\in P_M} c_M^Tz\le\min_b\inf_{x\in P_b}c_b^Tx$.
-A fixed-tile sequential control represented within an included branch therefore
-has a master-feasible embedding at the same modeled cost.
+
+\begin{corollary}[The relaxation dominates the lifted FAST objective]\label{cor:optimum}
+For every chip $H$, workload $G$ and matched mapper constants,
+\begin{equation}
+\min_{x\in\mathcal P_V(H,G)}\mathbf c^\top x\ \le\
+\min_{x\in\mathcal F^{\mathrm{lift}}_F(H,G)}\mathbf c^\top x .
+\label{eq:dominates}
+\end{equation}
 \end{corollary}
-\begin{remark}\label{rem:scope}
-Containment is not automatic reproduction of every published chip: the actual
-branch and its complete contract must be imported. It also does not establish
-that the causal block alone contains the old fractional schedule block, or
-that a recovery heuristic returns a no-worse integral design. Retaining the
-old admitted execution as an eligible incumbent supplies the latter fallback
-under matched semantics. Unbounded branches can retain recession directions
-at zero weight; we claim the embedding above, not an unconditional
-closed-convex-hull identity.
+\begin{proof}
+Let $x^\star_F$ attain the lifted FAST minimum. By
+Theorem~\ref{thm:containment}, $\iota(x^\star_F)\in\mathcal P_V$ and
+$\mathbf c^\top\iota(x^\star_F)=\mathbf c^\top x^\star_F$, so the minimum over
+$\mathcal P_V$ is at most that value.
+\end{proof}
+
+Consequently a fixed-hardware gap between FAST-style fusion and CHEETAH cannot
+be attributed to FAST solutions lying outside the search space: it must come from
+the extra continuous degrees of freedom $y$, $r$ and $h_{\mathrm{GM}}$, from
+relaxation versus integral rounding, or from differences in cost model or
+baseline normalization.
+
+\begin{remark}[Scope]\label{rem:scope}
+Theorem~\ref{thm:containment} is a modeling-containment result and bounds the
+relaxation, not the rounded executable schedule, which is reported separately.
+It does not predict numerical equivalence of reported speedups: those also move
+with baseline normalization, simulator overheads, depthwise mapping on
+$128\times128$ arrays, and batch and core conventions. Containment is also not
+automatic reproduction of a published chip, since the branch and its complete
+contract must be imported, and unbounded branches can retain recession
+directions at zero weight.
 \end{remark}
+
+\begin{corollary}[Branch containment in the full master]\label{cor:branch_containment}
+Write an included branch as
+$P_b=\{x:E_bx=e_b,\ G_bx\le g_b,\ \ell_b\le x\le u_b\}$; the master homogenizes
+its rows and finite boxes with $\lambda_b$. For every included branch $p$ and
+every $x\in P_p$, the assignment $\lambda_p=1$, $x_p=x$, and $\lambda_b=0,x_b=0$
+for $b\ne p$ is master-feasible with the same objective and hardware readout, so
+$\inf_{z\in P_M}c_M^\top z\le\min_b\inf_{x\in P_b}c_b^\top x$.
+\end{corollary}
+\begin{proof}
+Every active-branch row and bound becomes its original constraint, and every
+inactive-branch row has zero on both sides, which satisfies each homogenized
+finite box. The weights sum to one, active hardware coordinates are unchanged,
+and $\sum_bc_b^\top x_b=c_p^\top x$. The argument covers fractional points as
+well as integral schedules.
+\end{proof}
 
 \subsection{Structure and Safe Pruning}\label{app:invar}
 \begin{proposition}\label{prop:invariance}

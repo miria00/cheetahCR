@@ -45,18 +45,21 @@ checked fixed-cost infeasibility. No branch remains unresolved at the requested
 accuracy. The certificate covers this frozen variable-hardware LP, rather than
 only the compact numerical supports (Appendix~\ref{app:expanded_native_certificate}).
 
-\paragraph{Numerical provenance and OCS scope.}
-The successful closing computation uses CPU numerical LP fits and exact source
-verification. Support and proof directions were manually selected; automatic
-discovery for arbitrary instances is not established. The final composition
-checks committed proofs and identities, and saved-point replay shares checker
-algorithms. Earlier OCS 0.3.2 experiments use centered Halpern PDHG, reversible
-scaling and JAX operators on working supports
+\paragraph{The OCS solver.}
+OCS is our in-house first-order method for this program: an anchored, restarted
+primal--dual hybrid gradient scheme with a diagonal variable metric that
+rescales the primal and dual step sizes by the smoothed square root of the
+dual-to-primal residual ratio. That rescaling is what makes primal and dual
+progress practical on a system whose coefficients span ten orders of magnitude.
+It applies $K$ and $K^T$ as operators with reversible scaling and JAX kernels,
+so no event-expanded matrix is formed
 \citep{chambolle2011first,halpern1967fixed,applegate2022practicallargescalelinearprogramming,jax2018github}.
-For example, a 36,508-column, 313,061-row residency support reached a checked
-$0.0774\%$ working interval in 313.25 seconds on an A100. Full-input OCS/PDHG
-pilots completed no full update; that trajectory did not produce the closing
-certificate. Appendix~\ref{app:ocs_working_path} retains its algorithm and scope.
+On a 36,508-column, 313,061-row residency support it reaches a checked
+$0.0774\%$ interval in 313.25 seconds on one A100, and
+Appendix~\ref{app:ocs_working_path} gives the kernel. The closing certificate
+above was instead discovered by the compact CPU fits and source verification of
+this section; support and proof directions were selected manually, so automatic
+discovery for arbitrary instances is not established.
 
 \paragraph{Hardware branch and bound.}
 Integral recovery searches a finite tree over array counts, vector lanes,

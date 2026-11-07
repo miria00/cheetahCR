@@ -14,8 +14,9 @@ keeps those alternatives available until their complete resource costs are known
 \label{sec:lps}
 An LP minimizes a linear objective subject to linear rows and coordinate
 bounds. Discrete implementation selections are relaxed to $[0,1]$; bounded
-products are represented by convex envelopes. The resulting optimum is a
-lower bound only for the domain actually covered by the formulation and its
+products are represented by convex envelopes; Appendix~\ref{app:containment}
+states the properties these envelopes do and do not have. The resulting optimum
+is a lower bound only for the domain actually covered by the formulation and its
 certificate. Fractional selections need not describe a chip. Recovery chooses
 integral hardware and implementations, then checks dependencies, storage,
 transfers, and predicted latency. A feasible recovered design is useful even
@@ -27,3 +28,10 @@ Table~\ref{tab:capability-matrix} compares decision spaces, rather than claiming
 that every listed capability has a measured gain. CHEETAH's row describes the
 master formulation; Section~\ref{sec:decode_decomp} identifies the subset exercised
 by the current full-inference execution. Related Work explains restricted cells.
+The comparison is not only descriptive: Theorem~\ref{thm:containment} in
+Appendix~\ref{app:fast_containment} exhibits an injective, objective-preserving
+embedding of the lifted FAST fusion set into our relaxation, so by
+Corollary~\ref{cor:optimum} our bound is never worse than FAST's matched
+objective and any fixed-hardware gap must come from the extra degrees of
+freedom, from rounding, or from cost-model and baseline conventions rather than
+from FAST points lying outside the search space.

@@ -55,7 +55,7 @@ constitute physical-design sign-off.
 \paragraph{What this audit reports, and what it is not.}
 The original campaign's audit column records a \emph{tightness} ratio, not a
 model-FLOP utilization. Write $T_{\mathrm{LP}}$ for the LP-predicted latency of
-a cell: its modeled execution time, never the optimizer's runtime. The archived
+a cell: its modeled execution time, never the optimizer's runtime. The recorded
 quantity is
 \begin{equation}
     \rho_{\mathrm{comp}}
@@ -64,7 +64,7 @@ quantity is
 \end{equation}
 which we call \emph{compute-floor tightness}. Earlier versions of this appendix
 labelled $\rho_{\mathrm{comp}}$ ``MFU''. We retire that label and leave every
-archived number unchanged: the audited values in \cref{app:blueprints} and
+recorded number unchanged: the audited values in \cref{app:blueprints} and
 \cref{app:deficit} are $\rho_{\mathrm{comp}}$.
 
 The label has to go because of the numerator. The auditor does not count useful

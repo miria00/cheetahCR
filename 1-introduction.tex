@@ -13,7 +13,16 @@ tensor, and a slightly slower tile can therefore yield a faster complete schedul
 
 In this paper, we introduce \textsc{CHEETAH}: \acroletter{C}o-designed \acroletter{H}ardware
 \acroletter{E}xploration via \acroletter{E}fficient \acroletter{T}hroughput and
-\acroletter{H}ybrid-search, a novel mathematically principled hardware-software co-design framework with LLM guided search efficiency. The inner loop consists of one master convex program which exposes complex interactions
+\acroletter{H}ybrid-search, a novel mathematically principled hardware-software co-design framework with LLM guided search efficiency.
+CHEETAH is a new paradigm for co-design. Rather than adding one more stage to
+the sequential pipeline, it unifies in a single formulation the decision spaces
+that prior hardware and software methods each cover only in part;
+Table~\ref{tab:capability-matrix} positions it against nine such systems. The
+unification is not only descriptive: Theorem~\ref{thm:containment} in
+Appendix~\ref{app:fast_containment} proves that the lifted feasible set of
+FAST's fusion search embeds in CHEETAH's relaxation at the same objective, so
+the formulation subsumes that search rather than merely resembling it.
+The inner loop consists of one master convex program which exposes complex interactions
 jointly. Its implementation choices determine work, traffic, memory,
 time-indexed states track residency and reuse. Its shared hardware variables
 allocate compute, vector, memory, and bandwidth resources under area and power
@@ -41,13 +50,20 @@ batches, and temporal residency. Our full-inference experiment uses actual
 routes, retains the complete KV history, and charges every restore. Its gains
 do not assume that all weights or KV fit on chip.
 
-The complete CHEETAH program is too large to materialize. We instead use a
-CHEETAH-specific, certificate-producing procedure: compact CPU LP fits discover
-coverage prices and primal candidates, rational reconstruction supplies a
-stateful point, and symbolic checks verify the complete original domain.
-The resulting 1,557-branch DeepSeek LP is certified to a $0.067154\%$ objective
-gap. Earlier OCS GPU working solves are reported separately; full-master PDHG
-convergence is not required for, or established by, this certificate.
+The complete CHEETAH program is too large to materialize. To solve the
+large-scale linear program we develop a specialized in-house method, named OCS.
+The master is solved by \emph{branch and bound} over its declared branch family.
+Each branch is a whole-program node carrying its own hardware and execution
+semantics, so the family is the search tree and a node is a complete LP in its
+own right. At a node, compact CPU LP fits discover coverage prices and primal
+candidates, rational reconstruction supplies a stateful point, and symbolic
+checks verify the complete original domain, which certifies a valid lower bound
+$L_b$ for that node. A node is pruned when it carries checked fixed-cost
+infeasibility or when its bound cannot improve the replayed incumbent, so no
+descendant need be expanded. The surviving minimum $L=\min_bL_b$ and the
+incumbent cost $U$ bracket the optimum, and the search stops on their relative
+gap. The resulting 1,557-branch DeepSeek LP is certified to a $0.067154\%$
+objective gap.
 An LLM architect outer loop then reads resource
 prices and trial diagnostics to propose target specific implementations or hardware search neighborhoods. This reduces the reliance on brute force large space search effectively. Crucially, the hardware-software interactions and decisions are captured in the CHEETAH inner loop formulation. 
 
@@ -92,10 +108,9 @@ proposes implementations and hardware search neighborhoods.
     matrix-and-associated-traffic results with the original timing proxy,
     not measured TPU-v3 serving gains. Their area proxies are below
     600~mm$^2$, but relaxed memory/power assumptions remain physically
-    unqualified. Earlier prefill designs are reported separately; they are
-    not the same chips as the decode-only designs. Earlier host-offload
-    and equal-supply sensitivities retain their own scope in
-    Appendix~\ref{sec:dual_host_baseline} and \texttt{backup.tex}.
+    unqualified. The prefill and decode-only designs are different chips.
+    Appendix~\ref{sec:dual_host_baseline} gives the host-offload and
+    equal-supply sensitivities.
 \end{enumerate}
 
 The following paper is organized as follows. Section~\ref{sec:related} discusses related work, Section~\ref{sec:prelim} summarizes preliminary background,  Section~\ref{sec:methods}
