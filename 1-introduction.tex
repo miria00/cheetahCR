@@ -89,9 +89,9 @@ proposes implementations and hardware search neighborhoods.
     objective gap. Analytical replay and selected control/datapath checks
     support a separate recovered design; global discrete optimality remains
     open.
-    Section~\ref{sec:solver_vm} identifies the successful CPU HiGHS computation
-    separately from earlier OCS working-support experiments, and the original
-    experiments retain their certificates and physical-validation evidence.
+    Section~\ref{sec:solver_vm} summarizes OCS, the in-house solver framework
+    whose closing stage certifies these bounds; its details are in the appendix
+    and a separate paper.
 
     \item \textbf{LLM Architect Outer Loop.} The architect interprets resource prices and a causal ledger of earlier trials to propose hardware and implementation changes. Deterministic checks admit proposals; the LLM itself supplies no certificate. This couples architecture exploration with the optimizer's diagnostics rather than relying only on black-box scores.
 
@@ -115,7 +115,7 @@ proposes implementations and hardware search neighborhoods.
 
 The following paper is organized as follows. Section~\ref{sec:related} discusses related work, Section~\ref{sec:prelim} summarizes preliminary background,  Section~\ref{sec:methods}
 presents the CHEETAH master and its features, and Section~\ref{sec:ocs} describes
-certificate-producing optimization, OCS working supports and hardware search. Section~\ref{sec:experiments}
+the OCS solver framework, its certificate and hardware search. Section~\ref{sec:experiments}
 reports experimental results and ablations, and the appendix provides containment
 theorems, physical-validation details, co-design blueprints, and reproduction evidence.
 

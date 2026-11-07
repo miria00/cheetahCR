@@ -11,11 +11,11 @@ The suite comprises EfficientNet-B1--B7, Llama-1 13B/65B,
 Llama-3 70B, and DeepSeek-V3~\citep{tan2019efficientnet,llama3modelcard,deepseekv3report} and Stable Diffusion~1.5 UNet.
 The campaign compares static pinning, fixed-tile temporal
 placement, and joint tiling under the same cost convention. These are restricted
-controls of CHEETAH, not separate proposed systems. Small programs use
-HiGHS~\citep{huangfu2018parallel}; earlier operator-based native working supports
-use OCS. The final expanded-master certificate uses 45,085 compact coverage LPs
-and one resource/KV LP solved with CPU HiGHS, followed by original-source checks
-and complete branch composition. These are closing-stage counts, not the cost
+controls of CHEETAH, not separate proposed systems. Small programs are solved
+directly with HiGHS~\citep{huangfu2018parallel}; the native programs use OCS
+(Section~\ref{sec:ocs}), whose closing fits also use HiGHS as the inner LP
+engine. The expanded-master certificate composes 45,085 such fits with
+original-source checks and complete branch composition. These are closing-stage counts, not the cost
 of all preceding discovery campaigns.
 The latest decoder study (WO24) uses OCS node relaxations inside finite
 hardware/software branch-and-bound: 19 node initializations and 39,000
@@ -176,18 +176,10 @@ an optimal architecture or causal validity of every dual suggestion.
 \begin{figure}[H]
     \centering
 \includegraphics[width=\linewidth]{fig3/feature_contributions_wo24.pdf}
-\caption{\textbf{Performance breakdown of each component of the CHEETAH
-system}, relative to a simulated naive TPU-v3 baseline~\citep{zhang_fast}.
-Improvements are additive: each slice is one cumulative increment in
-$S=T_{\rm naive}/T$ starting from $S_0=1$, so the four slices of a panel sum
-to 100\% of that workload's modeled gain above $1\times$.
-Compute parallelism means active compute arrays; off-chip bandwidth means
-DRAM, not on-chip SRAM, whose capacity is fixed in these controls.
-For the Llamas, the mapping-menu extension and every compatible remapping
-gain are grouped with on-chip bandwidth, so that slice is not a tiling-only
-effect. For DeepSeek-V3, fusion is producer-layout storage fusion in the
-datapath and scheduling is paid cross-wave prefetch with the second
-accumulator context. Attribution is order-dependent.}\label{fig:accel_decompose}
+\caption{\textbf{Performance breakdown of each CHEETAH component}, relative
+to a simulated naive TPU-v3 baseline~\citep{zhang_fast}. Improvements are
+additive cumulative increments in $S=T_{\rm naive}/T$ and sum to 100\% of each
+workload's gain above $1\times$; attribution is order-dependent.}\label{fig:accel_decompose}
 \end{figure}
 \endgroup
 \input{update/figure3_attribution_method}

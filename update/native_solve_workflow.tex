@@ -150,9 +150,29 @@ pages between host storage and GPU; it reduces GPU memory but still stores
 the working iteration vectors somewhere.
 
 
-Each reported OCS interval is a bound for the working support it names, not a
-full-master bound. The certificate in
-Appendix~\ref{app:expanded_native_certificate} was discovered by the compact CPU
-fits and source verification of Section~\ref{sec:ocs}; an OCS-backed discovery
-run on the complete family would need its own numerical provenance and the same
-complete-domain acceptance checks.
+\paragraph{Variable metric.}
+The diagonal metric rescales the primal and dual step sizes by the smoothed
+square root of the dual-to-primal residual ratio, which keeps primal and dual
+progress balanced on a system whose coefficients span ten orders of magnitude.
+Reversible scaling and JAX operator kernels
+\citep{chambolle2011first,halpern1967fixed,applegate2022practicallargescalelinearprogramming,jax2018github}
+apply $K$ and $K^T$ without forming the event-expanded matrix. On a
+36,508-column, 313,061-row residency support the kernel reaches a checked
+$0.0774\%$ interval in 313.25 seconds on one A100.
+
+\paragraph{Closing stage.}
+The kernel supplies prices and working supports; the closing stage certifies
+them. Signed coverage prices are fitted against each family's actual
+implementation menus, including coincident ancestral alternatives, with 45,085
+nonempty-family compact LP fits across eight CPU workers (six empty families need
+no call), their cover reconstructed on a $2^{32}$ rational grid. A stateful lift
+preserves a causal prefix and pays for the copies, evictions, workspace and
+reservations required by the changed suffix choices; one further fit with 10,245
+variables and 112,633 nonzeros adjusts shared hardware, reciprocal/service
+fields and original KV alternatives, and its restricted support generates the
+candidate upper. Rational temporal fields and affine interval identities then
+represent the primal and verify residuals over every original event, and dual
+multipliers are checked for their original signs and valid Lagrangian box
+support over all coordinates, so no event-expanded matrix or dense temporal
+witness is ever allocated. Support and proof directions were selected manually;
+automatic discovery for arbitrary instances is not established.

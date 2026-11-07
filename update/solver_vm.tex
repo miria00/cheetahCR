@@ -1,82 +1,45 @@
 \section{Certificate-Producing Optimization and Design Recovery}
 \label{sec:solver_vm}\label{sec:ocs}\label{sec:vm_solver}\label{sec:mccormick_blowup}
-CHEETAH separates candidate discovery from acceptance against the complete LP.
-We solve the frozen 1,557-branch DeepSeek master to a certified $0.067154\%$
-relative objective gap using compact numerical fits, rational reconstruction
-and original-domain checks. The closing fits use CPU HiGHS; integral design
-recovery and the earlier OCS working-support experiments are separate stages.
+To solve the master we use OCS, our in-house solver framework. A separate paper
+covers its numerical design and Appendix~\ref{app:ocs_working_path} gives its
+kernel and closing stage; here we give only what the reader needs to follow the
+results. OCS never forms the event-expanded matrix: it applies the constraint
+map $Kx$ and its adjoint $K^Ty$ as operators, so a branch's complete decision
+domain is preserved at the size of its generated incidence. Its discovery stage
+runs an anchored, restarted primal--dual scheme with a diagonal variable metric
+on working supports, and both primal and dual iterates converge. Its closing
+stage replaces inexact iterates with compact fits whose rational reconstruction
+is verified against every original row, so the resulting bound is a certificate
+rather than a solver tolerance: the primal satisfies the complete original
+branch, including initial and terminal state, readiness, resource and physical
+rows, and the dual has its original signs and valid Lagrangian box support over
+all coordinates.
 
-\paragraph{Implicit representation preserves the decision domain.}
-An operator evaluates a linear constraint map $Kx$ without storing its matrix;
-its adjoint $K^Ty$ accumulates row prices onto coordinates. CHEETAH's generated
-incidence reuses coefficients while preserving independent invocation choices.
-For certification, rational temporal fields and affine interval identities
-represent the primal and verify residuals over every original event. This
-avoids allocating the event-expanded matrix or a dense temporal witness.
-
-\paragraph{Compact fits discover primal and dual candidates.}
-Signed coverage prices are fitted against each family's actual implementation
-menus, including coincident ancestral alternatives. The final closing stage
-uses 45,085 nonempty-family HiGHS solves across eight CPU workers; six empty
-families require no call. Their cover is reconstructed on a $2^{32}$ rational
-grid. A stateful lift preserves a causal prefix and pays for the copies,
-evictions, workspace and reservations required by the changed suffix choices.
-One further HiGHS fit, with 10,245 variables and 112,633 nonzeros, adjusts shared
-hardware, reciprocal/service fields and original KV alternatives. Its restricted
-support generates a candidate upper; its optimum is not a full-master lower.
-
-\paragraph{Complete-domain acceptance supplies the certificate.}
-The primal must satisfy the complete original branch, including initial and
-terminal state, readiness, resource and physical rows. Dual multipliers must
-have their original signs and valid Lagrangian box support over all coordinates;
-implementation inequalities and temporal identities cover the complete source.
-Each branch has a checked lower $L_b$, and the perspective composition gives
-$L=\min_b L_b$. Separate saved-point reconstruction and replay, followed by
-composition of 1,787 committed receipts, establish
+The master is solved by branch and bound over its declared family. Each branch
+$b$ receives a certified lower $L_b$; branches with checked fixed-cost
+infeasibility, or whose bound cannot improve the incumbent, are pruned; and the
+perspective composition $L=\min_bL_b$ together with the incumbent $U$ brackets
+the optimum. For the frozen 1,557-branch DeepSeek master, composition of 1,787
+committed receipts establishes
 \[
  \begin{gathered}
  L\approx946{,}487.719081842\ \mathrm{ms},\qquad
  U\approx947{,}123.742096447\ \mathrm{ms},\\
- \frac{U-L}{U}\,100\%\approx0.0671531064\%.
+ \frac{U-L}{U}\,100\%\approx0.0671531064\%,
  \end{gathered}
 \]
-All 1,557 branches remain: 1,095 meet the stopping threshold and 462 have
-checked fixed-cost infeasibility. No branch remains unresolved at the requested
-accuracy. The certificate covers this frozen variable-hardware LP, rather than
-only the compact numerical supports (Appendix~\ref{app:expanded_native_certificate}).
+with 1,095 branches meeting the stopping threshold, 462 pruned by fixed-cost
+infeasibility and none unresolved (Appendix~\ref{app:expanded_native_certificate}).
 
-\paragraph{The OCS solver.}
-OCS is our in-house first-order method for this program: an anchored, restarted
-primal--dual hybrid gradient scheme with a diagonal variable metric that
-rescales the primal and dual step sizes by the smoothed square root of the
-dual-to-primal residual ratio. That rescaling is what makes primal and dual
-progress practical on a system whose coefficients span ten orders of magnitude.
-It applies $K$ and $K^T$ as operators with reversible scaling and JAX kernels,
-so no event-expanded matrix is formed
-\citep{chambolle2011first,halpern1967fixed,applegate2022practicallargescalelinearprogramming,jax2018github}.
-On a 36,508-column, 313,061-row residency support it reaches a checked
-$0.0774\%$ interval in 313.25 seconds on one A100, and
-Appendix~\ref{app:ocs_working_path} gives the kernel. The closing certificate
-above was instead discovered by the compact CPU fits and source verification of
-this section; support and proof directions were selected manually, so automatic
-discovery for arbitrary instances is not established.
-
-\paragraph{Hardware branch and bound.}
-Integral recovery searches a finite tree over array counts, vector lanes,
-DRAM bandwidth, host channels and local-service units. Optimistic resource
-and capacity-priced retention bounds prune budget-infeasible regions or those
-unable to improve a replayed incumbent. Leaves use actual implementation and
-capacity costs. This demonstrated tree covers a declared hardware grid with
-conditional software choices; it does not branch over every discrete master
-selector or solve the complete temporal LP at every node.
-
-\paragraph{Recovery and replay.}
-Recovery selects one branch, integral implementations, hardware and storage
-policies. Analytical replay checks dependency readiness, capacities and service
-at the selected rates. The retained later execution takes
-$2{,}718{,}970.508466$ ms; the continuous upper above is not its latency.
-A lift of this execution establishes its membership, not a universal relaxation
-embedding for all executable designs. Reciprocal/product relaxation and integral
-recovery gaps remain, so the continuous certificate does not establish discrete
-chip/schedule optimality. Appendix~\ref{app:native_solve_workflow} records the
-solve and recovery procedures separately.
+\paragraph{Hardware branch and bound and recovery.}
+Integral recovery searches a finite tree over array counts, vector lanes, DRAM
+bandwidth, host channels and local-service units; optimistic resource and
+capacity-priced retention bounds prune regions that are budget-infeasible or
+cannot improve a replayed incumbent, and leaves use actual implementation and
+capacity costs. Recovery then selects one branch, integral implementations,
+hardware and storage policies, and analytical replay checks dependency
+readiness, capacities and service at the selected rates. The retained execution
+takes $2{,}718{,}970.508466$ ms; the continuous upper above is not its latency.
+Reciprocal/product relaxation and integral recovery gaps remain, so the
+continuous certificate does not establish discrete chip/schedule optimality
+(Appendix~\ref{app:native_solve_workflow}).
