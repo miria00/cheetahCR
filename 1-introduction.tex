@@ -105,16 +105,19 @@ theorems, physical-validation details, co-design blueprints, and reproduction ev
 
 \begin{figure}[ht!]
     \centering
-    \includegraphics[width=1.0\linewidth]{figs/cheetah_v4_new.png}
+    \includegraphics[width=1.0\linewidth]{figs4/intro2.png}
+% \caption{Heuristics based Sequential design vs Our Unified Optimization Paradigm.
+% (Left) Baseline methods decouple hardware search, operation-level tiling, and static fusion, precluding cross-stage trade-offs.
+% (Right) CHEETAH presents a unified LLM-driven mathematical framework that jointly optimizes tiling, placement, and more while learning from a causal ledger.}
 \caption{Heuristics based Sequential design vs Our Unified Optimization Paradigm.
 (Left) Baseline methods decouple hardware search, operation-level tiling, and static fusion, precluding cross-stage trade-offs.
-(Right) CHEETAH presents a unified LLM-driven mathematical framework that jointly optimizes tiling, placement, and more while learning from a causal ledger.}
+(Right) CHEETAH presents a unified master linear program that jointly optimizes tiling, placement, and more while learning from a causal ledger.}
 \label{fig::workflow}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-\includegraphics[width=1.0\linewidth]{fig3/speedup_final_v6.png}
-\caption{Speedup over the simulated naive TPU-v3 baseline for (a) EfficientNet forward execution and the Stable Diffusion 1.5 UNet denoiser, (b) LLM prefill, and (c) LLM decode. CHEETAH achieves up to $11.85\times$, $24.20\times$, and $17.93\times$ speedup in the three panels, respectively. Red crosses indicate static infeasibility for SD1.5 UNet, Llama-3 70B, and DeepSeek-V3. See Section~\ref{sec:experiments} for full analysis and wall-clock time breakdowns.}
+\includegraphics[width=1.0\linewidth]{fig3/speedup_final_v8.png}
+\caption{Speedup over the simulated naive TPU-v3 baseline across EfficientNet, Stable Diffusion 1.5 UNet, and LLM workloads. EfficientNet and diffusion compare naive TPU-v3, static, and CHEETAH; each LLM compares the same baselines with separate CHEETAH prefill and decode results. CHEETAH achieves up to $11.85\times$ for EfficientNet and diffusion, $24.20\times$ for LLM prefill, and $17.93\times$ for LLM decode. Red crosses indicate static infeasibility. See Section~\ref{sec:experiments} for full analysis and wall-clock time breakdowns.}
 \label{fig:speedup}
 \end{figure}
