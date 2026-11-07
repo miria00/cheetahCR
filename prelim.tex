@@ -29,8 +29,17 @@ relaxation and recovery (\ref{app:lp_relaxation}) and the solver path
 Table~\ref{tab:capability-matrix} compares decision spaces, rather than claiming
 that every listed capability has a measured gain. CHEETAH's row describes the
 master LP. Section~\ref{sec:decode_decomp} identifies the subset exercised by
-the full-inference execution, and Appendix~\ref{app:related_work} explains the
-restricted cells.
+the full-inference execution. The table distinguishes searched decisions from
+restricted or user-specified support. DeFiNES chooses caching versus overlap
+recomputation, and Fast-and-Fusiest searches dependency-respecting orders within
+its fused mapspace. Gemini's fusion and order support concerns layer pipelines.
+Pluto optimizes affine schedules, and Tiramisu also exposes explicit storage,
+copies and redundant computation through its scheduling language. These differ
+from unrestricted cost-driven temporal placement. CoSA's guarantee concerns a
+per-layer proxy objective and Fast-and-Fusiest's its fixed-hardware mapspace,
+but neither is a bound over a joint hardware--schedule domain. The last column
+denotes one joint mathematical program rather than staged co-search, and DOSA's
+qualifying program is nonconvex.
 The comparison is not only descriptive: Theorem~\ref{thm:containment} in
 Appendix~\ref{app:fast_containment} exhibits an injective, objective-preserving
 embedding of the lifted FAST fusion set into our relaxation, so by

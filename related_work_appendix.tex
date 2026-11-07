@@ -1,17 +1,5 @@
 \section{Extended Related Work}
 \label{app:related_work}\label{related_work_appendix}
-\paragraph{Capability matrix cells.}
-Table~\ref{tab:capability-matrix} distinguishes searched decisions from restricted
-or user-specified support. DeFiNES chooses caching versus overlap recomputation,
-Fast-and-Fusiest searches dependency-respecting orders within its fused mapspace.
-Gemini's fusion and order support concerns layer pipelines. Pluto optimizes
-affine schedules, Tiramisu also exposes explicit storage, copies, and redundant
-computation through its scheduling language. These differ from unrestricted
-cost-driven temporal placement. CoSA's guarantee concerns a per-layer proxy
-objective, and Fast-and-Fusiest's concerns its fixed-hardware mapspace, but neither
-is a bound over a joint hardware--schedule domain. The last column denotes one joint mathematical program, rather than staged
-co-search. DOSA's qualifying program is nonconvex.
-
 \paragraph{Architecture and mapping search.}
 Timeloop searches mappings for a supplied architecture~\citep{timeloop}.
 CoSA uses mixed-integer optimization for a constrained mapping objective;
