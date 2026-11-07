@@ -248,16 +248,19 @@ to software reuse.
 Precision, sparsity, array aspect, memory technology, and validated overlap
 policies enter as implementation choices with their own numerical and resource
 contracts. Accuracy-changing cache eviction or approximate reuse needs separate
-quality evidence; it is pinned off in the full-input native result. Larger
+quality evidence; it is disabled in the full-input result. Larger
 cross-GEMM fusion and unrestricted overlap have no credited gain there.
 Recovery pins hardware and mappings, schedules transfers, and replays the
 original obligations. The resulting chip and schedule have a predicted latency
 under the analytical model. Section~\ref{sec:ocs} distinguishes hardware
 branch-and-bound, continuous LP certification, and integral recovery.
 
+\iffalse % Table 3 (features and decisions) retained but disabled
 \begin{table}[htbp]
   \centering
   \renewcommand{\arraystretch}{1.35}
+\caption{Features and the decisions the formulation exposes.}
+  \label{tab:pipeline-decisions}
   \begin{tabularx}{\linewidth}{@{}l Y@{}}
     \toprule
     \textbf{Original feature} & \textbf{Decisions}\\
@@ -297,9 +300,9 @@ branch-and-bound, continuous LP certification, and integral recovery.
         its actual loading and service costs.\\
     \bottomrule
   \end{tabularx}
-  \caption{Features and the decisions the formulation exposes.}
-  \label{tab:pipeline-decisions}
+  
 \end{table}
+\fi
 
 \paragraph{Serving and phase choice.}
 Prefill and decode are the same master over different event sequences and

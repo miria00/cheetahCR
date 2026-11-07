@@ -9,14 +9,8 @@ work~\citep{jouppi2021ten,zhang_fast}. All speedups below are analytical and mod
 \label{sec:exp_intro}
 The suite comprises EfficientNet-B1--B7, Llama-1 13B/65B,
 Llama-3 70B, and DeepSeek-V3~\citep{tan2019efficientnet,llama3modelcard,deepseekv3report} and Stable Diffusion~1.5 UNet.
-DeepSeek-V3 is pinned to checkpoint revision
-\texttt{e815299b0bcbac849fa540c768ef21845365c9eb}; thirty-two nonoverlapping
-validation-text windows from Wikitext-2 give 4,096-token prompts under the
-pinned tokenizer, generation is greedy with 512 outputs per request, all 61
-layers and 58 routed MoE layers execute with every route ID and aligned weight
-retained, and FP8 blocks are dequantized to BF16 with TF32 and reduced-precision
-BF16 accumulation disabled. The workload is reproducible, not a language-quality
-or representativeness study.
+DeepSeek-V3 is evaluated on thirty-two 4,096-token Wikitext-2 prompts, each
+decoded greedily for 512 tokens, with FP8 weights dequantized to BF16.
 We compare static pinning, fixed-tile temporal
 placement, and joint tiling under the same cost convention. These are restricted
 controls of CHEETAH, not separate proposed systems. Small programs are solved
@@ -55,7 +49,7 @@ checked against.
 
 The newer decode-only points are explicitly labeled \emph{relaxed
 co-designed chips}: they are not gate-feasible physical chips. Their chip-power proxies are
-592.513/400.492/362.616/364.214~W for DeepSeek/13B/65B/70B, all above the
+592.51/400.49/362.62/364.21~W for DeepSeek/13B/65B/70B, all above the
 prior 345-W allowance. DeepSeek assumes 2-TiB DRAM and a 37,596 shared-pin
 proxy; the dense memory packages have incomplete peak-power and pin costs.
 Passing the roughly 600-mm$^2$ area proxy does not remove these qualifications.
@@ -167,22 +161,16 @@ or recovered full-decode executions on either chip.
 Cached implementation coefficients remove repeated mapper calls from the inner
 search. In the 50-trial comparison, joint tiling reduces Llama-70B
 search time from $58.42$ to $1.17$ hours and DeepSeek-V3 from $69.39$ to $2.17$
-hours relative to the fixed-tile temporal pipeline. These are search times,
+hours relative to the fixed-tile temporal pipeline (Figure~\ref{fig:wallclock}). These are search times,
 not inference speedups. LLM guidance reduces mean invalid trials
 from $24.5\%$ to $5.9\%$ while reaching the same best observed Perf/TDP score
-as its full-space Vizier control; Appendix~\ref{app:profiles} repeats the
+as its full-space Vizier control (Figure~\ref{fig:llm}); Appendix~\ref{app:profiles} repeats the
 search under a throughput-oriented and a latency-oriented deployment profile.
 This tests proposal efficiency, not proof of
 an optimal architecture or causal validity of every dual suggestion.
 
 
-% ---- plots restored from the long version, original placement ----
-
-% Updated four-workload pies; earlier artwork remains in fig3/ unchanged.
-\clearpage
-\begingroup
-\raggedbottom
-\begin{figure}[H]
+\begin{figure}[t]
     \centering
 \includegraphics[width=\linewidth]{fig3/feature_contributions_wo24.pdf}
 \caption{\textbf{Performance breakdown of each CHEETAH component}, relative
@@ -190,16 +178,8 @@ to a simulated naive TPU-v3 baseline~\citep{zhang_fast}. Improvements are
 additive cumulative increments in $S=T_{\rm naive}/T$ and sum to 100\% of each
 workload's gain above $1\times$; attribution is order-dependent.}\label{fig:accel_decompose}
 \end{figure}
-\endgroup
 \input{update/figure3_attribution_method}
 \input{update/wo24_features}
-
-\begin{figure}[ht!] 
-    \centering
-\includegraphics[width=1.0\linewidth]{fig3/wallclock_new_v6.png}
-\caption{Wall-clock time decomposition and performance acceleration across formulations: CHEETAH-V1's internalized tiling eliminates the Timeloop bottleneck, achieving up to 100--300$\times$ faster search than the classical static method. Upper bars show wall-clock hours (log scale); annotations show speedup vs.\ static.}
-\label{fig:wallclock}
-\end{figure}
 
 \begin{figure}[h]
 \centering
@@ -220,8 +200,3 @@ These are schedule choices, not different chips.
 \label{fig:tiles}
 \end{figure}
 
-\begin{figure}[ht!]
-    \centering
-\includegraphics[width=0.85\linewidth]{fig3/llm_guide_v1.png}
-\caption{Invalid/infeasible trial rate (\%) for full-space Vizier vs.\ LLM-in-loop across five workloads. The LLM Architect reduces the mean invalid rate from 24.5\% to 5.9\% (4.1$\times$ reduction), with the largest gains on LLM workloads where the hardware search space is most prone to infeasible configurations.}\label{fig:llm}
-\end{figure}

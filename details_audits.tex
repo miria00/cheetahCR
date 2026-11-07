@@ -174,45 +174,45 @@ $\boldsymbol{\rho_{\mathrm{comp}}}$ & \textbf{obj/lb} &
 \midrule
 \multicolumn{12}{l}{\textit{Static FAST ILP}} \\
 \midrule
-Static & EN-B1       & 32{,}768  & 64   & 1.12  & $2.757\times10^{7}$ & $2.757\times10^{7}$ & $4.236\times10^{6}$ & 1.000 & 1.000 & compute-bound   & OK \\
-Static & EN-B2       & 65{,}536  & 64   & 1.93  & $2.576\times10^{7}$ & $2.576\times10^{7}$ & $5.474\times10^{6}$ & 1.000 & 1.000 & compute-bound   & OK \\
-Static & EN-B3       & 32{,}768  & 64   & 1.25  & $7.905\times10^{7}$ & $7.905\times10^{7}$ & $7.552\times10^{6}$ & 1.000 & 1.000 & compute-bound   & OK \\
-Static & EN-B4       & 65{,}536  & 64   & 2.25  & $1.045\times10^{8}$ & $1.045\times10^{8}$ & $1.372\times10^{7}$ & 1.000 & 1.000 & compute-bound   & OK \\
-Static & EN-B5       & 32{,}768  & 64   & 1.31  & $4.938\times10^{8}$ & $4.938\times10^{8}$ & $2.279\times10^{7}$ & 1.000 & 1.000 & compute-bound   & OK \\
-Static & EN-B6       & 32{,}768  & 64   & 1.10  & $9.952\times10^{8}$ & $9.952\times10^{8}$ & $3.505\times10^{7}$ & 1.000 & 1.000 & compute-bound   & OK \\
-Static & EN-B7       & 131{,}072 & 64   & 3.60  & $5.153\times10^{8}$ & $5.153\times10^{8}$ & $5.280\times10^{7}$ & 1.000 & 1.000 & compute-bound   & OK \\
-Static & Llama-1 13B & 32{,}768  & 1024 & 1.07  & $2.705\times10^{10}$& $2.705\times10^{10}$& $2.981\times10^{7}$ & 1.000 & 1.000 & compute-bound   & OK \\
-Static & Llama-1 65B & 65{,}536  & 128  & 0.61  & $2.377\times10^{11}$& $6.744\times10^{10}$& $9.514\times10^{8}$ & 0.284 & 3.525 & above-roofline  & loose (expected) \\
+Static & EN-B1       & 32{,}768  & 64   & 1.12  & $2.76\times10^{7}$ & $2.76\times10^{7}$ & $4.24\times10^{6}$ & 1.000 & 1.000 & compute-bound   & OK \\
+Static & EN-B2       & 65{,}536  & 64   & 1.93  & $2.58\times10^{7}$ & $2.58\times10^{7}$ & $5.47\times10^{6}$ & 1.000 & 1.000 & compute-bound   & OK \\
+Static & EN-B3       & 32{,}768  & 64   & 1.25  & $7.91\times10^{7}$ & $7.91\times10^{7}$ & $7.55\times10^{6}$ & 1.000 & 1.000 & compute-bound   & OK \\
+Static & EN-B4       & 65{,}536  & 64   & 2.25  & $1.05\times10^{8}$ & $1.05\times10^{8}$ & $1.37\times10^{7}$ & 1.000 & 1.000 & compute-bound   & OK \\
+Static & EN-B5       & 32{,}768  & 64   & 1.31  & $4.94\times10^{8}$ & $4.94\times10^{8}$ & $2.28\times10^{7}$ & 1.000 & 1.000 & compute-bound   & OK \\
+Static & EN-B6       & 32{,}768  & 64   & 1.10  & $9.95\times10^{8}$ & $9.95\times10^{8}$ & $3.51\times10^{7}$ & 1.000 & 1.000 & compute-bound   & OK \\
+Static & EN-B7       & 131{,}072 & 64   & 3.60  & $5.15\times10^{8}$ & $5.15\times10^{8}$ & $5.28\times10^{7}$ & 1.000 & 1.000 & compute-bound   & OK \\
+Static & Llama-1 13B & 32{,}768  & 1024 & 1.07  & $2.71\times10^{10}$& $2.71\times10^{10}$& $2.98\times10^{7}$ & 1.000 & 1.000 & compute-bound   & OK \\
+Static & Llama-1 65B & 65{,}536  & 128  & 0.61  & $2.38\times10^{11}$& $6.74\times10^{10}$& $9.51\times10^{8}$ & 0.28 & 3.53 & above-roofline  & loose (expected) \\
 Static & Llama-3 70B & --         & --    & --     & --                   & --                   & --                   & --     & --     & --               & infeas \\
 Static & DeepSeek-V3 & --         & --    & --     & --                   & --                   & --                   & --     & --     & --               & infeas \\
 \midrule
 \multicolumn{12}{l}{\textit{Dynamic fixed-tile LP (time-indexed + rematerialisation)}} \\
 \midrule
-fixed-tile & EN-B1       & 65{,}536  & 64  &  2.24 & $1.379\times10^{7}$ & $1.379\times10^{7}$ & $4.236\times10^{6}$ & 1.000 & 1.000 & compute-bound & OK \\
-fixed-tile & EN-B2       & 131{,}072 & 64  &  3.87 & $1.288\times10^{7}$ & $1.288\times10^{7}$ & $5.474\times10^{6}$ & 1.000 & 1.000 & compute-bound & OK \\
-fixed-tile & EN-B3       & 131{,}072 & 64  &  4.99 & $1.976\times10^{7}$ & $1.976\times10^{7}$ & $7.552\times10^{6}$ & 1.000 & 1.000 & compute-bound & OK \\
-fixed-tile & EN-B4       & 131{,}072 & 64  &  4.51 & $5.225\times10^{7}$ & $5.225\times10^{7}$ & $1.372\times10^{7}$ & 1.000 & 1.000 & compute-bound & OK \\
-fixed-tile & EN-B5       & 131{,}072 & 64  &  5.24 & $1.234\times10^{8}$ & $1.234\times10^{8}$ & $2.279\times10^{7}$ & 1.000 & 1.000 & compute-bound & OK \\
-fixed-tile & EN-B6       & 262{,}144 & 64  &  8.82 & $1.244\times10^{8}$ & $1.244\times10^{8}$ & $3.505\times10^{7}$ & 1.000 & 1.000 & compute-bound & OK \\
-fixed-tile & EN-B7       & 524{,}288 & 64  & 14.39 & $1.288\times10^{8}$ & $1.288\times10^{8}$ & $5.280\times10^{7}$ & 1.000 & 1.000 & compute-bound & OK \\
-fixed-tile & Llama-1 13B & 262{,}144 & 64  &  8.57 & $3.382\times10^{9}$ & $3.382\times10^{9}$ & $4.770\times10^{8}$ & 1.000 & 1.000 & compute-bound & OK \\
-fixed-tile & Llama-1 65B & 262{,}144 & 64  &  8.57 & $1.686\times10^{10}$& $1.686\times10^{10}$& $1.903\times10^{9}$ & 1.000 & 1.000 & compute-bound & OK \\
-fixed-tile & Llama-3 70B & 524{,}288 & 64  & 20.07 & $9.227\times10^{9}$ & $9.227\times10^{9}$ & $1.972\times10^{9}$ & 1.000 & 1.000 & compute-bound & OK \\
-fixed-tile & DeepSeek-V3 & 262{,}144 & 128 &  8.87 & $6.622\times10^{9}$ & $6.622\times10^{9}$ & $7.477\times10^{8}$ & 1.000 & 1.000 & compute-bound & OK \\
+fixed-tile & EN-B1       & 65{,}536  & 64  &  2.24 & $1.38\times10^{7}$ & $1.38\times10^{7}$ & $4.24\times10^{6}$ & 1.000 & 1.000 & compute-bound & OK \\
+fixed-tile & EN-B2       & 131{,}072 & 64  &  3.87 & $1.29\times10^{7}$ & $1.29\times10^{7}$ & $5.47\times10^{6}$ & 1.000 & 1.000 & compute-bound & OK \\
+fixed-tile & EN-B3       & 131{,}072 & 64  &  4.99 & $1.98\times10^{7}$ & $1.98\times10^{7}$ & $7.55\times10^{6}$ & 1.000 & 1.000 & compute-bound & OK \\
+fixed-tile & EN-B4       & 131{,}072 & 64  &  4.51 & $5.23\times10^{7}$ & $5.23\times10^{7}$ & $1.37\times10^{7}$ & 1.000 & 1.000 & compute-bound & OK \\
+fixed-tile & EN-B5       & 131{,}072 & 64  &  5.24 & $1.23\times10^{8}$ & $1.23\times10^{8}$ & $2.28\times10^{7}$ & 1.000 & 1.000 & compute-bound & OK \\
+fixed-tile & EN-B6       & 262{,}144 & 64  &  8.82 & $1.24\times10^{8}$ & $1.24\times10^{8}$ & $3.51\times10^{7}$ & 1.000 & 1.000 & compute-bound & OK \\
+fixed-tile & EN-B7       & 524{,}288 & 64  & 14.39 & $1.29\times10^{8}$ & $1.29\times10^{8}$ & $5.28\times10^{7}$ & 1.000 & 1.000 & compute-bound & OK \\
+fixed-tile & Llama-1 13B & 262{,}144 & 64  &  8.57 & $3.38\times10^{9}$ & $3.38\times10^{9}$ & $4.77\times10^{8}$ & 1.000 & 1.000 & compute-bound & OK \\
+fixed-tile & Llama-1 65B & 262{,}144 & 64  &  8.57 & $1.69\times10^{10}$& $1.69\times10^{10}$& $1.90\times10^{9}$ & 1.000 & 1.000 & compute-bound & OK \\
+fixed-tile & Llama-3 70B & 524{,}288 & 64  & 20.07 & $9.23\times10^{9}$ & $9.23\times10^{9}$ & $1.97\times10^{9}$ & 1.000 & 1.000 & compute-bound & OK \\
+fixed-tile & DeepSeek-V3 & 262{,}144 & 128 &  8.87 & $6.62\times10^{9}$ & $6.62\times10^{9}$ & $7.48\times10^{8}$ & 1.000 & 1.000 & compute-bound & OK \\
 \midrule
 \multicolumn{12}{l}{\textit{Joint joint-tile LP (joint tiling + fusion)}} \\
 \midrule
-joint-tile & EN-B1       &    131{,}072 & 64 &  4.47 & $6.894\times10^{6}$ & $6.894\times10^{6}$ & $4.236\times10^{6}$ & 1.000 & 1.000 & compute-bound & OK \\
-joint-tile & EN-B2       &    262{,}144 & 64 &  7.73 & $6.440\times10^{6}$ & $6.440\times10^{6}$ & $5.474\times10^{6}$ & 1.000 & 1.000 & compute-bound & OK \\
-joint-tile & EN-B3       &    262{,}144 & 64 &  9.99 & $9.881\times10^{6}$ & $9.881\times10^{6}$ & $7.552\times10^{6}$ & 1.000 & 1.000 & compute-bound & OK \\
-joint-tile & EN-B4       &    262{,}144 & 64 &  9.01 & $2.612\times10^{7}$ & $2.612\times10^{7}$ & $1.372\times10^{7}$ & 1.000 & 1.000 & compute-bound & OK \\
-joint-tile & EN-B5       &    524{,}288 & 64 & 20.98 & $3.086\times10^{7}$ & $3.086\times10^{7}$ & $2.279\times10^{7}$ & 1.000 & 1.000 & compute-bound & OK \\
-joint-tile & EN-B6       &    524{,}288 & 64 & 17.64 & $6.220\times10^{7}$ & $6.220\times10^{7}$ & $3.505\times10^{7}$ & 1.000 & 1.000 & compute-bound & OK \\
-joint-tile & EN-B7       & 1{,}048{,}576 & 64 & 28.78 & $6.441\times10^{7}$ & $6.441\times10^{7}$ & $5.280\times10^{7}$ & 1.000 & 1.000 & compute-bound & OK \\
-joint-tile & Llama-1 13B & 1{,}048{,}576 & 64 & 34.27 & $8.454\times10^{8}$ & $8.454\times10^{8}$ & $4.770\times10^{8}$ & 1.000 & 1.000 & compute-bound & OK \\
-joint-tile & Llama-1 65B & 1{,}048{,}576 & 64 & 34.28 & $4.215\times10^{9}$ & $4.215\times10^{9}$ & $1.903\times10^{9}$ & 1.000 & 1.000 & compute-bound & OK \\
-joint-tile & Llama-3 70B & 1{,}048{,}576 & 64 & 40.14 & $4.614\times10^{9}$ & $4.614\times10^{9}$ & $1.972\times10^{9}$ & 1.000 & 1.000 & compute-bound & OK \\
-joint-tile & DeepSeek-V3 & 1{,}048{,}576 & 64 & 35.50 & $1.656\times10^{9}$ & $1.656\times10^{9}$ & $1.495\times10^{9}$ & 1.000 & 1.000 & compute-bound & OK \\
+joint-tile & EN-B1       &    131{,}072 & 64 &  4.47 & $6.89\times10^{6}$ & $6.89\times10^{6}$ & $4.24\times10^{6}$ & 1.000 & 1.000 & compute-bound & OK \\
+joint-tile & EN-B2       &    262{,}144 & 64 &  7.73 & $6.44\times10^{6}$ & $6.44\times10^{6}$ & $5.47\times10^{6}$ & 1.000 & 1.000 & compute-bound & OK \\
+joint-tile & EN-B3       &    262{,}144 & 64 &  9.99 & $9.88\times10^{6}$ & $9.88\times10^{6}$ & $7.55\times10^{6}$ & 1.000 & 1.000 & compute-bound & OK \\
+joint-tile & EN-B4       &    262{,}144 & 64 &  9.01 & $2.61\times10^{7}$ & $2.61\times10^{7}$ & $1.37\times10^{7}$ & 1.000 & 1.000 & compute-bound & OK \\
+joint-tile & EN-B5       &    524{,}288 & 64 & 20.98 & $3.09\times10^{7}$ & $3.09\times10^{7}$ & $2.28\times10^{7}$ & 1.000 & 1.000 & compute-bound & OK \\
+joint-tile & EN-B6       &    524{,}288 & 64 & 17.64 & $6.22\times10^{7}$ & $6.22\times10^{7}$ & $3.51\times10^{7}$ & 1.000 & 1.000 & compute-bound & OK \\
+joint-tile & EN-B7       & 1{,}048{,}576 & 64 & 28.78 & $6.44\times10^{7}$ & $6.44\times10^{7}$ & $5.28\times10^{7}$ & 1.000 & 1.000 & compute-bound & OK \\
+joint-tile & Llama-1 13B & 1{,}048{,}576 & 64 & 34.27 & $8.45\times10^{8}$ & $8.45\times10^{8}$ & $4.77\times10^{8}$ & 1.000 & 1.000 & compute-bound & OK \\
+joint-tile & Llama-1 65B & 1{,}048{,}576 & 64 & 34.28 & $4.22\times10^{9}$ & $4.22\times10^{9}$ & $1.90\times10^{9}$ & 1.000 & 1.000 & compute-bound & OK \\
+joint-tile & Llama-3 70B & 1{,}048{,}576 & 64 & 40.14 & $4.61\times10^{9}$ & $4.61\times10^{9}$ & $1.97\times10^{9}$ & 1.000 & 1.000 & compute-bound & OK \\
+joint-tile & DeepSeek-V3 & 1{,}048{,}576 & 64 & 35.50 & $1.66\times10^{9}$ & $1.66\times10^{9}$ & $1.50\times10^{9}$ & 1.000 & 1.000 & compute-bound & OK \\
 \midrule
 \multicolumn{12}{l}{%
 \textit{Summary: 31 cells plotted ($\rho_{\mathrm{comp}} \leq$ 1, roofline-feasible) $\cdot$
@@ -260,7 +260,7 @@ Static & EN-B5       &  32{,}768 &   64 & $3.24\times10^{13}$ & $1.46\times10^{9
 Static & EN-B6       &  32{,}768 &   64 & $6.52\times10^{13}$ & $2.24\times10^{9}$  & $9.95\times10^{8}$ & $3.50\times10^{7}$ & $9.95\times10^{8}$ & $9.95\times10^{8}$ & 1.000 & compute & OK \\
 Static & EN-B7       & 131{,}072 &   64 & $1.35\times10^{14}$ & $3.38\times10^{9}$  & $5.15\times10^{8}$ & $5.28\times10^{7}$ & $5.15\times10^{8}$ & $5.15\times10^{8}$ & 1.000 & compute & OK \\
 Static & Llama-1 13B &  32{,}768 & 1024 & $1.77\times10^{15}$ & $3.05\times10^{10}$ & $2.71\times10^{10}$& $2.98\times10^{7}$ & $2.71\times10^{10}$& $2.71\times10^{10}$& 1.000 & compute & OK \\
-Static & Llama-1 65B &  65{,}536 &  128 & $8.84\times10^{15}$ & $1.22\times10^{11}$ & $6.74\times10^{10}$& $9.51\times10^{8}$ & $6.74\times10^{10}$& $2.38\times10^{11}$& 0.284 & compute & OK \\
+Static & Llama-1 65B &  65{,}536 &  128 & $8.84\times10^{15}$ & $1.22\times10^{11}$ & $6.74\times10^{10}$& $9.51\times10^{8}$ & $6.74\times10^{10}$& $2.38\times10^{11}$& 0.28 & compute & OK \\
 \midrule
 \multicolumn{13}{l}{\textit{Dynamic fixed-tile LP (time-indexed + rematerialisation)}} \\
 \midrule

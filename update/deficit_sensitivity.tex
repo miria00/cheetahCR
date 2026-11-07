@@ -70,8 +70,8 @@ $\mathrm{MFU}=1.000$ (0.998 on Llama-1 13B; \cref{tab:cheetah_v1_llama1_13b}).
 
 \emph{(b) On fixed TPU-v3 silicon (grid convention).} On the $65{,}536$-MAC
 baseline itself, naive streaming reaches only $\mathrm{MFU}=0.40$--$0.64$ of the
-compute floor on TPU-v3 (Llama-3 70B $0.399$, DeepSeek-V3 $0.451$,
-Llama-1 13B $0.467$, SD1.5-UNet $0.643$), and up to $0.78$ across the
+compute floor on TPU-v3 (Llama-3 70B $0.40$, DeepSeek-V3 $0.45$,
+Llama-1 13B $0.47$, SD1.5-UNet $0.64$), and up to $0.78$ across the
 compute-bound cells of the wider fixed-hardware grid; on the bandwidth-starved
 NPU ($64$\,GB/s) it collapses to $\mathrm{MFU}=0.02$--$0.05$. The joint schedule
 recovers every compute-bound cell to $\mathrm{MFU}\approx1.000$, so the
@@ -98,11 +98,11 @@ they are not measured-silicon utilizations.}
 \textbf{Workload} & Compute-active & Memory-stall & Comm.\ & (chip, no fusion)
 & $\mathrm{MFU}$ \\
 \midrule
-Llama-1 13B  & 0.467 & 0.533 & 0 & 97.1\% & 1.000 \\
+Llama-1 13B  & 0.47 & 0.53 & 0 & 97.1\% & 1.000 \\
 Llama-1 65B  & --\,$^{\dagger}$ & --\,$^{\dagger}$ & 0 & 97.1\% & 1.000 \\
-Llama-3 70B  & 0.399 & 0.601 & 0 & 97.5\% & 1.000 \\
-DeepSeek-V3  & 0.451 & 0.549 & 0 & 97.2\% & 1.000 \\
-SD1.5-UNet   & 0.643 & 0.357 & 0 & --      & 0.963 \\
+Llama-3 70B  & 0.40 & 0.60 & 0 & 97.5\% & 1.000 \\
+DeepSeek-V3  & 0.45 & 0.55 & 0 & 97.2\% & 1.000 \\
+SD1.5-UNet   & 0.64 & 0.36 & 0 & --      & 0.96 \\
 \bottomrule
 \end{tabular}
 
@@ -123,8 +123,8 @@ chip's own bandwidth) is only $0.10$--$0.33\%$ of the compute floor
 DeepSeek-V3 $0.33\%$; \cref{app:blueprints}). Second, a mapping-independent
 attainable-traffic analysis in the style of Orojenesis~\citep{huang2024mindthegap}
 places the attainable per-Einsum DRAM floor at $\mathbf{0.1}$--$\mathbf{0.9\%}$
-of the compute floor on every cell we measured (Llama-3 70B $0.116\%$,
-DeepSeek-V3 $0.182\%$, SD1.5-UNet $0.896\%$), because at the deployed
+of the compute floor on every cell we measured (Llama-3 70B $0.12\%$,
+DeepSeek-V3 $0.18\%$, SD1.5-UNet $0.896\%$), because at the deployed
 prefill-like batch the weight reuse is large. Both bound the same conclusion:
 the compulsory off-chip traffic that \emph{no} schedule can remove is under
 $1\%$ of the compute floor, so essentially the entire naive memory-stall
@@ -170,10 +170,10 @@ config-0 naive; bf16 cycle basis; HiGHS-Optimal endpoints.}
 \textbf{Workload} & $f_1$ (sched., TPU-v3) & $f_2$ (MAC prov.)
 & Reconstructed & Headline & Recon./Headline \\
 \midrule
-Llama-1 13B  & 1.662 & 20.31 & 33.75 & 34.22 & 0.986 \\
-Llama-1 65B  & 1.727 & 20.04 & 34.60 & 34.60 & 1.000$^{\ddagger}$ \\
-Llama-3 70B  & 1.484 & 26.85 & 39.84 & 40.16 & 0.992 \\
-DeepSeek-V3  & 1.784 & 19.97 & 35.63 & 35.68 & 0.999 \\
+Llama-1 13B  & 1.66 & 20.31 & 33.75 & 34.22 & 0.99 \\
+Llama-1 65B  & 1.73 & 20.04 & 34.60 & 34.60 & 1.000$^{\ddagger}$ \\
+Llama-3 70B  & 1.48 & 26.85 & 39.84 & 40.16 & 0.992 \\
+DeepSeek-V3  & 1.78 & 19.97 & 35.63 & 35.68 & 0.999 \\
 \midrule
 \textbf{Range} & \textbf{1.48--1.78} & \textbf{20.0--26.9}
 & \multicolumn{3}{c}{\textbf{34.6--40.2} (matches Fig.~2)} \\
@@ -290,7 +290,7 @@ contrast the fixed-tile schedule \emph{needs} the buffer, improving $1.18\times$
 over the same sweep. The joint formulation substitutes tile choice for buffer
 capacity: when tiling is free, a larger global buffer buys almost nothing. The
 tile-dependent capacity extension is likewise inert here: it matches the retained joint model
-to within $0.077\%$ across the full $C_{\mathrm{GM}}\in\{4,\dots,64\}$\,MiB sweep.
+to within $0.08\%$ across the full $C_{\mathrm{GM}}\in\{4,\dots,64\}$\,MiB sweep.
 Under bandwidth pressure ($64$--$128$\,GB/s) the buffer regains a modest decision
 ($\approx1.19\times$ for Llama-1 13B over $8\to64$\,MiB), but \emph{only through
 placement}: with placement frozen (row A) the objective is constant across
@@ -314,7 +314,7 @@ $C_{\mathrm{GM}}$ (MiB) & 1 & 2 & 4 & 8 & 16 & 32 & 64 & sweep ($1\!\to\!64$) \\
 Joint (free-$y$) & 1.0723 & 1.0699 & 1.0690 & 1.0682 & 1.0682
 & 1.0682 & 1.0682 & $\times10^{12}$; $1.004\times$ \\
 Fixed-tile (FAST-subset)   & 1.4627 & 1.4459 & 1.4327 & 1.4161 & 1.3863
-& 1.3364 & 1.2371 & $\times10^{12}$; $1.182\times$ \\
+& 1.3364 & 1.2371 & $\times10^{12}$; $1.18\times$ \\
 \bottomrule
 \end{tabular}%
 }

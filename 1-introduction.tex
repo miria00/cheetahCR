@@ -51,7 +51,7 @@ routes, retains the complete KV history, and charges every restore. Its gains
 do not assume that all weights or KV fit on chip.
 
 The complete CHEETAH program is too large to materialize. To solve the
-large-scale linear program we develop a specialized in-house method, named OCS.
+large-scale linear program we develop a specialized in-house method, named OCS~\citep{feng2026ocs}.
 The master is solved by \emph{branch and bound} over its declared branch family.
 Each branch is a whole-program node carrying its own hardware and execution
 semantics, so the family is the search tree and a node is a complete LP in its
@@ -96,12 +96,12 @@ proposes implementations and hardware search neighborhoods.
     \item \textbf{LLM Architect Outer Loop.} The architect interprets resource prices and a causal ledger of earlier trials to propose hardware and implementation changes. Deterministic checks admit proposals; the LLM itself supplies no certificate. This couples architecture exploration with the optimizer's diagnostics rather than relying only on black-box scores.
 
     \item \textbf{Inference speedup.} Against unchanged naive TPU-v3,
-    CHEETAH predicts up to $11.849\times$ for EfficientNet forward execution
-    and the SD1.5 UNet denoiser, up to $24.196\times$ for LLM prefill, and up
-    to $17.932\times$ for LLM decode (Figure~\ref{fig:speedup}).
+    CHEETAH predicts up to $11.85\times$ for EfficientNet forward execution
+    and the SD1.5 UNet denoiser, up to $24.20\times$ for LLM prefill, and up
+    to $17.93\times$ for LLM decode (Figure~\ref{fig:speedup}).
     The decode-only
-    designs predict $7.823\times$ for DeepSeek-V3 and
-    $11.092$--$17.932\times$ for the three Llamas; the
+    designs predict $7.82\times$ for DeepSeek-V3 and
+    $11.09$--$17.93\times$ for the three Llamas; the
     prefill-oriented designs report an average $22.07\times$ and up to
     $40.1\times$ under their own cost conventions
     (Section~\ref{sec:experiments}). These are analytical

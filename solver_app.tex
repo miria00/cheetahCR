@@ -4,6 +4,14 @@
 
 Wall-clock time decomposition and search acceleration results are presented in Figure~\ref{fig:wallclock} and Section~\ref{sec:experiments}.
 
+\begin{figure}[t]
+    \centering
+\includegraphics[width=1.0\linewidth]{fig3/wallclock_new_v6.png}
+\caption{Wall-clock time decomposition and performance acceleration across formulations: CHEETAH-V1's internalized tiling eliminates the Timeloop bottleneck, achieving up to 100--300$\times$ faster search than the classical static method. Upper bars show wall-clock hours (log scale); annotations show speedup vs.\ static.}
+\label{fig:wallclock}
+\end{figure}
+
+
 
 \subsection{Interesting Empirical Design Results}
 
@@ -22,11 +30,11 @@ Wall-clock time decomposition and search acceleration results are presented in F
 \midrule
 TPU-v3 ref   & --              & --  & 1.000 & 1.000  & 65{,}536  & 32 MB & 64 / 64 / 64     & Shared  & Disabled & 64  \\
 \midrule
-DeepSeek A   & \texttt{deepseek\_v3} & 81 & 3.158 & 25.125 & 524{,}288 & 8 MB  & 512 / 1 / 256    & Shared  & Disabled & 64  \\
-DeepSeek B   & \texttt{deepseek\_v3} & 95 & 3.146 & 12.512 & 262{,}144 & 8 MB  & 1 / 256 / 512    & Shared  & Disabled & 128 \\
+DeepSeek A   & \texttt{deepseek\_v3} & 81 & 3.16 & 25.13 & 524{,}288 & 8 MB  & 512 / 1 / 256    & Shared  & Disabled & 64  \\
+DeepSeek B   & \texttt{deepseek\_v3} & 95 & 3.15 & 12.51 & 262{,}144 & 8 MB  & 1 / 256 / 512    & Shared  & Disabled & 128 \\
 \midrule
-Llama-3 70B A & \texttt{llama3\_70b} & 88 & 3.557 & 14.152 & 262{,}144 & 32 MB & 8 / 256 / 4      & Private & Shared   & 64  \\
-Llama-3 70B B & \texttt{llama3\_70b} & 92 & 3.570 & 28.402 & 524{,}288 &  1 MB & 512 / 128 / 512  & Shared  & Shared   & 64  \\
+Llama-3 70B A & \texttt{llama3\_70b} & 88 & 3.56 & 14.15 & 262{,}144 & 32 MB & 8 / 256 / 4      & Private & Shared   & 64  \\
+Llama-3 70B B & \texttt{llama3\_70b} & 92 & 3.57 & 28.40 & 524{,}288 &  1 MB & 512 / 128 / 512  & Shared  & Shared   & 64  \\
 \bottomrule
 \end{tabular}%
 }

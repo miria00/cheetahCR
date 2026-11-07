@@ -69,12 +69,12 @@ effects are not an additive attribution of the headline speedup.
 The no-batch control executes every original member separately and reselects
 its tile. Resident weights remain resident; each streamed member pays its own
 receive. The control expands to exactly $61{,}985{,}244$ kernels and takes
-$2{,}999.864$ seconds, versus $2{,}100.621$ with batching. Thus grouped execution
-and shared streamed-weight delivery give $1.612\times$ decode and
-$1.064\times$ prefill gains. SwiGLU and elementwise storage choices remove
+$2{,}999.86$ seconds, versus $2{,}100.62$ with batching. Thus grouped execution
+and shared streamed-weight delivery give $1.61\times$ decode and
+$1.06\times$ prefill gains. SwiGLU and elementwise storage choices remove
 primitive spills while retaining arithmetic, BF16 rounding, and local/vector
 service. Full-K panels reuse weights across output-row tiles, paying SRAM and
-serialized panel waves. Holding one tile fixed per parameter family adds $0.866$ seconds to decode;
+serialized panel waves. Holding one tile fixed per parameter family adds $0.87$ seconds to decode;
 panel boundaries, buffers and residency stay fixed. This tests weighted decode
 tile adaptation, rather than every temporal choice in the master.
 
@@ -82,8 +82,8 @@ tile adaptation, rather than every temporal choice in the master.
 Every arm retains complete cached decoding, growth, host backing and mandatory
 writes. Optional DRAM residency selects 246 request/layer/K-or-V prefix chains
 and pays 125,952 copies. A fixed whole-task partition fits 193 chains; releasing
-prefill temporaries before decode permits 246. Placement's $3.698$-second gain
-is included in the $15.726$-second KV gain. These modest marginal gains reflect
+prefill temporaries before decode permits 246. Placement's $3.70$-second gain
+is included in the $15.73$-second KV gain. These modest marginal gains reflect
 limited DRAM capacity and the wide custom external interface. Independent
 checks replay changed copies and kernel traffic; Appendix~\ref{app:native_provenance}
 records exact inputs, costs, controls and their scope.

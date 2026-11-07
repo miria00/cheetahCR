@@ -55,7 +55,7 @@ step.
 \setlength{\tabcolsep}{5pt}
 \renewcommand{\arraystretch}{1.22}
 \definecolor{bandrtl}{RGB}{230,239,253}
-\definecolor{rowalt}{gray}{0.955}
+\definecolor{rowalt}{gray}{0.96}
 \begin{tabular}{@{}l l l l@{}}
 \toprule
 \rowcolor{bandrtl}
@@ -90,7 +90,7 @@ steady-state depthwise utilization of $24.9\%$ against the $25\%$ analytic
 ceiling ($6.13\%$ vs.\ $6.25\%$ on the $16\times16$ variant), while dense
 $1\times1$ layers hold $97$--$99\%$ on the identical RTL. Second, the
 predicted \emph{geometry contrasts}: the measured lane law reproduces the
-$4.00\times$ systolic-vs-grid contrast to $4.057\times$, and extends the
+$4.00\times$ systolic-vs-grid contrast to $4.06\times$, and extends the
 cache's $18\times$ depthwise contrast to within $1.22\times$. Crucially, the
 same runs show the analytical cache cycle \emph{floors} to be $192\times$ to
 $2475\times$ conservative (the RTL executes the identical work that much
@@ -123,7 +123,7 @@ Two-tape ratio (pin/reload only) & $1.0723\times$ ($8$-digit match) & pass \\
 \multicolumn{3}{@{}l}{\emph{Exp.\ 2: EfficientNet-B7 INT8 systolic cluster
 (golden $8/8$)}} \\
 Depthwise MAC-lane utilization & $24.9\%$ vs.\ $25\%$ ceiling & mechanism confirmed \\
-Systolic-vs-grid geometry contrast & $4.057\times$ vs.\ $4.00\times$ & mechanism confirmed \\
+Systolic-vs-grid geometry contrast & $4.06\times$ vs.\ $4.00\times$ & mechanism confirmed \\
 Absolute cache cycle floors & $192$--$2475\times$ conservative & scope guard \\
 \bottomrule
 \end{tabular}
@@ -222,12 +222,12 @@ MAC count; the linear fit has $R^2 = 0.999999$.}
 $N$ & MACs & Cell area ($\mu\mathrm{m}^2$) & Cell area/MAC ($\mathrm{mm}^2$) &
 Core area/MAC ($\mathrm{mm}^2$) \\
 \midrule
-$16$ & $256$   & $20{,}981$  & $8.196\times10^{-5}$ & $1.986\times10^{-4}$ \\
-$32$ & $1{,}024$  & $83{,}629$  & $8.167\times10^{-5}$ & $1.986\times10^{-4}$ \\
-$64$ & $4{,}096$  & $336{,}049$ & $8.204\times10^{-5}$ & $1.998\times10^{-4}$ \\
+$16$ & $256$   & $20{,}981$  & $8.20\times10^{-5}$ & $1.99\times10^{-4}$ \\
+$32$ & $1{,}024$  & $83{,}629$  & $8.17\times10^{-5}$ & $1.99\times10^{-4}$ \\
+$64$ & $4{,}096$  & $336{,}049$ & $8.20\times10^{-5}$ & $2.00\times10^{-4}$ \\
 \midrule
 \multicolumn{3}{@{}l}{Linear fit ($R^2 = 0.999999$)} &
-$8.208\times10^{-5}$ & \\
+$8.21\times10^{-5}$ & \\
 \multicolumn{3}{@{}l}{Program value $k_{\mathrm{MAC}}$} &
 \multicolumn{2}{l}{$1.5\times10^{-4}$ (cell area at $54.7\%$ utilization)} \\
 \bottomrule
@@ -259,7 +259,7 @@ and container.
 \paragraph{Result: the analytic ratio is wrong in both directions.}
 \Cref{tab:energy} reports the measurements. The partial-product model predicts
 energy ratios of $0.50$ for W4A8 and $0.25$ for W4A4 against the W8A8 baseline.
-The measured ratios are $0.376$ and $0.358$. Narrowing the \emph{weight} saves
+The measured ratios are $0.38$ and $0.36$. Narrowing the \emph{weight} saves
 more than the model predicts, because switching concentrates in the multiplier
 tree; narrowing the \emph{activation} saves far less, because the $32$-bit
 accumulator and the partial-sum pipeline registers do not narrow with the
@@ -305,12 +305,12 @@ W4A8 and W4A4 energy ratios; both are wrong.}
 \toprule
 Variant & Power (W) & pJ/MAC-op & Energy ratio & Area ratio \\
 \midrule
-W8A8, ungated & $0.872$ & $3.41$ & $1.000$ & $1.001$ \\
-W4A8, ungated & $0.328$ & $1.28$ & $\mathbf{0.376}$ & $0.726$ \\
-W4A4, ungated & $0.312$ & $1.22$ & $\mathbf{0.358}$ & $0.625$ \\
-W8A8, gated   & $1.220$ & $4.77$ & $1.399$ & -- \\
-W4A8, gated   & $0.347$ & $1.36$ & $0.398$ & $0.887$ \\
-W4A4, gated   & $0.312$ & $1.22$ & $0.358$ & $0.752$ \\
+W8A8, ungated & $0.87$ & $3.41$ & $1.000$ & $1.001$ \\
+W4A8, ungated & $0.33$ & $1.28$ & $\mathbf{0.38}$ & $0.73$ \\
+W4A4, ungated & $0.31$ & $1.22$ & $\mathbf{0.36}$ & $0.63$ \\
+W8A8, gated   & $1.22$ & $4.77$ & $1.40$ & -- \\
+W4A8, gated   & $0.35$ & $1.36$ & $0.40$ & $0.89$ \\
+W4A4, gated   & $0.31$ & $1.22$ & $0.36$ & $0.75$ \\
 \bottomrule
 \end{tabular}
 \end{table}

@@ -1,9 +1,10 @@
 \section{Certificate-Producing Optimization and Design Recovery}
 \label{sec:solver_vm}\label{sec:ocs}\label{sec:vm_solver}\label{sec:mccormick_blowup}
-To solve the master we use OCS, our in-house solver framework. A separate paper
-covers its numerical design and Appendix~\ref{app:ocs_working_path} gives its
-kernel and closing stage; here we give only what the reader needs to follow the
-results. OCS never forms the event-expanded matrix: it applies the constraint
+To solve the master we use OCS, our in-house solver framework~\citep{feng2026ocs}.
+The solver is a standalone contribution: its numerical design is described in a
+companion paper, the implementation is released at the cited repository, and
+Appendix~\ref{app:ocs_working_path} gives its kernel and closing stage. Here we
+give only what the reader needs to follow the results. OCS never forms the event-expanded matrix: it applies the constraint
 map $Kx$ and its adjoint $K^Ty$ as operators, so a branch's complete decision
 domain is preserved at the size of its generated incidence. Its discovery stage
 runs an anchored, restarted primal--dual scheme with a diagonal variable metric
@@ -19,8 +20,8 @@ The master is solved by branch and bound over its declared family. Each branch
 $b$ receives a certified lower $L_b$; branches with checked fixed-cost
 infeasibility, or whose bound cannot improve the incumbent, are pruned; and the
 perspective composition $L=\min_bL_b$ together with the incumbent $U$ brackets
-the optimum. For the frozen 1,557-branch DeepSeek master, composition of 1,787
-committed receipts establishes
+the optimum. For the frozen 1,557-branch DeepSeek master, composing the 1,787
+per-branch certificates establishes
 \[
  \begin{gathered}
  L\approx946{,}487.719081842\ \mathrm{ms},\qquad

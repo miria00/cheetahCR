@@ -18,6 +18,8 @@ not change the linear form of the exported program.
 % ================================================================
 \begin{table}[h]
 \centering
+\caption{Silicon cost model: area and power coefficients. Sources: \texttt{feasibility\_\allowbreak checks.py} lines 32--48 and the LP builders (\texttt{deepseek\_\allowbreak socp\_\allowbreak codesign.py} lines 341--350, \texttt{deepseek\_\allowbreak socp\_\allowbreak serving\_\allowbreak codesign.py} lines 147--152).}
+\label{tab:coeff_cost_model}
 \footnotesize\setlength{\tabcolsep}{3pt}
 \begin{tabular}{@{}p{0.26\linewidth}p{0.17\linewidth}p{0.045\linewidth}p{0.42\linewidth}@{}}
 \toprule
@@ -38,13 +40,14 @@ $P_{\mathrm{cap}}$ (TDP cap) & 700 W & A & NVIDIA H100 SXM5 TDP is 700 W (vendor
 $\pi_{\mathrm{bit}}$ (DRAM access energy) & $4.0\times10^{-12}$ J/bit & A & HBM2 access energy roughly 3.9 pJ/bit (O'Connor et al., Fine-Grained DRAM, MICRO 2017) \\
 \bottomrule
 \end{tabular}
-\caption{Silicon cost model: area and power coefficients. Sources: \texttt{feasibility\_\allowbreak checks.py} lines 32--48 and the LP builders (\texttt{deepseek\_\allowbreak socp\_\allowbreak codesign.py} lines 341--350, \texttt{deepseek\_\allowbreak socp\_\allowbreak serving\_\allowbreak codesign.py} lines 147--152).}
-\label{tab:coeff_cost_model}
+
 \end{table}
 
 % ================================================================
 \begin{table}[h]
 \centering
+\caption{Pre-RTL manufacturability gate thresholds. Sources: \texttt{feasibility\_\allowbreak checks.py} lines 57--64 and 174.}
+\label{tab:coeff_gates}
 \footnotesize\setlength{\tabcolsep}{3pt}
 \begin{tabular}{@{}p{0.26\linewidth}p{0.17\linewidth}p{0.045\linewidth}p{0.42\linewidth}@{}}
 \toprule
@@ -60,13 +63,14 @@ Constant & Value (units) & St. & Anchor \\
 Crossbar routing-cell cap (crossbar gate) & $5\times10^6$ cells ($n_{\mathrm{pes}} \times n_{\mathrm{banks}}$; flat-crossbar bound $10^6$, relaxed 5$\times$ for a 2-level hierarchical NoC) & A & Industry hierarchical-NoC precedent: TPU-v4 mesh plus crossbar, H100 GPC/L2 partitions, MI300X chiplet XGMI, WSE-3 tile fabric \citep{jouppi2021ten} \\
 \bottomrule
 \end{tabular}
-\caption{Pre-RTL manufacturability gate thresholds. Sources: \texttt{feasibility\_\allowbreak checks.py} lines 57--64 and 174.}
-\label{tab:coeff_gates}
+
 \end{table}
 
 % ================================================================
 \begin{table}[h]
 \centering
+\caption{Precision, datatype, and decision menus. Sources: \texttt{feasibility\_\allowbreak checks.py} lines 65--73 and \texttt{deepseek\_\allowbreak socp\_\allowbreak codesign.py} lines 228--280.}
+\label{tab:coeff_menus}
 \footnotesize\setlength{\tabcolsep}{3pt}
 \begin{tabular}{@{}p{0.26\linewidth}p{0.17\linewidth}p{0.045\linewidth}p{0.42\linewidth}@{}}
 \toprule
@@ -82,13 +86,14 @@ Radix-cache menu sizes & [0, 64, 256, 1024] MB & A & Cache-size sweep grid; an o
 Radix-cache hit-rate profile $\eta_s$ & [0.0, 0.30, 0.50, 0.65] (saturating), fraction of prefill reuse & A & SGLang RadixAttention measured prefix-cache hit rates (saturating in cache size) \citep{zheng2024sglang} \\
 \bottomrule
 \end{tabular}
-\caption{Precision, datatype, and decision menus. Sources: \texttt{feasibility\_\allowbreak checks.py} lines 65--73 and \texttt{deepseek\_\allowbreak socp\_\allowbreak codesign.py} lines 228--280.}
-\label{tab:coeff_menus}
+
 \end{table}
 
 % ================================================================
 \begin{table}[h]
 \centering
+\caption{Workload-derived quantities (DeepSeek-V3). Sources: \texttt{deepseek\_\allowbreak socp\_\allowbreak codesign.py} lines 180--183 and 283--363, \texttt{timeloop\_\allowbreak full.py} lines 137--156.}
+\label{tab:coeff_workload}
 \footnotesize\setlength{\tabcolsep}{3pt}
 \begin{tabular}{@{}p{0.26\linewidth}p{0.17\linewidth}p{0.045\linewidth}p{0.42\linewidth}@{}}
 \toprule
@@ -103,13 +108,14 @@ $d_{KV}$ (MLA KV bytes per token, 8-bit) & $61 \times (512+64) = 35{,}136$ B/tok
 \texttt{DEEPSEEK\_\allowbreak V3\_\allowbreak CONFIG} & $n_{\mathrm{layers}}{=}61$, hidden 7168, 256 routed experts, $k{=}8$ active, kv\_\allowbreak lora\_\allowbreak rank 512, qk\_\allowbreak rope\_\allowbreak head\_\allowbreak dim 64, MoE intermediate 2048 & R & DeepSeek-V3 technical report architecture table \citep{deepseekv3report} \\
 \bottomrule
 \end{tabular}
-\caption{Workload-derived quantities (DeepSeek-V3). Sources: \texttt{deepseek\_\allowbreak socp\_\allowbreak codesign.py} lines 180--183 and 283--363, \texttt{timeloop\_\allowbreak full.py} lines 137--156.}
-\label{tab:coeff_workload}
+
 \end{table}
 
 % ================================================================
 \begin{table}[h]
 \centering
+\caption{Solver grids and operating-point references. Sources: \texttt{deepseek\_\allowbreak socp\_\allowbreak codesign.py} lines 220 and 326--334, \texttt{deepseek\_\allowbreak socp\_\allowbreak serving\_\allowbreak codesign.py} lines 72--129.}
+\label{tab:coeff_grids}
 \footnotesize\setlength{\tabcolsep}{3pt}
 \begin{tabular}{@{}p{0.26\linewidth}p{0.17\linewidth}p{0.045\linewidth}p{0.42\linewidth}@{}}
 \toprule
@@ -123,8 +129,7 @@ BW design envelope $[\mathrm{BW}_{\min}, \mathrm{BW}_{\max}]$ & $[100,\ 8000]$ G
 \texttt{BW\_\allowbreak GRID} (bandwidth one-hot grid) & [225, 450, 675, 900, 1350, 1800, 2400, 3200, 4200, 5400, 6700, 8000] GB/s & A & Enumerated grid from quarter-TPU-v3 HBM2 to HBM3E multi-stack; one-hot branches are solved integrally (exact per branch), and the pin gate prunes entries above 3276.8 GB/s at the 4096-pin cap \\
 \bottomrule
 \end{tabular}
-\caption{Solver grids and operating-point references. Sources: \texttt{deepseek\_\allowbreak socp\_\allowbreak codesign.py} lines 220 and 326--334, \texttt{deepseek\_\allowbreak socp\_\allowbreak serving\_\allowbreak codesign.py} lines 72--129.}
-\label{tab:coeff_grids}
+
 \end{table}
 
 The full inventory, including per-coefficient file and line provenance, is
