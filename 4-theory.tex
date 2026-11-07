@@ -162,6 +162,60 @@ and $\sum_bc_b^\top x_b=c_p^\top x$. The argument covers fractional points as
 well as integral schedules.
 \end{proof}
 
+\subsection{A Fixed-Hardware Ceiling on Any Scheduler}
+\label{app:deficiency}
+For a workload $G$ on a fixed chip $H$ with DRAM bandwidth $b_H$, define the
+\emph{baseline-deficiency ratio}
+\begin{equation}
+\mathcal D(H,G)=\frac{T_{\rm naive}(H,G)}{\max\bigl(T^{\rm LB}_{\rm compute}(H,G),\,T_{\rm memory}(H,G)\bigr)},
+\label{eq:deficiency}
+\end{equation}
+where $T_{\rm naive}=\sum_iT^{\max}_i$ is the naive streaming time,
+$T^{\rm LB}_{\rm compute}=\sum_i\min_cT^{\min}_i(c)$ is the
+schedule-independent per-operation compute floor, and
+$T_{\rm memory}=\sum_i\mathrm{bytes}_i/b_H$ is the bandwidth floor. The
+denominator is the optimistic compute-plus-DRAM roofline bound on the cycles any
+scheduler needs to execute $G$ on $H$; adding NoC, SRAM, vector or control
+floors can only raise it and lower $\mathcal D$.
+\begin{theorem}[Fixed-hardware deficiency ceiling]\label{thm:deficiency}
+For every chip $H$, workload $G$ and feasible point $x\in\mathcal P_V(H,G)$,
+$\mathrm{speedup}(x):=T_{\rm naive}(H,G)/\mathbf c^\top x\le\mathcal D(H,G)$;
+in particular $\min_{x\in\mathcal P_V}\mathbf c^\top x\ge\max(T^{\rm LB}_{\rm compute},T_{\rm memory})$.
+\end{theorem}
+\begin{proof}
+The compute floor $T_i\ge\sum_cT^{\min}_i(c)\,y_{ic}$ and the bandwidth floor
+$\sum_iT_i\ge T_{\rm memory}$ are rows of $\mathcal P_V$. Since $\sum_cy_{ic}=1$
+and $y\ge0$, $T_i\ge\min_cT^{\min}_i(c)$ for every feasible $y$; summing over
+$i$ gives $\sum_iT_i\ge T^{\rm LB}_{\rm compute}$, and with the bandwidth floor
+$\mathbf c^\top x\ge\max(T^{\rm LB}_{\rm compute},T_{\rm memory})$. Dividing
+$T_{\rm naive}$ by both sides gives the claim.
+\end{proof}
+The bound is physical rather than algorithmic: it limits every scheduler, not
+only CHEETAH or FAST, so $\mathcal D$ measures how much any software can extract
+on a given chip--workload pair. Table~\ref{tab:deficiency} evaluates it on fixed
+TPU-v3 (65,536 MACs, 900\,GB/s, 32\,MiB, BF16).
+\begin{table}[h]
+\centering\small
+\caption{Fixed-TPU-v3 deficiency ceiling and the fixed-hardware LP solution.
+CHEETAH saturates the physical ceiling exactly on every LLM.}
+\label{tab:deficiency}
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Workload & $T_{\rm naive}$ (cyc) & $\max(T_c,T_m)$ (cyc) & $\mathcal D(H,G)$ & CHEETAH, fixed HW \\
+\midrule
+Llama-1 13B & $2.90\times10^{10}$ & $1.35\times10^{10}$ & $2.14\times$ & $2.14\times$ (100\%) \\
+Llama-1 65B & $1.45\times10^{11}$ & $6.74\times10^{10}$ & $2.14\times$ & $2.14\times$ (100\%) \\
+Llama-3 70B & $1.85\times10^{11}$ & $7.38\times10^{10}$ & $2.51\times$ & $2.51\times$ (100\%) \\
+DeepSeek-V3 & $5.88\times10^{10}$ & $2.65\times10^{10}$ & $2.22\times$ & $2.22\times$ (100\%) \\
+\bottomrule
+\end{tabular}
+\end{table}
+On every LLM the fixed-hardware solution reaches the ceiling, so the modest
+fixed-TPU-v3 gains of Table~\ref{tab:fixed_hw} measure the chip, not the
+formulation: TPU-v3 has only about $2.5\times$ of extractable inefficiency on
+these workloads, and the larger gains of Section~\ref{sec:experiments} require
+co-designing the chip itself.
+
 \subsection{Structure and Safe Pruning}\label{app:invar}
 \begin{proposition}\label{prop:invariance}
 For fixed graph incidence, variable domains, and candidate library, changes

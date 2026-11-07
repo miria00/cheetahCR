@@ -1,5 +1,5 @@
 \newpage
-\section{Qualitative Design Discussion}
+\section{Hardware Search and Search Cost}
 \label{app:solver}
 
 Wall-clock time decomposition and search acceleration results are presented in Figure~\ref{fig:wallclock} and Section~\ref{sec:experiments}.
@@ -11,36 +11,6 @@ Wall-clock time decomposition and search acceleration results are presented in F
 \label{fig:wallclock}
 \end{figure}
 
-
-
-\subsection{Interesting Empirical Design Results}
-
-\begin{table}[ht!]
-\centering
-\caption{Surprise design pairs discovered by CHEETAH. Each pair achieves near-identical Perf/TDP via qualitatively different strategies that are not intuitive to human engineers.}
-\label{tab:surprise_designs}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{llrrrrrrrrr}
-\toprule
-\textbf{Label} & \textbf{Workload} & \textbf{Trial} &
-\textbf{Perf/TDP $\times$} & \textbf{Speedup $\times$} &
-\textbf{MACs} & \textbf{CGM} &
-\textbf{L1 in/w/o (KB)} & \textbf{L1 cfg} &
-\textbf{L2 cfg} & \textbf{Batch} \\
-\midrule
-TPU-v3 ref   & --              & --  & 1.000 & 1.000  & 65{,}536  & 32 MB & 64 / 64 / 64     & Shared  & Disabled & 64  \\
-\midrule
-DeepSeek A   & \texttt{deepseek\_v3} & 81 & 3.16 & 25.13 & 524{,}288 & 8 MB  & 512 / 1 / 256    & Shared  & Disabled & 64  \\
-DeepSeek B   & \texttt{deepseek\_v3} & 95 & 3.15 & 12.51 & 262{,}144 & 8 MB  & 1 / 256 / 512    & Shared  & Disabled & 128 \\
-\midrule
-Llama-3 70B A & \texttt{llama3\_70b} & 88 & 3.56 & 14.15 & 262{,}144 & 32 MB & 8 / 256 / 4      & Private & Shared   & 64  \\
-Llama-3 70B B & \texttt{llama3\_70b} & 92 & 3.57 & 28.40 & 524{,}288 &  1 MB & 512 / 128 / 512  & Shared  & Shared   & 64  \\
-\bottomrule
-\end{tabular}%
-}
-\end{table}
-
-We examine two designs on the DeepSeek-V3  (trials 81 vs.\ 95) and Llama-3 70B (trials 88 vs.\ 92) workloads. In each case, Perf/TDP scores are nearly identical yet design specifications are hugely different. DeekSeek's Design B uses 262K MACs vs.\ 524K in Design A. B compensates via richer search and larger batch. Pareto-tile space is 50$\times$ larger in B (500 vs.\ 10 configs); batch size doubles (128 vs.\ 64). Mirror-image L1 sub-buffer allocation in A keeps 512 KB input + 1 KB weight + 256 KB output. Design B keeps 1 KB input + 256 KB weight + 512 KB output. These two entirely opposite on-chip memory strategies yield identical system efficiency. On Llama-3 70B pair (trials 88 vs.\ 92), design A uses 262K MACs and 32 MB Global Buffer; Design B uses 524K MACs and only 1 MB Global Buffer. However Design A is weight-stationary, with a large 256 KB weight L1, tiny 8/4 KB input/output L1, and weight reuse amortised over a large on-chip scratchpad. Whereas Design B is activation-stationary, with 512/512 KB input/output L1, only 128 KB weight L1, and shared L1 configuration seen in doubled MACs allow CGM to collapse to 1 MB. This provides insight that additional compute in B substitutes for global memory capacity: higher throughput reduces the time activations must remain resident, relaxing the CGM capacity constraint. 
 
 
 \subsection{Hardware and Vizier Search}

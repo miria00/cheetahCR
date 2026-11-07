@@ -1,41 +1,4 @@
 \section{Native Full-Inference Provenance and Reproduction}
 \label{app:native_provenance}
-\subsection{Baseline and BF16 physical-cost reconciliation}
-\label{app:native_feasibility_repair}
-The native ratios below retain their original analytical contracts. They do
-not yet establish comparisons against FAST's simulated TPU-v3 baseline, which
-starts from ordinary XLA fusion regions on two cores with two $128\times128$
-MXUs per core, 16 MiB SRAM per core, 123 BF16 TFLOP/s and 900 GB/s per chip.
-FAST's additional fusion/scheduling is a separate optimized arm. Its internal
-simulator and compiler artifacts are not available here; the replacement is an
-explicit reconstruction with complete device residence, matrix mapping and
-nonmatrix service, rather than a claim to reproduce that internal simulator.
-
-The recorded native MAC peak-power slope is 0.4 mW, whereas the appendix
-specifies 1.2 mW for BF16. Replacing only that slope makes all twelve saved
-chips exceed 300 W. Area, banks, pins and NoC costs also require explicit
-shared assumptions. A new versioned analytical scenario applies the BF16
-power slope, a shared 4,096-signal-pin budget for host and HBM traffic, and
-declared SRAM port/geometry assumptions. The inherited area slope is varied
-by factors of 1, 2 and 4; these are sensitivities, not calibrated BF16 bounds.
-New whole-chip branches use identical constraints for LP construction and
-execution admission. A passing scenario is not silicon sign-off.
-
-For fixed chip $h$, each event satisfies total issued matrix work
-$F_e\le P_h t_e$ and total accounted interface traffic $D_e\le B_h t_e$.
-Summing over the same phase proves aggregate MFU and MBU at most one;
-padding, concurrent work and copies cannot be omitted. Variable-hardware
-McCormick points remain relaxation bounds, not physical latency predictions.
-The new contract does not relabel the frozen native LP certificate.
-Perf/TDP comparisons await matched process, workload and peak-power scope.
-
-The construction and evidence are recorded in
-\path{systems/cheetah_joint/audits/20261026/BASELINE_FEASIBILITY_REPAIR.md}
-and \path{systems/cheetah_joint/audits/20261026/BASELINE_EXECUTION_CONTRACT.md}.
-
-The expanded-master certificate and recovered chip are identified in
-Appendix~\ref{app:expanded_native_certificate}. Earlier comparison arms
-retain their own hardware, coefficients and workload boundaries.
-
 \input{update/native_solve_workflow}
 \input{update/expanded_lp_certificate}
