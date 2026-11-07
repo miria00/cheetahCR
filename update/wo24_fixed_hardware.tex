@@ -1,12 +1,12 @@
-\begin{table}[htbp]
+\begin{wraptable}{r}{0.46\linewidth}
+\vspace{-12pt}
 \centering\small
-\caption{Fixed-hardware software-search comparisons for the five
-selected workloads. Entries retain each stored experiment's workload,
-implementation menu, memory policy and streaming-reference convention.}
+\caption{Fixed-hardware software-search speedups (joint LP versus streaming)
+on simulated TPU-v3 and a compact NPU.}
 \label{tab:fixed_hw}
 \begin{tabular}{@{}lrr@{}}
 \toprule
-Workload & Simulated TPU-v3 & Compact NPU \\
+Workload & TPU-v3 & Compact NPU \\
 \midrule
 EfficientNet-B7 & $2.21\times$ & $20.01\times$ \\
 SD1.5 UNet & $1.50\times$ & $5.89\times$ \\
@@ -15,4 +15,5 @@ Llama-3 70B & $2.51\times$ & $7.66\times$ \\
 DeepSeek-V3 & $2.22\times$ & $7.76\times$ \\
 \bottomrule
 \end{tabular}
-\end{table}
+\vspace{-8pt}
+\end{wraptable}

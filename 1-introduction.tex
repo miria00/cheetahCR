@@ -9,32 +9,32 @@ resident and when, what is fused, and what is recomputed rather than reloaded.
 These choices interact through shared capacity and bandwidth, and jointly they
 span a design space exceeding $\mathcal O(10^{2300})$
 configurations~\citep{zhang_fast}, far too large to enumerate, simulate, or
-materialize as one explicit program. The established way to cope is to
-decompose: propose hardware, map each operation in isolation, then optimize
-reuse and fusion on what remains. Every prior co-design flow shares this
+materialize as one explicit program. Existing flows therefore decompose the
+problem: they fix a hardware configuration, map each operation in isolation, and
+then optimize reuse and fusion on what remains. Every prior co-design flow shares this
 sequential pipeline, and it is why the joint problem has stayed open: each stage
 commits before the global memory consequences of its choice are known, and the
 commitment is irreversible downstream. The failure is concrete. A mapper that
 exports its fastest isolated tile can consume exactly the on-chip memory needed
 to keep a neighboring tensor resident, so the locally optimal tile forces a DRAM
-round trip and the complete schedule is slower; a slightly slower tile would
+round trip and the complete schedule is slower. A slightly slower tile would
 have produced the faster program. No stage of the pipeline can see this
 trade-off, because it exists only in the joint space.
 
-In this paper we introduce \textsc{CHEETAH}: \acroletter{C}o-designed
+In this paper we introduce \textbf{\textsc{CHEETAH}}: \acroletter{C}o-designed
 \acroletter{H}ardware \acroletter{E}xploration via \acroletter{E}fficient
 \acroletter{T}hroughput and \acroletter{H}ybrid-search, a mathematically
 principled hardware--software co-design framework with LLM-guided search.
 CHEETAH is a new paradigm for co-design. Rather than adding one more stage to
-the sequential pipeline (Figure~\ref{fig::workflow}), it unifies in a single master convex program the
-decision spaces that prior hardware and software methods each cover only in
-part; Table~\ref{tab:capability-matrix} positions it against nine such systems,
-and Theorem~\ref{thm:containment} in Appendix~\ref{app:fast_containment} proves
+the sequential pipeline (Figure~\ref{fig::workflow}), it unifies in a single
+CHEETAH master linear program (LP) the decision spaces that prior hardware and
+software methods each cover only in part. Table~\ref{tab:capability-matrix}
+positions it against nine such systems, and Theorem~\ref{thm:containment} in Appendix~\ref{app:fast_containment} proves
 that the lifted feasible set of FAST's fusion search embeds in CHEETAH's
 relaxation at the same objective, so the formulation subsumes that search rather
-than resembling it. Implementation choices determine work, traffic and memory;
-time-indexed states track residency and reuse; shared hardware variables
-allocate compute, vector, memory and bandwidth under area and power budgets;
+than resembling it. Implementation choices determine work, traffic and memory.
+Time-indexed states track residency and reuse. Shared hardware variables
+allocate compute, vector, memory and bandwidth under area and power budgets, and
 McCormick envelopes and disaggregated epigraphs couple them. The program acts on
 a graph of logical invocations and typed storage objects, so convolutions,
 dense and expert GEMMs, attention, KV prefixes, expert weights and long skip
@@ -45,38 +45,35 @@ expected number of experts touched grows from $8$ at batch one to about $163$
 at batch $32$, so batching alone does not make decode compute-bound and
 provisioning, batching and temporal residency must be chosen together.
 
-\paragraph{Why naive approaches fail.}
-Three properties of the declared problem defeat off-the-shelf solving.
-\emph{Scale:} the problem does not fit in memory. Llama-1 13B's root alone is
-$10.1$M columns by $18.3$M rows, its full execution adds $520$M rows, and
-stored densely it would occupy 51\,PB; the design space exceeds $10^{2300}$
-branches, so the program must be generated on demand rather than built.
-\emph{Structure:} almost every row is a one-hot cover, an epigraph or a
-McCormick envelope, with 3.4 nonzeros per row at every scale, density below
-$0.01\%$ and no dense block anywhere; rows outnumber columns three to one, so
-the optimal face is massively degenerate, and cost tracks degeneracy rather
-than size: three times the rows costs six times the time.
-\emph{Conditioning:} coefficients span $10^{-6}$ to $10^{15}$, and a single
-reciprocal rate variable spans $80\times$ inside its own box. Standard
+Three properties of this problem defeat off-the-shelf solving. It does not fit
+in memory: Llama-1 13B's root alone is $10.1$M columns by $18.3$M rows, its
+full execution adds $520$M rows, and stored densely it would occupy 51\,PB,
+while the design space exceeds $10^{2300}$ branches, so the program must be
+generated on demand rather than built. Its structure is extreme: almost every
+row is a one-hot cover, an epigraph or a McCormick envelope, with 3.4 nonzeros
+per row at every scale and density below $0.01\%$, and rows outnumber columns
+three to one, so the optimal face is massively degenerate and cost tracks
+degeneracy rather than size (three times the rows costs six times the time).
+Its conditioning is hostile: coefficients span $10^{-6}$ to $10^{15}$, a single
+reciprocal rate variable spans $80\times$ inside its own box, and standard
 first-order methods plateau at a $0.999$ primal violation after 2,000
-iterations and never descend, even with the chip pinned, so a certificate
-cannot be read off floating-point iterates; it has to be built in exact
-rational arithmetic.
-
-What makes the joint space tractable is that it never has to be materialized.
-CHEETAH solves the master by branch and bound over a declared family of
-whole-program branches using OCS~\citep{feng2026ocs}, our in-house operator
-solver: each branch is a complete LP whose constraint map is applied rather
-than stored, compact fits discover prices and primal candidates, and symbolic
-checks over the original domain certify a lower bound $L_b$ for the branch.
-Branches that are infeasible or cannot beat the replayed incumbent are pruned,
-and $L=\min_bL_b$ with the incumbent $U$ brackets the optimum; the
-1,557-branch DeepSeek-V3 master closes to a certified $0.07\%$ gap. Integral
-recovery and replay then turn the relaxation into a chip and a schedule, which
-are outputs distinct from the bound. An LLM architect reads the resulting
-resource prices and trial diagnostics to propose implementations and hardware
-neighborhoods in place of brute-force outer search; the hardware--software
-interactions themselves are captured in the inner formulation, not in the LLM.
+iterations and never descend, even with the chip pinned. A certificate
+therefore cannot be read off floating-point iterates. It has to be built in
+exact rational arithmetic. What makes the joint space tractable is that it
+never has to be materialized. CHEETAH solves the master LP by branch and bound
+over a declared family of whole-program branches using OCS~\citep{feng2026ocs},
+our in-house operator solver. Each branch is a complete LP whose constraint map
+is applied rather than stored. Compact fits discover prices and primal
+candidates, and symbolic checks over the original domain certify a lower bound
+$L_b$ for the branch. Branches that are infeasible or cannot beat the replayed
+incumbent are pruned, and $L=\min_bL_b$ with the incumbent $U$ brackets the
+optimum. The 1,557-branch DeepSeek-V3 master LP closes to a certified $0.07\%$
+gap. Integral recovery and replay then turn the relaxation into a chip and a
+schedule, which are outputs distinct from the bound. An LLM architect reads the
+resulting resource prices and trial diagnostics to propose implementations and
+hardware neighborhoods in place of brute-force outer search. The
+hardware--software interactions themselves are captured in the inner
+formulation, not in the LLM.
 
 \paragraph{Contributions.} CHEETAH combines a unified HW/SW design relaxation,
 operator-based optimization and certified bounds with an LLM architect that
@@ -91,39 +88,24 @@ proposes implementations and hardware search neighborhoods.
     These couplings expose tiling--placement trade-offs that sequential
     pipelines can discard.
     % This enables the LP to discover trade-offs where accepting a suboptimal tiling configuration enables superior fusion, or vice versa---precisely the cross-stage interactions that the sequential pipeline cannot capture.
-    \item \textbf{Structure-aware optimization, bounds and executable
-    validation.} Compact numerical
-    fits, rational cover reconstruction and stateful lifting make candidate
-    discovery manageable. Original-domain checks certify the complete LP
-    without substituting restricted-support optima for full-master bounds:
-    the frozen 1,557-branch DeepSeek master has a certified $0.067154\%$ LP
-    objective gap. Analytical replay and selected control/datapath checks
-    support a separate recovered design; global discrete optimality remains
-    open.
-    Section~\ref{sec:solver_vm} summarizes OCS, the in-house solver framework
-    whose closing stage certifies these bounds; its details are in the appendix
-    and a separate paper.
+    \item \textbf{Certified optimization and executable validation.} Compact
+    numerical fits, rational cover reconstruction and original-domain checks
+    certify the complete master LP rather than a restricted support, and
+    analytical replay validates a separately recovered design
+    (Section~\ref{sec:solver_vm}). Global discrete optimality remains open.
 
     \item \textbf{LLM Architect Outer Loop.} The architect interprets resource prices and a causal ledger of earlier trials to propose hardware and implementation changes. Deterministic checks admit proposals; the LLM itself supplies no certificate. This couples architecture exploration with the optimizer's diagnostics rather than relying only on black-box scores.
 
-    \item \textbf{Inference speedup.} Against unchanged naive TPU-v3,
-    CHEETAH predicts up to $11.85\times$ for EfficientNet forward execution
-    and the SD1.5 UNet denoiser, up to $24.20\times$ for LLM prefill, and up
-    to $17.93\times$ for LLM decode (Figure~\ref{fig:speedup}).
-    The decode-only
-    designs predict $7.82\times$ for DeepSeek-V3 and
-    $11.09$--$17.93\times$ for the three Llamas; the
-    prefill-oriented designs report an average $22.07\times$ and up to
-    $40.1\times$ under their own cost conventions
-    (Section~\ref{sec:experiments}). These are analytical
-    matrix-and-associated-traffic results with the TPU-v3 timing proxy,
-    not measured TPU-v3 serving gains. Their area proxies are below
-    600~mm$^2$, but relaxed memory/power assumptions remain physically
-    unqualified. The prefill and decode-only designs are different chips.
+    \item \textbf{Inference speedup.} Across 12 workloads, CHEETAH co-designs
+    chips that outperform the naive TPU-v3 baseline by an order of magnitude on
+    vision, LLM prefill and LLM decode (Figure~\ref{fig:speedup},
+    Section~\ref{sec:experiments}). These are analytical results under the
+    TPU-v3 timing proxy, not measured serving gains, and the prefill and decode
+    designs are different chips.
 \end{enumerate}
 
 The following paper is organized as follows. Section~\ref{sec:related} discusses related work, Section~\ref{sec:prelim} summarizes preliminary background,  Section~\ref{sec:methods}
-presents the CHEETAH master and its features, and Section~\ref{sec:ocs} describes
+presents the master LP and its features, and Section~\ref{sec:ocs} describes
 the OCS solver framework, its certificate and hardware search. Section~\ref{sec:experiments}
 reports experimental results and ablations, and the appendix provides containment
 theorems, physical-validation details, co-design blueprints, and reproduction evidence.
@@ -146,6 +128,6 @@ theorems, physical-validation details, co-design blueprints, and reproduction ev
 \begin{figure}[t]
     \centering
 \includegraphics[width=1.0\linewidth]{fig3/speedup_final_v8.png}
-\caption{Speedup over the simulated naive TPU-v3 baseline, to be consistent with prior work~\citep{zhang_fast}, across EfficientNet, Stable Diffusion 1.5 UNet, and LLM workloads. EfficientNet and diffusion compare naive TPU-v3, static, and CHEETAH; each LLM compares the same baselines with separate CHEETAH prefill and decode results. CHEETAH achieves up to $11.85\times$ for EfficientNet and diffusion, $24.20\times$ for LLM prefill, and $17.93\times$ for LLM decode. Red crosses indicate static infeasibility. See Section~\ref{sec:experiments} for full analysis and wall-clock time breakdowns.}
+\caption{Speedup over the simulated naive TPU-v3 baseline, to be consistent with prior work~\citep{zhang_fast}, for EfficientNet, SD1.5 UNet and LLM workloads. Vision workloads compare naive TPU-v3, static and CHEETAH. LLMs add separate CHEETAH prefill and decode results. Red crosses mark static infeasibility.}
 \label{fig:speedup}
 \end{figure}

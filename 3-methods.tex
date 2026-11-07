@@ -4,7 +4,7 @@ CHEETAH minimizes predicted workload inference latency under a declared hardware
 budget. Its inputs are independent logical invocations, a finite implementation
 library, and a numerical contract. Each whole-program branch specifies compatible
 hardware and execution semantics; hardware is shared across all invocations within
-that branch. The same master template admits the retained joint tiling--placement
+that branch. The same master LP template admits the retained joint tiling--placement
 model and causal execution branches. Variable-hardware branches retain their declared physical rows and resource
 envelopes; fixed-chip wrappers additionally impose exact installed-rate ceilings.
 The certified DeepSeek instance is the frozen 1,557-branch expanded family
@@ -14,25 +14,19 @@ coefficients requires a new certificate.
 \subsection{Pruning, Variables, and the Encoded Features}
 \label{sec:v1}\label{sec:master_lp}\label{sec:v3}
 \paragraph{Pareto pruning pre-pass.}
-For each operation, we discard infeasible tiles and configurations dominated
-in every relevant cost, traffic, workspace, and interface dimension.
-Dominance is tested within the same implementation contract and hardware class:
-a lower isolated latency alone is insufficient. Timeloop or a native analytical
-recipe supplies the retained coefficients once (Figure~\ref{fig:tiles} shows one
-layer's cache); the solver then selects among
-them without invoking the mapper at each iteration. Reuse across hardware
-settings requires that the same dominance relation remains valid, which
-Appendix~\ref{app:invar} states precisely: dominance must hold componentwise in
-every resource and interface the branch uses, so a two-axis latency plot alone
-does not license pruning.
+For each operation we discard infeasible tiles and configurations dominated in
+every cost, traffic, workspace and interface dimension within the same
+implementation contract and hardware class. Timeloop or a native analytical
+recipe supplies the retained coefficients once (Figure~\ref{fig:tiles}), so the
+solver never calls the mapper during the search. Appendix~\ref{app:invar} states
+when the dominance relation survives a change of hardware.
 
-Let $i\in\mathcal N$ index logical nodes (invocations and required conversions), $j\in\mathcal J$ storage
-objects, $e\in\mathcal E_b=\{0,\ldots,E_b-1\}$ events in branch $b$, and $\tau$ memory tiers. An implementation
-$k$ covers members $S_k$ and specifies inputs, outputs, workspace $W_{k\tau}$,
-and resource demands. States also have the exit index $E_b$.
-$\mathcal K_b$ is the complete finite implementation set of branch $b$, generated
-on demand without tying same-shaped invocations. Table~\ref{tab:var_digest}
-defines its coordinates.
+Let $i\in\mathcal N$ index logical nodes, $j\in\mathcal J$ storage objects,
+$e\in\mathcal E_b=\{0,\ldots,E_b-1\}$ events in branch $b$, and $\tau$ memory
+tiers. An implementation $k$ covers members $S_k$ and specifies inputs,
+outputs, workspace $W_{k\tau}$ and resource demands. $\mathcal K_b$ is the
+finite implementation set of branch $b$, generated on demand.
+Table~\ref{tab:var_digest} defines the coordinates.
 
 \begin{table}[t]
 \centering\small
@@ -58,29 +52,23 @@ $T_i,p_{et},p^W_{it},r_{it},w_{ick}$ & retained schedule block & Latency, reside
 \end{tabularx}
 \end{table}
 
-Partition the declared family as $\mathcal B=\mathcal B_C\mathbin{\dot\cup}\mathcal B_P$:
-causal branches and, when included, retained joint tiling--placement branches.
-The objective charges causal event durations and retained operation latencies
-plus rematerialization. $\kappa_b$ converts ns to ms;
-$\alpha_b$ converts the retained block's cost units to ms. Each $x_b$ contains
-the complete branch coordinates, already scaled by $\lambda_b$; the objective
-does not multiply them by $\lambda_b$ again. Right-hand sides and finite bounds
-scale likewise. In the causal rows below we suppress branch indices
-and write $E=E_b$. $\mathcal R_k$ lists required object/tier pairs,
-$\mathcal D_k$ completed controls, and $\mathsf D^r_e$ is linear resource demand.
-$\mathsf{Cap}_{b,\tau e}$ includes live objects, incoming copies, active outputs,
-workspace and dedicated reservations. $B_b,J_b$ contain the remaining state,
-backing and implementation rows, expanded in Appendix~\ref{app:master_rows}:
-the retained tiling--placement block (\ref{app:rows_retained}), cover, lifecycle
-and storage (\ref{app:rows_cover}), capacities and staging
-(\ref{app:rows_capacity}), service envelopes (\ref{app:rows_service}), physical
-rows (\ref{app:physical_rooflines}) and feature scope (\ref{app:rows_scope},
-Table~\ref{tab:feature_scope}).
-For $b\in\mathcal B_{\rm phys}\subseteq\mathcal B_C$, the installed chip
-$\bar h_b$ fixes resource rates $\bar R_{br}$, and $\mathsf D^{r,\rm phys}_{be}$
-is the total issued work or traffic sharing resource $r$ at event $e$.
-$\mathsf A_b^\lambda=a_{b0}\lambda_b+a_b^Th_b$ and
-$\mathsf P_b^\lambda=p_{b0}\lambda_b+p_b^Th_b$ denote area and peak power.
+The family $\mathcal B=\mathcal B_C\mathbin{\dot\cup}\mathcal B_P$ holds causal
+branches and, when included, retained joint tiling--placement branches. The
+objective charges causal event durations and retained operation latencies plus
+rematerialization, with $\kappa_b,\alpha_b$ converting to ms. Each $x_b$ holds
+the branch coordinates already scaled by $\lambda_b$, and right-hand sides and
+bounds scale likewise. Below we suppress branch indices and write $E=E_b$.
+$\mathcal R_k$ lists required object/tier pairs, $\mathcal D_k$ completed
+controls, $\mathsf D^r_e$ linear resource demand, and $\mathsf{Cap}_{b,\tau e}$
+live objects, incoming copies, active outputs, workspace and reservations.
+$B_b,J_b$ hold the remaining state, backing and implementation rows
+(Appendix~\ref{app:master_rows}: \ref{app:rows_retained}, \ref{app:rows_cover},
+\ref{app:rows_capacity}, \ref{app:rows_service}, \ref{app:physical_rooflines},
+\ref{app:rows_scope} and Table~\ref{tab:feature_scope}). For
+$b\in\mathcal B_{\rm phys}\subseteq\mathcal B_C$ the installed chip $\bar h_b$
+fixes rates $\bar R_{br}$ and $\mathsf D^{r,\rm phys}_{be}$ is the issued work or
+traffic on resource $r$ at event $e$, while $\mathsf A_b^\lambda$ and
+$\mathsf P_b^\lambda$ denote affine area and peak power.
 
 % \begin{figure}[t]
 % \begingroup\small
@@ -176,21 +164,15 @@ $\mathsf P_b^\lambda=p_{b0}\lambda_b+p_b^Th_b$ denote area and peak power.
 \end{lpbox}
 \end{figure}
 \begingroup\clubpenalty=10000
-The displayed cover, lifecycle, service and $B_b,J_b$ rows apply to native causal branches;
-$A_b^P,G_b^P$ apply only to retained schedule branches, when included.
-$a_{k,-1}=f_{k,-1}=0$; $\mathcal W,\mathcal R,\mathcal M$ are linear
-workspace-product, reciprocal and service-product envelopes.
-Causal copy, conversion, KV restoration and permitted repeat costs enter the
-shared service demands and hence $d_e$; adding their service times again would
-double-count overlap already represented by the event epigraph. The objective
-covers the declared task boundary, including preparation when that boundary
-requires it. It minimizes latency, not area, energy, Perf/TDP or solver runtime.
-Setting $\lambda_b=1$
-and all other branches to zero preserves that branch's hardware and objective;
-Corollary~\ref{cor:branch_containment} proves this embedding is master-feasible
-for every included branch, so the master bound is at most the best branch bound.
-Fractional branch weights describe an LP relaxation; recovery selects one
-program. Bounds must be recomputed for the chosen family, including every branch.
+The cover, lifecycle, service and $B_b,J_b$ rows apply to causal branches, and
+$A_b^P,G_b^P$ to retained schedule branches. $\mathcal W,\mathcal R,\mathcal M$
+are linear workspace-product, reciprocal and service-product envelopes. Copy,
+conversion, KV restoration and permitted repeat costs enter the shared service
+demands and hence $d_e$, so the event epigraph already represents their overlap.
+The objective minimizes latency over the declared task boundary, not area,
+energy or Perf/TDP. Setting $\lambda_b=1$ recovers that branch exactly
+(Corollary~\ref{cor:branch_containment}), fractional weights describe the LP
+relaxation, and recovery selects one program.
 \par\endgroup
 
 \subsection{Features and Their Mathematical Encoding}
