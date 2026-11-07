@@ -22,3 +22,24 @@ Serving / phase choice & Decode-only; original request order and starting KV fix
 \bottomrule
 \end{tabularx}
 \end{table}
+
+\paragraph{Hardware--software interaction.}
+Hardware and software gains are not independent. Holding either fixed and
+releasing the other recovers most of its benefit, but the combined saving is
+slightly less than the sum: a wider delivery path removes some of the traffic
+that better placement would otherwise have saved, so the two must be
+co-selected rather than optimized in sequence. Adding on-chip delivery and SRAM
+is what lets storage fusion keep intermediates on chip and lets a wider mapping
+menu be used at all; a larger menu buys nothing while the execution is
+service-bound. The two model families pull the chip in different directions.
+DeepSeek-V3's gains come overwhelmingly from placement and residency, so its
+design favors a deep memory hierarchy, with a large backing tier and capacity
+for resident experts and KV, over raw delivery; the dense Llamas are
+bandwidth-bound, so their designs favor off-chip and on-chip delivery and gain
+least from added arrays. Within the Llama family the balance shifts with scale:
+as parameters grow, keeping weights and KV resident accounts for a growing share
+of the gain, so larger models favor capacity over delivery.
+Table~\ref{tab:current_features} records which decision families each decoder
+design actually exercises. These finite-family
+controls do not certify unrestricted placement, rematerialization or scheduling
+optima.

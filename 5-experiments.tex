@@ -140,31 +140,7 @@ additive cumulative increments in $S=T_{\rm naive}/T$ and sum to 100\% of each
 workload's gain above $1\times$; attribution is order-dependent.}\label{fig:accel_decompose}
 \end{figure}
 \input{update/figure3_attribution_method}
-\paragraph{Hardware--software interaction.}
-Hardware and software gains are not independent. Holding either fixed and
-releasing the other recovers most of its benefit, but the combined saving is
-slightly less than the sum: a wider delivery path removes some of the traffic
-that better placement would otherwise have saved, so the two must be
-co-selected rather than optimized in sequence. Adding on-chip delivery and SRAM
-is what lets storage fusion keep intermediates on chip and lets a wider mapping
-menu be used at all; a larger menu buys nothing while the execution is
-service-bound. The two model families pull the chip in different directions.
-DeepSeek-V3's gains come overwhelmingly from placement and residency, so its
-design favors a deep memory hierarchy, with a large backing tier and capacity
-for resident experts and KV, over raw delivery; the dense Llamas are
-bandwidth-bound, so their designs favor off-chip and on-chip delivery and gain
-least from added arrays. Within the Llama family the balance shifts with scale:
-as parameters grow, keeping weights and KV resident accounts for a growing share
-of the gain, so larger models favor capacity over delivery.
-Table~\ref{tab:current_features} (Appendix~\ref{app:rows_scope}) records which
-decision families each decoder design actually exercises. These finite-family
-controls do not certify unrestricted placement, rematerialization or scheduling
-optima.
-
-\paragraph{Full-inference DeepSeek-V3.}
-Appendix~\ref{sec:decode_decomp} evaluates the complete 32-request task, 4,096
-prompt and 512 output tokens each, against the vanilla simulated TPU-v3
-reference: the recovered chip predicts $5.25\times$ end to end, with decode
-contributing $80.45\%$ of the time saved. Appendix~\ref{sec:native_features}
-removes one mechanism at a time on that chip to isolate batching, storage
-fusion, KV retention and time-indexed placement.
+Appendix~\ref{app:rows_scope} discusses the hardware--software interaction and
+which chip each model family favors, Appendix~\ref{sec:decode_decomp} evaluates
+the complete 32-request DeepSeek-V3 task ($5.25\times$ end to end), and
+Appendix~\ref{sec:native_features} isolates each mechanism on that chip.
