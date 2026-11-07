@@ -9,6 +9,14 @@ work~\citep{jouppi2021ten,zhang_fast}. All speedups below are analytical and mod
 \label{sec:exp_intro}
 The suite comprises EfficientNet-B1--B7, Llama-1 13B/65B,
 Llama-3 70B, and DeepSeek-V3~\citep{tan2019efficientnet,llama3modelcard,deepseekv3report} and Stable Diffusion~1.5 UNet.
+DeepSeek-V3 is pinned to checkpoint revision
+\texttt{e815299b0bcbac849fa540c768ef21845365c9eb}; thirty-two nonoverlapping
+validation-text windows from Wikitext-2 give 4,096-token prompts under the
+pinned tokenizer, generation is greedy with 512 outputs per request, all 61
+layers and 58 routed MoE layers execute with every route ID and aligned weight
+retained, and FP8 blocks are dequantized to BF16 with TF32 and reduced-precision
+BF16 accumulation disabled. The workload is reproducible, not a language-quality
+or representativeness study.
 We compare static pinning, fixed-tile temporal
 placement, and joint tiling under the same cost convention. These are restricted
 controls of CHEETAH, not separate proposed systems. Small programs are solved

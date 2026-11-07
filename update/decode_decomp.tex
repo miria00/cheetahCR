@@ -17,7 +17,7 @@ the area scale and interface organization remain explicit concept assumptions,
 not calibrated silicon estimates. Retiming preserves the original cover,
 addresses and outer dependency order; 384 regenerated pipeline recipes pass
 replay, and all other durations are conservatively extended.
-The earlier TPU-v3 extension retains the reference compute/DRAM resources
+The TPU-v3 reference retains the reference compute/DRAM resources
 with 32 GB/s external and 8,192 GB/s local service, and 2,048 primitive vector
 cycles/ns. These interface assumptions are explicit parts of the prediction,
 not measurements of a calibrated TPU serving stack or fabricated custom chip.
@@ -27,6 +27,28 @@ retained reference with the corrected custom chip; they remain conditional
 comparisons, not established reproduction of FAST's simulated TPU-v3 baseline.
 
 Phase times add; speedup is the ratio of total predicted inference latencies.
+Against a vanilla simulated TPU-v3 reference, published parameters with
+ordinary compiler behaviour and operands supplied from HBM at 900\,GB/s, the
+recovered design predicts $5.25\times$ on the complete task
+(Table~\ref{tab:deepseek_vanilla}). Data supply is 14.22\% of the reference
+total, so the comparison is largely insensitive to the offload assumption.
+\begin{table}[h]
+\centering\small
+\caption{DeepSeek-V3 whole-task comparison against the vanilla simulated TPU-v3
+reference supplied at the published 900\,GB/s.}
+\label{tab:deepseek_vanilla}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Phase & Reference (ms) & Custom (ms) & Ratio \\
+\midrule
+Prefill       & 3{,}258{,}635.335548  & 913{,}985.603595     & $3.565303\times$ \\
+Decode        & 12{,}201{,}159.132793 & 2{,}005{,}614.309161 & $6.083502\times$ \\
+Conversion    & 86{,}333.042308       & 42{,}972.849152      & $2.009014\times$ \\
+\midrule
+Complete task & 15{,}546{,}127.510649 & 2{,}962{,}572.761908 & $\mathbf{5.247509\times}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
 Decode contributes $80.45\%$ of time saved, prefill $19.41\%$, and preparation
 $0.14\%$. Initial conversion is charged in preparation; subsequent streamed
 conversion is charged to the consuming kernels. Optimization time is separate.
