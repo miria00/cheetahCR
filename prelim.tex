@@ -1,28 +1,12 @@
 \section{Preliminaries}\label{sec:prelim}
-\subsection{Sequential Design and Information Loss}
-\label{sec:background_pipeline}
-Accelerator design commonly proceeds from a resource budget to a hardware
-template, then to operation mappings and a memory schedule. Engineers iterate
-these choices using heuristics, analytical models, simulation, and compiler feedback.
-Automated flows replace individual choices with search tools, but an early
-commitment still limits what downstream stages can recover. A mapper that
-exports only its fastest isolated tile discards alternatives that might reduce
-workspace, enable fusion, or retain data for a later consumer. Joint design
-keeps those alternatives available until their complete resource costs are known in a global comprehensive end-to-end design.
-
 \subsection{Linear Relaxation and Recovery}
 \label{sec:lps}
-An LP minimizes a linear objective subject to linear rows and coordinate
-bounds. Discrete implementation selections are relaxed to $[0,1]$; bounded
-products are represented by convex envelopes; Appendix~\ref{app:containment}
-states the properties these envelopes do and do not have. The resulting optimum
-is a lower bound only for the domain actually covered by the formulation and its
-certificate. Fractional selections need not describe a chip. Recovery chooses
-integral hardware and implementations, then checks dependencies, storage,
-transfers, and predicted latency. A feasible recovered design is useful even
-when the remaining optimality interval is wide. Appendix~\ref{app:lps} details
-relaxation and recovery (\ref{app:lp_relaxation}) and the solver path
-(\ref{app:lp_solver_path}).
+Discrete selections are relaxed to $[0,1]$ and bounded products to convex
+envelopes (Appendix~\ref{app:containment}), so the LP optimum lower-bounds only
+the domain the formulation and its certificate cover. Recovery then chooses
+integral hardware and implementations and checks dependencies, storage,
+transfers and predicted latency (Appendix~\ref{app:lps}:
+\ref{app:lp_relaxation}, \ref{app:lp_solver_path}).
 
 \subsection{Capability Comparison}
 \label{sec:capability-matrix}

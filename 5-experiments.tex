@@ -161,22 +161,3 @@ decision families each decoder design actually exercises. These finite-family
 controls do not certify unrestricted placement, rematerialization or scheduling
 optima.
 
-\begin{figure}[t]
-\centering
-% \includegraphics[width=0.48\textwidth]{figs4/pareto_front.png}
-% \hfill
-% \includegraphics[width=0.48\textwidth]{figs4/tiles.png}
-\includegraphics[width=1.0\textwidth]{figs4/pareto_tiles_polish2.png}
-\caption{
-Example per-layer tiling cache for EfficientNet-B7 layer L4.
-Left: Timeloop-evaluated candidates plotted by fused/on-chip cost
-\(T_{\min}(c)\) and spilled/off-chip cost \(T_{\max}(c)\); the frontier shows
-non-dominated choices and the star is the LP-rounded selection. Right: the
-16 tiling choices; labels such as \(4\times4\),
-\(8\times8\), and \(32\times32\) denote active tile rows/columns inside the
-fixed accelerator, white dots indicate active PE/MAC sites.
-These are schedule choices, not different chips.
-}
-\label{fig:tiles}
-\end{figure}
-
