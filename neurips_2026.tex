@@ -123,7 +123,7 @@
 
 
 \begin{abstract}
-Inference demand is projected to grow $10{,}000\times$ in five years, motivating custom accelerators. Coordinating hardware, schedules and compiler transformations creates a combinatorial design space exceeding $\mathcal O(10^{2300})$. Sequential pipelines discard alternatives before their global memory effects are known. We introduce \textsc{CHEETAH}, an LLM-guided framework built around one master LP relaxation. Time-indexed placement and rematerialization expose reuse across operations and decode steps; McCormick envelopes couple tiling with fusion; shared hardware variables allocate compute, capacity and bandwidth under area and power budgets. Disaggregated epigraphs and implementation menus encode competing service costs. An LLM architect proposes changes using resource prices and trial diagnostics, while certificate-producing optimization, integral recovery and replay separate relaxation bounds from designs. The original prefill-oriented campaign averages $22.07\times$ speedup and reaches $40.1\times$ over modeled TPU-v3 within six hours of search. A full-inference DeepSeek-V3 design passes a declared BF16 physical scenario and predicts $5.25\times$ overall against a vanilla modeled TPU-v3 reference supplied at its published 900\,GB/s, the same baseline FAST uses. We solve the frozen 1,557-branch DeepSeek master to a certified $0.067154\%$ objective gap using compact CPU LP fits and complete original-domain verification. The continuous certificate is separate from executable latency. Matched controls quantify batching, storage fusion, panel reuse, KV residency and temporal placement.
+Inference demand is projected to grow $10{,}000\times$ in five years, motivating custom accelerators. Coordinating hardware, schedules and compiler transformations creates a combinatorial design space exceeding $\mathcal O(10^{2300})$. Sequential pipelines discard alternatives before their global memory effects are known. We introduce \textsc{CHEETAH}, an LLM-guided framework built around one master LP relaxation. Time-indexed placement and rematerialization expose reuse across operations and decode steps; McCormick envelopes couple tiling with fusion; shared hardware variables allocate compute, capacity and bandwidth under area and power budgets. Disaggregated epigraphs and implementation menus encode competing service costs. An LLM architect proposes changes using resource prices and trial diagnostics, while certificate-producing optimization, integral recovery and replay separate relaxation bounds from designs. The original prefill-oriented campaign averages $22.07\times$ speedup and reaches $40.1\times$ over simulated TPU-v3, to be consistent with prior work~\citep{zhang_fast}, within six hours of search. A full-inference DeepSeek-V3 design passes a declared BF16 physical scenario and predicts $5.25\times$ overall against a vanilla simulated TPU-v3 reference supplied at its published 900\,GB/s, the same baseline FAST uses. We solve the frozen 1,557-branch DeepSeek master to a certified $0.067154\%$ objective gap using compact CPU LP fits and complete original-domain verification. The continuous certificate is separate from executable latency. Matched controls quantify batching, storage fusion, panel reuse, KV residency and temporal placement.
 \end{abstract}
 
 
@@ -161,17 +161,15 @@ Inference demand is projected to grow $10{,}000\times$ in five years, motivating
 \printcontents[appendix]{}{1}{\setcounter{tocdepth}{3}}
 \clearpage
 
-\input{update/tco}
-\clearpage
-\input{update/rtl_validation}
-\clearpage
-\input{update/discussion}
-\clearpage
 \input{related_work_appendix}
 \clearpage
 \input{4-theory}
 \clearpage
 \input{lp_app}
+\clearpage
+\input{update/rtl_validation}
+\clearpage
+\input{update/discussion}
 \clearpage
 \input{details_audits}
 \clearpage

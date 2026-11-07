@@ -3,7 +3,7 @@
 \subsection{Baseline and BF16 physical-cost reconciliation}
 \label{app:native_feasibility_repair}
 The native ratios below retain their original analytical contracts. They do
-not yet establish comparisons against FAST's modeled TPU-v3 baseline, which
+not yet establish comparisons against FAST's simulated TPU-v3 baseline, which
 starts from ordinary XLA fusion regions on two cores with two $128\times128$
 MXUs per core, 16 MiB SRAM per core, 123 BF16 TFLOP/s and 900 GB/s per chip.
 FAST's additional fusion/scheduling is a separate optimized arm. Its internal
@@ -36,19 +36,19 @@ and \path{systems/cheetah_joint/audits/20261026/BASELINE_EXECUTION_CONTRACT.md}.
 The earlier corrected DeepSeek chip and fixed-chip LP interval are retained
 in Appendix~\ref{app:corrected_native_lp}. The completed expanded-master
 certificate and later recovered chip are identified separately in
-Appendix~\ref{app:expanded_native_certificate}. Historical comparison arms
+Appendix~\ref{app:expanded_native_certificate}. Earlier comparison arms
 retain their own hardware, coefficients and workload boundaries.
 
 \subsection{Current DeepSeek comparison against the vanilla TPU-v3 reference}
 \label{sec:dual_host_baseline}
 Our static arm is FAST recovered as a constraint-disabled case of the master
 program, so the reference denominator must be the one FAST used, or the static
-arm's output is not commensurate with FAST's published output. FAST's modeled
+arm's output is not commensurate with FAST's published output. FAST's simulated
 TPU-v3 supplies operands from 32\,GiB of HBM at 900\,GB/s and carries no
 host-offload term, because every workload in its suite is HBM-resident. We
-therefore report every ratio against a \emph{vanilla} modeled TPU-v3: published
+therefore report every ratio against a \emph{vanilla} simulated TPU-v3: published
 parameters, ordinary compiler behaviour, no additional fusion pass, and operands
-supplied from HBM at 900\,GB/s. This coincides with FAST's modeled TPU-v3
+supplied from HBM at 900\,GB/s. This coincides with FAST's simulated TPU-v3
 column, so our numbers and FAST's are commensurate by construction.
 
 DeepSeek-V3 does not fit in 32\,GiB, so an offload policy is required and FAST's
@@ -64,8 +64,8 @@ rescheduled at the higher rate the FAST-matched ratios are upper bounds.
 \paragraph{Vanilla TPU-v3 reference (supplied at the published 900\,GB/s).}
 \begin{table}[h]
 \centering\small
-\caption{DeepSeek-V3 whole-task comparison against the vanilla modeled TPU-v3
-reference, supplied at the published 900\,GB/s as FAST's modeled TPU-v3 is.
+\caption{DeepSeek-V3 whole-task comparison against the vanilla simulated TPU-v3
+reference, supplied at the published 900\,GB/s as FAST's simulated TPU-v3 is.
 This is the reported result. Data supply is 14.22\% of the reference total, so
 the comparison is largely insensitive to the offload assumption.}
 \label{tab:deepseek_vanilla}
@@ -164,7 +164,7 @@ point was 1,146,545.738382 ms. Subsequent optimization of the same finite master
 gives a continuous upper of 734,720.389756 ms and the certificate in
 Appendix~\ref{app:native_lp_certificate}. Direct original-row embedding of the
 physical-duration execution is not established by these separate points.
-The historical four-branch lower below was not transferred to this expanded
+The earlier four-branch lower below was not transferred to this expanded
 family; its new lower is derived over all 21 branches.
 
 The archived controls use this same chip, weight plan, KV policy and causal progress.
@@ -191,10 +191,10 @@ constant decode tile while retaining membership, source kind, panel boundaries,
 buffers, leases and hardware. Its 0.865673-second penalty covers weighted decode;
 it is not a complete ablation of every time-indexed master choice.
 The current controls supersede the older chip's
-feature ratios; they do not erase the historical results below.
+feature ratios; they do not erase the earlier results below.
 
 \paragraph{Earlier retained execution.}
-The following four-branch record and 384-array controls are historical; the
+The following four-branch record and 384-array controls are superseded; the
 preceding archived result is described above.
 
 The source identity is

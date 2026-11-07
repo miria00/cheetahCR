@@ -1,4 +1,4 @@
-\subsection{Historical Full-Inference DeepSeek Comparison}
+\subsection{Earlier Full-Inference DeepSeek Comparison}
 \label{sec:decode_decomp}\label{sec:batch_sensitivity}
 We evaluate DeepSeek-V3 on 32 independent requests, each with 4,096 prompt
 and 512 output tokens. All 61 layers execute: prefill produces the first
@@ -17,18 +17,18 @@ the area scale and interface organization remain explicit concept assumptions,
 not calibrated silicon estimates. Retiming preserves the original cover,
 addresses and outer dependency order; 384 regenerated pipeline recipes pass
 replay, and all other durations are conservatively extended.
-The historical TPU-v3 extension retains the reference compute/DRAM resources
+The earlier TPU-v3 extension retains the reference compute/DRAM resources
 with 32 GB/s external and 8,192 GB/s local service, and 2,048 primitive vector
 cycles/ns. These interface assumptions are explicit parts of the prediction,
 not measurements of a calibrated TPU serving stack or fabricated custom chip.
-This extension is not yet a verified reconstruction of FAST's modeled TPU-v3
+This extension is not yet a verified reconstruction of FAST's simulated TPU-v3
 baseline, which includes ordinary XLA fusion. The archived ratios use that
 retained reference with the corrected custom chip; they remain conditional
-comparisons, not established reproduction of FAST's modeled TPU-v3 baseline.
+comparisons, not established reproduction of FAST's simulated TPU-v3 baseline.
 
-The historical phase comparison is archived in \texttt{backup.tex}
-(original Table 10). Current Baseline 2 phase ratios appear in
-Table~\ref{tab:current_phase_speedups}; the reference conventions differ.
+The earlier phase comparison is archived in \texttt{backup.tex}
+(original Table 10). Its reference convention differs from the current
+Baseline 2 comparison.
 
 Phase times add; speedup is the ratio of total predicted inference latencies.
 Decode contributes $80.45\%$ of time saved, prefill $19.41\%$, and preparation
@@ -43,30 +43,11 @@ execution latency or a discrete-design optimality guarantee.
 
 \subsection{Feature Contributions on the Same Chip}
 \label{sec:native_features}
-Table~\ref{tab:native_features} retains the archived chip and removes one
+The archived controls retain the same chip and remove one
 mechanism at a time on the original numerical workload. These are matched
 execution controls, not globally optimized feature-off designs. Interacting
-rows are not an additive attribution of the headline speedup. They have not
+effects are not an additive attribution of the headline speedup. They have not
 been retimed to the corrected chip in \texttt{backup.tex} (original Table 10).
-
-\begin{table}[t]
-\centering\small
-\caption{Archived-chip feature controls: predicted time saved (seconds).}
-\label{tab:native_features}
-\begin{tabular}{@{}lrr@{}}
-\toprule
-Feature & Prefill & Decode \\
-\midrule
-Matrix batching & 43.173 & 856.070 \\
-SwiGLU primitive fusion & 14.579 & 1.819 \\
-Other elementwise register storage & 257.071 & 34.026 \\
-Full-K panel reuse & 32.445 & 0 \\
-Per-use weighted decode tiles & 0 & 0.866 \\
-Optional KV residency & 0 & 15.726 \\
-Phase-reused placement (included above) & 0 & 3.698 \\
-\bottomrule
-\end{tabular}
-\end{table}
 
 \paragraph{Batching and storage fusion.}
 The no-batch control executes every original member separately and reselects

@@ -1,37 +1,34 @@
 \begin{table}[htbp]
 \centering\small
-\caption{Fixed-hardware software-search comparisons for all twelve model
-families. These are \emph{historical LP-objective ratios} against streaming
-on the same modeled chip, under each stored cell's original convention;
-they are not new decode measurements or the co-design ratios of
-Table~\ref{tab:current_phase_speedups}. NR: no supported stored result.}
+\caption{Fresh fixed-hardware LP comparisons for five workloads at matched
+operand widths. Each entry is $T_{\rm streaming}/T_{\rm joint\,LP}$ on the
+same modeled hardware and at the same width; these are fractional-objective
+ratios, not recovered execution or measured chip speedups.}
 \label{tab:fixed_hw}
-\begin{tabular}{@{}lrr@{}}
+\begin{tabular}{@{}lrrrr@{}}
 \toprule
-Workload & Modeled TPU-v3 & Compact NPU \\
+& \multicolumn{2}{c}{INT8 model} & \multicolumn{2}{c}{BF16 model} \\
+\cmidrule(lr){2-3}\cmidrule(l){4-5}
+Workload & TPU-v3 & Compact NPU & TPU-v3 & Compact NPU \\
 \midrule
-EfficientNet-B1 & $1.445\times$ & NR \\
-EfficientNet-B2 & $1.470\times$ & NR \\
-EfficientNet-B3 & $1.285\times$ & NR \\
-EfficientNet-B4 & $1.247\times$ & NR \\
-EfficientNet-B5 & $1.264\times$ & NR \\
-EfficientNet-B6 & $1.423\times$ & NR \\
-EfficientNet-B7 & $2.213\times$ & $20.012\times$ \\
-SD1.5 UNet & $1.498\times$ & $5.893\times$ \\
-Llama-1 13B & $2.142\times$ & $31.394\times$ \\
-Llama-1 65B & $2.142\times$ & NR \\
-Llama-3 70B & $2.509\times$ & $7.656\times$ \\
-DeepSeek-V3 & $2.219\times$ & $7.757\times$ \\
+EfficientNet-B7 & $1.044\times$ & $1.163\times$ & $1.087\times$ & $1.107\times$ \\
+SD1.5 UNet & $1.097\times$ & $1.016\times$ & $1.127\times$ & $0.876\times$ \\
+Llama-1 13B & $1.218\times$ & $2.089\times$ & $1.437\times$ & $1.461\times$ \\
+Llama-3 70B & $1.239\times$ & $1.017\times$ & $1.335\times$ & $0.647\times$ \\
+DeepSeek-V3 & $1.209\times$ & $1.029\times$ & $1.128\times$ & $0.875\times$ \\
 \bottomrule
 \end{tabular}
 \par\smallskip\begin{minipage}{\linewidth}\footnotesize
-TPU-v3: 900~GB/s, 32~MiB; compact NPU: 64~GB/s, 16~MiB, 32,768 historical
-INT8 MAC units at 1~GHz. Ratios are $T_{\rm streaming}/T_{\rm joint\,LP}$,
-not integral execution certificates. Compact-NPU B7/13B/DeepSeek use stored
-iterative objectives (reported relative gap tags 0.020/0.125/0.019);
-other shown cells use stored HiGHS optima. EfficientNet TPU cells retain the
-historical single-predecessor graph/workspace approximation. No compact-NPU
-B1--B6/65B result or current full-decode fixed-hardware replay is supplied;
-no cross-convention geometric mean is formed.
+The two models fix 65,536/32,768 MAC units, 900/64~GB/s and 32/16~MiB SRAM,
+respectively, at 1~GHz. Both precisions retain the same MAC issue-rate proxy;
+8/16-bit stored-operand widths scale traffic and tile capacity. These are
+width sensitivities of the inherited timing/accumulator model, not native
+TPU-v3 INT8 or precision-faithful BF16 measurements. Twenty fresh HiGHS
+solves use archived tile footprints and one frozen mapping template,
+analytically repriced at each resource budget, with checked primal/dual
+witnesses. Historical matrix graphs, workspace approximations and the
+streaming-cost convention remain. A ratio below $1\times$ means the LP's
+serial-reload/tensor-floor cost exceeds that streaming reference. No new
+full-decode or quantization-accuracy claim is made.
 \end{minipage}
 \end{table}

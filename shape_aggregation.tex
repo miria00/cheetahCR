@@ -1,4 +1,4 @@
-\section{Historical Shape-Tied Control and Its Limits}
+\section{Shape-Tied Control and Its Limits}
 \label{app:shape_agg}
 An earlier scalability experiment shared decisions among operations with
 identical Timeloop coefficient rows. This is a separate restricted control;
@@ -17,7 +17,7 @@ operations can have different dependencies and live-memory pressure.
 \paragraph{Temporal coupling.}\label{par:shape_agg_exactness}
 A product $w_{ict}=y_{ic}p_{it}$ depends on both implementation and temporal
 state. A shape-indexed selector and a coarsened residency trajectory cannot
-represent all per-instance products. The historical control grouped identical
+represent all per-instance products. The earlier control grouped identical
 Pareto rows, multiplied compute, traffic, and recomputation coefficients by
 multiplicity, charged tile bytes once, and coarsened $T=N$ to $T=S$.
 Decision tying restricts the domain while removing capacity rows can relax it;
@@ -36,7 +36,7 @@ claim for capacity-constrained or full native inference.
 \begin{table}[ht!]
 \centering
 \small
-\caption{Historical shape-tied control on the first $N$ DeepSeek operations,
+\caption{Shape-tied control on the first $N$ DeepSeek operations,
 16 MiB global memory. Columns are LP variables; objectives use the original
 cycle convention. Agreement on these cases is not a general equivalence proof.}
 \label{tab:agg_validation}

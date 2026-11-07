@@ -82,15 +82,14 @@ proposes implementations and hardware search neighborhoods.
     \item \textbf{Inference speedup.} The accepted prefill-oriented campaign
     reports an average $22.07\times$ predicted speedup and up to $40.1\times$
     under its original contracts (Figure~\ref{fig:speedup}).
-    Table~\ref{tab:current_phase_speedups} adds the current twelve-workload
-    summary against unchanged paper Baseline 2: the latest separate decoder
+    Against unchanged paper Baseline 2, the latest separate decoder
     designs predict $7.823\times$ for DeepSeek-V3 and
     $11.092$--$17.932\times$ for the three Llamas. These are analytical
     matrix-and-associated-traffic results with the original timing proxy,
     not measured TPU-v3 serving gains. Their area proxies are below
     600~mm$^2$, but relaxed memory/power assumptions remain physically
     unqualified. Earlier prefill designs are reported separately; they are
-    not the same chips as the decode-only designs. Historical host-offload
+    not the same chips as the decode-only designs. Earlier host-offload
     and equal-supply sensitivities retain their own scope in
     Appendix~\ref{sec:dual_host_baseline} and \texttt{backup.tex}.
 \end{enumerate}
@@ -99,7 +98,7 @@ The following paper is organized as follows. Section~\ref{sec:related} discusses
 presents the CHEETAH master and its features, and Section~\ref{sec:ocs} describes
 certificate-producing optimization, OCS working supports and hardware search. Section~\ref{sec:experiments}
 reports experimental results and ablations, and the appendix provides containment
-theorems, physical-validation details, economics, co-design blueprints, and reproduction evidence.
+theorems, physical-validation details, co-design blueprints, and reproduction evidence.
 
 
 % ---- plots restored from the long version, original placement ----
@@ -116,7 +115,6 @@ theorems, physical-validation details, economics, co-design blueprints, and repr
 \begin{figure}[H]
     \centering
 \includegraphics[width=1.0\linewidth]{fig3/speedup_final_v6.png}
-\caption{Speedup over the modeled naive TPU-v3 baseline for (a) EfficientNet forward execution and the Stable Diffusion 1.5 UNet denoiser, (b) LLM prefill, and (c) LLM decode. CHEETAH achieves up to $11.85\times$, $24.20\times$, and $17.93\times$ speedup in the three panels, respectively. Red crosses indicate static infeasibility for SD1.5 UNet, Llama-3 70B, and DeepSeek-V3. See Section~\ref{sec:experiments} for full analysis and wall-clock time breakdowns.}
+\caption{Speedup over the simulated naive TPU-v3 baseline for (a) EfficientNet forward execution and the Stable Diffusion 1.5 UNet denoiser, (b) LLM prefill, and (c) LLM decode. CHEETAH achieves up to $11.85\times$, $24.20\times$, and $17.93\times$ speedup in the three panels, respectively. Red crosses indicate static infeasibility for SD1.5 UNet, Llama-3 70B, and DeepSeek-V3. See Section~\ref{sec:experiments} for full analysis and wall-clock time breakdowns.}
 \label{fig:speedup}
 \end{figure}
-\input{update/wo24_suite_summary}

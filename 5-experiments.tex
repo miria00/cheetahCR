@@ -40,8 +40,8 @@ Earlier host-backed full-inference comparisons are archived separately.
 
 \paragraph{Physical Design Validation.} Since modeling simulations ultimately present a gap with real world physical performance, we validate all results through a five-level audit process: (i) Roofline Auditor, (ii) Campaign Validator, (iii) Causal Ledger, (iv) solver diagnostics, and (v) six pre-RTL gates. Each CHEETAH design must pass all five audit tiers before it is deemed feasible and reported. 
 
-The newer decode-only points are explicitly labeled \emph{relaxed research
-designs}, not gate-feasible physical chips. Their chip-power proxies are
+The newer decode-only points are explicitly labeled \emph{relaxed
+co-designed chips}: they are not gate-feasible physical chips. Their chip-power proxies are
 592.513/400.492/362.616/364.214~W for DeepSeek/13B/65B/70B, all above the
 prior 345-W allowance. DeepSeek assumes 2-TiB DRAM and a 37,596 shared-pin
 proxy; the dense memory packages have incomplete peak-power and pin costs.
@@ -125,34 +125,36 @@ $(\mathrm{Perf}/\mathrm{TDP})_{\mathrm{design}}/(\mathrm{Perf}/\mathrm{TDP})_{\m
 =(T_{\mathrm{baseline}}/T_{\mathrm{design}})\cdot(\mathrm{TDP}_{\mathrm{baseline}}/\mathrm{TDP}_{\mathrm{design}})$,
 so a latency objective does not by itself maximize it.
 
-Table~\ref{tab:decode_efficiency} gives numerical values for all three
-quantities on the current decode interval. The last is explicitly a chip-power
+For the current decode designs, performance per TDP uses a chip-power
 proxy because complete package TDP is unavailable. Matched prefill and
 whole-task efficiency triples have not been re-established for these
 decode-only chips, so no such values or cross-phase averages are claimed.
 Fractional objective bounds, replayed executions and physical qualification
 remain distinct.
-\input{update/wo24_efficiency}
 
 \subsection{Workload Results and Fixed-Hardware Controls}
 \label{sec:prog}\label{sec:fixed_hw}
 The original campaign reports an average $22.07\times$ predicted
-speedup over its modeled TPU-v3 baseline, reaching $40.1\times$ on Llama-3 70B.
+speedup over its simulated TPU-v3 baseline, reaching $40.1\times$ on Llama-3 70B.
 These are prefill-oriented results under that campaign's workload and traffic
 conventions. Appendix~\ref{app:blueprints} shows the concrete hardware blueprints;
 Appendix~\ref{app:original_results} has the original plots and restricted
 controls. 
 
-\input{update/uniform_bf16_suite}
 
-In the historical controls, Table~\ref{tab:fixed_hw} holds each chip
-fixed and compares its joint LP objective against streaming every tensor. The
-compact NPU has $32{,}768$ INT8 MACs at 1 GHz, 64 GB/s bandwidth, and 16 MiB
-on-chip storage; TPU-v3 uses the original 900 GB/s, 32 MiB model. Each
-ratio retains its stored denominator and approximation. These cells isolate
-fixed-hardware software optimization but do not establish an integral
-full-decode execution on either reference chip. The updated table includes
-all twelve model families and identifies the unrun compact-NPU cells.
+Table~\ref{tab:fixed_hw} reports twenty fresh LP solves: five workloads,
+two fixed hardware models and two operand widths. The compact NPU fixes
+$32{,}768$ MAC units, 64~GB/s and 16~MiB SRAM; the modeled TPU-v3 fixes
+$65{,}536$ units, 900~GB/s and 32~MiB. Both use the paper's 1-GHz timing
+proxy. We hold one archived mapping template fixed, reprice it at each
+resource budget and use its tile footprints; the earlier alternative array
+geometries are excluded from this control. Within each cell, the streaming
+reference and joint LP share the
+workload, operand width and resource rates. The INT8/BF16 columns are
+analytical width sensitivities, with no assumed INT8 throughput bonus.
+They retain the historical matrix graphs and LP approximations and do not
+establish an integral full-decode execution on either chip. Saved primal
+and dual witnesses are independently checked against every stored LP row.
 \input{update/wo24_fixed_hardware}
 
 \subsection{Search Cost and LLM Guidance}
@@ -169,27 +171,25 @@ an optimal architecture or causal validity of every dual suggestion.
 
 % ---- plots restored from the long version, original placement ----
 
-% Updated four-workload pies; historical artwork remains in fig3/ unchanged.
+% Updated four-workload pies; earlier artwork remains in fig3/ unchanged.
 \clearpage
 \begingroup
 \raggedbottom
 \begin{figure}[H]
     \centering
 \includegraphics[width=\linewidth]{fig3/feature_contributions_wo24.pdf}
-\caption{Visual feature estimates: \textbf{four slices totaling 100\%} per
-decoder, using positive control time savings $p_i=\Delta_i/\sum_j\Delta_j$.
-\textbf{Effects overlap;} these are normalized ablation weights, not an
-exhaustive causal partition of total acceleration. The Llama-1 pies isolate
-hardware, tiling, KV retention and weight residency; 70B instead measures
-GQA KV-head reuse. DeepSeek shows producer fusion, prefetch and second-context
-increments. Headline decode ratios match Table~\ref{tab:current_phase_speedups};
-Figure~\ref{fig:speedup} remains historical and unchanged.
-Table~\ref{tab:figure3_breakdown} gives the control scopes for all twelve
-workloads.}\label{fig:accel_decompose}
+\caption{\textbf{Grouped co-design contributions}, using Table~\ref{tab:current_features}'s
+decision families and FAST-style cumulative comparisons~\citep{zhang_fast}.
+Slices sum assigned increments $(S_i-S_{i-1})/(S_{\rm final}-1)$,
+$S_i=T_{\rm B2}/T_i$, $S_0=1$, to partition 100\% of modeled gain.
+Llama groups tiling/remapping with on-chip bandwidth; this is not a tiling-only
+effect. Compute parallelism means active compute arrays; off-chip bandwidth
+means DRAM, not BRAM. SRAM capacity is fixed in the resource controls.
+All pies have four groups, combining DeepSeek's two scheduling increments.
+Attribution is order-dependent.}\label{fig:accel_decompose}
 \end{figure}
-\input{update/figure3_table}
-\clearpage
 \endgroup
+\input{update/figure3_attribution_method}
 \input{update/wo24_features}
 
 \begin{figure}[ht!] 
