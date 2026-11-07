@@ -1,0 +1,57 @@
+\paragraph{Reading the contribution pies.}
+Figure~\ref{fig:accel_decompose} distinguishes the resources that enable an
+execution from the software that uses them. Weight and KV residency require
+the selected memory capacity and delivery paths; they are not free software
+optimizations on an arbitrary fixed chip. The Llama controls retain those
+owners, paid first imports, original arithmetic and installed bank/port
+reservations. They first extend the compatible mapping menu, then restore
+array availability, DRAM bandwidth and local bandwidth in that order.
+These are analytical service-cap experiments on the selected designs;
+they do not claim a smaller chip or area/power savings for a capped control.
+Lower array availability can exclude a final logical tile, so compatible
+remapping is part of the resource effect rather than an unpaid fixed mapping.
+
+All eight combinations of the three resource limits are repriced for each
+Llama. The six possible release orders change individual resource shares,
+but preserve their combined contribution after the mapping stage.
+DeepSeek's hardware-refinement interval starts at the authenticated earlier
+hardware with the same pre-fusion N16 implementation family: $92.624$~s,
+through the WO23 $69.695$-s control, to $69.548$~s after WO24 refinement.
+The remaining steps add producer-layout fusion, cross-wave prefetch and
+compute/readout overlap. The base \emph{Placement / residency} group
+includes the inherited datapath and mappings; it is not a memory-only ablation.
+Neither sequence uniquely separates hardware-only and software-only causality.
+
+The legend follows the decision families in Table~\ref{tab:current_features}.
+For each Llama resource increase, an additional checked intermediate retains
+the previous mapping before allowing compatible remapping. This separates
+the direct resource-rate effect from the subsequent mapping effect. Including
+the menu extension and all such remapping, the isolated mapping increments
+account for only $0.181\%$, $0.258\%$ and $0.511\%$ of total gain for 13B,
+65B and 70B. The larger \emph{Tiling + on-chip bandwidth} group explicitly
+combines these with local delivery service (\texttt{local\_GBps}); its
+$43.963\%$, $43.510\%$ and $37.513\%$ shares are not tiling-only gains.
+All intermediate costs are reconstructed from original kernels and paid
+descriptor imports; no new optimizer or physical-validation call is made.
+
+\emph{Compute parallelism} denotes active matrix-compute arrays.
+\emph{Off-chip DRAM bandwidth} denotes external-memory delivery, not FPGA
+block RAM (BRAM). \emph{SRAM capacity} is the amount of on-chip storage;
+it and the installed bank/port reservations remain fixed through these
+controls, so no separate SRAM-capacity share is claimed. The purple
+\emph{Memory capacity + residency} group includes selected DRAM capacity,
+weight/KV retention and inherited base hardware/mappings. It contributes
+$9.772\%$, $11.362\%$ and $15.956\%$ and is not an isolated memory ablation.
+Every pie uses four display groups. DeepSeek's fusion/storage group denotes
+the rounded producer layout; its scheduling/concurrency group sums the
+sequential prefetch and compute/readout-overlap increments, using the second
+FP32 result context. This combines sequential increments, not overlapping
+feature-off ablations.
+Bulk conversion and output stores remain charged. Every increment is counted
+once; labels assign no gains to unimplemented rematerialization or serving.
+
+The fixed-hardware entries in Table~\ref{tab:fixed_hw} are fresh
+fractional-LP comparisons on the earlier matrix graphs at matched
+operand widths. They are not matched full-decode controls for
+these designs and are not subtracted from the current decode speedups.
+Conditional feature-removal factors cannot be added to the cumulative shares.

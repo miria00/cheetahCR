@@ -144,7 +144,7 @@ controls.
 
 Table~\ref{tab:fixed_hw} reports twenty fresh LP solves: five workloads,
 two fixed hardware models and two operand widths. The compact NPU fixes
-$32{,}768$ MAC units, 64~GB/s and 16~MiB SRAM; the modeled TPU-v3 fixes
+$32{,}768$ MAC units, 64~GB/s and 16~MiB SRAM; the simulated TPU-v3 fixes
 $65{,}536$ units, 900~GB/s and 32~MiB. Both use the paper's 1-GHz timing
 proxy. We hold one archived mapping template fixed, reprice it at each
 resource budget and use its tile footprints; the earlier alternative array
@@ -152,7 +152,7 @@ geometries are excluded from this control. Within each cell, the streaming
 reference and joint LP share the
 workload, operand width and resource rates. The INT8/BF16 columns are
 analytical width sensitivities, with no assumed INT8 throughput bonus.
-They retain the historical matrix graphs and LP approximations and do not
+They retain the earlier matrix graphs and LP approximations and do not
 establish an integral full-decode execution on either chip. Saved primal
 and dual witnesses are independently checked against every stored LP row.
 \input{update/wo24_fixed_hardware}

@@ -2,7 +2,7 @@
 \centering\small
 \caption{Fresh fixed-hardware LP comparisons for five workloads at matched
 operand widths. Each entry is $T_{\rm streaming}/T_{\rm joint\,LP}$ on the
-same modeled hardware and at the same width; these are fractional-objective
+same simulated hardware and at the same width; these are fractional-objective
 ratios, not recovered execution or measured chip speedups.}
 \label{tab:fixed_hw}
 \begin{tabular}{@{}lrrrr@{}}
@@ -26,7 +26,7 @@ width sensitivities of the inherited timing/accumulator model, not native
 TPU-v3 INT8 or precision-faithful BF16 measurements. Twenty fresh HiGHS
 solves use archived tile footprints and one frozen mapping template,
 analytically repriced at each resource budget, with checked primal/dual
-witnesses. Historical matrix graphs, workspace approximations and the
+witnesses. Earlier matrix graphs, workspace approximations and the
 streaming-cost convention remain. A ratio below $1\times$ means the LP's
 serial-reload/tensor-floor cost exceeds that streaming reference. No new
 full-decode or quantization-accuracy claim is made.
