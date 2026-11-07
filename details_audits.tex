@@ -423,4 +423,65 @@ is a separately stated architectural assumption.
 % }
 % \end{table}
 
+\subsection{Reported Efficiency Quantities}
+\label{sec:reported_quantities}\label{app:reported_quantities}
+Three quantities carry the efficiency claims below, and each is read off the
+scheduled execution rather than assumed. Let $T$ be the duration of the
+interval being reported, $C_{\mathrm{peak}}$ the peak arithmetic throughput of
+the recovered chip, $b_r$ the installed delivered bandwidth of resource $r$, and
+$P_{\mathrm{peak}}$ its modeled peak power.
+\begin{equation}
+\mathrm{MFU}=\frac{F_{\mathrm{useful}}}{C_{\mathrm{peak}}T},
+\qquad
+\mathrm{MBU}_r=\frac{B_{r,\mathrm{read}}+B_{r,\mathrm{write}}}{b_rT},
+\qquad
+\mathrm{Perf}/\mathrm{TDP}=\frac{Q/T}{P_{\mathrm{peak}}}.
+\label{eq:reported_quantities}
+\end{equation}
 
+\paragraph{Model FLOP utilization.}
+$\mathrm{MFU}$ is the fraction of the chip's arithmetic capability that the
+schedule converts into useful work, where $F_{\mathrm{useful}}$ counts only the
+arithmetic the model requires. It is distinct from the work the arrays actually
+issue: padding, masked edge tiles and replicated operands are charged to the
+machine but are not useful, so $F^{\mathrm{useful}}\le F^{\mathrm{issued}}$
+always. Within a fixed-chip branch the per-event service rows enforce
+$\sum_i F^{\mathrm{issued}}_{i,e}x_{i,e}\le C_{\mathrm{peak}}\Delta t_e$, which
+sums every concurrent implementation sharing the arrays in event $e$; because
+the installed rate is a branch constant there, summing over the event intervals
+guarantees an aggregate $\mathrm{MFU}\le 1$ by construction rather than by
+inspection. This guarantee is a property of the fixed-chip rows and is not
+inherited by the variable-hardware relaxation, where the corresponding product
+is bilinear and its McCormick envelope is necessary but not exact
+(\cref{app:physical_rooflines}); the installed-rate condition is therefore
+re-checked exactly at execution admission.
+
+\paragraph{Model bandwidth utilization.}
+$\mathrm{MBU}_r$ is the same ratio for a memory resource, and it is computed
+from the \emph{complete} scheduled traffic: operand rereads, KV transfers
+between timesteps, and spill and restore movement all count, since each
+occupies the interface whether or not it advances the model's arithmetic.
+Because the resources have different peak rates and different consequences for
+a schedule, HBM, the host link and on-chip SRAM are reported separately rather
+than aggregated into a single figure.
+
+\paragraph{Performance per TDP.}
+$\mathrm{Perf}/\mathrm{TDP}$ divides delivered throughput, $Q$ units of work
+per unit time, by modeled peak power. Three conditions govern its use as a
+comparison. The process, the power scope and the unit of work must match
+between the designs compared; a ratio across differing scopes is not a ratio of
+efficiencies. Average measured power is not a substitute for modeled peak TDP,
+and we do not interchange them. And because the objective minimizes latency
+rather than this ratio, a performance/power tradeoff is obtained by solving
+across power budgets and comparing recovered designs: for a fixed amount of
+work the ratio factors as
+$(\mathrm{Perf}/\mathrm{TDP})_{\mathrm{design}}/(\mathrm{Perf}/\mathrm{TDP})_{\mathrm{baseline}}
+=(T_{\mathrm{baseline}}/T_{\mathrm{design}})\cdot(\mathrm{TDP}_{\mathrm{baseline}}/\mathrm{TDP}_{\mathrm{design}})$,
+so a latency objective does not by itself maximize it.
+
+For the current decode designs, performance per TDP uses a chip-power
+proxy because complete package TDP is unavailable. Matched prefill and
+whole-task efficiency triples have not been re-established for these
+decode-only chips, so no such values or cross-phase averages are claimed.
+Fractional objective bounds, replayed executions and physical qualification
+remain distinct.

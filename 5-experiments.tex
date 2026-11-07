@@ -109,68 +109,11 @@ SRAM macros & 64 KiB banks, aspect ratio $1{:}4$--$4{:}1$ & $\le4{,}096$ banks \
 \end{tabularx}
 \end{table}
 
-\subsection{Reported Efficiency Quantities}
-\label{sec:reported_quantities}
-Three quantities carry the efficiency claims below, and each is read off the
-scheduled execution rather than assumed. Let $T$ be the duration of the
-interval being reported, $C_{\mathrm{peak}}$ the peak arithmetic throughput of
-the recovered chip, $b_r$ the installed delivered bandwidth of resource $r$, and
-$P_{\mathrm{peak}}$ its modeled peak power.
-\begin{equation}
-\mathrm{MFU}=\frac{F_{\mathrm{useful}}}{C_{\mathrm{peak}}T},
-\qquad
-\mathrm{MBU}_r=\frac{B_{r,\mathrm{read}}+B_{r,\mathrm{write}}}{b_rT},
-\qquad
-\mathrm{Perf}/\mathrm{TDP}=\frac{Q/T}{P_{\mathrm{peak}}}.
-\label{eq:reported_quantities}
-\end{equation}
-
-\paragraph{Model FLOP utilization.}
-$\mathrm{MFU}$ is the fraction of the chip's arithmetic capability that the
-schedule converts into useful work, where $F_{\mathrm{useful}}$ counts only the
-arithmetic the model requires. It is distinct from the work the arrays actually
-issue: padding, masked edge tiles and replicated operands are charged to the
-machine but are not useful, so $F^{\mathrm{useful}}\le F^{\mathrm{issued}}$
-always. Within a fixed-chip branch the per-event service rows enforce
-$\sum_i F^{\mathrm{issued}}_{i,e}x_{i,e}\le C_{\mathrm{peak}}\Delta t_e$, which
-sums every concurrent implementation sharing the arrays in event $e$; because
-the installed rate is a branch constant there, summing over the event intervals
-guarantees an aggregate $\mathrm{MFU}\le 1$ by construction rather than by
-inspection. This guarantee is a property of the fixed-chip rows and is not
-inherited by the variable-hardware relaxation, where the corresponding product
-is bilinear and its McCormick envelope is necessary but not exact
-(\cref{app:physical_rooflines}); the installed-rate condition is therefore
-re-checked exactly at execution admission.
-
-\paragraph{Model bandwidth utilization.}
-$\mathrm{MBU}_r$ is the same ratio for a memory resource, and it is computed
-from the \emph{complete} scheduled traffic: operand rereads, KV transfers
-between timesteps, and spill and restore movement all count, since each
-occupies the interface whether or not it advances the model's arithmetic.
-Because the resources have different peak rates and different consequences for
-a schedule, HBM, the host link and on-chip SRAM are reported separately rather
-than aggregated into a single figure.
-
-\paragraph{Performance per TDP.}
-$\mathrm{Perf}/\mathrm{TDP}$ divides delivered throughput, $Q$ units of work
-per unit time, by modeled peak power. Three conditions govern its use as a
-comparison. The process, the power scope and the unit of work must match
-between the designs compared; a ratio across differing scopes is not a ratio of
-efficiencies. Average measured power is not a substitute for modeled peak TDP,
-and we do not interchange them. And because the objective minimizes latency
-rather than this ratio, a performance/power tradeoff is obtained by solving
-across power budgets and comparing recovered designs: for a fixed amount of
-work the ratio factors as
-$(\mathrm{Perf}/\mathrm{TDP})_{\mathrm{design}}/(\mathrm{Perf}/\mathrm{TDP})_{\mathrm{baseline}}
-=(T_{\mathrm{baseline}}/T_{\mathrm{design}})\cdot(\mathrm{TDP}_{\mathrm{baseline}}/\mathrm{TDP}_{\mathrm{design}})$,
-so a latency objective does not by itself maximize it.
-
-For the current decode designs, performance per TDP uses a chip-power
-proxy because complete package TDP is unavailable. Matched prefill and
-whole-task efficiency triples have not been re-established for these
-decode-only chips, so no such values or cross-phase averages are claimed.
-Fractional objective bounds, replayed executions and physical qualification
-remain distinct.
+\paragraph{Reported efficiency quantities.}
+MFU, per-resource MBU and Perf/TDP are read off the scheduled execution, never
+assumed; Appendix~\ref{app:reported_quantities} defines each, states the
+fixed-chip rows that guarantee $\mathrm{MFU}\le1$ by construction, and gives
+the conditions under which Perf/TDP is a valid comparison.
 
 \subsection{Workload Results and Fixed-Hardware Controls}
 \label{sec:prog}\label{sec:fixed_hw}
@@ -217,9 +160,28 @@ additive cumulative increments in $S=T_{\rm naive}/T$ and sum to 100\% of each
 workload's gain above $1\times$; attribution is order-dependent.}\label{fig:accel_decompose}
 \end{figure}
 \input{update/figure3_attribution_method}
-\input{update/wo24_features}
+\paragraph{Hardware--software interaction.}
+Hardware and software gains are not independent. Holding either fixed and
+releasing the other recovers most of its benefit, but the combined saving is
+slightly less than the sum: a wider delivery path removes some of the traffic
+that better placement would otherwise have saved, so the two must be
+co-selected rather than optimized in sequence. Adding on-chip delivery and SRAM
+is what lets storage fusion keep intermediates on chip and lets a wider mapping
+menu be used at all; a larger menu buys nothing while the execution is
+service-bound. The two model families pull the chip in different directions.
+DeepSeek-V3's gains come overwhelmingly from placement and residency, so its
+design favors a deep memory hierarchy, with a large backing tier and capacity
+for resident experts and KV, over raw delivery; the dense Llamas are
+bandwidth-bound, so their designs favor off-chip and on-chip delivery and gain
+least from added arrays. Within the Llama family the balance shifts with scale:
+as parameters grow, keeping weights and KV resident accounts for a growing share
+of the gain, so larger models favor capacity over delivery.
+Table~\ref{tab:current_features} (Appendix~\ref{app:rows_scope}) records which
+decision families each decoder design actually exercises. These finite-family
+controls do not certify unrestricted placement, rematerialization or scheduling
+optima.
 
-\begin{figure}[h]
+\begin{figure}[t]
 \centering
 % \includegraphics[width=0.48\textwidth]{figs4/pareto_front.png}
 % \hfill
