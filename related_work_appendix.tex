@@ -48,11 +48,11 @@ PDLP demonstrates practical large-scale linear programming with first-order
 methods~\citep{applegate2022practicallargescalelinearprogramming}. GPU variants
 include cuPDLP.jl, cuPDLP-C, and cuPDLPx
 \citep{lu2024cupdlpjlgpuimplementationrestarted,lu2024cupdlpcstrengthenedimplementationcupdlp,lu2025cupdlpxenhancedgpubasedfirstorder}.
-Our earlier OCS working-support path uses centered Halpern PDHG, fixed diagonal
-scaling and structured forward/adjoint operators. The completed DeepSeek
-certificate instead uses compact CPU HiGHS fits and original-domain verification.
-A certified primal--dual objective interval establishes the frozen LP accuracy
-independently of convergence of a particular iterative algorithm; it does not
+OCS, our in-house solver framework, uses an anchored restarted PDHG kernel with
+a diagonal variable metric and structured forward/adjoint operators for
+discovery, and compact fits with original-domain verification as its certified
+closing stage. A certified primal--dual objective interval establishes the frozen
+LP accuracy independently of any single iterate's tolerance; it does not
 establish a general automatic solver or discrete-design optimality.
 
 \paragraph{LLM-guided search.}
