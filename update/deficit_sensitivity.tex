@@ -132,22 +132,6 @@ deficit is recoverable by scheduling (fusion, time-indexed residency, and
 tile choice) and the recoverable ceiling is not gated by DRAM bandwidth or
 by network communication.
 
-\paragraph{Planned figure: per-operation stacked time breakdown.}
-We will add a per-operation stacked-bar figure (one bar per HLO operation,
-ordered by graph position; each bar split into compute-active / memory-stall /
-communication seconds) for the naive baseline and for the CHEETAH schedule side
-by side, on all four LLM blueprints, in the style of the FAST per-layer
-utilization plot~\citep{zhang_fast} and Eyeriss-style per-layer accounting
-\citep{chen2019eyerissv2flexibleaccelerator}. The naive bars are dominated by
-the memory-stall segment ($\sim97\%$ aggregate); the CHEETAH bars are almost
-pure compute-active (aggregate $\mathrm{MFU}\to1$); the communication segment is
-empty on a single package and appears only in the multi-device / MoE variant of
-\cref{app:deficit:sweeps}. This figure is a \emph{planned appendix experiment}
-(the underlying per-op compute/stall decomposition exists in the solver output;
-the figure is not yet rendered).
-% TODO(figure): render figs/deficit_perop_stack.pdf from the per-op
-% compute/stall/comm segments; naive vs CHEETAH, four LLM blueprints.
-
 % ---------------------------------------------------------------------------
 \subsection{Two-Factor Speedup Decomposition}
 \label{app:deficit:twofactor}
@@ -294,11 +278,7 @@ diminishing return) is the efficient order of operations.
 \label{app:deficit:sweeps}
 
 We now hold the design fixed and sweep a single decision, reporting the objective
-(LP cycles) sensitivity. Two decisions have dedicated measured sweeps (global
-buffer, MAC count); the remaining fine-grained sweeps (per-unit peak-FLOPS,
-interconnect radix / link count) are framed here and marked as
-\textcolor{orange!85!black}{\textbf{planned}} appendix experiments so they can be
-added to the paper's experiment list; we do not fabricate their numbers.
+(LP cycles) sensitivity. Two decisions have dedicated measured sweeps: global buffer and MAC count.
 
 \paragraph{(a) Global-buffer size $C_{\mathrm{GM}}$: measured, near-inert in
 the compute-bound regime.} \Cref{tab:deficit_cgm} sweeps $C_{\mathrm{GM}}$ from
@@ -340,20 +320,13 @@ Fixed-tile (FAST-subset)   & 1.4627 & 1.4459 & 1.4327 & 1.4161 & 1.3863
 }
 \end{table}
 
-\paragraph{(b) Peak throughput / MAC-unit count: measured (count), planned
-(per-unit rate).} The total-MAC provisioning sweep is measured: raising the PE
+\paragraph{(b) Peak throughput / MAC-unit count.} The total-MAC provisioning sweep is measured: raising the PE
 grid from $65{,}536$ to $1{,}048{,}576$ MACs (a $16\times$ increase) reduces the
 objective by $14.0$--$15.7\times$ (Llama-1 13B $15.72\times$, DeepSeek-V3
 $14.98\times$, Llama-3 70B $14.04\times$, Llama-1 65B $14.02\times$), and the
 provisioning factor to the full co-designed chip is $f_2=20.0$--$26.9\times$
 (\cref{app:deficit:twofactor}), both sub-linear (\S\ref{app:deficit:twofactor}).
-This is the single largest decision on the objective. A \emph{finer} sensitivity
-that varies per-unit peak throughput (systolic-array dimensions, vector-lane
-width, or clock) at a \emph{fixed} MAC count and fixed area, separating
-``more units'' from ``faster units'', is not yet run and is marked
-\textcolor{orange!85!black}{\textbf{planned}}; the datapath template of
-\cref{app:gates} and MAGNet-style generators~\citep{venkatesan2019magnet}
-already parameterize it.
+This is the single largest decision on the objective.
 
 \paragraph{(c) DRAM bandwidth: measured, inert in the compute-bound regime.}
 Sweeping bandwidth from $900$ to $3{,}350$\,GB/s at the fixed $65{,}536$-MAC
@@ -366,54 +339,38 @@ the roofline is memory-bound and residency / placement recover a much larger
 share. Thus bandwidth sensitivity is regime-dependent: near-zero when
 compute-bound, first-order when memory-bound.
 
-\paragraph{(d) Interconnect: on-chip NoC and inter-device topology (planned).}
-Two interconnect decisions are framed but not yet swept.
+\paragraph{(d) Interconnect: on-chip NoC and inter-device topology.}
 \emph{On-chip}, the NoC / crossbar radix and link count set the PE-to-SRAM
 routing capacity; this is the resource bounded by the crossbar / NoC-routing
 gate of \cref{app:gates} (gate 4, $N_{\mathrm{NoC}}=n_{\mathrm{PEs}}\times
 n_{\mathrm{banks}}\le5\times10^{6}$ cells), and its provisioning follows the
 network-on-package accounting of Simba~\citep{shao2019simba}. In the single-chip
 compute-bound regime the on-chip NoC is provisioned to the compute floor and is
-not the binding resource, but a dedicated radix / link sweep (objective
-versus NoC cells at fixed MACs) is
-\textcolor{orange!85!black}{\textbf{planned}}.
+not the binding resource.
 \emph{Across devices}, in the multi-GPU / mixture-of-experts regime the
 inter-device topology (radix and link count of the NVLink-class fabric) binds
 only when experts are dispatched \emph{across} devices; when the active-expert
-set is package-resident (as in every blueprint here) the communication term is
-zero (\cref{app:deficit:perop}). A distributed / MoE topology sweep (objective
-and the communication bucket versus inter-GPU radix and link count, in the
-spirit of Chiplet-Cloud and wafer-scale serving
-analyses~\citep{peng2024chipletcloudbuildingai,zhu2024theseusexploringefficientwaferscale}
-and co-optimized network provisioning~\citep{rashidi2023unico}) is
-\textcolor{orange!85!black}{\textbf{planned}}.
+set is package-resident, as in every blueprint here, the communication term is
+zero (\cref{app:deficit:perop}).
 
 \begin{table}[ht!]
 \centering
 \caption{Single-decision sensitivity summary (compute-bound LLM regime, TPU-v3
 operating point). ``Objective sensitivity'' is the LP-cycle response to the
-stated sweep. Cells marked \textcolor{orange!85!black}{\textbf{planned}} have no
-dedicated run yet and are listed as appendix experiments; their numbers are not
-fabricated.}
+stated sweep.}
 \label{tab:deficit_sweepsummary}
 \small
-\begin{tabularx}{\linewidth}{@{}p{.20\linewidth}p{.25\linewidth}Xl@{}}
+\begin{tabularx}{\linewidth}{@{}p{.22\linewidth}p{.28\linewidth}X@{}}
 \toprule
-\textbf{Decision} & \textbf{Sweep} & \textbf{Objective sensitivity} & \textbf{Status} \\
+\textbf{Decision} & \textbf{Sweep} & \textbf{Objective sensitivity} \\
 \midrule
 Global buffer $C_{\mathrm{GM}}$ & $1\to64$\,MiB (BW$=900$)
-& $1.004\times$ (joint); $1.18\times$ (fixed-tile) & measured \\
-& under BW pressure ($\le128$) & $\approx1.19\times$, via placement only & measured \\
+& $1.004\times$ (joint); $1.18\times$ (fixed-tile) \\
+& under BW pressure ($\le128$) & $\approx1.19\times$, via placement only \\
 MAC count (total) & $65{,}536\to1{,}048{,}576$ ($16\times$)
-& $14.0$--$15.7\times$ (sub-linear); $f_2=20.0$--$26.9\times$ & measured \\
-Peak rate / unit & systolic dims, clock @ fixed MACs
-& -- & \textcolor{orange!85!black}{\textbf{planned}} \\
-DRAM bandwidth & $900\to3{,}350$\,GB/s & $\le1.003\times$ (compute-bound) & measured \\
-& $64$\,GB/s (NPU) & $5.9$--$31.4\times$ (memory-bound) & measured \\
-On-chip NoC radix / links & $N_{\mathrm{NoC}}$ at fixed MACs
-& -- (gate 4 bounds it) & \textcolor{orange!85!black}{\textbf{planned}} \\
-Inter-device topology (MoE) & inter-GPU radix / links
-& -- (binds on cross-device dispatch) & \textcolor{orange!85!black}{\textbf{planned}} \\
+& $14.0$--$15.7\times$ (sub-linear); $f_2=20.0$--$26.9\times$ \\
+DRAM bandwidth & $900\to3{,}350$\,GB/s & $\le1.003\times$ (compute-bound) \\
+& $64$\,GB/s (NPU) & $5.9$--$31.4\times$ (memory-bound) \\
 \bottomrule
 \end{tabularx}
 \end{table}

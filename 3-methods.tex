@@ -314,6 +314,15 @@ is shared across every phase represented in a branch.
 The LLM architect reads a ledger of resource prices, slacks, invalid trials,
 and replay outcomes, then proposes candidate implementations or search
 neighborhoods. Deterministic validation checks each proposal before evaluation.
+The architect is conditioned on a \emph{deployment profile}, a natural-language
+statement of what the deployment values, because the right chip depends on it:
+an overnight financial-analysis workload values sustained throughput and memory
+bandwidth and tolerates latency and power, whereas streaming speech inference
+values single-request latency at small batch and moderate power. The profile
+sets the objective mode and steers which implementations and hardware regions
+the architect proposes; Appendix~\ref{app:profiles} runs both profiles and
+reports the resulting best chips (Table~\ref{tab:profile_best_chips}) and
+invalid-trial rates (Table~\ref{tab:profile_invalid_rates}).
 The outer loop uses Vizier~\citep{google_vizier} to search hardware
 neighborhoods; the master also represents hardware choices directly.
 Dual prices guide search,

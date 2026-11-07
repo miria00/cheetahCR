@@ -30,7 +30,7 @@ Verilator. Each instruction is cross-checked against the analytical residency
 model layer-by-layer, and a deliberately over-committed tape confirms the
 capacity checker is live (it flags exactly one violation). Three pre-stated
 criteria pass (\cref{tab:rtl_validation}), and \cref{tab:rtl_levers} reports, decision by
-decision, that every planned event executed. \emph{Memory legality:} the tape
+decision, that every scheduled event executed. \emph{Memory legality:} the tape
 runs to completion with \textbf{zero} capacity violations, and the RTL peak
 on-chip occupancy equals the analytical prediction \emph{exactly}
 ($7{,}602{,}176$~B $= 7.25/8$~MiB, $9.4\%$ headroom). \emph{Cycles:} the total
@@ -50,7 +50,7 @@ step.
 
 \begin{table}[t]
 \centering
-\caption{Did each decision fire? Per-decision plan-versus-execution counters from the DeepSeek-V3 tape replay ($\CGM = 8$\,MiB). Every event the LP plans is executed by the RTL engine exactly once, the capacity row is checked in hardware at every step, and the decisions the LP chose not to use at this cell are confirmed absent while their opcodes are proven live on a synthetic tape. The bound says how good the plan is; the counters say the plan is what ran.}
+\caption{Did each decision fire? Per-decision schedule-versus-execution counters from the DeepSeek-V3 tape replay ($\CGM = 8$\,MiB). Every event the LP schedules is executed by the RTL engine exactly once, the capacity row is checked in hardware at every step, and the decisions the LP chose not to use at this cell are confirmed absent while their opcodes are proven live on a synthetic tape. The bound says how good the schedule is; the counters say the schedule is what ran.}
 \label{tab:rtl_levers}
 \scriptsize
 \setlength{\tabcolsep}{5pt}
@@ -60,7 +60,7 @@ step.
 \begin{tabular}{@{}l l l l@{}}
 \toprule
 \rowcolor{bandrtl}
-\textbf{Decision} & \textbf{LP plan} & \textbf{RTL executed} & \textbf{Check} \\
+\textbf{Decision} & \textbf{LP schedule} & \textbf{RTL executed} & \textbf{Check} \\
 \midrule
 Tile choice ($y$)            & $903$ \textsc{execute}               & $903$                 & \cmark~ids match $903/903$ \\
 \rowcolor{rowalt}

@@ -24,12 +24,20 @@ Serving / phase choice & Decode-only; original request order and starting KV fix
 \end{table}
 
 \paragraph{Hardware--software interaction.}
-For DeepSeek, old/old, old-hardware/new-software, new-hardware/old-software,
-and new/new take 69.694835, 64.028837, 69.547814 and 63.988923~s.
-The corresponding 13B times are 10.687989, 10.627475, 10.501228 and
-10.441348~s. Both hardware-only minima choose the new chip within the
-declared menu. The signed interaction
-$I=T_{10}+T_{01}-T_{00}-T_{11}$ is $-107.107212$~ms (DeepSeek) and
-$-0.633227$~ms (13B): combined savings are slightly less than the sum of the
-separate changes. These finite-family controls do not certify unrestricted
-placement, rematerialization or scheduling optima.
+Hardware and software gains are not independent. Holding either fixed and
+releasing the other recovers most of its benefit, but the combined saving is
+slightly less than the sum: a wider delivery path removes some of the traffic
+that better placement would otherwise have saved, so the two must be
+co-selected rather than optimized in sequence. Adding on-chip delivery and SRAM
+is what lets storage fusion keep intermediates on chip and lets a wider mapping
+menu be used at all; a larger menu buys nothing while the execution is
+service-bound. The two model families pull the chip in different directions.
+DeepSeek-V3's gains come overwhelmingly from placement and residency, so its
+design favors a deep memory hierarchy, with a large backing tier and capacity
+for resident experts and KV, over raw delivery; the dense Llamas are
+bandwidth-bound, so their designs favor off-chip and on-chip delivery and gain
+least from added arrays. Within the Llama family the balance shifts with scale:
+as parameters grow, keeping weights and KV resident accounts for a growing share
+of the gain, so larger models favor capacity over delivery. These finite-family
+controls do not certify unrestricted placement, rematerialization or scheduling
+optima.
