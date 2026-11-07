@@ -64,27 +64,31 @@ proposes implementations and hardware search neighborhoods.
     These couplings expose tiling--placement trade-offs that sequential
     pipelines can discard.
     % This enables the LP to discover trade-offs where accepting a suboptimal tiling configuration enables superior fusion, or vice versa---precisely the cross-stage interactions that the sequential pipeline cannot capture.
-    \item \textbf{Structure-aware optimization and certification.} Compact numerical
+    \item \textbf{Structure-aware optimization, bounds and executable
+    validation.} Compact numerical
     fits, rational cover reconstruction and stateful lifting make candidate
     discovery manageable. Original-domain checks certify the complete LP
-    without substituting restricted-support optima for full-master bounds.
+    without substituting restricted-support optima for full-master bounds:
+    the frozen 1,557-branch DeepSeek master has a certified $0.067154\%$ LP
+    objective gap. Analytical replay and selected control/datapath checks
+    support a separate recovered design; global discrete optimality remains
+    open.
     Section~\ref{sec:solver_vm} identifies the successful CPU HiGHS computation
-    separately from earlier OCS working-support experiments.
+    separately from earlier OCS working-support experiments, and the original
+    experiments retain their certificates and physical-validation evidence.
 
     \item \textbf{LLM Architect Outer Loop.} The architect interprets resource prices and a causal ledger of earlier trials to propose hardware and implementation changes. Deterministic checks admit proposals; the LLM itself supplies no certificate. This couples architecture exploration with the optimizer's diagnostics rather than relying only on black-box scores.
 
-    \item \textbf{Bounds and executable validation.} The frozen 1,557-branch
-    DeepSeek master has a certified $0.067154\%$ LP objective gap.
-    Analytical replay and selected control/datapath checks support a separate
-    recovered design; global discrete optimality remains open. The original
-    experiments retain their certificates and physical-validation evidence.
-
-    \item \textbf{Inference speedup.} The accepted prefill-oriented campaign
-    reports an average $22.07\times$ predicted speedup and up to $40.1\times$
-    under its original contracts (Figure~\ref{fig:speedup}).
-    Against unchanged paper Baseline 2, the latest separate decoder
+    \item \textbf{Inference speedup.} Against unchanged paper Baseline 2,
+    CHEETAH predicts up to $11.849\times$ for EfficientNet forward execution
+    and the SD1.5 UNet denoiser, up to $24.196\times$ for LLM prefill, and up
+    to $17.932\times$ for LLM decode (Figure~\ref{fig:speedup}).
+    The latest separate decoder
     designs predict $7.823\times$ for DeepSeek-V3 and
-    $11.092$--$17.932\times$ for the three Llamas. These are analytical
+    $11.092$--$17.932\times$ for the three Llamas; the accepted
+    prefill-oriented campaign reports an average $22.07\times$ and up to
+    $40.1\times$ under its own original contracts
+    (Section~\ref{sec:experiments}). These are analytical
     matrix-and-associated-traffic results with the original timing proxy,
     not measured TPU-v3 serving gains. Their area proxies are below
     600~mm$^2$, but relaxed memory/power assumptions remain physically
