@@ -52,7 +52,7 @@ whole-program branches with OCS~\citep{feng2026ocs}, our in-house operator
 solver: each branch's constraint map is applied rather than stored, compact
 fits discover prices and primal candidates, and exact checks over the original
 domain certify a lower bound $L_b$ per branch. Pruning leaves $L=\min_bL_b$ and
-the incumbent $U$ bracketing the optimum, and the 1,557-branch DeepSeek-V3
+the best feasible cost $U$ bracketing the optimum, and the 1,557-branch DeepSeek-V3
 master LP closes to a certified $0.07\%$ gap. Integral recovery and replay turn
 the relaxation into a chip and a schedule, outputs distinct from the bound, and
 an LLM architect reads the resulting resource prices to propose implementations

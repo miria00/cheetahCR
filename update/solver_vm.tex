@@ -15,8 +15,8 @@ Lagrangian box support over all coordinates.
 
 The master LP is solved by branch and bound over its declared family. Each
 branch $b$ receives a certified lower bound $L_b$, branches with checked
-fixed-cost infeasibility or bounds that cannot improve the incumbent are pruned,
-and $L=\min_bL_b$ with the incumbent $U$ brackets the optimum. For the frozen
+fixed-cost infeasibility or bounds that cannot improve the best feasible solution are pruned,
+and $L=\min_bL_b$ with the best feasible cost $U$ brackets the optimum. For the frozen
 1,557-branch DeepSeek master LP, composing the 1,787 per-branch certificates
 gives $L\approx946{,}487.72$ ms and $U\approx947{,}123.74$ ms, a relative gap of
 $0.07\%$, with 1,095 branches at the stopping threshold, 462 pruned and none
@@ -26,7 +26,7 @@ unresolved (Appendix~\ref{app:expanded_native_certificate}).
 Integral recovery searches a finite tree over array counts, vector lanes, DRAM
 bandwidth, host channels and local-service units; optimistic resource and
 capacity-priced retention bounds prune regions that are budget-infeasible or
-cannot improve a replayed incumbent, and leaves use actual implementation and
+cannot improve the best replayed feasible design, and leaves use actual implementation and
 capacity costs. Recovery then selects one branch, integral implementations,
 hardware and storage policies, and analytical replay checks dependency
 readiness, capacities and service at the selected rates. The retained execution

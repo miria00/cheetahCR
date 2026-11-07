@@ -99,11 +99,11 @@ The demonstrated menu contains 536,380,416 hardware combinations:
 and 1--8 local-service units. An earlier fixed-software tree exhausted that
 menu; the joint capacity-path tree made 1,190 GPU oracle calls and retained
 142 unresolved schedule leaves, reduced to 78 by its subsequent replayed
-incumbent. Its bounds were numerical and conditional on the then-current
+best feasible design. Its bounds were numerical and conditional on the then-current
 cover, progress and implementation menu. They are not the final LP certificate,
 and subsequent menu expansions require new tree bounds.
 
-Only a replayed feasible design supplies a pruning incumbent; an unverified
+Only a replayed feasible design supplies a pruning reference; an unverified
 candidate does not. Surviving hardware choices undergo integral cover/path
 selection, capacity repair and transfer scheduling. Replay then computes
 the predicted phase latencies using the selected chip's actual modeled
