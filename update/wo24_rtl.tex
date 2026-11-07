@@ -1,0 +1,93 @@
+% Source: systems/cheetah_joint/audits/20261106/WO24_IMPLEMENTATION.md.
+% Actual-run receipt SHA256:
+% 82f5c2ab09ecba8d7f0076c5cd442db54cb760ed5f6330e7779f2a685946853d
+\subsection{New BF16/FP32 decoder experiments}
+\label{app:wo24_decoder_rtl}
+After independently checking the frozen numerical archive, we compiled and
+ran six new RTL test groups on November 6, 2026, from 19:36:59 to 19:39:03 UTC.
+All twelve build/test commands passed. These are fresh CPU-hosted Verilator
+executions of the selected mechanisms, not reused logs or GPU performance
+measurements. Sources, fixtures, executables, command lines, timestamps and
+outputs are preserved with the actual-run receipt.
+
+\begin{table}[htbp]
+\centering\small
+\caption{New functional RTL results. Every group passes its declared checks.
+Counts describe finite representative tests, not all model invocations.}
+\label{tab:wo24_rtl}
+\begin{tabularx}{\linewidth}{@{}p{0.22\linewidth}Xl@{}}
+\toprule
+RTL group & Executed coverage & Result \\
+\midrule
+BF16/FP32 arithmetic & 615,652 comparisons; all BF16 patterns times
+$\pm1$; special/random triples; 32 ordered $K=7,168$ reductions & Pass \\
+DeepSeek score tile & 256 PEs ($8\!\times\!32$), 5,227 source ticks,
+49,800 received words, 22 positive output installs,
+135,168 valid MAC updates & Pass \\
+DeepSeek AV tile & 256 PEs, 8,889 source ticks, 33,540 received words,
+2 positive installs, 262,208 valid MAC updates & Pass \\
+Dense decoder tiles & 31 full-K cases (13B/65B/70B: 10/10/11);
+30,399,392 MAC updates, 3,136 BF16 outputs, 7,400 explicit stalls & Pass \\
+KV transition & 4,096 prefix tokens, 511 N16 K-word read/modify/write
+appends, 4,607 terminal tokens bit-identical; 1,533 backpressure cycles & Pass \\
+PE context isolation & 258 updates; completed output stable during
+193 other-context updates; simultaneous installation and independent update & Pass \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\paragraph{Arithmetic is executed in the DUT.}
+Integer SystemVerilog logic implements BF16 multiplication, ordered fused
+FP32 accumulation and final BF16 round-to-nearest-even. The C++
+\texttt{std::fma} oracle is confined to the testbench; no DPI, \texttt{real}
+or \texttt{shortreal} arithmetic supplies DUT outputs. Coverage includes
+1,152 subnormal results, 184 signed-zero results, 32,585 infinities and
+5,234 canonical NaNs. Overflow-cancellation and half-min-subnormal cases
+distinguish fused accumulation from separately rounded multiplication and
+addition. Canonical NaNs use \texttt{0x7fc00000}/\texttt{0x7fc0}; NaN
+payload/sign preservation is not claimed. This tests the declared ordered
+arithmetic contract, not universal reduction semantics of every upstream
+matrix library. The 577-bit exact intermediate is a functional construction
+with no synthesized-area or 1-GHz timing qualification.
+
+\paragraph{Banks, delivery and output installation.}
+The DeepSeek fixtures bind original request/layer/context owners and selected
+source calendars. An actual 256-PE outer-product tile executes both FP32
+contexts. The delivery top contains ping-pong storage, addressed reads/writes,
+Ready/live state, a 64-byte A register file with paid bank preloads,
+registered fanout, matched B delay and K/wave/context tags. A shared 32-byte
+packing buffer arbitrates receiving and completed-context extraction.
+Score/AV tests include 264/516 preload ticks and 704/64 extraction ticks;
+590/30 ticks overlap MAC updates with extraction from a different context.
+Output conversion and service remain paid, and reuse waits for installation.
+Both calendars reject four injected faults: port conflict, read-before-Ready,
+live-buffer overwrite and missing output installation.
+
+The fixture drives the controller pins from the source calendar. One tile
+instantiates all arithmetic PEs; the rest of the gang is checked through
+bank/route coordinates and demand, not replicated as a whole arithmetic chip.
+The row/column outer-product interface is not a routed nearest-neighbour
+systolic mesh. Route delays and positive output-service intervals remain
+stimulus obligations; there is no physical DRAM/HOST controller.
+
+\paragraph{Fusion and KV boundaries.}
+The new AV test consumes an already aligned BF16 A buffer. The original FP32
+softmax/cast producer and its head-strided padding, zero-fill and store routine
+remain source-checked, rather than implemented by this RTL test. Thus the
+producer-layout fusion ablation in Table~\ref{tab:current_features} has
+analytical source/replay evidence, while final output rounding and selected
+delivery/context mechanisms have fresh RTL evidence. The KV controller checks
+one K head/component against functional external backing: initialized padding
+does not confer logical readiness, and every append waits for its write.
+Full V-cache behavior, terminal HOST DMA and the complete inference sequencer
+remain outside this test.
+
+\paragraph{What the experiments establish.}
+All injected numerical values are synthetic; task shapes, coordinates,
+reduction order and output boundaries are source-bound. Dense tests cover
+selected mappings for all three Llamas, but not their ordinary-DRAM delivery
+controllers. These experiments support the tested arithmetic and control
+mechanisms. They do not establish trained-weight model quality, full-model bit
+equivalence, physical bank macros, routed timing, complete decoder RTL or the
+predicted accelerator runtimes. The eight N7/N5 architectural views retain
+unknown library/clock/area/power fields and apply no process-node scaling.

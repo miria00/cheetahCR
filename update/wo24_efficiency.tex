@@ -1,0 +1,28 @@
+\begin{table}[htbp]
+\centering\small
+\caption{Numerical decode efficiency for the selected research chips.
+MFU and MBU are percentages; the final column is decode tokens/s per watt
+of the \emph{chip-power proxy}, not complete-system performance/TDP.}
+\label{tab:decode_efficiency}
+\begin{tabular}{@{}lrcrr@{}}
+\toprule
+Decoder & MFU & MBU: DRAM / host / local & Proxy W & Tokens/s/W \\
+\midrule
+DeepSeek-V3 & 12.320 & 52.154 / 6.075 / 49.305 & 592.513 & 0.431 \\
+Llama-1 13B & 12.986 & 42.085 / 1.950 / 22.070 & 400.492 & 3.910 \\
+Llama-1 65B & 20.938 & 40.953 / 2.243 / 22.370 & 362.616 & 1.123 \\
+Llama-3 70B & 27.705 & 33.107 / 1.954 / 17.900 & 364.214 & 1.326 \\
+\bottomrule
+\end{tabular}
+\par\smallskip\begin{minipage}{\linewidth}\footnotesize
+$Q=32\cdot511=16{,}352$ newly produced decode tokens. Denominators use
+the same matrix-and-associated-traffic interval as
+Table~\ref{tab:current_phase_speedups}. MBU divides charged payload by the
+installed delivered service rate and time; it excludes protocol padding and
+unpriced standalone nonmatrix service. Dense local bytes cover the published
+kernel ledger. DeepSeek's additional context-output local bytes are counted
+once; FP32 router service is separate from BF16 MFU. Package/memory power is
+incomplete, so no complete-system TDP or baseline-normalized energy-efficiency
+claim follows from the final column.
+\end{minipage}
+\end{table}

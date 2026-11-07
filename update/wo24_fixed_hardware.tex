@@ -1,0 +1,37 @@
+\begin{table}[htbp]
+\centering\small
+\caption{Fixed-hardware software-search comparisons for all twelve model
+families. These are \emph{historical LP-objective ratios} against streaming
+on the same modeled chip, under each stored cell's original convention;
+they are not new decode measurements or the co-design ratios of
+Table~\ref{tab:current_phase_speedups}. NR: no supported stored result.}
+\label{tab:fixed_hw}
+\begin{tabular}{@{}lrr@{}}
+\toprule
+Workload & Modeled TPU-v3 & Compact NPU \\
+\midrule
+EfficientNet-B1 & $1.445\times$ & NR \\
+EfficientNet-B2 & $1.470\times$ & NR \\
+EfficientNet-B3 & $1.285\times$ & NR \\
+EfficientNet-B4 & $1.247\times$ & NR \\
+EfficientNet-B5 & $1.264\times$ & NR \\
+EfficientNet-B6 & $1.423\times$ & NR \\
+EfficientNet-B7 & $2.213\times$ & $20.012\times$ \\
+SD1.5 UNet & $1.498\times$ & $5.893\times$ \\
+Llama-1 13B & $2.142\times$ & $31.394\times$ \\
+Llama-1 65B & $2.142\times$ & NR \\
+Llama-3 70B & $2.509\times$ & $7.656\times$ \\
+DeepSeek-V3 & $2.219\times$ & $7.757\times$ \\
+\bottomrule
+\end{tabular}
+\par\smallskip\begin{minipage}{\linewidth}\footnotesize
+TPU-v3: 900~GB/s, 32~MiB; compact NPU: 64~GB/s, 16~MiB, 32,768 historical
+INT8 MAC units at 1~GHz. Ratios are $T_{\rm streaming}/T_{\rm joint\,LP}$,
+not integral execution certificates. Compact-NPU B7/13B/DeepSeek use stored
+iterative objectives (reported relative gap tags 0.020/0.125/0.019);
+other shown cells use stored HiGHS optima. EfficientNet TPU cells retain the
+historical single-predecessor graph/workspace approximation. No compact-NPU
+B1--B6/65B result or current full-decode fixed-hardware replay is supplied;
+no cross-convention geometric mean is formed.
+\end{minipage}
+\end{table}

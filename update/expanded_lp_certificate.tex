@@ -1,0 +1,143 @@
+\subsection{Certified Solution of the Frozen Expanded Master}
+\label{app:expanded_native_certificate}
+We solve the complete frozen 1,557-branch DeepSeek co-design LP to a certified
+\textbf{0.067154\% relative objective gap}. The result combines an
+original-source-admitted continuous primal with complete branchwise lower
+certificates, retaining all original implementations and temporal events.
+It covers the declared variable-hardware family, not only a working support
+or the earlier fixed-chip LP. Its target identity is
+\begin{center}\small
+\path{40897836035c66a132467ca7254a54e4de505d0e42a0551f2a7177281c82ff61}.
+\end{center}
+
+\paragraph{Exact result.}
+The checked endpoints, in milliseconds, are
+\begin{align*}
+ L&=\frac{18307735064739147701336413225125}
+          {19342813113834066795298816},\\
+ U&=\frac{19485702680989440858812690085194333237611436125953308591}
+          {20573555296859168499550784474448314620624943185920}.
+\end{align*}
+Their decimal previews are $L=946{,}487.719081842$ ms and
+$U=947{,}123.742096447$ ms. The exact relative interval is
+\[
+ \frac{U-L}{U}
+ =\frac{13854552276410996412858314401605265879}
+       {20631290213999385640207911907014305425879}
+ =0.000671531064354\ldots<10^{-3}.
+\]
+The approximately $636.023015$-ms absolute interval is below the
+$947.123742$-ms allowance. All 1,557 branches remain accounted for:
+1,095 have lower bounds at least $0.999U$, 462 have checked fixed-cost
+infeasibility, and zero remain unresolved at this accuracy. Branch 212 supplies
+the upper. Fresh composition joins 1,787 committed endpoint receipts and checks
+the complete original family, including zero-weight perspective obligations.
+
+\paragraph{Full-domain lower from compact price fits.}
+The successful proof assigns free prices $\pi_i$ to original exact-cover
+equalities. For each admissible implementation $k$ with members $S_k$, its
+member prices must be dominated by its actual priced resource cost. The source
+compiler includes every genuine ancestral implementation and eligibility
+condition; equal shapes do not imply equal availability. Disabled choices retain
+their exact zero boxes. In the final resource construction on the 1,536 added
+branches, let $H_b$ be the stored host rate, $B_b^{\rm cap}$ the stored bandwidth
+cap, $D_k^{B}$ stream bytes, $H_k$ host bytes, $s_k$ paid host-setup ticks,
+and $\mathcal I_k$ the original member set:
+\[
+ \begin{gathered}
+ a_b=\max\{1,256/H_b\},\qquad N_b=B_b^{\rm cap}+a_b H_b,\\
+ C_{bk}=D_k^{B}+a_b(H_k+H_b s_k),\qquad
+ \sum_{i\in\mathcal I_k}\pi_i\le C_{bk}.
+ \end{gathered}
+\]
+The bandwidth-cap and host-service rows share the duration budget $\kappa$.
+Their demand/work contributions cancel using actual implementation costs;
+only cover-equality prices change. Each choice residual is
+$\kappa(C_{bk}-\sum_{i\in\mathcal I_k}\pi_i)/N_b\ge0$.
+Transfer residuals are nonnegative, unused unbounded-coordinate residuals
+vanish, and the original box-support calculation supplies the complete lower.
+All algebra uses the actual stored rational coefficients, including
+$\kappa=4722366482869645/4722366482869645213696$.
+Branch-specific normalizers and original-row multipliers are checked explicitly;
+scalar gains from separate resource bounds are not simply added.
+The earlier branches retain their own complete proofs. Zero-weight cases have
+zero cover RHS, and the perspective weight residuals are $L_b-L\ge0$ for
+$L=\min_bL_b$, certifying the entire family.
+
+The final closing stage raises the complete lower by $698.017580$ ms using
+previously unpriced KV operands and conversion host traffic, by $164.928562$ ms
+using exact ancestral menus, and by $292.970650$ ms using a disjoint prefill
+matrix partition. These are sequential improvements of one valid certificate,
+not independent unavoidable latencies or feature speedup credits. Negative
+prices belong to equality rows; inequality signs remain unchanged.
+
+\paragraph{Source-admitted primal and staging supplement.}
+Integer cover reconstruction preserves all 31,706,528 weighted invocations.
+The stateful lift binds 12,264,122 positive original columns, pays SRAM/DRAM
+mirror traffic and checks 25,607,232 nonterminal owners. Initial inventory,
+KV growth and reads, terminal backing, shared capacity and the original
+physical/service envelopes remain represented. Complete temporal proofs cover
+all original labels. The checker evaluates 20,131 prefix coefficient classes
+and 1,147,467 original Forms and coordinate boxes, as well as the changed
+implementation and owner conditions.
+
+The final admission also incorporates a required staging supplement: the first
+checker included staging service Forms but lacked an explicit check of changed
+reservations. For 1,278 coefficient templates and 90,485 staged owners, the
+supplement verifies $r_k\le C_{\rm stage}$ and $\sum_k a_{ke}\le1$, implying
+$\sum_k r_k a_{ke}\le C_{\rm stage}$. Staging state/receive/drain fields remain
+identically zero in this inherited construction; new mirror copies use only
+SRAM and DRAM. The adopted wrapper binds this supplement and the original
+proof/replay. The point and its objective do not change.
+
+Saved-rational reconstruction and a separate checker invocation reproduce
+$U$. The literal objective is the prefix duration, paid initialization and
+suffix resource maxima, using the frozen conversion coefficient. The prefix
+is unchanged; initialization costs about $1.0565$ ns. The net upper improvement
+is $2{,}189.759860$ ms. Priced transfer bytes are not independently added as
+latency where the source uses shared epigraph maxima.
+
+\paragraph{Numerical provenance and stopping.}
+The final closing computation uses \textbf{CPU HiGHS}: 45,085 finite coverage
+fits across eight workers and one 10,245-variable resource/KV candidate fit.
+Analytic price constructions, rational reconstruction, verification and branch
+composition use no optimizer. These are closing-stage costs; inherited
+campaigns also contributed witnesses and proofs. Full primal admission takes
+268.51 s and saved-point replay 196.26 s; the slowest coverage worker takes
+49.80 s. Concurrent times are not an additive end-to-end clock.
+Discovery stops at the first checked acceptance. No full-input OCS/PDHG update
+or convergence supplies this result. Manually selected support and proof
+directions remain part of the discovery record; no general-purpose automatic
+solver is claimed.
+
+\paragraph{Execution remains a separate result.}
+The retained later chip and supported schedule have predicted latency
+$2{,}718{,}970.508466$ ms: $804{,}507.786532$ ms prefill,
+$1{,}871{,}489.872783$ ms decode and $42{,}972.849152$ ms conversion.
+The chip uses 320 $16\times16$ BF16 arrays, 4,736 vector lanes,
+1,024 conversion lanes, 78.25 MiB SRAM and 1,981 GB/s DRAM service;
+its declared analytical area and peak power are 323.206858 mm$^2$ and
+299.9295 W. It is distinct from the earlier chips and matched controls retained
+elsewhere in this paper. The new continuous certificate does not change any
+execution timing or baseline ratio. Original-source admission of this returned
+execution establishes its membership, not an embedding theorem for every
+possible execution. The LP upper is fractional and uses the frozen
+reciprocal/product relaxation; neither it nor its small objective interval
+proves near-optimality of the recovered chip.
+
+\paragraph{Reproduction and verification scope.}
+The sealed package \texttt{native\_menu\_state\_20261027\_v1} contains 13,902 files
+and 3,518,764,197 bytes, with verified Elements, Mazeppa and A100 readbacks.
+Its external content-manifest SHA-256 is
+\begin{center}\small
+\path{d92c11134f59a4a7c4a7b4a7834418417df61c71db08bddb586094be6864b4a0}.
+\end{center}
+The authoritative artifacts are \texttt{composition\_stateful\_v1},
+\texttt{stateful\_adoption\_v2}, \texttt{stateful\_cycle\_v2},
+\texttt{stateful\_staging\_check\_v1} and \texttt{discovery\_accounting\_v2}.
+The final composition validates committed receipts and identities rather than
+rerunning every inherited source checker. Saved-point replay shares checker
+algorithms; separate mathematical/source reviews supplement it. Historical
+input/runtime dependencies remain in their recorded verified roots, so the
+new package is not a self-contained replacement for all preceding evidence.
+Replay instructions reconstruct the saved point without new optimization.

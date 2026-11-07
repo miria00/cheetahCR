@@ -1,0 +1,38 @@
+% Sources and derived values: paper_evidence_20261106/values.json.
+\begin{table}[H]
+\centering\small
+\caption{Predicted acceleration over unchanged paper Baseline 2 (modeled
+TPU-v3). Latest decode-only research designs and previously checked prefill
+designs are \emph{different chips}; the two phase columns are not one serving
+design or an end-to-end speedup. Dashes mean inapplicable phases.}
+\label{tab:current_phase_speedups}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Workload & Forward / denoiser & Prefill & Decode \\
+\midrule
+EfficientNet-B1 & $11.848610\times$ & -- & -- \\
+EfficientNet-B2 & $6.679989\times$ & -- & -- \\
+EfficientNet-B3 & $11.427334\times$ & -- & -- \\
+EfficientNet-B4 & $9.620539\times$ & -- & -- \\
+EfficientNet-B5 & $9.936808\times$ & -- & -- \\
+EfficientNet-B6 & $7.803334\times$ & -- & -- \\
+EfficientNet-B7 & $7.799624\times$ & -- & -- \\
+SD1.5 UNet & $2.245598\times$ & -- & -- \\
+Llama-1 13B & -- & $24.195974\times$ & $11.091738\times$ \\
+Llama-1 65B & -- & $14.432646\times$ & $13.985218\times$ \\
+Llama-3 70B & -- & $20.318050\times$ & $17.932223\times$ \\
+DeepSeek-V3 & -- & $10.348224\times$ & $7.822552\times$ \\
+\bottomrule
+\end{tabular}
+\par\smallskip\begin{minipage}{\linewidth}\footnotesize
+All cells use matrix-and-associated-traffic accounting and retain the paper's
+historical precision/timing proxy; they are not measured or precision-faithful
+TPU-v3 serving results. Prefill: corrected WO18 Llamas and WO20 DeepSeek A512.
+Decode: WO24, retaining the WO23 65B/70B executions. Vision: inherited WO14
+EfficientNets and WO23 UNet. UNet is one batch-1, $64\!\times\!64$-latent,
+context-77 denoiser call. All LLMs have 32 requests, 512 outputs and 511 decode
+forwards; Llama-1 prompts have 1,536 tokens, the others 4,096.
+Decode chips use relaxed memory/power assumptions and area proxies below
+600~mm$^2$; physical chip qualification remains open.
+\end{minipage}
+\end{table}
