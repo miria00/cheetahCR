@@ -24,62 +24,6 @@ implementation assignment and checks the resulting schedule. Nearest-integer
 rounding alone is not a feasibility proof. Appendix~\ref{app:master_rows}
 gives the explicit retained joint schedule rows and the expanded causal rows.
 
-\subsection{Original Campaign Matrix Sizes}\label{append::lp_size}
-The original controls use different encodings of restricted decision spaces.
-The fixed-tile temporal control stores separate input/output/weight placement
-and recomputation trajectories, giving approximately $4LT$ coordinates. The
-joint-tile control uses edge-indexed activation placement, weight placement,
-and recomputation, plus $O(LC)$ selection/product coordinates. For a mostly
-linear graph and $T=L$, its count is approximately $3L^2+4LC$.
-The joint control can therefore be smaller despite allowing more tile choices.
-These recorded matrix counts describe the original campaign, not the current
-native source domain or the OCS supports in Appendix~\ref{app:native_provenance}.
-
-\begin{table}[h]
-\centering
-\caption{Single Workload per Chip LP matrix sizes ($n_{\text{constraints}} \times n_{\text{vars}}$, nnz) per model and formulation.}
-\label{tab:exp1_lp_sizes}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{lccc}
-\toprule
-\textbf{Model} & \textbf{Static} & \textbf{fixed-tile Dynamic} & \textbf{joint-tile Joint} \\
-\midrule
-EfficientNet-B1 & $803 \times 576$,\ nnz$=15{,}060$        & $59{,}571 \times 53{,}131$,\ nnz$=119{,}485$       & $62{,}728 \times 47{,}035$,\ nnz$=141{,}604$    \\
-EfficientNet-B2 & $803 \times 576$,\ nnz$=15{,}060$        & $59{,}571 \times 53{,}131$,\ nnz$=119{,}485$       & $62{,}728 \times 47{,}035$,\ nnz$=141{,}604$    \\
-EfficientNet-B3 & $908 \times 651$,\ nnz$=18{,}975$        & $76{,}116 \times 67{,}861$,\ nnz$=152{,}620$       & $77{,}743 \times 59{,}020$,\ nnz$=173{,}749$    \\
-EfficientNet-B4 & $1{,}118 \times 801$,\ nnz$=28{,}155$    & $115{,}281 \times 102{,}721$,\ nnz$=231{,}040$     & $112{,}498 \times 87{,}040$,\ nnz$=247{,}489$   \\
-EfficientNet-B5 & $1{,}356 \times 971$,\ nnz$=40{,}735$    & $169{,}460 \times 150{,}933$,\ nnz$=339{,}500$     & $159{,}503 \times 125{,}324$,\ nnz$=346{,}293$  \\
-EfficientNet-B6 & $1{,}566 \times 1{,}121$,\ nnz$=53{,}755$  & $225{,}905 \times 201{,}153$,\ nnz$=452{,}480$  & $207{,}698 \times 164{,}864$,\ nnz$=446{,}913$  \\
-EfficientNet-B7 & $1{,}909 \times 1{,}366$,\ nnz$=78{,}892$  & $335{,}518 \times 298{,}663$,\ nnz$=671{,}853$  & $299{,}965 \times 241{,}059$,\ nnz$=638{,}356$  \\
-\midrule
-Llama-1 13B     & $2{,}518 \times 1{,}801$,\ nnz$=135{,}355$ & $583{,}381 \times 519{,}121$,\ nnz$=1{,}167{,}840$ & $505{,}198 \times 411{,}840$,\ nnz$=1{,}061{,}089$ \\
-Llama-1 65B     & $5{,}038 \times 3{,}601$,\ nnz$=529{,}915$ & $2{,}333{,}161 \times 2{,}075{,}041$,\ nnz$=4{,}668{,}480$ & $1{,}917{,}658 \times 1{,}601{,}280$,\ nnz$=3{,}936{,}769$ \\
-Llama-3 70B     & $5{,}038 \times 3{,}601$,\ nnz$=529{,}915$ & $2{,}333{,}161 \times 2{,}075{,}041$,\ nnz$=4{,}668{,}480$ & $1{,}917{,}658 \times 1{,}601{,}280$,\ nnz$=3{,}936{,}769$ \\
-\midrule
-DeepSeek-V3     & $6{,}319 \times 4{,}516$,\ nnz$=829{,}852$ & $3{,}669{,}793 \times 3{,}263{,}443$,\ nnz$=7{,}342{,}293$ & $2{,}983{,}450 \times 2{,}504{,}019$,\ nnz$=6{,}094{,}156$ \\
-\bottomrule
-\end{tabular}%
-}
-\end{table}
-
-
-\begin{table}[h]
-\centering
-\caption{GeoMean Avg Maximum LP matrix size per model cluster (largest member LP).}
-\label{tab:exp2_cluster_lp_sizes}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{lccc}
-\toprule
-\textbf{Cluster} & \textbf{Static} & \textbf{fixed-tile Dynamic} & \textbf{joint-tile Joint} \\
-\midrule
-EfficientNet & $1{,}909 \times 1{,}366$,\ nnz$=78{,}892$    & $335{,}518 \times 298{,}663$,\ nnz$=671{,}853$              & $299{,}965 \times 241{,}059$,\ nnz$=638{,}356$              \\
-Llama        & $5{,}038 \times 3{,}601$,\ nnz$=529{,}915$   & $2{,}333{,}161 \times 2{,}075{,}041$,\ nnz$=4{,}668{,}480$  & $1{,}917{,}658 \times 1{,}601{,}280$,\ nnz$=3{,}936{,}769$  \\
-Modern LLM   & $6{,}319 \times 4{,}516$,\ nnz$=829{,}852$   & $3{,}669{,}793 \times 3{,}263{,}443$,\ nnz$=7{,}342{,}293$  & $2{,}983{,}450 \times 2{,}504{,}019$,\ nnz$=6{,}094{,}156$  \\
-\bottomrule
-\end{tabular}%
-}
-\end{table}
-
 \subsection{LP Matrix Structure}\label{append::lp_perform}
 Table~\ref{tab:lp_structure_v0_v1} records the two controls' sparse
 patterns. Fixed incidence and menus permit index reuse. Numerical coefficient

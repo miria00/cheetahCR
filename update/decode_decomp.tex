@@ -30,9 +30,8 @@ Phase times add; speedup is the ratio of total predicted inference latencies.
 Decode contributes $80.45\%$ of time saved, prefill $19.41\%$, and preparation
 $0.14\%$. Initial conversion is charged in preparation; subsequent streamed
 conversion is charged to the consuming kernels. Optimization time is separate.
-The recorded table retains the corrected chip and its checked retiming. Its
-fixed-chip LP separately has a $0.0846842\%$ objective interval
-(Appendix~\ref{app:corrected_native_lp}). The later expanded master is certified
+The recorded table retains the corrected chip and its checked retiming.
+The later expanded master is certified
 to $0.067154\%$ and has a separately recovered 2,718.971-second execution
 (Appendix~\ref{app:expanded_native_certificate}); neither LP interval is an
 execution latency or a discrete-design optimality guarantee.

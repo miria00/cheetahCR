@@ -5,14 +5,18 @@ certified to a $0.067154\%$ LP objective gap. This completes that continuous
 instance; a larger implementation universe requires new bounds. The successful
 method uses CPU HiGHS subproblems and original-source checks, with manually
 selected supports and proof directions. General automatic discovery, full-master
-OCS/PDHG convergence and global discrete optimality remain open. Continuous
+OCS/PDHG convergence and global discrete optimality remain open; neither LLM
+guidance nor a favorable numerical objective supplies a global optimality proof. Continuous
 relaxation bounds, feasible schedules, numerical
 inference equivalence, and physical timing are distinct claims. The full-input
 DeepSeek result uses captured routes and expanded attention under its recorded
 precision policy; its workload is reproducible, not statistically representative
 of every deployment. The large speedup depends on the reference and custom
 memory-interface assumptions. Same-chip controls isolate software effects but
-are not globally reoptimized ablations.
+are not globally reoptimized ablations, and they must be read at their own
+hardware and workload: retention savings shrink as a link widens, batching can
+remove array padding without changing an external load count, and nested KV
+placement controls are not independent contributions.
 
 The current execution credits compatible batching, KV retention/placement,
 and SwiGLU storage fusion. Larger native fusion groups, unrestricted overlap,
