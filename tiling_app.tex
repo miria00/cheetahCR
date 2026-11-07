@@ -24,7 +24,7 @@ By fixing the architecture, the inner loop derives optimal tiling and scheduling
 % \end{tabular}
 % \end{table}
 
-\subsection{joint-tile LP Solution: Llama-3 70B on simulated H100}
+\subsection{joint-tile LP Solution: Llama-3 70B on simulated H100}\label{app:tiling_llama}
 
 \noindent\textbf{Problem dimensions:}
 $L = 720$ layers, $C = 20$ tile configs, $T = 720$ timesteps,
@@ -181,7 +181,7 @@ The LP relaxation assigned nonzero weight to two equally-good configs
 
 % As a qualitative example of V1’s solution structure, we inspect the rounded V1 LP solution for DeepSeek-V3 on an RTX-5090-like hardware point. The model contains L=903 layers, including 174 MoE sublayers, and the V1 LP has 2.5M variables. Although the Pareto cache exposes 20 tile configurations per layer, the solution uses only five configs, {0,4,8,12,16}, suggesting that V1 compresses the available tiling space into a small workload-specific alphabet. The most revealing behavior occurs in the FFN sublayers: ffn\_up, ffn\_gate, and ffn\_down have identical compute time, yet V1 assigns them different tile configs in a rotating pattern. This indicates that the LP is not merely selecting the fastest per-layer tile; it is interleaving large- and small-working-set choices across adjacent sublayers to manage memory pressure. V1 also automatically identifies structural outliers: the only seven layers assigned the smallest tile c=16 correspond to unusual sublayers such as rotary-key projections, low-rank Q projections, shared/expert gates, and expert down-projections. Finally, weight churn is highly localized: only four attention-path weights in the first block are evicted/refetched, while the MoE sublayers stream without churn. This case illustrates how V1 exposes interpretable schedule structure that is unavailable in a sequential Timeloop→fusion pipeline.
 
-\subsection{joint-tile LP Solution: DeepSeek-V3 on simulated RTX~5090}
+\subsection{joint-tile LP Solution: DeepSeek-V3 on simulated RTX~5090}\label{app:tiling_deepseek}
 This example shows the LP makes real per-sublayer scheduling decisions that are directly readable from layer names.
 
 
@@ -339,7 +339,8 @@ MoE routers          & 35{,}840      & $1.4\%$ ($72\times$ smaller) \\
 
     \item \textbf{joint-tile commits to a 5-config alphabet, not a 20-config
           sweep.} This is actionable for hardware designers: only 5 of
-          20 candidate tile shapes ever matter for this workload.
+          20 candidate tile shapes ever matter for this workload
+          (Figure~\ref{fig:tiling_rotate}).
 
     \item \textbf{Memory churn is highly localized.} Only 4 evictions
           occur, all in transformer block~1, all in the attention path.

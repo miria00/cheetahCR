@@ -32,7 +32,7 @@ of the supplied joint LP when it is configured as a branch. The certified
 its bound is not asserted for a union with additional schedule models or a
 larger implementation library.
 
-\subsection{The Retained Joint Tiling--Placement Block}
+\subsection{The Retained Joint Tiling--Placement Block}\label{app:rows_retained}
 For original operation $i$, configuration $c$, edge $e$, and fixed time label
 $t$, let $P_{ik}=p_{\mathrm{assoc}(i,k),o(i)}$ for an associated activation,
 $P_{iW}=p^W_{i,o(i)}$ for weights, and $P_{ik}=0$ when no placement association
@@ -55,7 +55,7 @@ These rows preserve the original fractional savings convention. Extra cold-start
 copy, or exact-product constraints are not appended to this block. Causal
 execution uses its own complete contract instead.
 
-\subsection{Native Cover, Lifecycle and Storage}
+\subsection{Native Cover, Lifecycle and Storage}\label{app:rows_cover}
 All following equations use scaled coordinates in one native branch.
 The event range is $0\le e<E$, with storage/completion states at $0\le e\le E$.
 A column covers its original nodes $S_k$, including any conversion nodes; all
@@ -115,7 +115,7 @@ input tier. Original conversion nodes remain covered. Earlier branches retain
 their original backing rows; Eq.~\eqref{eq:native_formats} is an identified
 alternative contract, not an equivalence transformation of them.
 
-\subsection{Capacities, Staging and Installed Hardware}
+\subsection{Capacities, Staging and Installed Hardware}\label{app:rows_capacity}
 Define the transient ordinary occupancy
 \[
  o_{j\tau e}=p_{j\tau e}-v_{j\tau e}
@@ -173,7 +173,7 @@ The drain enters DRAM state and transient capacity in
 Eqs.~\eqref{eq:native_state}--\eqref{eq:native_capacity}.
 Dedicated staging and receiver SRAM cannot simultaneously hold ordinary data.
 
-\subsection{Native Resource Demands and Linear Service Envelopes}
+\subsection{Native Resource Demands and Linear Service Envelopes}\label{app:rows_service}
 For original stream bytes $B_k$, MAC demand $M_k$, and vector work $V_k$,
 the native variable-rate demands are
 \begin{align}
@@ -326,10 +326,10 @@ its declared physical rows and its original product/bank relaxation. Its
 fractional point does not inherit the exact installed-rate MFU guarantee of
 the fixed-chip wrapper merely by satisfying a relaxed product envelope.
 
-\subsection{Feature Scope}
+\subsection{Feature Scope}\label{app:rows_scope}
 \begin{table}[h]
 \centering\small
-\caption{Master encoding and the current native performance result.}
+\caption{Master encoding and the current native performance result.}\label{tab:feature_scope}
 \begin{tabularx}{\linewidth}{@{}lXX@{}}
 \toprule
 Family & Encoding & Native result credited here \\
@@ -346,7 +346,8 @@ Overlap/reordering & Event placement and resource epigraphs & Serial inter-kerne
 \bottomrule
 \end{tabularx}
 \end{table}
-The generic formulation can express further clock, memory technology or reuse
+Table~\ref{tab:feature_scope} lists the encoded families. The generic formulation
+can express further clock, memory technology or reuse
 contracts, but they are not thereby members of the certified finite native
 pool. Adding a branch, implementation, or hardware range requires a new
 instance identity and new bounds. Quality-changing alternatives additionally

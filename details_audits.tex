@@ -53,7 +53,8 @@ constitute physical-design sign-off.
 \subsection{Compute-Floor and Roofline Tightness Audits}
 \label{app:mfu}
 \paragraph{What this audit reports, and what it is not.}
-The prefill study's audit column records a \emph{tightness} ratio, not a
+The prefill study's audit column (Tables~\ref{tab:exp1_roofline}
+and~\ref{tab:exp1_roofline_lb}) records a \emph{tightness} ratio, not a
 model-FLOP utilization. Write $T_{\mathrm{LP}}$ for the LP-predicted latency of
 a cell: its modeled execution time, never the optimizer's runtime. The recorded
 quantity is

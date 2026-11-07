@@ -69,7 +69,7 @@ retains the TPU-v3 timing/precision proxy; this is not a
 precision-faithful native TPU-v3 claim. Standalone nonmatrix service and cold
 preparation outside the phase boundary are not silently included in the ratios.
 
-\paragraph{Physical Design Validation.} Since modeling simulations ultimately present a gap with real world physical performance, we validate all results through a five-level audit process: (i) Roofline Auditor, (ii) Campaign Validator, (iii) Causal Ledger, (iv) solver diagnostics, and (v) six pre-RTL gates. Each CHEETAH design must pass all five audit tiers before it is deemed feasible and reported.
+\paragraph{Physical Design Validation.} Since modeling simulations ultimately present a gap with real world physical performance, we validate all results through a five-level audit process (Appendix~\ref{app:validation}): (i) Roofline Auditor, (ii) Campaign Validator, (iii) Causal Ledger, (iv) solver diagnostics, and (v) six pre-RTL gates. Each CHEETAH design must pass all five audit tiers before it is deemed feasible and reported.
 Appendix~\ref{app:gates} states the six gates and their thresholds,
 Appendix~\ref{app:coeff_provenance} records where every gate constant and cost
 coefficient comes from, and Appendix~\ref{app:blueprints} gives the complete
@@ -86,7 +86,10 @@ Passing the roughly 600-mm$^2$ area proxy does not remove these qualifications.
 
 The roofline check rejects costs below compute or memory service floors.
 Table~\ref{tab:mfg_gates} lists the architectural screening thresholds. These are modeling checks, not fabricated-chip timing or packaging sign-off.
-RTL and synthesis evidence is in Appendix~\ref{sec:rtl_validation}.
+RTL and synthesis evidence is in Appendix~\ref{sec:rtl_validation}: BF16/FP32
+decoder tests (\ref{app:wo24_decoder_rtl}), schedule-tape and INT8 datapath
+checks (\ref{app:tape_checks}), post-synthesis area (\ref{sec:asap7}) and
+measured energy coefficients (\ref{sec:energy_coeff}).
 
 \begin{table}[t]
 \centering\small
@@ -191,7 +194,9 @@ or recovered full-decode executions on either chip.
 Cached implementation coefficients remove repeated mapper calls from the inner
 search. In the 50-trial comparison, joint tiling reduces Llama-70B
 search time from $58.42$ to $1.17$ hours and DeepSeek-V3 from $69.39$ to $2.17$
-hours relative to the fixed-tile temporal pipeline (Figure~\ref{fig:wallclock}). These are search times,
+hours relative to the fixed-tile temporal pipeline (Figure~\ref{fig:wallclock}; Appendix~\ref{app:solver} gives the hardware
+search space in \ref{app:vizier_search} and Appendix~\ref{append::lp_perform}
+the LP sizes). These are search times,
 not inference speedups. LLM guidance reduces mean invalid trials
 from $24.5\%$ to $5.9\%$ while reaching the same best observed Perf/TDP score
 as its full-space Vizier control (Figure~\ref{fig:llm}); Appendix~\ref{app:profiles} repeats the

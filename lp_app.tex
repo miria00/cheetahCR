@@ -10,7 +10,7 @@
 \section{Linear Program Formulation Details}
 \label{app:lps}
 
-\subsection{Relaxation and Integral Recovery}
+\subsection{Relaxation and Integral Recovery}\label{app:lp_relaxation}
 The master is a linear relaxation of a finite implementation and hardware
 library. Its canonical form is
 \begin{equation}
@@ -98,7 +98,7 @@ capacity rows. Our solver handles this after preconditioning. & \\
 }
 \end{table}
 
-\subsection{Current Solver Path}
+\subsection{Current Solver Path}\label{app:lp_solver_path}
 These matrix sizes describe the original restricted workloads, not the full
 native temporal expansion. Section~\ref{sec:solver_vm} summarizes the OCS solver framework and
 Appendix~\ref{app:ocs_working_path} gives its kernel and closing stage. These

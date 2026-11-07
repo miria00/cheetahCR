@@ -18,7 +18,8 @@ For each operation, we discard infeasible tiles and configurations dominated
 in every relevant cost, traffic, workspace, and interface dimension.
 Dominance is tested within the same implementation contract and hardware class:
 a lower isolated latency alone is insufficient. Timeloop or a native analytical
-recipe supplies the retained coefficients once; the solver then selects among
+recipe supplies the retained coefficients once (Figure~\ref{fig:tiles} shows one
+layer's cache); the solver then selects among
 them without invoking the mapper at each iteration. Reuse across hardware
 settings requires that the same dominance relation remains valid, which
 Appendix~\ref{app:invar} states precisely: dominance must hold componentwise in
@@ -69,7 +70,12 @@ and write $E=E_b$. $\mathcal R_k$ lists required object/tier pairs,
 $\mathcal D_k$ completed controls, and $\mathsf D^r_e$ is linear resource demand.
 $\mathsf{Cap}_{b,\tau e}$ includes live objects, incoming copies, active outputs,
 workspace and dedicated reservations. $B_b,J_b$ contain the remaining state,
-backing and implementation rows, expanded in Appendix~\ref{app:master_rows}.
+backing and implementation rows, expanded in Appendix~\ref{app:master_rows}:
+the retained tiling--placement block (\ref{app:rows_retained}), cover, lifecycle
+and storage (\ref{app:rows_cover}), capacities and staging
+(\ref{app:rows_capacity}), service envelopes (\ref{app:rows_service}), physical
+rows (\ref{app:physical_rooflines}) and feature scope (\ref{app:rows_scope},
+Table~\ref{tab:feature_scope}).
 For $b\in\mathcal B_{\rm phys}\subseteq\mathcal B_C$, the installed chip
 $\bar h_b$ fixes resource rates $\bar R_{br}$, and $\mathsf D^{r,\rm phys}_{be}$
 is the total issued work or traffic sharing resource $r$ at event $e$.
@@ -203,11 +209,14 @@ By Proposition~\ref{prop:mccormick_exact} these McCormick inequalities give the
 convex hull of one bounded bilinear graph and fix the product when either
 binary-domain factor is integral~\citep{mccormick1976computability}; they do not
 make every fractional solution executable, and
-Appendix~\ref{app:containment} gives a fractional point satisfying each separate
+Appendix~\ref{app:bounded_products} gives a fractional point satisfying each separate
 envelope while violating the exact-product identity. Tile-dependent footprints use the
 same construction. The displayed unit-bound rows are for a branch at weight
 one; homogenization replaces $1$ by $\lambda_b$. Native fused atoms carry their complete input,
 output, workspace and service recipe, so fusion cannot silently remove work.
+Appendix~\ref{app:tiling} shows two solved instances (\ref{app:tiling_llama},
+\ref{app:tiling_deepseek}) in which a locally slower tile yields the faster
+schedule.
 
 % \paragraph{Shared hardware and resource epigraphs.}
 \paragraph{Shared hardware and resource epigraphs~\lprefobj{10,11,14,16}.}
@@ -390,4 +399,6 @@ neighborhoods; the master also represents hardware choices directly.
 Dual prices guide search,
 but an LLM proposal is not a complete pricing oracle: a full-domain optimality
 claim requires checking all omitted alternatives. The controller and
-prompts are documented in Appendix~\ref{app:llm_loop}.
+prompts are documented in Appendix~\ref{app:llm_loop}: the prompts in
+Appendix~\ref{app:prompt} and the price and validation signals in
+Appendix~\ref{app:llm_duals}.
