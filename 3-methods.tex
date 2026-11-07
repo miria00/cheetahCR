@@ -163,7 +163,7 @@ $\mathsf P_b^\lambda=p_{b0}\lambda_b+p_b^Th_b$ denote area and peak power.
  &\lpcons{16}\ell_{b\nu}\lambda_b\le x_{b\nu}\le u_{b\nu}\lambda_b
        \quad(\text{each finite original bound}).
 \end{aligned}
-\tag{Master}\label{eq:master}
+\tag{CHEETAH master LP}\label{eq:master}
 \end{equation}
 \stepcounter{equation}
 \endgroup
@@ -296,7 +296,8 @@ before their router dependencies complete. Event placement can vary within the
 finite library. The current native execution uses a recovered serial schedule;
 a larger scheduling domain does not imply that its optimum has been found.
 
-\paragraph{Implementation menus and recovery.}
+% \paragraph{Implementation menus and recovery.}
+\paragraph{Implementation menus and recovery~\lpref{1,14}.}
 Parameter staging has explicit receive, occupancy and drain states. Full-K
 panels and FP8-to-BF16 receiver implementations pay buffer, port and conversion
 costs. Selected-reader backing keeps the raw or converted representation needed
