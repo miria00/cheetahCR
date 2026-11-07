@@ -8,7 +8,8 @@ memory capacity, mappings, and compiler transformations, and the resulting
 design space can exceed $\mathcal O(10^{2300})$~\citep{zhang_fast}. Engineers typically tackle this problem in
 stages: propose hardware, map each operation, then optimize data reuse and fusion. However this sequential method misses crucial global gains in co-design. 
 For example, a locally faster tile can consume the memory needed to retain a neighboring
-tensor, and a slightly slower tile can therefore yield a faster complete schedule.
+tensor, and a slightly slower tile can therefore yield a faster complete schedule. 
+
 
 In this paper, we introduce \textsc{CHEETAH}: \acroletter{C}o-designed \acroletter{H}ardware
 \acroletter{E}xploration via \acroletter{E}fficient \acroletter{T}hroughput and
@@ -114,8 +115,8 @@ theorems, physical-validation details, economics, co-design blueprints, and repr
 
 \begin{figure}[H]
     \centering
-\includegraphics[width=1.0\linewidth]{fig3/speedup_final_v3.png}
-\caption{Retained original prefill-oriented results over the modeled TPU-v3 baseline. Legacy labels in the artwork identify restricted controls: static fusion, fixed-tile temporal placement (V0), and joint tiling/fusion (V1). These results retain their original numerical and workload contracts; the following table gives the current phase-separated summary.}
+\includegraphics[width=1.0\linewidth]{fig3/speedup_final_v6.png}
+\caption{Speedup over the modeled naive TPU-v3 baseline for (a) EfficientNet forward execution and the Stable Diffusion 1.5 UNet denoiser, (b) LLM prefill, and (c) LLM decode. CHEETAH achieves up to $11.85\times$, $24.20\times$, and $17.93\times$ speedup in the three panels, respectively. Red crosses indicate static infeasibility for SD1.5 UNet, Llama-3 70B, and DeepSeek-V3. See Section~\ref{sec:experiments} for full analysis and wall-clock time breakdowns.}
 \label{fig:speedup}
 \end{figure}
 \input{update/wo24_suite_summary}

@@ -233,6 +233,46 @@ original obligations. The resulting chip and schedule have a predicted latency
 under the analytical model. Section~\ref{sec:ocs} distinguishes hardware
 branch-and-bound, continuous LP certification, and integral recovery.
 
+\begin{table}[htbp]
+  \centering
+  \renewcommand{\arraystretch}{1.35}
+  \begin{tabularx}{\linewidth}{@{}l Y@{}}
+    \toprule
+    \textbf{Original feature} & \textbf{Decisions}\\
+    \midrule
+    \textbf{Hardware sizing and identity}
+      & Which legal chip configuration is selected, with every operation using that
+        same chip and paying its area, power, compute, and bandwidth consequences.\\
+    \textbf{Implementation and tiling}
+      & Which eligible implementation each operation uses, including its footprint,
+        compute cost, and traffic.\\
+    \textbf{Time-indexed activation placement}
+      & Which tensor is resident, where, and during which intervals---not just one
+        aggregate ``resident fraction.''\\
+    \textbf{Weight residency}
+      & Which weights remain available across uses and which permitted loads or
+        reloads are paid.\\
+    \textbf{Rematerialization}
+      & Which previously produced value is regenerated, when, from which available
+        inputs, and with what additional computation and transfers.\\
+    \textbf{Tiling--placement coupling}
+      & A different tiling can change occupancy and traffic, and therefore change
+        retention, eviction, or recomputation choices.\\
+    \textbf{KV placement and retention}
+      & How the required KV history is distributed across the modeled memory tiers
+        and time periods, with the associated capacity and traffic costs.\\
+    \textbf{MoE expert residency/offload}
+      & Which expert weights are retained versus fetched, subject to storage
+        capacity and the declared routing model.\\
+    \textbf{Serving decisions}
+      & How the selected decisions affect the stated prefill/decode task, including
+        its actual loading and service costs.\\
+    \bottomrule
+  \end{tabularx}
+  \caption{Features and the decisions the formulation exposes.}
+  \label{tab:pipeline-decisions}
+\end{table}
+
 \subsection{LLM Architect Diagnostic Outer Search}
 \label{sec:llm_outer}
 The LLM architect reads a ledger of resource prices, slacks, invalid trials,
