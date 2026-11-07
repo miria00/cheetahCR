@@ -45,6 +45,24 @@ expected number of experts touched grows from $8$ at batch one to about $163$
 at batch $32$, so batching alone does not make decode compute-bound and
 provisioning, batching and temporal residency must be chosen together.
 
+\paragraph{Why naive approaches fail.}
+Three properties of the declared problem defeat off-the-shelf solving.
+\emph{Scale:} the problem does not fit in memory. Llama-1 13B's root alone is
+$10.1$M columns by $18.3$M rows, its full execution adds $520$M rows, and
+stored densely it would occupy 51\,PB; the design space exceeds $10^{2300}$
+branches, so the program must be generated on demand rather than built.
+\emph{Structure:} almost every row is a one-hot cover, an epigraph or a
+McCormick envelope, with 3.4 nonzeros per row at every scale, density below
+$0.01\%$ and no dense block anywhere; rows outnumber columns three to one, so
+the optimal face is massively degenerate, and cost tracks degeneracy rather
+than size: three times the rows costs six times the time.
+\emph{Conditioning:} coefficients span $10^{-6}$ to $10^{15}$, and a single
+reciprocal rate variable spans $80\times$ inside its own box. Standard
+first-order methods plateau at a $0.999$ primal violation after 2,000
+iterations and never descend, even with the chip pinned, so a certificate
+cannot be read off floating-point iterates; it has to be built in exact
+rational arithmetic.
+
 What makes the joint space tractable is that it never has to be materialized.
 CHEETAH solves the master by branch and bound over a declared family of
 whole-program branches using OCS~\citep{feng2026ocs}, our in-house operator
