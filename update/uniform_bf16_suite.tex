@@ -4,4 +4,38 @@ The earlier host-backed suite and Llama phase tables are retained in
 contract from Table~\ref{tab:current_phase_speedups}. The following matched
 controls retain those historical chips, full-inference tasks and cost models.
 They are not ablations of the newer decode-only designs.
-\input{update/uniform_bf16_llama_generated}
+% Inlined from update/uniform_bf16_llama_generated.tex (Overleaf sync dropped the file).
+% Original Tables 6 and 7 moved to ../backup.tex on 2026-11-06.
+\paragraph{Historical Llama feature controls.}
+Table~\ref{tab:uniform_llama_controls} compares feature removals on the
+archived chips, with 32 requests and 512 outputs (511 decode forwards).
+Llama-1 uses 1,536-token prompts and Llama-3 uses 4,096. Its total-latency
+ratios include the original preparation. Effects interact and must not be
+added or transferred to the current decode-only chips.
+
+\begin{table}[t]
+\centering\scriptsize
+\caption{Historical full-inference custom-chip controls. Extra predicted time in seconds relative to each retained design; effects are not additive.}
+\label{tab:uniform_llama_controls}
+\begin{tabular}{@{}llrrr@{}}
+\toprule
+Model & Control & Prefill extra & Decode extra & Latency ratio \\
+\midrule
+Llama-1 13B & No linear batching & 0.000 & 222.329 & $2.460\times$ \\
+ & Singletons, no weight leases & 2.298 & 1,417.469 & $10.326\times$ \\
+ & KV spill/restore & 0.115 & 137.112 & $1.901\times$ \\
+ & No cross-step weight residency & 0.000 & 20.976 & $1.138\times$ \\
+\addlinespace
+Llama-1 65B & No linear batching & 0.000 & 1,324.921 & $2.054\times$ \\
+ & Singletons, no weight leases & 6.969 & 4,909.761 & $4.912\times$ \\
+ & KV spill/restore & 0.242 & 287.970 & $1.229\times$ \\
+ & No cross-step weight residency & 0.139 & 94.616 & $1.075\times$ \\
+\addlinespace
+Llama-3 70B & No linear batching & 0.000 & 1,175.788 & $1.885\times$ \\
+ & Singletons, no weight leases & 12.443 & 7,551.977 & $6.692\times$ \\
+ & KV spill/restore & 0.124 & 134.051 & $1.101\times$ \\
+ & No cross-step weight residency & 0.000 & 17.593 & $1.013\times$ \\
+\addlinespace
+\bottomrule
+\end{tabular}
+\end{table}
