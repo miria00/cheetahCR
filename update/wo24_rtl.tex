@@ -5,7 +5,7 @@
 \label{app:wo24_decoder_rtl}
 After independently checking the frozen numerical archive, we compiled and
 ran six new RTL test groups on November 6, 2026, from 19:36:59 to 19:39:03 UTC.
-All twelve build/test commands passed. These are fresh CPU-hosted Verilator
+All twelve build/test commands passed. These are CPU-hosted Verilator
 executions of the selected mechanisms, not reused logs or GPU performance
 measurements. Sources, fixtures, executables, command lines, timestamps and
 outputs are preserved with the actual-run receipt.
@@ -76,7 +76,7 @@ softmax/cast producer and its head-strided padding, zero-fill and store routine
 remain source-checked, rather than implemented by this RTL test. Thus the
 producer-layout fusion ablation in Table~\ref{tab:current_features} has
 analytical source/replay evidence, while final output rounding and selected
-delivery/context mechanisms have fresh RTL evidence. The KV controller checks
+delivery/context mechanisms have RTL evidence. The KV controller checks
 one K head/component against functional external backing: initialized padding
 does not confer logical readiness, and every append waits for its write.
 Full V-cache behavior, terminal HOST DMA and the complete inference sequencer

@@ -21,26 +21,6 @@ Scheduling / concurrency & Cross-N prefetch and two contexts selectable; arbitra
 Serving / phase choice & Decode-only; original request order and starting KV fixed & Same restriction \\
 \bottomrule
 \end{tabularx}
-\medskip
-\begin{tabular}{@{}llrr@{}}
-\toprule
-Workload & Disabled choice (other choices retained) & Time saved, s & Factor \\
-\midrule
-DeepSeek & Rounded producer-layout storage fusion & 1.348604 & $1.021076\times$ \\
-DeepSeek & New delivery / concurrency recipes & 4.210287 & $1.065797\times$ \\
-DeepSeek & Second context; prefetch still available & 2.870741 & $1.044863\times$ \\
-Llama-1 13B & Six new full-K mappings & 0.059881 & $1.005735\times$ \\
-\bottomrule
-\end{tabular}
-\par\smallskip\begin{minipage}{\linewidth}\footnotesize
-Same-chip controls reoptimize the declared feature-off menu. Saved time is
-$T_{\rm off}-T_{\rm on}$ and factor is $T_{\rm off}/T_{\rm on}$, with
-$T_{\rm on}=63.988923$~s (DeepSeek) or $10.441348$~s (13B).
-The second-context control is part of the delivery family, so these gains
-must not be added. Fixed, unavailable and unisolated features receive no
-invented individual speedup credit. Compatible alternatives remain selectable;
-unselected alternatives are not declared absent.
-\end{minipage}
 \end{table}
 
 \paragraph{Hardware--software interaction.}

@@ -36,3 +36,11 @@ miria_notes.tex
 
 # exceeds GitHub's 100 MB file limit
 update/paper_evidence_20261106/figure3_latest12/inputs/d400f4da2cea_family.json
+
+# python caches from the figure/table generators
+__pycache__/
+*.pyc
+
+# biblatex/biber artifacts
+*.bcf
+*.run.xml

@@ -29,7 +29,7 @@ The earlier October certificate above retains its own frozen domain.
 The full-input experiment binds actual checkpoint routes and preserves every
 logical invocation (Appendix~\ref{app:native_provenance}).
 
-The current phase summary uses unchanged paper Baseline 2: original
+The current phase summary uses the unchanged naive TPU-v3 reference: original
 per-operation mapper rescaling and streaming sum. The recovered decoder
 execution preserves original BF16 operands, ordered FP32 arithmetic, routing,
 rounded boundaries, starting KV and paid entry obligations. The reference
@@ -142,19 +142,14 @@ Appendix~\ref{app:original_results} has the original plots and restricted
 controls. 
 
 
-Table~\ref{tab:fixed_hw} reports twenty fresh LP solves: five workloads,
-two fixed hardware models and two operand widths. The compact NPU fixes
-$32{,}768$ MAC units, 64~GB/s and 16~MiB SRAM; the simulated TPU-v3 fixes
-$65{,}536$ units, 900~GB/s and 32~MiB. Both use the paper's 1-GHz timing
-proxy. We hold one archived mapping template fixed, reprice it at each
-resource budget and use its tile footprints; the earlier alternative array
-geometries are excluded from this control. Within each cell, the streaming
-reference and joint LP share the
-workload, operand width and resource rates. The INT8/BF16 columns are
-analytical width sensitivities, with no assumed INT8 throughput bonus.
-They retain the earlier matrix graphs and LP approximations and do not
-establish an integral full-decode execution on either chip. Saved primal
-and dual witnesses are independently checked against every stored LP row.
+Table~\ref{tab:fixed_hw} retains the original software-search comparisons
+for five workloads on the simulated TPU-v3 and compact NPU. Each entry keeps
+its original matrix graph, full implementation menu, memory policy, timing
+library and streaming-reference formula. The original TPU LLM producer and
+the vision/compact producer use different LP conventions, including the
+capacity treatment noted in the table. The stored precision proxies are
+retained; these results do not constitute matched native INT8/BF16 experiments
+or recovered full-decode executions on either chip.
 \input{update/wo24_fixed_hardware}
 
 \subsection{Search Cost and LLM Guidance}
@@ -178,15 +173,18 @@ an optimal architecture or causal validity of every dual suggestion.
 \begin{figure}[H]
     \centering
 \includegraphics[width=\linewidth]{fig3/feature_contributions_wo24.pdf}
-\caption{\textbf{Grouped co-design contributions}, using Table~\ref{tab:current_features}'s
-decision families and FAST-style cumulative comparisons~\citep{zhang_fast}.
-Slices sum assigned increments $(S_i-S_{i-1})/(S_{\rm final}-1)$,
-$S_i=T_{\rm B2}/T_i$, $S_0=1$, to partition 100\% of modeled gain.
-Llama groups tiling/remapping with on-chip bandwidth; this is not a tiling-only
-effect. Compute parallelism means active compute arrays; off-chip bandwidth
-means DRAM, not BRAM. SRAM capacity is fixed in the resource controls.
-All pies have four groups, combining DeepSeek's two scheduling increments.
-Attribution is order-dependent.}\label{fig:accel_decompose}
+\caption{\textbf{Performance breakdown of each component of the CHEETAH
+system}, relative to a simulated naive TPU-v3 baseline~\citep{zhang_fast}.
+Improvements are additive: each slice is one cumulative increment in
+$S=T_{\rm naive}/T$ starting from $S_0=1$, so the four slices of a panel sum
+to 100\% of that workload's modeled gain above $1\times$.
+Compute parallelism means active compute arrays; off-chip bandwidth means
+DRAM, not on-chip SRAM, whose capacity is fixed in these controls.
+For the Llamas, the mapping-menu extension and every compatible remapping
+gain are grouped with on-chip bandwidth, so that slice is not a tiling-only
+effect. For DeepSeek-V3, fusion is producer-layout storage fusion in the
+datapath and scheduling is paid cross-wave prefetch with the second
+accumulator context. Attribution is order-dependent.}\label{fig:accel_decompose}
 \end{figure}
 \endgroup
 \input{update/figure3_attribution_method}

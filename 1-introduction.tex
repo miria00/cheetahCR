@@ -79,7 +79,7 @@ proposes implementations and hardware search neighborhoods.
 
     \item \textbf{LLM Architect Outer Loop.} The architect interprets resource prices and a causal ledger of earlier trials to propose hardware and implementation changes. Deterministic checks admit proposals; the LLM itself supplies no certificate. This couples architecture exploration with the optimizer's diagnostics rather than relying only on black-box scores.
 
-    \item \textbf{Inference speedup.} Against unchanged paper Baseline 2,
+    \item \textbf{Inference speedup.} Against unchanged naive TPU-v3,
     CHEETAH predicts up to $11.849\times$ for EfficientNet forward execution
     and the SD1.5 UNet denoiser, up to $24.196\times$ for LLM prefill, and up
     to $17.932\times$ for LLM decode (Figure~\ref{fig:speedup}).
