@@ -85,6 +85,31 @@
 
 \DeclareMathOperator*{\argmin}{arg\,min}
 
+% ---- (Master) LP box, constraint labels, and constraint references (Sec. 4) ----
+\definecolor{lpboxbg}{HTML}{F3F2EF}
+\definecolor{lpaccent}{HTML}{C2620E}
+\tcbuselibrary{skins}
+\newtcolorbox{lpbox}{enhanced,colback=lpboxbg,frame hidden,arc=6pt,
+  boxrule=0pt,left=8pt,right=8pt,top=2pt,bottom=4pt,before skip=0pt,after skip=0pt}
+\newcommand{\lplabel}[1]{\text{\makebox[5.75em][l]{\textcolor{lpaccent}{\sffamily\footnotesize #1}}}}
+\newcommand{\lpcons}[1]{\text{\raisebox{0pt}[0pt][0pt]{\hypertarget{lpcons:#1}{}}%
+  \makebox[5.75em][l]{\textcolor{lpaccent}{\sffamily\footnotesize constraint~#1}}}}
+\ExplSyntaxOn
+\cs_new_protected:Npn \__lpref_list:n #1
+  {
+    \bool_set_false:N \l_tmpa_bool
+    \clist_map_inline:nn {#1}
+      { \bool_if:NT \l_tmpa_bool {,~} \bool_set_true:N \l_tmpa_bool
+        \hyperlink{lpcons:##1}{##1} }
+  }
+\NewDocumentCommand{\lpref}{m}
+  {{ \mdseries\sffamily\footnotesize \hypersetup{linkcolor=lpaccent}\color{lpaccent}
+     [\int_compare:nNnTF {\clist_count:n {#1}} = 1 {constraint} {constraints}~\__lpref_list:n {#1}] }}
+\NewDocumentCommand{\lprefobj}{m}
+  {{ \mdseries\sffamily\footnotesize \hypersetup{linkcolor=lpaccent}\color{lpaccent}
+     [objective;~\int_compare:nNnTF {\clist_count:n {#1}} = 1 {constraint} {constraints}~\__lpref_list:n {#1}] }}
+\ExplSyntaxOff
+
 
 \title{Accelerating the Inference Era with AI-Driven, Globally Optimized HW/SW Co-Design}
 

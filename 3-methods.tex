@@ -76,50 +76,98 @@ is the total issued work or traffic sharing resource $r$ at event $e$.
 $\mathsf A_b^\lambda=a_{b0}\lambda_b+a_b^Th_b$ and
 $\mathsf P_b^\lambda=p_{b0}\lambda_b+p_b^Th_b$ denote area and peak power.
 
+% \begin{figure}[t]
+% \begingroup\small
+% \begin{equation}
+% \begin{aligned}
+% \min_{\lambda,\{x_b\}}\quad
+%  &\sum_{b\in\mathcal B_C}\kappa_b\sum_{e\in\mathcal E_b}d_{be}
+%   +\sum_{b\in\mathcal B_P}\alpha_b\!\left(\sum_iT_{bi}
+%        +\sum_{i,t}c^{\rm remat}_{bi}r_{bit}\right) \\
+% \text{s.t.}\quad
+%  &\lambda_b\ge0,\quad\sum_b\lambda_b=1,\\
+%  &\sum_{k\in\mathcal K_b:i\in S_k} y_k=\lambda_b,\\
+%  &\sum_e s_{ke}=\sum_e w_{ke}=\sum_e f_{ke}=y_k,\\
+%  &a_{ke}=a_{k,e-1}+s_{ke}-f_{k,e-1},\quad
+%    w_{ke}=f_{ke},\quad 0\le w_{ke},f_{ke}\le a_{ke}\le y_k,\\
+%  &a_{ke}\le p_{j\tau e}-v_{j\tau e}\ ((j,\tau)\in\mathcal R_k),\qquad
+%    a_{ke}\le D_{ie}\ (i\in\mathcal D_k),\\
+%  &D_{i,e+1}=D_{ie}+\sum_{k:i\in S_k}f_{ke},\quad D_{i0}=0,\ D_{iE}=\lambda_b,\\
+%  &0\le v_{j\tau e}\le p_{j\tau e}\le\beta_{je},\qquad
+%    0\le q_{j,\tau\to\tau',e}\le p_{j\tau e}-v_{j\tau e},\\
+%  &A_e=\sum_k a_{ke}\le\lambda_b,\qquad
+%    (A_e,h_{b,\mathrm{arrays}},\chi_e)\in\mathcal W_b^{\lambda_b},\\
+%  &\mathsf{Cap}_{b,\tau e}(p,v,q,a,\chi,\eta,\rho,\delta)
+%        \le C^\lambda_\tau(h_b),\\
+%  &Q^r_e=\mathsf D^r_e(q,w,\rho,\delta),\quad (h_{br},u_r)\in\mathcal R_b^{\lambda_b},\quad
+%       (Q^r_e,u_r,Z^r_e)\in\mathcal M_{br}^{\lambda_b},\\
+%  &0\le Z^r_e\le d_e,\qquad \mathsf S^v_{be}(q,w,\rho,\delta)\le d_e
+%        \quad(\text{fixed-rate services }v),\\
+%  &h_b=\lambda_b\bar h_b,\quad
+%    \mathsf D^{r,\rm phys}_{be}\le\bar R_{br}d_e
+%        \quad(b\in\mathcal B_{\rm phys},\ r\in\mathcal R_{\rm phys}),\\
+%  &\mathsf A_b^\lambda\le600\lambda_b,\quad
+%    \mathsf P_b^\lambda\le300\lambda_b,\quad
+%    \mathsf P_b^\lambda\le2\mathsf A_b^\lambda
+%        \quad(b\in\mathcal B_{\rm phys}),\\
+%  &F_bh_b\le g_b\lambda_b,\quad B_bx_b=b_b\lambda_b,\quad J_bx_b\le j_b\lambda_b,\\
+%  &A_b^Px_b=a_b^P\lambda_b,\quad G_b^Px_b\le g_b^P\lambda_b
+%        \quad(\text{retained schedule branches}),\\
+%  &\ell_{b\nu}\lambda_b\le x_{b\nu}\le u_{b\nu}\lambda_b
+%        \quad(\text{each finite original bound}).
+% \end{aligned}
+% \tag{Master}\label{eq:master}
+% \end{equation}
+% \stepcounter{equation}
+% \endgroup
+% \end{figure}
+
 \begin{figure}[t]
+\begin{lpbox}
 \begingroup\small
 \begin{equation}
 \begin{aligned}
 \min_{\lambda,\{x_b\}}\quad
- &\sum_{b\in\mathcal B_C}\kappa_b\sum_{e\in\mathcal E_b}d_{be}
+ &\lplabel{objective}\sum_{b\in\mathcal B_C}\kappa_b\sum_{e\in\mathcal E_b}d_{be}
   +\sum_{b\in\mathcal B_P}\alpha_b\!\left(\sum_iT_{bi}
-       +\sum_{i,t}c^{\rm remat}_{bi}r_{bit}\right) \\
+       +\sum_{i,t}c^{\rm remat}_{bi}r_{bit}\right)\\
 \text{s.t.}\quad
- &\lambda_b\ge0,\quad\sum_b\lambda_b=1,\\
- &\sum_{k\in\mathcal K_b:i\in S_k} y_k=\lambda_b,\\
- &\sum_e s_{ke}=\sum_e w_{ke}=\sum_e f_{ke}=y_k,\\
- &a_{ke}=a_{k,e-1}+s_{ke}-f_{k,e-1},\quad
+ &\lpcons{1}\lambda_b\ge0,\quad\sum_b\lambda_b=1,\\
+ &\lpcons{2}\sum_{k\in\mathcal K_b:i\in S_k} y_k=\lambda_b,\\
+ &\lpcons{3}\sum_e s_{ke}=\sum_e w_{ke}=\sum_e f_{ke}=y_k,\\
+ &\lpcons{4}a_{ke}=a_{k,e-1}+s_{ke}-f_{k,e-1},\quad
    w_{ke}=f_{ke},\quad 0\le w_{ke},f_{ke}\le a_{ke}\le y_k,\\
- &a_{ke}\le p_{j\tau e}-v_{j\tau e}\ ((j,\tau)\in\mathcal R_k),\qquad
+ &\lpcons{5}a_{ke}\le p_{j\tau e}-v_{j\tau e}\ ((j,\tau)\in\mathcal R_k),\qquad
    a_{ke}\le D_{ie}\ (i\in\mathcal D_k),\\
- &D_{i,e+1}=D_{ie}+\sum_{k:i\in S_k}f_{ke},\quad D_{i0}=0,\ D_{iE}=\lambda_b,\\
- &0\le v_{j\tau e}\le p_{j\tau e}\le\beta_{je},\qquad
+ &\lpcons{6}D_{i,e+1}=D_{ie}+\sum_{k:i\in S_k}f_{ke},\quad D_{i0}=0,\ D_{iE}=\lambda_b,\\
+ &\lpcons{7}0\le v_{j\tau e}\le p_{j\tau e}\le\beta_{je},\qquad
    0\le q_{j,\tau\to\tau',e}\le p_{j\tau e}-v_{j\tau e},\\
- &A_e=\sum_k a_{ke}\le\lambda_b,\qquad
+ &\lpcons{8}A_e=\sum_k a_{ke}\le\lambda_b,\qquad
    (A_e,h_{b,\mathrm{arrays}},\chi_e)\in\mathcal W_b^{\lambda_b},\\
- &\mathsf{Cap}_{b,\tau e}(p,v,q,a,\chi,\eta,\rho,\delta)
+ &\lpcons{9}\mathsf{Cap}_{b,\tau e}(p,v,q,a,\chi,\eta,\rho,\delta)
        \le C^\lambda_\tau(h_b),\\
- &Q^r_e=\mathsf D^r_e(q,w,\rho,\delta),\quad (h_{br},u_r)\in\mathcal R_b^{\lambda_b},\quad
+ &\lpcons{10}Q^r_e=\mathsf D^r_e(q,w,\rho,\delta),\quad (h_{br},u_r)\in\mathcal R_b^{\lambda_b},\quad
       (Q^r_e,u_r,Z^r_e)\in\mathcal M_{br}^{\lambda_b},\\
- &0\le Z^r_e\le d_e,\qquad \mathsf S^v_{be}(q,w,\rho,\delta)\le d_e
+ &\lpcons{11}0\le Z^r_e\le d_e,\qquad \mathsf S^v_{be}(q,w,\rho,\delta)\le d_e
        \quad(\text{fixed-rate services }v),\\
- &h_b=\lambda_b\bar h_b,\quad
+ &\lpcons{12}h_b=\lambda_b\bar h_b,\quad
    \mathsf D^{r,\rm phys}_{be}\le\bar R_{br}d_e
        \quad(b\in\mathcal B_{\rm phys},\ r\in\mathcal R_{\rm phys}),\\
- &\mathsf A_b^\lambda\le600\lambda_b,\quad
+ &\lpcons{13}\mathsf A_b^\lambda\le600\lambda_b,\quad
    \mathsf P_b^\lambda\le300\lambda_b,\quad
    \mathsf P_b^\lambda\le2\mathsf A_b^\lambda
        \quad(b\in\mathcal B_{\rm phys}),\\
- &F_bh_b\le g_b\lambda_b,\quad B_bx_b=b_b\lambda_b,\quad J_bx_b\le j_b\lambda_b,\\
- &A_b^Px_b=a_b^P\lambda_b,\quad G_b^Px_b\le g_b^P\lambda_b
+ &\lpcons{14}F_bh_b\le g_b\lambda_b,\quad B_bx_b=b_b\lambda_b,\quad J_bx_b\le j_b\lambda_b,\\
+ &\lpcons{15}A_b^Px_b=a_b^P\lambda_b,\quad G_b^Px_b\le g_b^P\lambda_b
        \quad(\text{retained schedule branches}),\\
- &\ell_{b\nu}\lambda_b\le x_{b\nu}\le u_{b\nu}\lambda_b
+ &\lpcons{16}\ell_{b\nu}\lambda_b\le x_{b\nu}\le u_{b\nu}\lambda_b
        \quad(\text{each finite original bound}).
 \end{aligned}
-\tag{Master}\label{eq:master}
+\tag{CHEETAH master LP}\label{eq:master}
 \end{equation}
 \stepcounter{equation}
 \endgroup
+\end{lpbox}
 \end{figure}
 \begingroup\clubpenalty=10000
 The displayed cover, lifecycle, service and $B_b,J_b$ rows apply to native causal branches;
@@ -141,7 +189,8 @@ program. Bounds must be recomputed for the chosen family, including every branch
 
 \subsection{Features and Their Mathematical Encoding}
 \label{sec:v3_levers}\label{sec:v0}
-\paragraph{Joint tiling and fusion.}
+% \paragraph{Joint tiling and fusion.}
+\paragraph{Joint tiling and fusion~\lprefobj{2,15}.}
 For an isolated operation, the cover row reduces to $\sum_c y_{i,c}=1$.
 A tile's traffic savings depend on residency. In the retained schedule block,
 $w_{ick}$ represents $y_{ic}p_{\mathrm{assoc}(i,k),o(i)}$ through
@@ -160,7 +209,8 @@ same construction. The displayed unit-bound rows are for a branch at weight
 one; homogenization replaces $1$ by $\lambda_b$. Native fused atoms carry their complete input,
 output, workspace and service recipe, so fusion cannot silently remove work.
 
-\paragraph{Shared hardware and resource epigraphs.}
+% \paragraph{Shared hardware and resource epigraphs.}
+\paragraph{Shared hardware and resource epigraphs~\lprefobj{10,11,14,16}.}
 Compute, vector lanes, SRAM, and delivered memory service are shared decisions
 under linear area/power proxies $F_bh_b\le g_b$. Finite implementation or
 technology menus use disaggregated copies with linking equalities and scaled
@@ -173,7 +223,8 @@ overlap is not inferred from fractional sharing; native replay uses its
 declared inter-kernel ordering and internal panel pipelines.
 \label{eq:v3_caps}\label{eq:v3_epigraph}
 
-\paragraph{Hard rooflines and physical budgets.}
+% \paragraph{Hard rooflines and physical budgets.}
+\paragraph{Hard rooflines and physical budgets~\lpref{12,13,14}.}
 The strengthened fixed-chip branches enforce resource ceilings \emph{inside the LP}:
 $\sum_k F_k^{\rm issued}w_{ke}\le\bar C_b d_e$ for matrix work, and
 $\mathsf D^{r,\rm phys}_{be}\le\bar R_{br}d_e$ for shared HBM, host, vector,
@@ -191,7 +242,8 @@ predicates used in recovery. Aggregate bank and NoC proxies do not prove
 conflict-free arbitrary placement. Appendix~\ref{app:physical_rooflines} gives
 the rows and distinguishes their current implementation from the frozen certificate.
 
-\paragraph{Reciprocal and product envelopes.}
+% \paragraph{Reciprocal and product envelopes.}
+\paragraph{Reciprocal and product envelopes~\lpref{8,10}.}
 For a rate $r\in[\ell,h]$, $\mathcal R$ bounds $u\approx1/r$ by tangents
 $u\ge2/a-r/a^2$ and the global secant $u\le(\ell+h-r)/(\ell h)$.
 $\mathcal M$ bounds $Z\approx Qu$ by the four McCormick inequalities on
@@ -201,7 +253,8 @@ These are relaxations of physical service; replay reinstates the exact rates
 and products. Selecting a discrete bandwidth fixes that rate, but continuous-rate
 envelopes remain relaxations even when implementation selectors are integral.
 
-\paragraph{Time-indexed placement and KV across steps.}
+% \paragraph{Time-indexed placement and KV across steps.}
+\paragraph{Time-indexed placement and KV across steps~\lpref{7,9}.}
 Residency $p_{j\tau e}$ changes with events rather than being fixed for the whole
 run. KV production creates immutable append objects; each decode attention
 operation depends on its required prefix. The state rows preserve earlier
@@ -209,7 +262,8 @@ entries while the prefix grows. Capacity accounts for resident data, incoming
 copies, and active workspace simultaneously. Long skip connections and
 multi-fanout tensors use the same object identities and consumer readiness.
 
-\paragraph{Spill, restoration, and rematerialization.}
+% \paragraph{Spill, restoration, and rematerialization.}
+\paragraph{Spill, restoration, and rematerialization~\lprefobj{7,14}.}
 Copies retain a valid source, reserve their destination, consume service, and
 become readable only after completion. Boundary rows require the declared
 terminal backing. A permitted repeat executes the original producer again and
@@ -219,7 +273,8 @@ slower tier is therefore different from deleting history. The native results
 credit paid KV restoration and retention; no native recomputation gain or lossy
 KV budget is claimed.
 
-\paragraph{Weight residency and expert supply.}
+% \paragraph{Weight residency and expert supply.}
+\paragraph{Weight residency and expert supply~\lpref{5,9}.}
 A weight tensor is an immutable object with its own residency trajectory
 $p_{j\tau e}$, so retaining it across uses and paying a reload are different
 points of the same rows rather than separate models. First loads and every
@@ -231,7 +286,9 @@ identities under the declared routing model: which experts are resident versus
 fetched is a residency choice subject to storage capacity, and a retained
 expert still pays its first import and its per-use reads.
 
-\paragraph{Batching and causal scheduling.}
+% \paragraph{Batching and causal scheduling.}
+% \paragraph{Batching and causal scheduling~\lpref{2,3,4,5,6,8}.}
+\paragraph{Implementation menus and recovery~\lpref{1,14}.}
 A batch column covers several compatible invocations and loads shared parameters
 once where its recipe permits. Cover constraints retain every member;
 start/finish and readiness rows prevent using future tokens or expert selections
@@ -239,7 +296,8 @@ before their router dependencies complete. Event placement can vary within the
 finite library. The current native execution uses a recovered serial schedule;
 a larger scheduling domain does not imply that its optimum has been found.
 
-\paragraph{Implementation menus and recovery.}
+% \paragraph{Implementation menus and recovery.}
+\paragraph{Implementation menus and recovery~\lpref{1,14}.}
 Parameter staging has explicit receive, occupancy and drain states. Full-K
 panels and FP8-to-BF16 receiver implementations pay buffer, port and conversion
 costs. Selected-reader backing keeps the raw or converted representation needed
@@ -304,7 +362,8 @@ branch-and-bound, continuous LP certification, and integral recovery.
 \end{table}
 \fi
 
-\paragraph{Serving and phase choice.}
+% \paragraph{Serving and phase choice.}
+\paragraph{Serving and phase choice~\lpref{6}.}
 Prefill and decode are the same master over different event sequences and
 boundary rows, not two models. A decode step inherits the KV prefix its
 attention operations require, and the declared task boundary fixes which
