@@ -1,10 +1,8 @@
 \subsection{End-to-End Solution and Recovery Workflow}
 \label{app:native_solve_workflow}
 The completed continuous solve uses a CHEETAH-specific certificate-producing
-procedure. Compact working problems discover witnesses; the complete original
-LP determines acceptance. The method retains an explicit record of manually
-chosen supports and proof directions. It is not a demonstrated automatic
-branch-and-price or full-master PDHG algorithm.
+procedure in which the complete original LP determines acceptance. The method
+retains an explicit record of manually chosen supports and proof directions.
 
 \paragraph{1. Freeze the mathematical instance.}
 The expanded family contains 1,557 whole-program branches, retaining all
@@ -21,8 +19,8 @@ The compiler enumerates every real ancestral implementation on its original
 membership, saved tile, representation and eligibility conditions. Coincident
 memberships retain all genuine implementation options. Original exact-cover
 equalities have free multipliers; inequality multipliers keep their required
-signs. The final closing stage uses 45,085 finite CPU HiGHS fits over the
-nonempty families, with eight workers; six empty families require no solve.
+signs. The final stage solves 45,085 finite subproblems over the nonempty
+families. Six empty families require no solve.
 Complete checks cover 31,706,528 weighted invocations and 39,223,145 group
 inequalities. Analytic KV, conversion and prefill prices complete the source
 coverage construction under one shared resource budget.
@@ -40,8 +38,8 @@ coverage alone is insufficient to establish feasibility.
 The lift therefore reconstructs owner states, readiness and all required
 transfers. It mirrors 25,607,232 nonterminal owners between their existing
 SRAM/DRAM tiers, pays initialization and suffix copies, and preserves original
-initial inventory, KV history and terminal backing. One further CPU HiGHS
-program jointly adjusts original KV alternatives, shared hardware, reciprocal
+initial inventory, KV history and terminal backing. One further LP
+jointly adjusts original KV alternatives, shared hardware, reciprocal
 variables and service epigraphs on this candidate construction. Its 10,245
 variables, 1,039 equalities, 104 inequalities and 112,633 nonzeros cover 1,022
 KV classes. Reusing a coefficient-class mixture restricts this candidate search,

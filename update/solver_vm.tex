@@ -3,14 +3,11 @@
 To solve the master LP we use OCS~\citep{feng2026ocs}, our in-house solver
 framework. OCS is a standalone contribution whose numerical design is described
 in a companion paper, with the implementation released at the cited repository.
-Here we give only what the results require. OCS never forms the event-expanded matrix.
-It applies the constraint map $Kx$ and its adjoint $K^Ty$ as operators, runs an
-anchored, restarted primal--dual scheme with a diagonal variable metric on
-working supports, and then replaces the converged iterates with compact fits
-whose rational reconstruction is verified against every original row. The
-resulting bound is a certificate rather than a solver tolerance: the primal
-satisfies the complete original branch and the dual has valid signs and
-Lagrangian box support over all coordinates.
+Here we give only what the results require. For each branch, OCS returns a
+primal point that satisfies the complete original branch and a dual with valid
+signs and Lagrangian box support over all coordinates, both verified against
+every original row. The resulting bound is therefore a certificate rather than
+a solver tolerance.
 
 The master LP is solved by branch and bound over its declared family. Each
 branch $b$ receives a certified lower bound $L_b$, branches with checked
@@ -23,13 +20,13 @@ unresolved.
 
 \paragraph{Hardware branch and bound and recovery.}
 Integral recovery searches a finite tree over array counts, vector lanes, DRAM
-bandwidth, host channels and local-service units; optimistic resource and
+bandwidth, host channels and local-service units. Optimistic resource and
 capacity-priced retention bounds prune regions that are budget-infeasible or
 cannot improve the best replayed feasible design, and leaves use actual implementation and
 capacity costs. Recovery then selects one branch, integral implementations,
 hardware and storage policies, and analytical replay checks dependency
 readiness, capacities and service at the selected rates. The retained execution
-takes $2{,}718{,}970.508466$ ms; the continuous upper above is not its latency.
+takes $2{,}718{,}970.51$ ms, so the continuous upper bound above is not its latency.
 Reciprocal/product relaxation and integral recovery gaps remain, so the
 continuous certificate does not establish discrete chip/schedule optimality
 (Appendix~\ref{app:native_solve_workflow}).

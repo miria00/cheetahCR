@@ -19,10 +19,9 @@ The prefill co-design search used 16 NVIDIA H100 GPUs, each with 80 GB of VRAM,
 and Vizier for hardware search following the experimental conventions of
 \citet{zhang_fast}. Table~\ref{tab:vizier_search_space} records that campaign's
 parameter groups; Figure~\ref{fig:pipeline} depicts its accelerator template.
-The native full-inference extension is solved with OCS, whose discovery kernel
-and certified closing stage are described in Section~\ref{sec:ocs} and
-Appendix~\ref{app:native_solve_workflow}, with a separate finite
-hardware-search path; it is not an all-H100/Vizier experiment.
+The native full-inference extension is solved with OCS
+(Section~\ref{sec:ocs}, Appendix~\ref{app:native_solve_workflow}) with a
+separate finite hardware-search path. It is not an all-H100/Vizier experiment.
 
 A Processing Element (PE) is a repeated compute tile in an accelerator template.
 The datapath can be modeled as a grid of PEs connected by a mesh on-chip network.

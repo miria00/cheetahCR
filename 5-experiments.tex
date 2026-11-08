@@ -37,7 +37,7 @@ work~\citep{jouppi2021ten,zhang_fast}. All speedups below are analytical and mod
 
 \subsection{Experimental Setup}
 \label{sec:exp_intro}
-Software alone is physics-capped (Theorem~\ref{thm:deficiency}, Appendix~\ref{app:deficiency}), therefore co-design is the only route past the performance ceiling. The experimental suite comprises EfficientNet-B1--B7, Llama-1 13B/65B, Llama-3 70B,
+Software alone is physics-capped (Theorem~\ref{thm:deficiency}, Appendix~\ref{app:deficiency}), so co-design is the only route past the performance ceiling. The experimental suite comprises EfficientNet-B1--B7, Llama-1 13B/65B, Llama-3 70B,
 DeepSeek-V3~\citep{tan2019efficientnet,llama3modelcard,deepseekv3report} and
 Stable Diffusion~1.5 UNet. DeepSeek-V3 is evaluated on thirty-two 4,096-token
 Wikitext-2 prompts, each decoded greedily for 512 tokens, with FP8 weights
@@ -45,7 +45,7 @@ dequantized to BF16. We compare static pinning, fixed-tile temporal placement
 and joint tiling under one cost convention. These are restricted controls of
 CHEETAH, not separate systems. Small programs are solved directly with
 HiGHS~\citep{huangfu2018parallel}, and the native programs with OCS
-(Section~\ref{sec:ocs}), whose closing fits use HiGHS as the inner LP engine.
+(Section~\ref{sec:ocs}).
 Hardware is shared across each recovered execution with independent
 implementation choices, and the full-input experiment binds actual checkpoint
 routes and preserves every logical invocation
@@ -55,7 +55,7 @@ timing/precision proxy. The recovered decoder preserves BF16 operands, ordered
 FP32 arithmetic, routing and paid entry obligations, and standalone nonmatrix
 service outside the phase boundary is not silently included.
 
-\paragraph{Physical Design Validation.} Since modeling simulations ultimately present a gap with real world physical performance, we validate all results through a five-level audit process (Appendix~\ref{app:validation}): (i) Roofline Auditor, (ii) Campaign Validator, (iii) Causal Ledger, (iv) solver diagnostics, and (v) six pre-RTL gates. Each CHEETAH design must pass all five audit tiers before it is deemed feasible and reported.
+\paragraph{Physical Design Validation.} Since simulations ultimately leave a gap to real-world physical performance, we validate all results through a five-level audit process (Appendix~\ref{app:validation}): (i) Roofline Auditor, (ii) Campaign Validator, (iii) Causal Ledger, (iv) solver diagnostics, and (v) six pre-RTL gates. Each CHEETAH design must pass all five audit tiers before it is deemed feasible and reported.
 Appendix~\ref{app:gates} states the six gates and their thresholds,
 Appendix~\ref{app:coeff_provenance} records where every gate constant and cost
 coefficient comes from, and Appendix~\ref{app:blueprints} gives the complete
@@ -90,7 +90,7 @@ SRAM macros & 64 KiB banks, aspect ratio $1{:}4$--$4{:}1$ & $\le4{,}096$ banks \
 
 \paragraph{Reported efficiency quantities.}
 MFU, per-resource MBU and Perf/TDP are read off the scheduled execution, never
-assumed; Appendix~\ref{app:reported_quantities} defines each, states the
+assumed. Appendix~\ref{app:reported_quantities} defines each, states the
 fixed-chip rows that guarantee $\mathrm{MFU}\le1$ by construction, and gives
 the conditions under which Perf/TDP is a valid comparison.
 
@@ -108,7 +108,7 @@ its matrix graph, full implementation menu, memory policy, timing
 library and streaming-reference formula. The TPU LLM producer and
 the vision/compact producer use different LP conventions, including the
 capacity treatment noted in the table. The stored precision proxies are
-retained; these results do not constitute matched native INT8/BF16 experiments
+retained, and these results do not constitute matched native INT8/BF16 experiments
 or recovered full-decode executions on either chip.
 
 \subsection{Search Cost and LLM Guidance}
@@ -116,17 +116,17 @@ or recovered full-decode executions on either chip.
 Cached implementation coefficients remove repeated mapper calls from the inner
 search. In the 50-trial comparison, joint tiling reduces Llama-70B
 search time from $58.42$ to $1.17$ hours and DeepSeek-V3 from $69.39$ to $2.17$
-hours relative to the fixed-tile temporal pipeline (Figure~\ref{fig:wallclock}; Appendix~\ref{app:solver} gives the hardware
-search space in \ref{app:vizier_search} and Appendix~\ref{append::lp_perform}
-the LP sizes). These are search times,
+hours relative to the fixed-tile temporal pipeline (Figure~\ref{fig:wallclock}). Appendix~\ref{app:solver} gives the hardware
+search space (\ref{app:vizier_search}) and Appendix~\ref{append::lp_perform}
+the LP sizes. These are search times,
 not inference speedups. LLM guidance reduces mean invalid trials
 from $24.5\%$ to $5.9\%$ while reaching the same best observed Perf/TDP score
-as its full-space Vizier control (Figure~\ref{fig:llm}); Appendix~\ref{app:profiles} repeats the
+as its full-space Vizier control (Figure~\ref{fig:llm}). Appendix~\ref{app:profiles} repeats the
 search under a throughput-oriented and a latency-oriented deployment profile.
 This tests proposal efficiency, not proof of
 an optimal architecture or causal validity of every dual suggestion. Whether the
 LLM outperforms a rule-based controller driven by the same duals and failure
-classes is not established here; we therefore present the architect as a search
+classes is not established here, so we present the architect as a search
 convenience and let the formulation and its certificates carry the contribution.
 
 
@@ -137,7 +137,7 @@ convenience and let the formulation and its certificates carry the contribution.
 \caption{\textbf{Performance breakdown of each CHEETAH component}, relative
 to a simulated naive TPU-v3 baseline~\citep{zhang_fast}. Improvements are
 additive cumulative increments in $S=T_{\rm naive}/T$ and sum to 100\% of each
-workload's gain above $1\times$; attribution is order-dependent.}\label{fig:accel_decompose}
+workload's gain above $1\times$, and attribution is order-dependent.}\label{fig:accel_decompose}
 \end{figure}
 \input{update/figure3_attribution_method}
 Appendix~\ref{app:rows_scope} discusses the hardware--software interaction and

@@ -41,7 +41,7 @@ $T\ge\max(\sum_ca_cy_c,\sum_cb_cy_c)$.
 For each $c$, minimizing $t_c$ gives $y_c\max(a_c,b_c)$. Summing maxima is
 at least either sum separately. With a one-hot choice the two formulations
 coincide. For shared variable hardware, every additional coupling must also
-be disaggregated consistently; separate product envelopes alone do not prove
+be disaggregated consistently, and separate product envelopes alone do not prove
 the convex hull of the entire HW/SW problem.
 \end{proof}
 
@@ -177,7 +177,7 @@ $T^{\rm LB}_{\rm compute}=\sum_i\min_cT^{\min}_i(c)$ is the
 schedule-independent per-operation compute floor, and
 $T_{\rm memory}=\sum_i\mathrm{bytes}_i/b_H$ is the bandwidth floor. The
 denominator is the optimistic compute-plus-DRAM roofline bound on the cycles any
-scheduler needs to execute $G$ on $H$; adding NoC, SRAM, vector or control
+scheduler needs to execute $G$ on $H$. Adding NoC, SRAM, vector or control
 floors can only raise it and lower $\mathcal D$.
 \begin{theorem}[Fixed-hardware deficiency ceiling]\label{thm:deficiency}
 For every chip $H$, workload $G$ and feasible point $x\in\mathcal P_V(H,G)$,
@@ -225,11 +225,11 @@ only to numerical costs and bounds preserve the structural row/column pattern.
 \end{proposition}
 \begin{proof}
 The same indexed row templates address the same coordinates. Hardware-dependent
-coefficients can change their values; changing the implementation library or
+coefficients can change their values, but changing the implementation library or
 introducing different lifetimes need not preserve the pattern.
 \end{proof}
 This permits reuse of indexing and warm starts. A new scaling or norm bound
 must still be checked when coefficients change. Pareto pruning similarly needs
-componentwise dominance in every resource and interface used by the branch;
-a two-axis latency plot alone is insufficient when workspace, traffic tiers,
+componentwise dominance in every resource and interface used by the branch.
+A two-axis latency plot alone is insufficient when workspace, traffic tiers,
 or numerical formats differ.

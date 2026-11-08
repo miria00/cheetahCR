@@ -27,7 +27,7 @@ trade-off, because it exists only in the joint space.
 % \caption{Heuristics based Sequential design vs Our Unified Optimization Paradigm.
 % (Left) Baseline methods decouple hardware search, operation-level tiling, and static fusion, precluding cross-stage trade-offs.
 % (Right) CHEETAH presents a unified LLM-driven mathematical framework that jointly optimizes tiling, placement, and more while learning from a causal ledger.}
-\caption{Heuristics based sequential design versus our unified optimization paradigm.
+\caption{Heuristics-based sequential design versus our unified optimization paradigm.
 (Left) Baseline methods decouple hardware search, operation-level tiling, and static fusion, precluding cross-stage trade-offs.
 (Right) CHEETAH presents a unified master linear program that jointly optimizes tiling, placement, and more while learning from a causal ledger.}
 \label{fig::workflow}
@@ -45,24 +45,22 @@ fusion, over one capacity accounting for convolutions, GEMMs, attention, KV
 prefixes, expert weights and skip connections (Section~\ref{sec:methods}).
 Table~\ref{tab:capability-matrix} positions it against nine such systems, and
 Theorem~\ref{thm:containment} (Appendix~\ref{app:fast_containment}) proves that
-FAST's fusion search embeds in CHEETAH's relaxation at the same objective, so
-the formulation subsumes that search rather than resembling it. Prefill and
-decode are the same program over different event sequences, which matters most
-for decode: with top-$k$ routing, batch 32 touches about 163 of 256 experts
-rather than 8, so provisioning, batching and temporal residency must be chosen
-together.
+the staged tiling-then-fusion search of prior sequential pipelines embeds in
+CHEETAH's relaxation at the same objective, so the formulation subsumes those
+pipelines rather than resembling them. Prefill and decode are the same program
+over different event sequences, which matters most for decode: with top-$k$
+routing, batch 32 touches about 163 of 256 experts rather than 8, so
+provisioning, batching and temporal residency must be chosen together.
 
 Three properties defeat off-the-shelf solving (Appendix~\ref{app:naive_fails}):
 the LP does not fit in memory (Llama-1 13B alone is $10.1$M columns by $18.3$M
 rows, 51\,PB dense, over $10^{2300}$ branches), its optimal face is massively
 degenerate, and its coefficients span $10^{-6}$ to $10^{15}$, so standard
-first-order methods plateau and a certificate must be built in exact rational
-arithmetic. The joint space is tractable only because it never has to be
-materialized. CHEETAH solves the master LP by branch and bound over
-whole-program branches with OCS~\citep{feng2026ocs}, our in-house operator
-solver: each branch's constraint map is applied rather than stored, compact
-fits discover prices and primal candidates, and exact checks over the original
-domain certify a lower bound $L_b$ per branch. Pruning leaves $L=\min_bL_b$ and
+first-order methods plateau and off-the-shelf solvers return no usable
+certificate. CHEETAH solves the master LP by branch and bound over
+whole-program branches with OCS~\citep{feng2026ocs}, our in-house solver,
+which certifies a lower bound $L_b$ per branch by exact checks over the
+original domain. Pruning leaves $L=\min_bL_b$ and
 the best feasible cost $U$ bracketing the optimum, and the 1,557-branch DeepSeek-V3
 master LP closes to a certified $0.07\%$ gap. Integral recovery and replay turn
 the relaxation into a chip and a schedule, outputs distinct from the bound, and
@@ -77,31 +75,31 @@ in the LLM.
 % % \caption{Heuristics based Sequential design vs Our Unified Optimization Paradigm.
 % % (Left) Baseline methods decouple hardware search, operation-level tiling, and static fusion, precluding cross-stage trade-offs.
 % % (Right) CHEETAH presents a unified LLM-driven mathematical framework that jointly optimizes tiling, placement, and more while learning from a causal ledger.}
-% \caption{Heuristics based sequential design versus our unified optimization paradigm.
+% \caption{Heuristics-based sequential design versus our unified optimization paradigm.
 % (Left) Baseline methods decouple hardware search, operation-level tiling, and static fusion, precluding cross-stage trade-offs.
 % (Right) CHEETAH presents a unified master linear program that jointly optimizes tiling, placement, and more while learning from a causal ledger.}
 % \label{fig::workflow}
 % \end{figure}
-\paragraph{Contributions.} CHEETAH combines a unified HW/SW design relaxation,
-operator-based optimization and certified bounds with an LLM architect that
+\paragraph{Contributions.} CHEETAH combines a unified HW/SW design relaxation
+and certified optimization with an LLM architect that
 proposes implementations and hardware search neighborhoods.
 \begin{enumerate}
 
 \item \textbf{CHEETAH formulation.}
     We introduce time-indexed LP variables $p_{i,t}^k$ and rematerialization variables $r_{i,t}$ to enable cheap recompute operations instead of paying DRAM reload costs, supporting skip connections and multi-fanout nodes.
     We unify tiling and fusion through \textbf{McCormick envelopes} and resource
-    epigraphs. Binary tile--residency products are exact at integral choices;
+    epigraphs. Binary tile--residency products are exact at integral choices, while
     continuous hardware/service products retain their explicit relaxation.
     These couplings expose tiling--placement trade-offs that sequential
     pipelines can discard.
     % This enables the LP to discover trade-offs where accepting a suboptimal tiling configuration enables superior fusion, or vice versa---precisely the cross-stage interactions that the sequential pipeline cannot capture.
-    \item \textbf{Certified optimization and executable validation.} Compact
-    numerical fits, rational cover reconstruction and original-domain checks
-    certify the complete master LP rather than a restricted support, and
-    analytical replay validates a separately recovered design
+    \item \textbf{Certified optimization and executable validation.} Per-branch
+    certificates checked over the original domain bound the complete master LP
+    rather than a restricted support, and analytical replay validates a
+    separately recovered design
     (Section~\ref{sec:solver_vm}). Global discrete optimality remains open.
 
-    \item \textbf{LLM Architect Outer Loop.} The architect interprets resource prices and a causal ledger of earlier trials to propose hardware and implementation changes. Deterministic checks admit proposals; the LLM itself supplies no certificate. This couples architecture exploration with the optimizer's diagnostics rather than relying only on black-box scores.
+    \item \textbf{LLM Architect Outer Loop.} The architect interprets resource prices and a causal ledger of earlier trials to propose hardware and implementation changes. Deterministic checks admit proposals, and the LLM itself supplies no certificate. This couples architecture exploration with the optimizer's diagnostics rather than relying only on black-box scores.
 
     \item \textbf{Inference speedup.} Across 12 workloads, CHEETAH co-designs
     chips that outperform the naive TPU-v3 baseline by an order of magnitude on
@@ -111,11 +109,11 @@ proposes implementations and hardware search neighborhoods.
     designs are different chips.
 \end{enumerate}
 
-% The following paper is organized as follows. Section~\ref{sec:prelim} summarizes preliminary background and Appendix~\ref{app:related_work} discusses related work,  Section~\ref{sec:methods}
-% presents the master LP and its features, and Section~\ref{sec:ocs} describes
-% the OCS solver framework, its certificate and hardware search. Section~\ref{sec:experiments}
-% reports experimental results and ablations, and the appendix provides containment
-% theorems, physical-validation details, co-design blueprints, and reproduction evidence.
+The following paper is organized as follows. Section~\ref{sec:prelim} summarizes preliminary background and Appendix~\ref{app:related_work} discusses related work, Section~\ref{sec:methods}
+presents the master LP and its features, and Section~\ref{sec:ocs} describes
+the OCS solver framework, its certificate and hardware search. Section~\ref{sec:experiments}
+reports experimental results and ablations, and the appendix provides containment
+theorems, physical-validation details, co-design blueprints, and reproduction evidence.
 
 
 % ---- plots restored from the long version, original placement ----
@@ -126,7 +124,7 @@ proposes implementations and hardware search neighborhoods.
 % % \caption{Heuristics based Sequential design vs Our Unified Optimization Paradigm.
 % % (Left) Baseline methods decouple hardware search, operation-level tiling, and static fusion, precluding cross-stage trade-offs.
 % % (Right) CHEETAH presents a unified LLM-driven mathematical framework that jointly optimizes tiling, placement, and more while learning from a causal ledger.}
-% \caption{Heuristics based sequential design versus our unified optimization paradigm.
+% \caption{Heuristics-based sequential design versus our unified optimization paradigm.
 % (Left) Baseline methods decouple hardware search, operation-level tiling, and static fusion, precluding cross-stage trade-offs.
 % (Right) CHEETAH presents a unified master linear program that jointly optimizes tiling, placement, and more while learning from a causal ledger.}
 % \label{fig::workflow}
