@@ -11,12 +11,6 @@ CHEETAH couples these choices to temporal storage and shared hardware in an LP
 relaxation; this is a distinction in formulation, not a claim that prior work
 lacks joint optimization altogether.
 
-First-order solver methods~\citep{applegate2022practicallargescalelinearprogramming}
-and McCormick envelopes~\citep{mccormick1976computability} supply the optimization
-building blocks. LLM proposal systems such as FunSearch and
-AlphaEvolve~\citep{romera2024mathematical,novikov2025alphaevolvecodingagentscientific}
-inform the outer-loop role: propose changes, then evaluate them independently.
-
 \paragraph{Architecture and mapping search.}
 Timeloop searches mappings for a supplied architecture~\citep{timeloop}.
 CoSA uses mixed-integer optimization for a constrained mapping objective;
@@ -59,18 +53,21 @@ bound the represented schedules.
 
 \paragraph{Relaxations and first-order LP solvers.}
 McCormick envelopes bound bilinear products over boxes
-\citep{mccormick1976computability}; exactness for a single integral-factor
+\citep{mccormick1976computability}. Exactness for a single integral-factor
 product does not prove exactness of an entire fractional co-design program.
 PDLP demonstrates practical large-scale linear programming with first-order
 methods~\citep{applegate2022practicallargescalelinearprogramming}. GPU variants
 include cuPDLP.jl, cuPDLP-C, and cuPDLPx
 \citep{lu2024cupdlpjlgpuimplementationrestarted,lu2024cupdlpcstrengthenedimplementationcupdlp,lu2025cupdlpxenhancedgpubasedfirstorder}.
-OCS, our in-house solver framework, uses an anchored restarted PDHG kernel with
-a diagonal variable metric and structured forward/adjoint operators for
-discovery, and compact fits with original-domain verification as its certified
-closing stage. A certified primal--dual objective interval establishes the frozen
+OCS, our in-house solver framework, A certified primal--dual objective interval establishes the frozen
 LP accuracy independently of any single iterate's tolerance; it does not
 establish a general automatic solver or discrete-design optimality.
+First-order solver methods~\citep{applegate2022practicallargescalelinearprogramming}
+and McCormick envelopes~\citep{mccormick1976computability} supply the optimization
+building blocks. LLM proposal systems such as FunSearch and
+AlphaEvolve~\citep{romera2024mathematical,novikov2025alphaevolvecodingagentscientific}
+inform the outer-loop role: propose changes, then evaluate them independently.
+
 
 \paragraph{LLM-guided search.}
 FunSearch and AlphaEvolve combine model proposals with deterministic evaluation
