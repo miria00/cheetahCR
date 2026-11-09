@@ -1,4 +1,4 @@
-\section{Extended Related Work}
+\section{Related Work}
 \label{app:related_work}\label{related_work_appendix}\label{sec:related}
 Accelerator mappers such as Timeloop, CoSA, and ZigZag explore tiling and
 mapping, and FAST connects hardware search, mapping, and fusion in a staged
@@ -8,14 +8,9 @@ chiplet architectures and layer pipelines~\citep{hong2023dosa,cai2024gemini}.
 TileFlow and FADiff address fusion-aware dataflows and joint mapping--fusion
 optimization~\citep{zheng2023tileflow,jia2025fadifffusionawaredifferentiableoptimization}.
 CHEETAH couples these choices to temporal storage and shared hardware in an LP
-relaxation. This is a distinction in formulation, not a claim that prior work
-lacks joint optimization altogether.
-
-First-order solver methods~\citep{applegate2022practicallargescalelinearprogramming}
-and McCormick envelopes~\citep{mccormick1976computability} supply the optimization
-building blocks. LLM proposal systems such as FunSearch and
+relaxation. LLM proposal systems such as FunSearch and
 AlphaEvolve~\citep{romera2024mathematical,novikov2025alphaevolvecodingagentscientific}
-inform the outer-loop role: propose changes, then evaluate them independently.
+inform the outer-loop role: propose changes, then evaluate them independently. This is its distinction in formulation.
 
 \paragraph{Architecture and mapping search.}
 Timeloop searches mappings for a supplied architecture~\citep{timeloop}.

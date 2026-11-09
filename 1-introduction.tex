@@ -2,19 +2,18 @@
 \label{sec:introduction}
 AI inference demand is expected to grow by $10{,}000\times$ over the next five
 years~\citep{cra2026aifuture}, and general-purpose accelerators leave much of
-the attainable efficiency unrealized, which motivates accelerators specialized to
-their workloads. A specialized accelerator is not one decision but many coupled
-ones: datapath and memory sizing, per-operation tiling, which tensors stay
+the attainable efficiency unrealized. This motivates the recent surge in designing accelerators specialized to
+their deep learning workloads. However, designing specialized accelerators span a wide breadth of numerous complex coupled decisions. Examples include: datapath and memory sizing, per-operation tiling, which tensors stay
 resident and when, what is fused, and what is recomputed rather than reloaded.
 These choices interact through shared capacity and bandwidth, and jointly they
 span a design space exceeding $\mathcal O(10^{2300})$
 configurations~\citep{zhang_fast}, far too large to enumerate, simulate, or
-materialize as one explicit program. Existing flows therefore decompose the
-problem: they fix a hardware configuration, map each operation in isolation, and
+materialize as one explicit program. Existing methodology therefore decompose the
+problem by fixing a hardware configuration, mapping each operation in isolation,
 then optimize reuse and fusion on what remains. Every prior co-design flow shares this
 sequential pipeline, and it is why the joint problem has stayed open: each stage
-commits before the global memory consequences of its choice are known, and the
-commitment is irreversible downstream. The failure is concrete. A mapper that
+commits before the global acceleration consequences of its choice are known, and the
+commitment is irreversible downstream. The sub-optimal outcome is concrete. A mapper that
 exports its fastest isolated tile can consume exactly the on-chip memory needed
 to keep a neighboring tensor resident, so the locally optimal tile forces a DRAM
 round trip and the complete schedule is slower. A slightly slower tile would
@@ -32,6 +31,8 @@ trade-off, because it exists only in the joint space.
 (Right) CHEETAH presents a unified master linear program that jointly optimizes tiling, placement, and more while learning from a causal ledger.}
 \label{fig::workflow}
 \end{figure}
+
+
 In this paper we introduce \textbf{\textsc{CHEETAH}}: \acroletter{C}o-designed
 \acroletter{H}ardware \acroletter{E}xploration via \acroletter{E}fficient
 \acroletter{T}hroughput and \acroletter{H}ybrid-search, a mathematically
@@ -46,27 +47,27 @@ prefixes, expert weights and skip connections (Section~\ref{sec:methods}).
 Table~\ref{tab:capability-matrix} positions it against nine such systems, and
 Theorem~\ref{thm:containment} (Appendix~\ref{app:fast_containment}) proves that
 the staged tiling-then-fusion search of prior sequential pipelines embeds in
-CHEETAH's relaxation at the same objective, so the formulation subsumes those
+CHEETAH's relaxation at the same objective. Therefore our formulation subsumes those
 pipelines rather than resembling them. Prefill and decode are the same program
 over different event sequences, which matters most for decode: with top-$k$
 routing, batch 32 touches about 163 of 256 experts rather than 8, so
 provisioning, batching and temporal residency must be chosen together.
 
-Three properties defeat off-the-shelf solving (Appendix~\ref{app:naive_fails}):
+Three properties make off-the-shelf solving of the inner optimization problem difficult:
 the LP does not fit in memory (Llama-1 13B alone is $10.1$M columns by $18.3$M
-rows, 51\,PB dense, over $10^{2300}$ branches), its optimal face is massively
-degenerate, and its coefficients span $10^{-6}$ to $10^{15}$, so standard
+rows, 51\,PB dense, over $10^{2300}$ branches), its optimal surface is massively
+degenerate, and its coefficients span $10^{-6}$ to $10^{15}$. Standard
 first-order methods plateau and off-the-shelf solvers return no usable
-certificate. CHEETAH solves the master LP by branch and bound over
-whole-program branches with OCS~\citep{feng2026ocs}, our in-house solver,
+certificate or do not converge. CHEETAH solves the master LP by branch and bound over
+whole-program branches with OCS~\citep{feng2026ocs}, our in-house solver developed for scale,
 which certifies a lower bound $L_b$ per branch by exact checks over the
 original domain. Pruning leaves $L=\min_bL_b$ and
-the best feasible cost $U$ bracketing the optimum, and the 1,557-branch DeepSeek-V3
+the best feasible cost $U$ bracketing the optimum. For example, the 1,557-branch DeepSeek-V3
 master LP closes to a certified $0.07\%$ gap. Integral recovery and replay turn
 the relaxation into a chip and a schedule, outputs distinct from the bound, and
-an LLM architect reads the resulting resource prices to propose implementations
-and hardware neighborhoods in place of brute-force outer search. The
-hardware--software interactions themselves live in the inner formulation, not
+an LLM architect reads the resulting Lagrangian duals to propose implementations
+and hardware neighborhoods, replacing brute-force hardware configuration outer search. The crucial
+hardware--software interactions and physical feasibility constraints that must not be violated live in the inner mathematical formulation, not
 in the LLM.
 
 % \begin{figure}[ht!]
@@ -80,14 +81,14 @@ in the LLM.
 % (Right) CHEETAH presents a unified master linear program that jointly optimizes tiling, placement, and more while learning from a causal ledger.}
 % \label{fig::workflow}
 % \end{figure}
-\paragraph{Contributions.} CHEETAH combines a unified HW/SW design relaxation
+\paragraph{Contributions.} CHEETAH presents a new paradigm for unified HW/SW design
 and certified optimization with an LLM architect that
 proposes implementations and hardware search neighborhoods.
 \begin{enumerate}
 
 \item \textbf{CHEETAH formulation.}
     We introduce time-indexed LP variables $p_{i,t}^k$ and rematerialization variables $r_{i,t}$ to enable cheap recompute operations instead of paying DRAM reload costs, supporting skip connections and multi-fanout nodes.
-    We unify tiling and fusion through \textbf{McCormick envelopes} and resource
+    We unify tiling and fusion through McCormick envelopes and resource
     epigraphs. Binary tile--residency products are exact at integral choices, while
     continuous hardware/service products retain their explicit relaxation.
     These couplings expose tiling--placement trade-offs that sequential
@@ -95,25 +96,23 @@ proposes implementations and hardware search neighborhoods.
     % This enables the LP to discover trade-offs where accepting a suboptimal tiling configuration enables superior fusion, or vice versa---precisely the cross-stage interactions that the sequential pipeline cannot capture.
     \item \textbf{Certified optimization and executable validation.} Per-branch
     certificates checked over the original domain bound the complete master LP
-    rather than a restricted support, and analytical replay validates a
+    rather than a restricted support, and analytical replay validates the
     separately recovered design
-    (Section~\ref{sec:solver_vm}). Global discrete optimality remains open.
+    (Section~\ref{sec:solver_vm}). Broad global discrete optimality remains open, and (Appendix~\ref{app:naive_fails}) details optimization specifics. 
 
-    \item \textbf{LLM Architect Outer Loop.} The architect interprets resource prices and a causal ledger of earlier trials to propose hardware and implementation changes. Deterministic checks admit proposals, and the LLM itself supplies no certificate. This couples architecture exploration with the optimizer's diagnostics rather than relying only on black-box scores.
+    \item \textbf{LLM Architect Outer Loop.} The architect interprets Lagrangian duals and a causal ledger of trials to propose hardware and implementation changes. Deterministic checks admit proposals, and the LLM itself supplies no certificate. This couples architecture exploration with the optimizer's diagnostics rather than relying only on black-box scores. 
 
     \item \textbf{Inference speedup.} Across 12 workloads, CHEETAH co-designs
     chips that outperform the naive TPU-v3 baseline by an order of magnitude on
     vision, LLM prefill and LLM decode (Figure~\ref{fig:speedup},
-    Section~\ref{sec:experiments}). These are analytical results under the
-    TPU-v3 timing proxy, not measured serving gains, and the prefill and decode
-    designs are different chips.
+    Section~\ref{sec:experiments}). These analytical results are presented with the simulated TPU-v3 baseline to be in accordance with Google's prior work~\citep{zhang_fast}. Supporting pre-RTL and Verilog experiments are summarized in Appendix~\ref{sec:rtl_validation} 
 \end{enumerate}
 
 The following paper is organized as follows. Section~\ref{sec:prelim} summarizes preliminary background and Appendix~\ref{app:related_work} discusses related work, Section~\ref{sec:methods}
-presents the master LP and its features, and Section~\ref{sec:ocs} describes
-the OCS solver framework, its certificate and hardware search. Section~\ref{sec:experiments}
-reports experimental results and ablations, and the appendix provides containment
-theorems, physical-validation details, co-design blueprints, and reproduction evidence.
+presents the master CHEETAH mathematical formulation and its features, and Section~\ref{sec:ocs} describes
+the solver algorithm, its certificate and hardware search. Section~\ref{sec:experiments}
+reports experimental results and ablations, the Appendix provides containment
+theorems, physical-validation details, co-design blueprints, pre-RTL evidence, extended baselines, further discussion, limitations and future work.
 
 
 % ---- plots restored from the long version, original placement ----
@@ -133,6 +132,6 @@ theorems, physical-validation details, co-design blueprints, and reproduction ev
 \begin{figure}[t]
     \centering
 \includegraphics[width=1.0\linewidth]{fig3/speedup_final_v8.png}
-\caption{Speedup over the simulated naive TPU-v3 baseline, to be consistent with prior work~\citep{zhang_fast}, for EfficientNet, SD1.5 UNet and LLM workloads. Vision workloads compare naive TPU-v3, static and CHEETAH. LLMs add separate CHEETAH prefill and decode results. Red crosses mark static infeasibility.}
+\caption{Speedup over the simulated naive TPU-v3 baseline, for EfficientNet, SD1.5 UNet and LLM workloads. Vision workloads compare naive TPU-v3, static and CHEETAH. LLMs add separate CHEETAH prefill and decode results. Red crosses mark static infeasibility.}
 \label{fig:speedup}
 \end{figure}

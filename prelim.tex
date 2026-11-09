@@ -10,9 +10,7 @@ and recovery details in \ref{app:lp_relaxation}).
 
 \subsection{Capability Comparison}
 \label{sec:capability-matrix}
-Table~\ref{tab:capability-matrix} compares decision spaces, rather than claiming
-that every listed capability has a measured gain. CHEETAH's row describes the
-master LP. Appendix~\ref{sec:decode_decomp} identifies the subset exercised by
+Table~\ref{tab:capability-matrix} compares decision spaces and their features considered in prior work. CHEETAH's row summarizes the comprehensive features our system encapsulates. Appendix~\ref{sec:decode_decomp} identifies further optimization and modeling details exercised by
 the full-inference execution. The table distinguishes searched decisions from
 restricted or user-specified support. DeFiNES chooses caching versus overlap
 recomputation, and Fast-and-Fusiest searches dependency-respecting orders within
@@ -24,10 +22,10 @@ per-layer proxy objective and Fast-and-Fusiest's its fixed-hardware mapspace,
 but neither is a bound over a joint hardware--schedule domain. The last column
 denotes one joint mathematical program rather than staged co-search, and DOSA's
 qualifying program is nonconvex.
-The comparison is not only descriptive: Theorem~\ref{thm:containment} in
-Appendix~\ref{app:fast_containment} exhibits an injective, objective-preserving
-embedding of the lifted FAST fusion set into our relaxation, so by
-Corollary~\ref{cor:optimum} our bound is never worse than FAST's matched
+The comparison is also presented rigorously in  Theorem~\ref{thm:containment} of
+Appendix~\ref{app:fast_containment}. This exhibits an injective, objective-preserving
+embedding of the lifted sequential solution set into our relaxation, so by
+Corollary~\ref{cor:optimum} our bound is never worse than the matched sequential
 objective and any fixed-hardware gap must come from the extra degrees of
 freedom, from rounding, or from cost-model and baseline conventions rather than
-from FAST points lying outside the search space.
+points lying outside the search space.
