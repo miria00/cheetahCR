@@ -5,8 +5,7 @@ Discrete selections are relaxed to $[0,1]$ and bounded products to convex
 envelopes (Appendix~\ref{app:containment}), so the LP optimum lower-bounds only
 the domain the formulation and its certificate cover. Recovery then chooses
 integral hardware and implementations and checks dependencies, storage,
-transfers and predicted latency (Appendix~\ref{app:lps}, with the relaxation
-and recovery details in \ref{app:lp_relaxation}).
+transfers and predicted latency (Appendix~\ref{app:lps}).
 
 \subsection{Capability Comparison}
 \label{sec:capability-matrix}
@@ -22,7 +21,7 @@ per-layer proxy objective and Fast-and-Fusiest's its fixed-hardware mapspace,
 but neither is a bound over a joint hardware--schedule domain. The last column
 denotes one joint mathematical program rather than staged co-search, and DOSA's
 qualifying program is nonconvex.
-The comparison is also presented rigorously in  Theorem~\ref{thm:containment} of
+Analysis of the comparison is also presented rigorously in  Theorem~\ref{thm:containment} of
 Appendix~\ref{app:fast_containment}. This exhibits an injective, objective-preserving
 embedding of the lifted sequential solution set into our relaxation, so by
 Corollary~\ref{cor:optimum} our bound is never worse than the matched sequential
