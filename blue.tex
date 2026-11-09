@@ -2,7 +2,7 @@
 
 
 We provide detailed blueprints for eight CHEETAH designs below. For
-each workload we give two variants: \textbf{Variant 1} (TSMC N7~\citep{wu2016iedm7nm,chang2017sram7nm,tsmc_logic_technology} +
+each workload we give two variants: \textbf{Variant 1} (TSMC N7~\citep{wu2016iedm7nm,chang2017sram7nm,tsmc_logic_technology,europractice_tsmc7} +
 GDDR/LPDDR~\citep{micron2020gddr6x,jedec2021lpddr5x} commodity memory) and \textbf{Variant 2} (TSMC N5~\citep{yeap2019iedm5nm,wikichip2020tsmc5nm,tsmc_logic_technology} + HBM3~\citep{jedec2022hbm3}
 upgraded memory).  Within a workload, the two variants share the same PE
 grid, so both inherit the same compute floor under the tile-dependent joint-tile
@@ -43,7 +43,7 @@ consumes $< 0.4\%$ of peak BW), so paying for HBM3 (TSMC N5) buys lower TDP per 
 % ----- V1 / Llama-1 13B -----
 \begin{table}[h]
 \centering
-\caption{Workload: \texttt{llama1\_13b}~$\cdot$~TSMC N7~$\cdot$~$V_\text{dd}=0.75$\,V~\citep{europractice_tsmc7}~$\cdot$~1.0\,GHz.}
+\caption{Workload: \texttt{llama1\_13b}~$\cdot$~TSMC N7~$\cdot$~$V_\text{dd}=0.75$\,V~$\cdot$~1.0\,GHz.}
 \label{tab:cheetah_v1_llama1_13b}
 \small\setlength{\tabcolsep}{6pt}
 \begin{tabular}{@{}ll@{}}
@@ -107,7 +107,7 @@ LP solve time           & 1.7\,s \\
 % ----- V1 / Llama-1 65B -----
 \begin{table}[h]
 \centering
-\caption{Workload: \texttt{llama1\_65b}~$\cdot$~TSMC N7~$\cdot$~$V_\text{dd}=0.75$\,V~\citep{europractice_tsmc7}~$\cdot$~1.0\,GHz.}
+\caption{Workload: \texttt{llama1\_65b}~$\cdot$~TSMC N7~$\cdot$~$V_\text{dd}=0.75$\,V~$\cdot$~1.0\,GHz.}
 \label{tab:cheetah_v1_llama1_65b}
 \small\setlength{\tabcolsep}{6pt}
 \begin{tabular}{@{}ll@{}}
@@ -171,7 +171,7 @@ LP solve time           & 6.7\,s \\
 % ----- V1 / Llama-3 70B -----
 \begin{table}[h]
 \centering
-\caption{Workload: \texttt{llama3\_70b}~$\cdot$~TSMC N7~$\cdot$~$V_\text{dd}=0.75$\,V~\citep{europractice_tsmc7}~$\cdot$~1.0\,GHz.}
+\caption{Workload: \texttt{llama3\_70b}~$\cdot$~TSMC N7~$\cdot$~$V_\text{dd}=0.75$\,V~$\cdot$~1.0\,GHz.}
 \label{tab:cheetah_v1_llama3_70b}
 \small\setlength{\tabcolsep}{6pt}
 \begin{tabular}{@{}ll@{}}
@@ -236,7 +236,7 @@ LP solve time           &  \\
 % ----- V1 / DeepSeek-V3 -----
 \begin{table}[h]
 \centering
-\caption{Workload: \texttt{deepseek\_v3}~$\cdot$~TSMC N7~$\cdot$~$V_\text{dd}=0.75$\,V~\citep{europractice_tsmc7}~$\cdot$~1.0\,GHz.}
+\caption{Workload: \texttt{deepseek\_v3}~$\cdot$~TSMC N7~$\cdot$~$V_\text{dd}=0.75$\,V~$\cdot$~1.0\,GHz.}
 \label{tab:cheetah_v1_deepseek_v3}
 \small\setlength{\tabcolsep}{6pt}
 \begin{tabular}{@{}ll@{}}
