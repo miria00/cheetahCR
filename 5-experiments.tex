@@ -55,7 +55,7 @@ timing/precision proxy. The recovered decoder preserves BF16 operands, ordered
 FP32 arithmetic, routing and paid entry obligations, and standalone nonmatrix
 service outside the phase boundary is not silently included.
 
-\paragraph{Physical Design Validation.} Since simulations ultimately leave a gap to real-world physical performance, we validate all results through a five-level audit process (Appendix~\ref{app:validation}): (i) Roofline Auditor, (ii) Campaign Validator, (iii) Causal Ledger, (iv) solver diagnostics, and (v) six pre-RTL gates. Each CHEETAH design must pass all five audit tiers before it is deemed feasible and reported.
+\paragraph{Physical Design Validation.} Since simulations ultimately leave a gap to real-world physical performance, we validate all results through a five-level audit process (Appendix~\ref{app:details}, \ref{app:validation}): (i) Roofline Auditor, (ii) Campaign Validator, (iii) Causal Ledger, (iv) solver diagnostics, and (v) six pre-RTL gates. Each CHEETAH design must pass all five audit tiers before it is deemed feasible and reported.
 Appendix~\ref{app:gates} states the six gates and their thresholds,
 Appendix~\ref{app:coeff_provenance} records where every gate constant and cost
 coefficient comes from, and Appendix~\ref{app:blueprints} gives the complete
