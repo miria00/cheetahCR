@@ -182,7 +182,7 @@ neighborhood; the deterministic Validator + roofline auditor enforce hard
 constraints.
 
 \medskip
-\textbf{Important facts about the evaluator (CORGIsolve joint-tile).}
+\textbf{Important facts about the evaluator (OCS-CHEETAH joint-tile).}
 For each fixed hardware candidate, joint-tile already \emph{jointly} optimizes:
 \begin{itemize}[leftmargin=1.4em, itemsep=1pt, topsep=2pt]
     \item per-layer tiling selection $y_{i,c}$ over precomputed Pareto
@@ -379,7 +379,7 @@ DEPLOYMENT PROFILE (active for this campaign)
     L3_global_buffer_size:   [16, 32, 64, 128]
 
 Tailor `search_patch` to this profile. Do NOT always maximize
-Perf/TDP; respect the profile's objective_mode. CORGIsolve V1
+Perf/TDP; respect the profile's objective_mode. OCS-CHEETAH V1
 still optimizes inner-loop tiling/fusion/remat for each chip;
 your job is to point it at the chip region whose trade-offs
 match this user need.
@@ -418,7 +418,7 @@ DEPLOYMENT PROFILE (active for this campaign)
     L3_global_buffer_size:   [128, 256]
 
 Tailor `search_patch` to this profile. Do NOT always maximize
-Perf/TDP; respect the profile's objective_mode. CORGIsolve V1
+Perf/TDP; respect the profile's objective_mode. OCS-CHEETAH V1
 still optimizes inner-loop tiling/fusion/remat for each chip;
 your job is to point it at the chip region whose trade-offs
 match this user need.
