@@ -13,10 +13,11 @@ Reported chips are screened by six pre-RTL feasibility gates whose
 constants carry an audited provenance trail. CHEETAH's new mathematical abstraction for co-design 
 presents a novel
 framework, though much future work remains (Appendix~\ref{app:limitations}). The reported
-speedups are currently measured in Verilog as analytical models, and not measured tapeout silicon. 
-Cross-GEMM fusion, unrestricted overlap, and calibrating the cost model
-against fabricated hardware to closing the tape-out gap remain future work. These are
-some directions we hope this formulation makes tractable.
+speedups are predictions of an analytical cost model, supported by RTL and
+synthesis evidence rather than by fabricated silicon. Cross-GEMM fusion,
+unrestricted overlap, and calibration of the cost model against manufactured
+hardware remain open, and we hope the formulation presented here makes these
+directions tractable.
 
 
 
