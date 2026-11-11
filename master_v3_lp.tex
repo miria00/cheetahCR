@@ -1,11 +1,11 @@
 \section{Master Linear Program and Solve Specifics}
 \label{app:master_rows}\label{app:master_v3}
-Appendices~\ref{app:rows_retained}--\ref{app:rows_scope} list the rows block by
-block: the retained tiling--placement block (\ref{app:rows_retained}), cover,
-lifecycle and storage (\ref{app:rows_cover}), capacities, staging and installed
-hardware (\ref{app:rows_capacity}), resource demands and service envelopes
-(\ref{app:rows_service}), direct rooflines (\ref{app:physical_rooflines}) and feature
-scope (\ref{app:rows_scope}). Subsection~\ref{app:lps} closes the appendix with
+Appendices~\ref{app:rows_retained}--\ref{app:physical_rooflines} list the rows block by
+block: the retained tiling--placement block and the encoded decision families
+(\ref{app:rows_retained}), cover, lifecycle and storage (\ref{app:rows_cover}),
+capacities, staging and installed hardware (\ref{app:rows_capacity}), resource
+demands and service envelopes (\ref{app:rows_service}) and direct rooflines
+(\ref{app:physical_rooflines}). Subsection~\ref{app:lps} closes the appendix with
 the relaxation and recovery details, the reasons off-the-shelf solving fails,
 and the LP matrix structure.
 
@@ -50,7 +50,7 @@ branch to a larger family. The retained schedule block below explains inclusion
 of the supplied joint LP when it is configured as a branch. The certified
 1,557-branch instance (Section~\ref{sec:ocs}) uses the causal blocks and their identified extensions.
 
-\subsection{The Retained Joint Tiling--Placement Block}\label{app:rows_retained}
+\subsection{The Retained Block and Encoded Decision Families}\label{app:rows_retained}
 For original operation $i$, configuration $c$, edge $e$, and fixed time label
 $t$, let $P_{ik}=p_{\mathrm{assoc}(i,k),o(i)}$ for an associated activation,
 $P_{iW}=p^W_{i,o(i)}$ for weights, and $P_{ik}=0$ when no placement association
@@ -72,6 +72,55 @@ cost units. Its explicit rows, in the original joint-LP notation, are
 These rows preserve the original fractional savings convention. Extra cold-start,
 copy, or exact-product constraints are not appended to this block. Causal
 execution uses its own complete contract instead.
+
+\paragraph{Encoded decision families.}\label{app:rows_scope}
+% retained but disabled: three-column feature table with native results
+% \begin{table}[h]
+% \centering\small
+% \caption{Master encoding and the current native performance result.}\label{tab:feature_scope}
+% \begin{tabularx}{\linewidth}{@{}lXX@{}}
+% \toprule
+% Family & Encoding & Native result credited here \\
+% \midrule
+% Hardware sizing & Shared resources, installed banks, area/power rows & One chip; explicit interface assumptions \\
+% Tiling and batching & Independent cover and work coefficients & Compatible shared-weight GEMMs and per-use tiles \\
+% Fusion/registers & Original ports, outputs and private workspace & SwiGLU and elementwise storage choices \\
+% Temporal placement & Tier states, paid copies, transient capacity & 246 KV chains vs.\ 193 in a fixed partition \\
+% KV persistence & Append identities, prefix readiness, terminal backing & Full history and paid restoration \\
+% Parameter supply & Staging, panel buffers, raw/converted backing & Full-K panels and paid FP8-to-BF16 receiver \\
+% Rematerialization & Retained schedule or explicit repeat extension & No native repeat-column gain claimed \\
+% Precision/sparsity & Separately qualified implementation contracts & Fixed capture precision; no pruning/quality gain \\
+% Overlap/reordering & Event placement and resource epigraphs & Serial inter-kernel replay; internal panel pipelines \\
+% \bottomrule
+% \end{tabularx}
+% \end{table}
+\begin{table}[h]
+\centering\small
+\caption{Encoded decision families of the master.}\label{tab:feature_scope}
+\begin{tabularx}{\linewidth}{@{}lX@{}}
+\toprule
+Family & Encoding \\
+\midrule
+Hardware sizing & Shared resources, installed banks, area/power rows \\
+Tiling and batching & Independent cover and work coefficients \\
+Fusion/registers & Original ports, outputs and private workspace \\
+Temporal placement & Tier states, paid copies, transient capacity \\
+KV persistence & Append identities, prefix readiness, terminal backing \\
+Parameter supply & Staging, panel buffers, raw/converted backing \\
+Rematerialization & Retained schedule or explicit repeat extension \\
+Precision/sparsity & Separately qualified implementation contracts \\
+Overlap/reordering & Event placement and resource epigraphs \\
+\bottomrule
+\end{tabularx}
+\end{table}
+Table~\ref{tab:feature_scope} lists the encoded families. The generic formulation
+can express further clock, memory technology or reuse
+contracts, but they are not thereby members of the certified finite native
+pool. Adding a branch, implementation, or hardware range requires a new
+instance identity and new bounds. Quality-changing alternatives additionally
+need their own numerical contract.
+
+\input{update/wo24_features}
 
 \subsection{Coverage, Lifecycle and Storage}\label{app:rows_cover}
 All following equations use scaled coordinates in one native branch.
@@ -335,52 +384,3 @@ remain declared assumptions. The NoC-size and chip-average density rows are
 proxies, not detailed network congestion or hotspot models; arbitrary bank/link
 overlap additionally needs its actual resource incidence. LP construction and
 recovery use the same identified coefficient set and gates.
-
-\subsection{Feature Scope}\label{app:rows_scope}
-% retained but disabled: three-column feature table with native results
-% \begin{table}[h]
-% \centering\small
-% \caption{Master encoding and the current native performance result.}\label{tab:feature_scope}
-% \begin{tabularx}{\linewidth}{@{}lXX@{}}
-% \toprule
-% Family & Encoding & Native result credited here \\
-% \midrule
-% Hardware sizing & Shared resources, installed banks, area/power rows & One chip; explicit interface assumptions \\
-% Tiling and batching & Independent cover and work coefficients & Compatible shared-weight GEMMs and per-use tiles \\
-% Fusion/registers & Original ports, outputs and private workspace & SwiGLU and elementwise storage choices \\
-% Temporal placement & Tier states, paid copies, transient capacity & 246 KV chains vs.\ 193 in a fixed partition \\
-% KV persistence & Append identities, prefix readiness, terminal backing & Full history and paid restoration \\
-% Parameter supply & Staging, panel buffers, raw/converted backing & Full-K panels and paid FP8-to-BF16 receiver \\
-% Rematerialization & Retained schedule or explicit repeat extension & No native repeat-column gain claimed \\
-% Precision/sparsity & Separately qualified implementation contracts & Fixed capture precision; no pruning/quality gain \\
-% Overlap/reordering & Event placement and resource epigraphs & Serial inter-kernel replay; internal panel pipelines \\
-% \bottomrule
-% \end{tabularx}
-% \end{table}
-\begin{table}[h]
-\centering\small
-\caption{Encoded decision families of the master.}\label{tab:feature_scope}
-\begin{tabularx}{\linewidth}{@{}lX@{}}
-\toprule
-Family & Encoding \\
-\midrule
-Hardware sizing & Shared resources, installed banks, area/power rows \\
-Tiling and batching & Independent cover and work coefficients \\
-Fusion/registers & Original ports, outputs and private workspace \\
-Temporal placement & Tier states, paid copies, transient capacity \\
-KV persistence & Append identities, prefix readiness, terminal backing \\
-Parameter supply & Staging, panel buffers, raw/converted backing \\
-Rematerialization & Retained schedule or explicit repeat extension \\
-Precision/sparsity & Separately qualified implementation contracts \\
-Overlap/reordering & Event placement and resource epigraphs \\
-\bottomrule
-\end{tabularx}
-\end{table}
-Table~\ref{tab:feature_scope} lists the encoded families. The generic formulation
-can express further clock, memory technology or reuse
-contracts, but they are not thereby members of the certified finite native
-pool. Adding a branch, implementation, or hardware range requires a new
-instance identity and new bounds. Quality-changing alternatives additionally
-need their own numerical contract.
-
-\input{update/wo24_features}

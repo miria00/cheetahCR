@@ -24,3 +24,24 @@ in two meaningful ways: as an end-to-end co-design system for efficient
 accelerators, and as an automated optimization engine for existing hardware.
 By fixing the architecture, the inner loop derives optimal tiling and
 scheduling strategies that act as custom speedups for targeted inference tasks.
+The moment for this work is unusually consequential. Inference demand is
+growing far faster than general-purpose silicon improves, and the data centers
+built to meet it now draw power on a scale that shapes grid planning and
+energy policy. Every point of utilization recovered by a better schedule, and
+every watt removed by a chip sized to its workload, is multiplied across
+billions of daily requests. The same formulation serves users who will never
+design a chip. A research group with one fixed GPU node, a startup serving a
+single model, or a public institution running inference under a hard power
+budget can each ask the inner optimizer for the best schedule its hardware
+admits, with a certificate of how far from the model ceiling it sits. For
+research, an exact and auditable co-design program opens questions that
+heuristic pipelines could not pose: which architectural features a model
+family provably needs, how much of a speedup is physics and how much is
+scheduling, and what a new network should look like if it is to run well on
+the chips that exist. Three directions are most urgent. The declared model
+should extend to training and to multi-chip systems. The loop should close
+with fabricated silicon, so that the cost model is calibrated rather than
+assumed. The solver should become fast enough to sit inside a compiler.
+Together these would turn hardware/software co-design from a sequence of
+expert judgments into a reproducible optimization that any team can run, at a
+time when the cost of getting it wrong is measured in gigawatts.
