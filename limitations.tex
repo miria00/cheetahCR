@@ -1,21 +1,14 @@
 \section{Limitations, Future Work, and Broader Impact}\label{app:limitations}
 CHEETAH is a new mathematical abstraction for global HW/SW co-design.
 It exposes tile choice, tensor residency, rematerialization, fusion and hardware provisioning to one linear program, so cross-stage trade-offs that sequential pipelines cannot express become ordinary variables of a single optimization.
-Sequential accelerator pipelines make locally optimal mapping decisions before they know the global memory schedule, and we prove that the lifted sequential feasible set is contained in CHEETAH's, isolate a fixed-hardware free-$y$ gain on Llama-3 70B, and demonstrate a second strict separation in capacity-constrained DeepSeek-V3, where tile-dependent footprints enable schedules unavailable to both the stock pipeline and an oracle two-pass sequential baseline.
-The decomposition of the speedups in Figure~\ref{fig:speedup}, up to $24.20\times$ on LLM prefill and $17.93\times$ on LLM decode, and the sensitivity sweeps show that the gain is not merely the result of adding MACs, and a rounded, simulated replay shows that the trade-offs are not an LP artifact.
-This is the first formal and empirical demonstration that tiling-then-fusion loses solutions, paired with a joint optimization method that recovers them in precisely characterized operating regimes, with a certificate that says how far any schedule can still go.
-It matters because inference demand is growing far faster than general-purpose silicon improves, and every point of utilization recovered by a better schedule, and every watt removed by a chip sized to its workload, is multiplied across billions of daily requests.
+We prove that the lifted sequential feasible set is contained in CHEETAH's, isolate a fixed-hardware free-$y$ gain on Llama-3 70B, and demonstrate a second strict separation on capacity-constrained DeepSeek-V3.
+The decomposition of the speedups in Figure~\ref{fig:speedup}, up to $24.20\times$ on LLM prefill and $17.93\times$ on LLM decode, shows that the gain is not merely the result of adding MACs, and a rounded, simulated replay shows that the trade-offs are not an LP artifact.
+This is the first formal and empirical demonstration that tiling-then-fusion loses solutions, paired with a joint method that recovers them and a certificate that says how far any schedule can still go.
 
 The reported efficiency quantities are roofline-model diagnostics, not measured silicon utilization, and real implementations would still incur NoC, SRAM, pipeline and control overheads.
 The certificate is relative to the declared implementation library and cost model, and the RTL evidence validates mechanisms rather than a fabricated chip.
-These limits bound what the numbers claim, not the formulation.
 
-Future work can build on this framework in two meaningful ways: as an end-to-end co-design system for efficient accelerators, and as an automated optimization engine for existing hardware, where the inner loop derives optimal tiling and scheduling strategies that act as custom speedups for targeted inference tasks.
-The same formulation serves users who will never design a chip.
-A research group with one fixed GPU node, a startup serving a single model, or a public institution running inference under a hard power budget can each ask the inner optimizer for the best schedule its hardware admits, with a certificate of how far from the model ceiling it sits.
-For research, an exact and auditable co-design program opens questions that heuristic pipelines could not pose: which architectural features a model family provably needs, how much of a speedup is physics and how much is scheduling, and what a new network should look like if it is to run well on the chips that exist.
-Three directions are most urgent.
-The declared model should extend to training and to multi-chip systems, so that a whole cluster and its parallelism strategy become one program.
-The loop should close with fabricated silicon, so that the cost model is calibrated rather than assumed and each tape-out tightens the next certificate.
-The solver should become fast enough to sit inside a compiler, so that every deployment is scheduled to a certified gap at build time.
-Together these would turn hardware/software co-design from a sequence of expert judgments into a reproducible optimization that any team can run, at a time when the cost of getting it wrong is measured in gigawatts.
+CHEETAH turns co-design from a sequence of expert judgments into one reproducible optimization with a certified gap, and that abstraction reaches well beyond the inference accelerators studied here.
+The same program can serve as an end-to-end design engine for new silicon and as an optimization engine for the hardware that already exists, and it opens questions that heuristic pipelines could not pose, from which architectural features a model family provably needs to what a new network should look like if it is to run well on the chips that exist.
+Inference demand is growing far faster than general-purpose silicon improves, and every point of utilization and every watt that a certified co-design recovers is multiplied across billions of daily requests.
+We see this work as the foundation for a broad program of certified HW/SW optimization across the full stack and lifecycle of machine learning systems.
