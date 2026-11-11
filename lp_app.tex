@@ -47,77 +47,76 @@ At $L=T=720$ the Llama-3 70B fixed-tile control has 2.07M variables, 2.33M
 constraints and 4.67M nonzeros, and the joint-tile instance is of the same
 order with edge-indexed placement variables. Both are sparse, at about
 $10^{-6}$ density, with a time-banded pattern and a few wide capacity rows.
-\iffalse % retained but disabled: fixed-tile versus joint-tile LP structure table
-Table~\ref{tab:lp_structure_v0_v1} records the two controls' sparse
-patterns. Fixed incidence and menus permit index reuse. Numerical coefficient
-changes can still require new scaling and norm checks, and a changed library
-or dependency graph can change the pattern itself.
-\begin{table}[ht!]
-\centering
-\caption{Structural comparison of the original fixed-tile and joint-tile controls.
-For Llama3-70b: $L=720$, $T=720$, $E\approx L$.}
-\label{tab:lp_structure_v0_v1}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{lll}
-\toprule
-\textbf{Property} & \textbf{fixed-tile control} & \textbf{CHEETAH} \\
-\midrule
-\textbf{Variables} &
-$T_i\ (L)$ + $p^I, p^O, p^W, r\ (4 \cdot L \cdot T)$ + $T_{\mathrm{final}}\ (1)$ &
-$T_i\ (L)$ + $y_{i,c}\ (LC)$ + $p_{e,t}\ (ET)$ \\
-& + $\mathit{FT}_i\ (L)\ \approx\ 4L^2 + 2L + 1$ &
-+ $p^W, r\ (2LT)$ + $w_{i,c,k}\ (3LC)\ \approx\ 3L^2 + 4LC + L$ \\
-\midrule
-\textbf{Llama-3 70B actual} &
-$L{=}720,\ T{=}720\ \to$ 2.07M vars, 2.33M constraints, 4.67M nnz &
-Similar order of magnitude; $p_{e,t}$ is edge-indexed ($ET$) \\
-& &
-instead of layer-pair-indexed, which saves ${\approx}L^2$ vars \\
-& & when DAG is mostly linear \\
-\midrule
-\textbf{Density} &
-$\mathrm{nnz}/(m \cdot n) \approx 9.6 \times 10^{-7}$ (${\approx}1$ nnz per million entries) &
-Similar; row group (5) is the most dense \\
-\midrule
-\textbf{Avg.\ nnz/row} &
-$\approx 2.0$ &
-$\approx 2.0$ with bursts up to $4L + L$ on capacity rows \\
-\midrule
-\textbf{Constant pattern} &
-Yes, parametric in $L$. Every workload of $L$ layers gets the &
-Yes, parametric in $(L, C, E, T)$. DAG topology lives in \\
-\textbf{across runs} &
-exact same matrix template; only coefficient values &
-the $(i, e, t)$ index map, but row template is invariant. \\
-& (\texttt{T\_max}, \texttt{T\_min}, \texttt{d\_I/O/W}) change. &
-Sparsity pattern is workload-agnostic. \\
-\midrule
-\textbf{Banded} &
-Most rows touch only $(i,t)$ and $(i,t{-}1)$ &
-McCormick triples (4a/b/c) are 1–2 nnz; \\
-& (persistence chains, weight monotone, $\mathit{FT}$ recurrences). &
-persistence on edge (6) couples $(e,t)$ to $(e,t{-}1)$. \\
-& Bandwidth $\approx T$ along the time axis. & Same time-band structure. \\
-\midrule
-\textbf{Exception to} &
-Rows from group (C): global memory capacity per timestep &
-Rows from group (5): span all $E$ edges + all $L$ weight \\
-\textbf{band-ness} &
-span all $L$ weights at that timestep $\to$ wide ${\approx}L{+}2$ &
-footprints at that timestep $\to\ {\approx}E{+}L \approx 2L$ nnz \\
-& nnz rows, $T$ of them. & rows, $T$ of them. \\
-\midrule
-\textbf{Why constant} &
-Per-row degree distribution is bimodal: &
-Same bimodal pattern, plus a small $(3 \cdot L \cdot C)$ \\
-\textbf{pattern works} &
-$\mathcal{O}(L^2)$ rows with ${\leq}3$ nnz + $\mathcal{O}(T)$ fat &
-dense McCormick block. Still sparse in aggregate. \\
-\textbf{for solver} &
-capacity rows. Our solver handles this after preconditioning. & \\
-\bottomrule
-\label{tab:LP_struct}
-\end{tabular}%
-}
-\end{table}
-\fi
+% retained but disabled: fixed-tile versus joint-tile LP structure table
+% Table~\ref{tab:lp_structure_v0_v1} records the two controls' sparse
+% patterns. Fixed incidence and menus permit index reuse. Numerical coefficient
+% changes can still require new scaling and norm checks, and a changed library
+% or dependency graph can change the pattern itself.
+% \begin{table}[ht!]
+% \centering
+% \caption{Structural comparison of the original fixed-tile and joint-tile controls.
+% For Llama3-70b: $L=720$, $T=720$, $E\approx L$.}
+% \label{tab:lp_structure_v0_v1}
+% \resizebox{\textwidth}{!}{%
+% \begin{tabular}{lll}
+% \toprule
+% \textbf{Property} & \textbf{fixed-tile control} & \textbf{CHEETAH} \\
+% \midrule
+% \textbf{Variables} &
+% $T_i\ (L)$ + $p^I, p^O, p^W, r\ (4 \cdot L \cdot T)$ + $T_{\mathrm{final}}\ (1)$ &
+% $T_i\ (L)$ + $y_{i,c}\ (LC)$ + $p_{e,t}\ (ET)$ \\
+% & + $\mathit{FT}_i\ (L)\ \approx\ 4L^2 + 2L + 1$ &
+% + $p^W, r\ (2LT)$ + $w_{i,c,k}\ (3LC)\ \approx\ 3L^2 + 4LC + L$ \\
+% \midrule
+% \textbf{Llama-3 70B actual} &
+% $L{=}720,\ T{=}720\ \to$ 2.07M vars, 2.33M constraints, 4.67M nnz &
+% Similar order of magnitude; $p_{e,t}$ is edge-indexed ($ET$) \\
+% & &
+% instead of layer-pair-indexed, which saves ${\approx}L^2$ vars \\
+% & & when DAG is mostly linear \\
+% \midrule
+% \textbf{Density} &
+% $\mathrm{nnz}/(m \cdot n) \approx 9.6 \times 10^{-7}$ (${\approx}1$ nnz per million entries) &
+% Similar; row group (5) is the most dense \\
+% \midrule
+% \textbf{Avg.\ nnz/row} &
+% $\approx 2.0$ &
+% $\approx 2.0$ with bursts up to $4L + L$ on capacity rows \\
+% \midrule
+% \textbf{Constant pattern} &
+% Yes, parametric in $L$. Every workload of $L$ layers gets the &
+% Yes, parametric in $(L, C, E, T)$. DAG topology lives in \\
+% \textbf{across runs} &
+% exact same matrix template; only coefficient values &
+% the $(i, e, t)$ index map, but row template is invariant. \\
+% & (\texttt{T\_max}, \texttt{T\_min}, \texttt{d\_I/O/W}) change. &
+% Sparsity pattern is workload-agnostic. \\
+% \midrule
+% \textbf{Banded} &
+% Most rows touch only $(i,t)$ and $(i,t{-}1)$ &
+% McCormick triples (4a/b/c) are 1–2 nnz; \\
+% & (persistence chains, weight monotone, $\mathit{FT}$ recurrences). &
+% persistence on edge (6) couples $(e,t)$ to $(e,t{-}1)$. \\
+% & Bandwidth $\approx T$ along the time axis. & Same time-band structure. \\
+% \midrule
+% \textbf{Exception to} &
+% Rows from group (C): global memory capacity per timestep &
+% Rows from group (5): span all $E$ edges + all $L$ weight \\
+% \textbf{band-ness} &
+% span all $L$ weights at that timestep $\to$ wide ${\approx}L{+}2$ &
+% footprints at that timestep $\to\ {\approx}E{+}L \approx 2L$ nnz \\
+% & nnz rows, $T$ of them. & rows, $T$ of them. \\
+% \midrule
+% \textbf{Why constant} &
+% Per-row degree distribution is bimodal: &
+% Same bimodal pattern, plus a small $(3 \cdot L \cdot C)$ \\
+% \textbf{pattern works} &
+% $\mathcal{O}(L^2)$ rows with ${\leq}3$ nnz + $\mathcal{O}(T)$ fat &
+% dense McCormick block. Still sparse in aggregate. \\
+% \textbf{for solver} &
+% capacity rows. Our solver handles this after preconditioning. & \\
+% \bottomrule
+% \label{tab:LP_struct}
+% \end{tabular}%
+% }
+% \end{table}

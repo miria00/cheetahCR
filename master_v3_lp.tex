@@ -121,22 +121,21 @@ recomputation extension must charge repeat work, gate it on prior production,
 restore tier state without a second birth/completion, and explicitly identify
 which backing obligations can be discharged by recomputation.
 
-\iffalse % retained but disabled: FP8/BF16 selected-representation contract
-\paragraph{Selected numerical representation.}
-A raw FP8 parameter and its converted BF16 parameter are different objects.
-For converted object $j$, raw owner $r(j)$, and consumer $i$, define
-$R_{ij}=\sum_{k\ni i:\,k\ {\rm reads}\ r(j)}y_k$.
-Selected-reader branches replace the corresponding nonterminal user row by
-\begin{align}
- \beta_{je}&\le\sum_\tau p_{j\tau e}+D_{ie}+R_{ij},&
- R_{ij}&\le\sum_\tau p_{r(j),\tau e}+D_{ie}.
- \label{eq:native_formats}
-\end{align}
-The actual selected implementation still requires readiness in its declared
-input tier. Original conversion nodes remain covered. Earlier branches retain
-their original backing rows; Eq.~\eqref{eq:native_formats} is an identified
-alternative contract, not an equivalence transformation of them.
-\fi
+% retained but disabled: FP8/BF16 selected-representation contract
+% \paragraph{Selected numerical representation.}
+% A raw FP8 parameter and its converted BF16 parameter are different objects.
+% For converted object $j$, raw owner $r(j)$, and consumer $i$, define
+% $R_{ij}=\sum_{k\ni i:\,k\ {\rm reads}\ r(j)}y_k$.
+% Selected-reader branches replace the corresponding nonterminal user row by
+% \begin{align}
+%  \beta_{je}&\le\sum_\tau p_{j\tau e}+D_{ie}+R_{ij},&
+%  R_{ij}&\le\sum_\tau p_{r(j),\tau e}+D_{ie}.
+%  \label{eq:native_formats}
+% \end{align}
+% The actual selected implementation still requires readiness in its declared
+% input tier. Original conversion nodes remain covered. Earlier branches retain
+% their original backing rows; Eq.~\eqref{eq:native_formats} is an identified
+% alternative contract, not an equivalence transformation of them.
 
 \subsection{Capacities, Staging and Installed Hardware}\label{app:rows_capacity}
 Define the transient ordinary occupancy
@@ -175,28 +174,27 @@ proxies. Host/local channel counts and receiver variants are whole-program
 choices; arrays, vector lanes, SRAM and DRAM bandwidth remain shared continuous
 coordinates inside each branch.
 
-\iffalse % retained but disabled: explicit parameter staging rows
-\paragraph{Explicit parameter staging.}
-For each stageable owner $j$, the additional coordinates obey
-\begin{align}
- &\eta_{j0}=\eta_{jE}=0,\quad
-   \eta_{j,e+1}=\eta_{je}+\rho_{je}-\delta_{je},\nonumber\\
- &0\le\delta_{je}\le\eta_{je}\le\beta_{je},\qquad
-   0\le\rho_{je}\le p_{jHe}-v_{jHe},\nonumber\\
- &\sum_jm_j\eta_{je}\le C_{\rm stage}\lambda_b,\nonumber\\
- &\sum_jm_j(\eta_{je}-\delta_{je}+\rho_{je})
-   +\sum_{j,\ H\in\{\tau,\tau'\}}\min(m_j,C_{\rm stage})q_{j,\tau\to\tau',e}
-   +\sum_k R_k^{\rm stage}a_{ke}\le C_{\rm stage}\lambda_b .
- \label{eq:native_staging}
-\end{align}
-The state bound applies through exit; the transition row applies to action
-events. $R_k^{\rm stage}$ is the original implementation's reservation:
-ordinary host service uses $\min(B_k^H,C_{\rm stage})$, while full-K and receiver
-implementations use their explicit panel/buffer reservation.
-The drain enters DRAM state and transient capacity in
-Eqs.~\eqref{eq:native_state}--\eqref{eq:native_capacity}.
-Dedicated staging and receiver SRAM cannot simultaneously hold ordinary data.
-\fi
+% retained but disabled: explicit parameter staging rows
+% \paragraph{Explicit parameter staging.}
+% For each stageable owner $j$, the additional coordinates obey
+% \begin{align}
+%  &\eta_{j0}=\eta_{jE}=0,\quad
+%    \eta_{j,e+1}=\eta_{je}+\rho_{je}-\delta_{je},\nonumber\\
+%  &0\le\delta_{je}\le\eta_{je}\le\beta_{je},\qquad
+%    0\le\rho_{je}\le p_{jHe}-v_{jHe},\nonumber\\
+%  &\sum_jm_j\eta_{je}\le C_{\rm stage}\lambda_b,\nonumber\\
+%  &\sum_jm_j(\eta_{je}-\delta_{je}+\rho_{je})
+%    +\sum_{j,\ H\in\{\tau,\tau'\}}\min(m_j,C_{\rm stage})q_{j,\tau\to\tau',e}
+%    +\sum_k R_k^{\rm stage}a_{ke}\le C_{\rm stage}\lambda_b .
+%  \label{eq:native_staging}
+% \end{align}
+% The state bound applies through exit; the transition row applies to action
+% events. $R_k^{\rm stage}$ is the original implementation's reservation:
+% ordinary host service uses $\min(B_k^H,C_{\rm stage})$, while full-K and receiver
+% implementations use their explicit panel/buffer reservation.
+% The drain enters DRAM state and transient capacity in
+% Eqs.~\eqref{eq:native_state}--\eqref{eq:native_capacity}.
+% Dedicated staging and receiver SRAM cannot simultaneously hold ordinary data.
 
 \subsection{Native Resource Demands and Linear Service Envelopes}\label{app:rows_service}
 For original stream bytes $B_k$, MAC demand $M_k$, and vector work $V_k$,
@@ -232,29 +230,28 @@ Thus stored rows contain the physical graph without asserting equality to it.
 The source demand bounds $\bar Q$ cover the full declared generator domain,
 not just activated working columns.
 
-\iffalse % retained but disabled: fixed-port service rows
-Fixed-rate ports use integer-scaled service rows. With $B_k^H,B_k^L$ the
-original host/local byte coefficients, $t_k^{\rm setup}$ host setup ticks,
-$B_k^{\rm stage}$ the staging service bytes and $t_k^{\rm recv}$ receiver ticks,
-\begin{align}
- &\sum_{j,\ H\in\{\tau,\tau'\}}m_jq_{j,\tau\to\tau',e}
-       +\sum_jm_j\rho_{je}+\sum_k(B_k^H+r_Ht_k^{\rm setup})w_{ke}
-       \le r_Hd_e,\nonumber\\
- &\sum_{j,\ S\in\{\tau,\tau'\}}m_jq_{j,\tau\to\tau',e}
-       +\sum_k B_k^Lw_{ke}\le r_Ld_e,\nonumber\\
- &\sum_jm_j(\rho_{je}+\delta_{je})
-       +2\sum_{j,\ H\in\{\tau,\tau'\}}m_jq_{j,\tau\to\tau',e}
-       +\sum_k B_k^{\rm stage}w_{ke}\le r_{\rm stage}d_e,\nonumber\\
- &\sum_k t_k^{\rm recv}w_{ke}\le d_e,\qquad
-   \sum_k t_k^{\min}w_{ke}\le d_e .
- \label{eq:native_fixed_ports}
-\end{align}
-Stage-owner sums are restricted to $\mathcal J_{\rm stage}$.
-Ordinary kernels pay $B_k^{\rm stage}=2B_k^H$; streamed implementations
-substitute their paid staging recipe. Absent receiver/setup/floor terms are zero.
-The current source retains the floor row when its implementation contract
-requires it.
-\fi
+% retained but disabled: fixed-port service rows
+% Fixed-rate ports use integer-scaled service rows. With $B_k^H,B_k^L$ the
+% original host/local byte coefficients, $t_k^{\rm setup}$ host setup ticks,
+% $B_k^{\rm stage}$ the staging service bytes and $t_k^{\rm recv}$ receiver ticks,
+% \begin{align}
+%  &\sum_{j,\ H\in\{\tau,\tau'\}}m_jq_{j,\tau\to\tau',e}
+%        +\sum_jm_j\rho_{je}+\sum_k(B_k^H+r_Ht_k^{\rm setup})w_{ke}
+%        \le r_Hd_e,\nonumber\\
+%  &\sum_{j,\ S\in\{\tau,\tau'\}}m_jq_{j,\tau\to\tau',e}
+%        +\sum_k B_k^Lw_{ke}\le r_Ld_e,\nonumber\\
+%  &\sum_jm_j(\rho_{je}+\delta_{je})
+%        +2\sum_{j,\ H\in\{\tau,\tau'\}}m_jq_{j,\tau\to\tau',e}
+%        +\sum_k B_k^{\rm stage}w_{ke}\le r_{\rm stage}d_e,\nonumber\\
+%  &\sum_k t_k^{\rm recv}w_{ke}\le d_e,\qquad
+%    \sum_k t_k^{\min}w_{ke}\le d_e .
+%  \label{eq:native_fixed_ports}
+% \end{align}
+% Stage-owner sums are restricted to $\mathcal J_{\rm stage}$.
+% Ordinary kernels pay $B_k^{\rm stage}=2B_k^H$; streamed implementations
+% substitute their paid staging recipe. Absent receiver/setup/floor terms are zero.
+% The current source retains the floor row when its implementation contract
+% requires it.
 
 The objective is $\kappa\sum_e d_e$, with $\kappa$ the exact
 stored binary64 conversion from ns to ms. Integral replay adds its declared
@@ -343,27 +340,26 @@ overlap additionally needs its actual resource incidence. LP construction and
 recovery use the same identified coefficient set and gates.
 
 \subsection{Feature Scope}\label{app:rows_scope}
-\iffalse % retained but disabled: three-column feature table with native results
-\begin{table}[h]
-\centering\small
-\caption{Master encoding and the current native performance result.}\label{tab:feature_scope}
-\begin{tabularx}{\linewidth}{@{}lXX@{}}
-\toprule
-Family & Encoding & Native result credited here \\
-\midrule
-Hardware sizing & Shared resources, installed banks, area/power rows & One chip; explicit interface assumptions \\
-Tiling and batching & Independent cover and work coefficients & Compatible shared-weight GEMMs and per-use tiles \\
-Fusion/registers & Original ports, outputs and private workspace & SwiGLU and elementwise storage choices \\
-Temporal placement & Tier states, paid copies, transient capacity & 246 KV chains vs.\ 193 in a fixed partition \\
-KV persistence & Append identities, prefix readiness, terminal backing & Full history and paid restoration \\
-Parameter supply & Staging, panel buffers, raw/converted backing & Full-K panels and paid FP8-to-BF16 receiver \\
-Rematerialization & Retained schedule or explicit repeat extension & No native repeat-column gain claimed \\
-Precision/sparsity & Separately qualified implementation contracts & Fixed capture precision; no pruning/quality gain \\
-Overlap/reordering & Event placement and resource epigraphs & Serial inter-kernel replay; internal panel pipelines \\
-\bottomrule
-\end{tabularx}
-\end{table}
-\fi
+% retained but disabled: three-column feature table with native results
+% \begin{table}[h]
+% \centering\small
+% \caption{Master encoding and the current native performance result.}\label{tab:feature_scope}
+% \begin{tabularx}{\linewidth}{@{}lXX@{}}
+% \toprule
+% Family & Encoding & Native result credited here \\
+% \midrule
+% Hardware sizing & Shared resources, installed banks, area/power rows & One chip; explicit interface assumptions \\
+% Tiling and batching & Independent cover and work coefficients & Compatible shared-weight GEMMs and per-use tiles \\
+% Fusion/registers & Original ports, outputs and private workspace & SwiGLU and elementwise storage choices \\
+% Temporal placement & Tier states, paid copies, transient capacity & 246 KV chains vs.\ 193 in a fixed partition \\
+% KV persistence & Append identities, prefix readiness, terminal backing & Full history and paid restoration \\
+% Parameter supply & Staging, panel buffers, raw/converted backing & Full-K panels and paid FP8-to-BF16 receiver \\
+% Rematerialization & Retained schedule or explicit repeat extension & No native repeat-column gain claimed \\
+% Precision/sparsity & Separately qualified implementation contracts & Fixed capture precision; no pruning/quality gain \\
+% Overlap/reordering & Event placement and resource epigraphs & Serial inter-kernel replay; internal panel pipelines \\
+% \bottomrule
+% \end{tabularx}
+% \end{table}
 \begin{table}[h]
 \centering\small
 \caption{Encoded decision families of the master.}\label{tab:feature_scope}
