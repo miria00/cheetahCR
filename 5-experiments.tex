@@ -1,8 +1,8 @@
 \section{Experiments}
 \label{sec:experiments}
-We evaluate predicted latency, search cost, and recovered schedules. Studies include prefill/decode and fixed-hardware mapping. For example, the full-input DeepSeek case
+We evaluate predicted latency, search cost, and recovered schedules. Studies include prefill/decode and fixed-hardware mapping. The full-input DeepSeek case
 adds autoregressive decode and phase-specific controls. TPU-v3 provides a
-publicly documented reference baseline consistent with prior
+publicly documented baseline consistent with prior
 work~\citep{jouppi2021ten,zhang_fast}. All speedups below are analytical and modeled results.
 
 % \paragraph{What a new paradigm should be judged on.}
@@ -108,8 +108,8 @@ for five workloads on the simulated TPU-v3 and compact NPU. Each entry keeps
 its matrix graph, full implementation menu, memory policy, timing
 library and streaming-reference formula. The TPU LLM producer and
 the vision/compact producer use different LP conventions, including the
-capacity treatment noted in the table. The stored precision proxies are
-retained, and these results do not constitute matched native INT8/BF16 experiments
+table's capacity treatment. The stored precision proxies are
+retained, and these results do not constitute matched INT8/BF16 experiments
 or recovered full-decode executions on either chip.
 
 \subsection{Search Cost and LLM Guidance}
@@ -137,7 +137,7 @@ convenience and let the formulation and its certificates carry the contribution.
 \includegraphics[width=\linewidth]{fig3/figure3.png}
 \caption{Performance breakdown of each CHEETAH component, relative
 to the naive TPU-v3 baseline. Improvements are
-additive cumulative increments of each
-workload's gain above the baseline. Since HW/SW acceleration is co-dependent, results cannot be strictly separated at a boundary.}\label{fig:accel_decompose}
+cumulative increments of each
+workload's gain above the baseline. Since HW/SW acceleration is co-dependent, results cannot be separated at a boundary.}\label{fig:accel_decompose}
 \end{figure}
 \input{update/figure3_attribution_method}

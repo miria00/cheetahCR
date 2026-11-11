@@ -220,19 +220,19 @@ The same identified template supplies combined host/HBM pin, controller,
 whole-bank capacity/count/aspect, logic-depth and NoC-size constraints in
 $F_bh_b\le g_b\lambda_b$. Fixed rates keep these ceilings linear. A
 variable-rate McCormick envelope alone cannot enforce the exact physical
-product. These are hard limits of the declared analytical model, with the same
+product. These are hard limits of the declared model, with the same
 predicates used in recovery. Aggregate bank and NoC proxies do not prove
-conflict-free arbitrary placement. Appendix~\ref{app:physical_rooflines} gives
+conflict-free placement. Appendix~\ref{app:physical_rooflines} gives
 the rows and distinguishes their current implementation from the frozen certificate.
 
 % \paragraph{Reciprocal and product envelopes.}
 \paragraph{Reciprocal and product envelopes~\lpref{8,10}.}
 For a rate $r\in[\ell,h]$, $\mathcal R$ bounds $u\approx1/r$ by tangents
 $u\ge2/a-r/a^2$ and the global secant $u\le(\ell+h-r)/(\ell h)$.
-$\mathcal M$ bounds $Z\approx Qu$ by the four McCormick inequalities on
+$\mathcal M$ bounds $Z\approx Qu$ by four McCormick inequalities on
 $[0,\bar Q]\times[1/h,1/\ell]$. All coefficients are constants, so the program
 is linear. Outward coefficient rounding preserves graph containment.
-These are relaxations of physical service, and replay reinstates the exact rates
+These relax physical service, and replay reinstates the exact rates
 and products. Selecting a discrete bandwidth fixes that rate, but continuous-rate
 envelopes remain relaxations even when implementation selectors are integral.
 
