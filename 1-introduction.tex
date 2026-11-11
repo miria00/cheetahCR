@@ -38,8 +38,8 @@ Standard first-order methods plateau and off-the-shelf solvers return no usable 
 CHEETAH solves the master LP by branch and bound over whole-program branches with OCS~\citep{feng2026ocs}, our in-house solver developed for scale, which certifies a lower bound $L_b$ per branch by exact checks over the original domain.
 Pruning leaves $L=\min_bL_b$ and the best feasible cost $U$ bracketing the optimum.
 For example, the 1,557-branch DeepSeek-V3 master LP closes to a certified $0.07\%$ gap.
-Integral recovery and replay return the relaxation into a chip and a schedule, outputs distinct from the bound, and an LLM architect reads the resulting Lagrangian duals to propose profile-targeted designs and search neighborhoods, replacing brute-force hardware configuration outer search.
-The crucial hardware--software interactions and physical feasibility constraints that must not be violated live in the inner mathematical formulation, not in the LLM.
+Integral recovery and replay return the relaxation into a chip and a schedule, outputs distinct from the bound, and an LLM Architect reads the resulting Lagrangian duals to propose profile-targeted designs and search neighborhoods, replacing brute-force hardware configuration outer search.
+The crucial HW/SW interactions and physical feasibility constraints that must not be violated live in the inner mathematical formulation, not in the LLM.
 
 % \begin{figure}[ht!]
 %     \centering
@@ -52,8 +52,8 @@ The crucial hardware--software interactions and physical feasibility constraints
 % (Right) CHEETAH presents a unified master linear program that jointly optimizes tiling, placement, and more while learning from a causal ledger.}
 % \label{fig::workflow}
 % \end{figure}
-\paragraph{Contributions.} CHEETAH presents a new paradigm for unified HW/SW design
-and certified optimization with an LLM architect that proposes implementations and hardware search neighborhoods.
+\paragraph{Contributions.} CHEETAH presents a new paradigm for unified co-design
+and certified optimization with an LLM Architect that proposes implementations and hardware search neighborhoods.
 \begin{enumerate}
 
 \item \textbf{CHEETAH formulation.}
@@ -66,7 +66,7 @@ These couplings expose tiling--placement trade-offs that sequential pipelines ca
     certificates checked over the original domain bound the complete master LP rather than a restricted support, and analytical replay validates the separately recovered design (Section~\ref{sec:solver_vm}).
 Broad global discrete optimality remains open, and Appendix~\ref{app:lps} details optimization specifics. 
 
-    \item \textbf{LLM Architect Outer Loop.} The architect interprets Lagrangian duals and a causal ledger of trials to propose hardware and implementation changes.
+    \item \textbf{LLM Architect Outer Loop.} The Architect interprets Lagrangian duals and a causal ledger of trials to propose hardware and implementation changes.
 Deterministic checks admit proposals, and the LLM itself supplies no certificate.
 This couples architecture exploration with the optimizer's diagnostics rather than relying only on black-box scores. 
 

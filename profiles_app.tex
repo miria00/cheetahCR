@@ -1,9 +1,9 @@
 \newpage
 
 
-\section{LLM-Architect Outer Loop Details}
+\section{LLM Architect Outer Loop Details}
 \label{app:llm_loop}
-The LLM-Architect outer loop proceeds through the following steps for each campaign round:
+The LLM Architect outer loop proceeds through the following steps for each campaign round:
 
 \begin{enumerate}
 
@@ -58,7 +58,7 @@ The system starts from a safe empirically valid patch and allows duals only to m
 The validator rejects any dual-guided patch that excludes known high-performing valid regions or predicts a substantially worse feasible rate.
 
 
-\subsection{Profile-Conditioned LLM-Architect Application}
+\subsection{Profile-Conditioned LLM Architect Application}
 \label{app:profiles}
 
 We evaluate if the Architect can condition hardware search on deployment intent, since speech models may prioritize latency while data analytics models may prioritize bandwidth.
@@ -68,7 +68,7 @@ Since the inner joint-tile LP and validator are identical across profiles, these
 The absolute Perf/TDP often remains within a narrow band because the joint-tile evaluator reaches a similar structural ceiling, but the hardware families used to reach that ceiling differ substantially.
 We simulate two user profiles: (i) interactive speech is a spoken dialogue model where latency is more important than bandwidth, and (ii) overnight finance batch where the user requires a large amount of financial data to be processed, but might leave it overnight to complete hence bandwidth is more important than latency.
 
-The LLM-Architect clearly learned the profile distinction.
+The LLM Architect clearly learned the profile distinction.
 Different profiles select meaningfully different chips for the same workload.
 The signal flows through the LLM's patch choice (steered by the profile prompt), and random-in-patch sampling finds the best chip within each profile-narrowed region.
 Table~\ref{tab:profile_best_chips} gives examples of best designs per profile. 
@@ -163,7 +163,7 @@ Middle-ground constraints produce intermediate invalid rate.
 
 The absolute Perf/TDP$\,\times$ values are similar within a workload across profiles (e.g.\ Llama-3 70B: $3.38$–$3.53$ across all four profiles, within ${\approx}5\%$).
 This is not a failure: it reflects the LP's structural ceiling at fixed compute.
-\emph{What differs is the chip family used to reach that ceiling.} This is precisely the design-space-narrowing benefit of profile conditioning: the same headline Perf/TDP number is achieved by hardware families with qualitatively different deployment characteristics (narrow streaming chips for interactive speech, large-bandwidth chips for overnight batch), demonstrating that profile conditioning the LLM-Architect steers the search toward different hardware trade-offs without sacrificing overall efficiency.
+\emph{What differs is the chip family used to reach that ceiling.} This is precisely the design-space-narrowing benefit of profile conditioning: the same headline Perf/TDP number is achieved by hardware families with qualitatively different deployment characteristics (narrow streaming chips for interactive speech, large-bandwidth chips for overnight batch), demonstrating that profile conditioning the LLM Architect steers the search toward different hardware trade-offs without sacrificing overall efficiency.
 
 
 
