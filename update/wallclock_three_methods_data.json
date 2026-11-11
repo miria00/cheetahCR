@@ -1,0 +1,160 @@
+{
+ "_note": "Hours of hardware-search wall-clock per workload. static and v1 are the 50-trial totals annotated on the legacy figure fig3/wallclock_new_v6.png (Static = Vizier + Timeloop + LP per trial; V1 = Vizier + LP with cached implementation coefficients), both on one H100. master_lp_h is the summed recorded wall-clock of the OCS numerical solve stages that produced the retained design (see master_lp_sources), on an A100 host. null = no such solve exists for the workload (EfficientNets and UNet are analytical recoveries with no new numerical optimizer call). 'inf' = static infeasible.",
+ "workloads": [
+  {
+   "key": "efficientnet_b1",
+   "label": "EffNet-b1",
+   "params": "7.8M",
+   "family": "vision",
+   "static_h": 10.57,
+   "v1_h": 0.07,
+   "master_lp_h": null
+  },
+  {
+   "key": "efficientnet_b2",
+   "label": "EffNet-b2",
+   "params": "9.2M",
+   "family": "vision",
+   "static_h": 7.08,
+   "v1_h": 0.06,
+   "master_lp_h": null
+  },
+  {
+   "key": "efficientnet_b3",
+   "label": "EffNet-b3",
+   "params": "12M",
+   "family": "vision",
+   "static_h": 8.44,
+   "v1_h": 0.06,
+   "master_lp_h": null
+  },
+  {
+   "key": "efficientnet_b4",
+   "label": "EffNet-b4",
+   "params": "19M",
+   "family": "vision",
+   "static_h": 17.93,
+   "v1_h": 0.06,
+   "master_lp_h": null
+  },
+  {
+   "key": "efficientnet_b5",
+   "label": "EffNet-b5",
+   "params": "30M",
+   "family": "vision",
+   "static_h": 13.8,
+   "v1_h": 0.07,
+   "master_lp_h": null
+  },
+  {
+   "key": "efficientnet_b6",
+   "label": "EffNet-b6",
+   "params": "43M",
+   "family": "vision",
+   "static_h": 17.4,
+   "v1_h": 0.07,
+   "master_lp_h": null
+  },
+  {
+   "key": "efficientnet_b7",
+   "label": "EffNet-b7",
+   "params": "66M",
+   "family": "vision",
+   "static_h": 24.96,
+   "v1_h": 0.08,
+   "master_lp_h": null
+  },
+  {
+   "key": "llama1_13b",
+   "label": "Llama1-13B",
+   "params": "13B",
+   "family": "llm",
+   "static_h": 27.25,
+   "v1_h": 0.1,
+   "master_lp_h": 0.0298
+  },
+  {
+   "key": "llama1_65b",
+   "label": "Llama1-65B",
+   "params": "65B",
+   "family": "llm",
+   "static_h": 47.0,
+   "v1_h": 0.23,
+   "master_lp_h": 0.0274
+  },
+  {
+   "key": "llama3_70b",
+   "label": "Llama3-70B",
+   "params": "70B",
+   "family": "llm",
+   "static_h": "inf",
+   "v1_h": 1.17,
+   "master_lp_h": 0.0102
+  },
+  {
+   "key": "deepseek_v3",
+   "label": "DeepSeek-V3",
+   "params": "671B",
+   "family": "llm",
+   "static_h": "inf",
+   "v1_h": 2.17,
+   "master_lp_h": 0.5345
+  }
+ ],
+ "master_lp_sources": {
+  "definition": "Sum of the recorded wall-clock ('seconds' or 'total_seconds' in each stage's result.json) of every OCS numerical solve stage in the lane of the work order that produced the retained design: whole-chip joint/hardware-screen solves, fixed-chip controls, production branch-and-bound and exact certificates. Program compilation and replays are excluded, as Timeloop cache building is excluded from the 50-trial bars. Read from the 2026-11-07 A100 shutdown snapshot on Elements.",
+  "per_workload": {
+   "deepseek_v3": {
+    "campaign": "/workspace/cheetah_wo24_20261106_v1 (A100 .42)",
+    "stages": {
+     "deepseek_joint_v1": 215.95,
+     "deepseek_joint_v2": 373.32,
+     "deepseek_production_bnb_v1": 581.97,
+     "deepseek_production6_bnb_v2 (producing B&B)": 350.72,
+     "deepseek_exact_certificate_v1": 157.21,
+     "deepseek_exact_certificate_v2": 244.91
+    },
+    "total_seconds": 1924.08,
+    "hours": 0.5345
+   },
+   "llama1_13b": {
+    "campaign": "/workspace/cheetah_wo24_20261106_v1/dense_lane_v1/13/remote_runs_v1 (A100 .42)",
+    "stages": {
+     "bnb_old_policy_v1": 48.89,
+     "attribution_continue_v1": 17.89,
+     "guard_production_v2 (production B&B, incumbent = source seed)": 40.38
+    },
+    "total_seconds": 107.16,
+    "hours": 0.0298
+   },
+   "llama1_65b": {
+    "campaign": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/65 (A100 .53)",
+    "stages": {
+     "child0_solve_v1": 43.08,
+     "hardware_only_v1_run": 16.98,
+     "control_H0_new_v1_run": 9.84,
+     "control_H0_old_v1_run": 7.69,
+     "control_H1_new_v1_run (producing)": 9.41,
+     "control_H1_old_v1_run": 7.27,
+     "saved_completion_v1": 4.37
+    },
+    "total_seconds": 98.64,
+    "hours": 0.0274
+   },
+   "llama3_70b": {
+    "campaign": "/tmp/cheetah_wo23_20261106_v1/dense_lane_v1/70 (A100 .53)",
+    "stages": {
+     "child0_solve_v1": 15.68,
+     "hardware_only_v1_run": 5.67,
+     "control_H0_new_v1_run": 2.68,
+     "control_H0_old_v1_run": 3.28,
+     "control_H1_new_v1_run (producing)": 2.65,
+     "control_H1_old_v1_run": 2.09,
+     "saved_completion_v1": 4.53
+    },
+    "total_seconds": 36.58,
+    "hours": 0.0102
+   }
+  }
+ }
+}

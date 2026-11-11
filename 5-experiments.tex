@@ -115,9 +115,9 @@ or recovered full-decode executions on either chip.
 \subsection{Search Cost and LLM Guidance}
 \label{sec:breakdown}
 Cached implementation coefficients remove repeated mapper calls from the inner
-search. In the 50-trial comparison, joint tiling reduces Llama-70B
-search time from $58.42$ to $1.17$ hours and DeepSeek-V3 from $69.39$ to $2.17$
-hours relative to the fixed-tile temporal pipeline (Figure~\ref{fig:wallclock}). Appendix~\ref{app:solver} gives the hardware
+search. In the 50-trial comparison, joint tiling searches Llama-70B in $1.17$
+hours and DeepSeek-V3 in $2.17$ hours where the static method is infeasible,
+and the OCS solves behind the retained decoders take minutes (Figure~\ref{fig:wallclock}). Appendix~\ref{app:solver} gives the hardware
 search space (\ref{app:vizier_search}) and Appendix~\ref{append::lp_perform}
 the LP sizes. These are search times,
 not inference speedups. LLM guidance reduces mean invalid trials
