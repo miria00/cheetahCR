@@ -4,7 +4,9 @@ CHEETAH presents a new paradigm for hardware--software co-design tooling: a sing
 master LP relaxation that unifies hardware sizing, implementation and tiling,
 fusion, time-indexed placement, weight and KV residency, rematerialization and
 scheduling, and more. These are decision spaces that prior methods cover only sequentially in part
-(Table~\ref{tab:capability-matrix}). On the analysis side, our containment theorem shows that
+(Table~\ref{tab:capability-matrix}). CHEETAH exposes hardware/software tradeoffs, finds useful
+analytical designs, checks their executable behavior under a declared model, and demonstrates
+selected mechanisms in RTL. On the analysis side, our containment theorem shows that
 CHEETAH subsumes rather than approximates the fusion search it generalizes.
 Branch and bound over the declared family and complete-domain certificates
 connect the relaxation to concrete designs, thus the

@@ -69,7 +69,11 @@ cost units. Its explicit rows, in the original joint-LP notation, are
 &r_{it}\le p_{et},\quad r_{it}\le p^W_{it}\quad(e\in\mathrm{in}(i),\ t>o(i)),\\
 &T_i\ge0,\qquad 0\le y,w,p,p^W,r\le\lambda_b.
 \end{align*}
-These rows preserve the original fractional savings convention. Extra cold-start,
+These rows preserve the original fractional savings convention. No aggregate
+bandwidth row is appended: the bandwidth floor of Theorem~\ref{thm:deficiency}
+is implied by the second $T_i$ row, since $T^{\max}_i(c)$ is at least the
+streamed DRAM time $Q_i(c)/b_H$ and each saving $t^k_i(c)$ is the credited
+DRAM time $q^k_i(c)/b_H$ (proof of Theorem~\ref{thm:deficiency}). Extra cold-start,
 copy, or exact-product constraints are not appended to this block. Causal
 execution uses its own complete contract instead.
 

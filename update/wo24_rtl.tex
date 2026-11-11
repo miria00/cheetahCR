@@ -73,7 +73,7 @@ stimulus obligations; there is no physical DRAM/HOST controller.
 The AV test consumes an already aligned BF16 A buffer. The FP32
 softmax/cast producer and its head-strided padding, zero-fill and store routine
 remain source-checked, rather than implemented by this RTL test. Thus the
-producer-layout fusion ablation in Table~\ref{tab:current_features} has
+selectable producer-layout fusion recorded in Table~\ref{tab:current_features} has
 analytical source/replay evidence, while final output rounding and selected
 delivery/context mechanisms have RTL evidence. The KV controller checks
 one K head/component against functional external backing: initialized padding
