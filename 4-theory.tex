@@ -27,7 +27,7 @@ $w_1+w_2=p$ that holds for exact products. Linking rows
 \sum_c w_{ick}=p_{\mathrm{assoc}(i,k)}
 \label{eq:rlt_linking}
 \end{equation}
-can strengthen a branch when its intended integral semantics justify them.
+can strengthen a branch when its intended integral semantics justify them~\citep{sherali1990hierarchy}.
 They must not be added to an immutable compatibility branch while claiming
 containment of every original fractional point.
 
@@ -187,7 +187,7 @@ where $T_{\rm naive}=\sum_iT^{\max}_i$ is the naive streaming time,
 $T^{\rm LB}_{\rm compute}=\sum_i\min_cT^{\min}_i(c)$ is the
 schedule-independent per-operation compute floor, and
 $T_{\rm memory}=\sum_i\mathrm{bytes}_i/b_H$ is the bandwidth floor. The
-denominator is the optimistic compute-plus-DRAM roofline bound on the cycles any
+denominator is the optimistic compute-plus-DRAM roofline bound~\citep{williams2009roofline,huang2024mindthegap} on the cycles any
 scheduler needs to execute $G$ on $H$. Adding NoC, SRAM, vector or control
 floors can only raise it and lower $\mathcal D$.
 \begin{theorem}[Fixed-hardware deficiency ceiling]\label{thm:deficiency}

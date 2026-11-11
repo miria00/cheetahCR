@@ -18,7 +18,7 @@ emphasizes empirical feasibility, observed invalid regions, best known
 valid designs, and physical audit signals.
 
 \item \textbf{Architect.} The online Architect, implemented as
-Qwen2.5-7B-Instruct with a LoRA adapter trained on past trial logs, diagnoses the dominant bottleneck and emits a campaign patch. The patch constrains macro-architectural search decisions such as Global Memory, DRAM bandwidth, total MACs, systolic shape,
+Qwen2.5-7B-Instruct~\citep{qwen25technicalreport} with a LoRA adapter~\citep{hu2021lora} trained on past trial logs, diagnoses the dominant bottleneck and emits a campaign patch. The patch constrains macro-architectural search decisions such as Global Memory, DRAM bandwidth, total MACs, systolic shape,
 PE grid, and batch size. A larger teacher model, DeepSeek-V3.2, was used offline to generate or critique campaign labels, but is not in the live loop.
 
 \item \textbf{Campaign validation.} A deterministic validator clips or rejects the LLM patch to enforce legal hardware ranges, TDP and area limits, MAC caps, CGM feasibility floors, compute/bandwidth coupling, and roofline constraints. This prevents the LLM from proposing physically implausible regions such as maximum-MAC/minimum-bandwidth designs. 

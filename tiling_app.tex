@@ -2,7 +2,7 @@
 \label{app:tiling}
 \suppressfloats[t]
 This section shows examples of optimal tiling, where accepting a locally slower/smaller tiling to enable better fusion or placement.
-This showcases the strength of the CHEETAH formulation, which discovers nontrivial tiling-placement-fusion trade-offs that less expressive methods would miss. The first example is Llama-3 70B on a simulated H100; the second is DeepSeek-V3 on a simulated RTX~5090.
+This showcases the strength of the CHEETAH formulation, which discovers nontrivial tiling-placement-fusion trade-offs that less expressive methods would miss. The first example is Llama-3 70B on a simulated H100~\citep{nvidia2022hopper}; the second is DeepSeek-V3 on a simulated RTX~5090~\citep{nvidia2024blackwell}.
 
 By fixing the architecture, the inner loop derives optimal tiling and scheduling strategies that can act as custom speedups for targeted inference tasks. Therefore this section briefly provides motivation for future work on expanded hardware variants. This is motivated and similar in spirit to the speedups seen be FlashAttention \citep{dao2022flashattention} due to tiling optimization. 
 

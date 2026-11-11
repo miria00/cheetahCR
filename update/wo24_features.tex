@@ -12,7 +12,7 @@ Hardware resources & Selectable finite whole-chip branches & Selectable finite w
 Implementation / tiling & Independent compatible full-K choices & Full-K choices; 13B menu grows from 25 to 31 \\
 Activation placement & Resident arena fixed; rounded producer layout selectable & Original DRAM arenas and boundaries fixed \\
 Weight residency & Original resident backing fixed; loads paid & Eligible whole-owner retention selectable; loads paid \\
-Fusion / storage & Rounded attention producer-to-AV layout selected; inherited gate/up and SwiGLU & Inherited boundaries; no new fusion recipe \\
+Fusion / storage & Rounded attention producer-to-AV layout selected; inherited gate/up and SwiGLU~\citep{shazeer2020glu} & Inherited boundaries; no new fusion recipe \\
 Tiling--placement coupling & Footprint, ports and shared resources checked; general lifetime exchange absent & Same restriction \\
 KV retention & Original owners, appends and entry fixed and charged & Original owners/appends charged \\
 MoE residency / offload & Original routing, groups and resident parameters fixed & Not applicable \\

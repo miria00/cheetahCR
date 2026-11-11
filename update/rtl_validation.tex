@@ -76,7 +76,7 @@ Total cycles                 & $1.6437\times10^{12}$                & $+16{,}431
 \end{table}
 
 \paragraph{Experiment 2: datapath utilization mechanism.}
-We next build one weight-stationary INT8 systolic PE cluster in synthesizable
+We next build one weight-stationary~\citep{chen2016eyeriss,kwon2020understandingreuseperformancehardware} INT8 systolic PE cluster in synthesizable
 SystemVerilog ($4\times4$ MAC array, INT8$\times$INT8$\rightarrow$INT32, with
 L1 buffers and a tile-loop FSM; plus a $16\times16$ variant), golden-verified
 against a plain-C\texttt{++} reference convolution ($8/8$ runs bit-exact).

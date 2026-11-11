@@ -11,9 +11,17 @@ CHEETAH couples these choices to temporal storage and shared hardware in an LP
 relaxation. LLM proposal systems such as FunSearch and
 AlphaEvolve~\citep{romera2024mathematical,novikov2025alphaevolvecodingagentscientific}
 inform the outer-loop role: propose changes, then evaluate them independently. This is its distinction in formulation.
+Datacenter ASICs and the TPU established the value of
+specialization~\citep{jouppi2017datacenter,magaki2016asic,xie2018extreme}, and
+LLMCompass, Chiplet Cloud and Theseus size serving hardware for large language
+models at the system and wafer
+scale~\citep{zhang2024llmcompass,peng2024chipletcloudbuildingai,zhu2024theseusexploringefficientwaferscale}.
 
 \paragraph{Architecture and mapping search.}
 Timeloop searches mappings for a supplied architecture~\citep{timeloop}.
+Interstellar, dMazeRunner, MAESTRO and MAGNet likewise analyze or generate
+dataflows for a fixed accelerator template, and Eyeriss~v2 fixes a flexible
+dataflow in silicon~\citep{yang_interstellar,dave2019dmazerunner,kwon2020understandingreuseperformancehardware,venkatesan2019magnet,chen2019eyerissv2flexibleaccelerator}.
 CoSA uses mixed-integer optimization for a constrained mapping objective, but
 its guarantee does not make the resulting latency globally optimal under an
 arbitrary simulator~\citep{huang2021cosaschedulingconstrainedoptimization}.
@@ -22,6 +30,9 @@ DOSA places architecture and mapping variables in one differentiable program
 \citep{hong2023dosa}. Gemini couples spatial mappings and architectural choices
 for multi-chiplet accelerators~\citep{cai2024gemini}. CODEBench uses
 multi-objective exploration over accelerator configurations~\citep{Tuli_2023}.
+HASCO, ConfuciuX, Apollo, Unico and learned co-design apply agile, reinforcement
+or learned search to the hardware and software
+spaces~\citep{xiao2021hasco,kao2020confuciuxautonomoushardwareresource,yazdanbakhsh2021apollotransferablearchitectureexploration,rashidi2023unico,shi2020learnedhardwaresoftwarecodesignneural}.
 FAST combines hardware, mapping, and compiler search, including a fusion ILP
 \citep{zhang_fast}. These methods motivate our restricted controls.
 CHEETAH retains alternatives until shared storage, implementation cost, and
@@ -37,14 +48,27 @@ even though they do not provide CHEETAH's complete temporal state model and
 variable hardware domain. Checkmate formulates training checkpointing as an
 integer program~\citep{jain2020checkmatebreakingmemorywall}, and POET combines
 rematerialization and paging~\citep{patil2022poettrainingneuralnetworks}.
+Sublinear-memory checkpointing, Moccasin, Coop and BladeDISC++ trade
+recomputation or symbolic-shape planning for
+footprint~\citep{chen2016trainingdeepnetssublinear,bartan2023moccasinefficienttensorrematerialization,zhang2023coopmemorycommodity,yuan2024bladediscmemoryoptimizationsbased}.
+Operator-fusion compilers such as FusionStitching, the oneDNN Graph Compiler,
+Neptune, RedFuser and Multi-DOF fusion, and polyhedral fusion heuristics,
+exploit locality on fixed
+hardware~\citep{zheng2021fusionstitchingboostingmemoryintensive,li2024onednngraphcompilerhybrid,zhao2026neptuneadvancedmloperator,Tang_2026,chen_multi_dof,acharya2020fusion}.
+KV-cache eviction such as StreamingLLM and H2O, and diffusion feature caching
+such as DeepCache, shrink inference state at a quality cost, whereas CHEETAH
+keeps every entry and prices its
+placement~\citep{xiao2024streamingllm,zhang2023h2o,ma2024deepcache}.
 CHEETAH uses paid recomputation, transfer completion, and readiness to represent
 these tradeoffs for inference. Representability alone is not a measured gain.
 Our native controls exercise only the features identified in
 Appendix~\ref{app:rows_scope}.
 
 \paragraph{Polyhedral transformations.}
-Pluto constructs affine schedules for parallelism and locality
-\citep{bondhugula2008pluto}. Tiramisu exposes a richer programmable scheduling
+Affine scheduling~\citep{feautrier1992affine} underlies this family. Pluto
+constructs affine schedules for parallelism and locality
+\citep{bondhugula2008pluto}, and Halide and Ansor search schedules for fixed
+hardware~\citep{ragan2013halide,zheng2023ansorgeneratinghighperformancetensor}. Tiramisu exposes a richer programmable scheduling
 language, including storage and recomputation transformations
 \citep{baghdadi2019tiramisu}. Their user-programmed capabilities should not be
 confused with an automatic joint search over every table axis. Conversely,
@@ -57,7 +81,9 @@ McCormick envelopes bound bilinear products over boxes
 \citep{mccormick1976computability}. Exactness for a single integral-factor
 product does not prove exactness of an entire fractional co-design program.
 PDLP demonstrates practical large-scale linear programming with first-order
-methods~\citep{applegate2022practicallargescalelinearprogramming}. GPU variants
+methods~\citep{applegate2022practicallargescalelinearprogramming,applegate2025pdlp}, and
+CvxCluster solves large granular resource-allocation programs at similar
+scale~\citep{cvxcluster2026}. GPU variants
 include cuPDLP.jl, cuPDLP-C, and cuPDLPx
 \citep{lu2024cupdlpjlgpuimplementationrestarted,lu2024cupdlpcstrengthenedimplementationcupdlp,lu2025cupdlpxenhancedgpubasedfirstorder}.
 OCS, our in-house solver framework~\citep{feng2026ocs}, is described in a
@@ -68,6 +94,10 @@ a general automatic solver or discrete-design optimality.
 \paragraph{LLM-guided search.}
 FunSearch and AlphaEvolve combine model proposals with deterministic evaluation
 \citep{romera2024mathematical,novikov2025alphaevolvecodingagentscientific}.
+EvoPrompting, LUMINA, LIMCA and Hawkeye apply language models to architecture,
+GPU and kernel exploration, and evolutionary algorithm-discovery frameworks
+generalize the proposal-then-evaluate
+loop~\citep{chen2023evopromptinglanguagemodelscodelevel,zhang2026luminallmguidedgpuarchitecture,vungarala2025limcallmautomatinganalog,tschand2026hawkeye,surina2025algorithmdiscoveryllmsevolutionary,skydiscover2026}.
 CHEETAH similarly uses an LLM to propose search interventions, with resource
 prices and failed-trial diagnostics as context. The outer loop edits
 Vizier search neighborhoods, and current master experiments can also propose

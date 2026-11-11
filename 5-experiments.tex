@@ -39,7 +39,7 @@ work~\citep{jouppi2021ten,zhang_fast}. All speedups below are analytical and mod
 \label{sec:exp_intro}
 Since software optimization alone is capped within the physics of the declared model (Theorem~\ref{thm:deficiency}), co-design is the route past it. The experimental suite comprises EfficientNet-B1--B7, Llama-1 13B/65B, Llama-3 70B,
 DeepSeek-V3~\citep{tan2019efficientnet,llama3modelcard,deepseekv3report} and
-Stable Diffusion~1.5 UNet. DeepSeek-V3 is evaluated on thirty-two 4,096-token
+Stable Diffusion~1.5 UNet~\citep{rombach2022ldm}. DeepSeek-V3 is evaluated on thirty-two 4,096-token
 Wikitext-2 prompts, each decoded greedily for 512 tokens, with FP8 weights
 dequantized to BF16. We compare static pinning, fixed-tile temporal placement
 and joint tiling under one cost convention. These are restricted controls of
@@ -63,7 +63,7 @@ blueprints of the designs that pass them, so each reported chip can be audited
 from its headline speedup down to the provenance of each constant it was
 checked against.
 
-The roofline check rejects costs below compute or memory service floors.
+The roofline check~\citep{williams2009roofline} rejects costs below compute or memory service floors.
 Table~\ref{tab:mfg_gates} lists the architectural screening thresholds. These are modeling checks, not fabricated-chip timing or packaging sign-off.
 RTL and synthesis evidence is in Appendix~\ref{sec:rtl_validation}: BF16/FP32
 decoder tests (\ref{app:wo24_decoder_rtl}), schedule-tape and INT8 datapath
