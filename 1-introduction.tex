@@ -71,10 +71,9 @@ Deterministic checks admit proposals, and the LLM itself supplies no certificate
 This couples architecture exploration with the optimizer's diagnostics rather than relying only on black-box scores. 
 
     \item \textbf{Inference speedup.} Across 12 workloads, CHEETAH co-designs
-    chips that outperform the naive TPU-v3 baseline by up to $24.20\times$ on LLM prefill, $17.93\times$ on LLM decode and $11.85\times$ on vision (Figure~\ref{fig:speedup}, Section~\ref{sec:experiments}), search $100$--$300\times$ faster than the static method, and return designs for Llama-3 70B and DeepSeek-V3, where the static method has no feasible point at all.
+    chips that outperform the naive TPU-v3 baseline by up to $24.20\times$ on LLM prefill, $17.93\times$ on LLM decode and $11.85\times$ on vision (Figure~\ref{fig:speedup}, Section~\ref{sec:experiments}), and improve search efficiency $100$--$300\times$ over the standard baseline method.
 On a fixed chip, CHEETAH's schedules reach the model's compute-or-bandwidth ceiling exactly on every LLM (Theorem~\ref{thm:deficiency}), so no software on that chip can do better and the remaining gain must come from hardware.
-These analytical results are presented with the simulated TPU-v3 baseline to be in accordance with Google's prior work~\citep{zhang_fast}.
-Supporting pre-RTL and Verilog experiments are summarized in Appendix~\ref{sec:rtl_validation}. 
+These results are presented with the simulated TPU-v3 baseline to be in accordance with Google's prior work~\citep{zhang_fast}.
 \end{enumerate}
 
 The paper is organized as follows.
