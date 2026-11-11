@@ -178,7 +178,7 @@ We now hold the design fixed and sweep a single decision, reporting the objectiv
 (LP cycles) sensitivity. Two decisions have dedicated measured sweeps: global buffer and MAC count;
 Table~\ref{tab:deficit_sweepsummary} summarizes them.
 
-\paragraph{(a) Global-buffer size $C_{\mathrm{GM}}$: measured, near-inert in
+\paragraph{(i) Global-buffer size $C_{\mathrm{GM}}$: measured, near-inert in
 the compute-bound regime.} \Cref{tab:deficit_cgm} sweeps $C_{\mathrm{GM}}$ from
 $1$ to $64$\,MiB for DeepSeek-V3 on TPU-v3 ($900$\,GB/s), for the joint (free-$y$)
 LP and for a fixed-tile FAST-subset LP. The joint LP is \emph{flat}: its objective
@@ -218,7 +218,7 @@ Fixed-tile (FAST-subset)   & 1.4627 & 1.4459 & 1.4327 & 1.4161 & 1.3863
 }
 \end{table}
 
-\paragraph{(b) Peak throughput / MAC-unit count.} The total-MAC provisioning sweep is measured: raising the PE
+\paragraph{(ii) Peak throughput / MAC-unit count.} The total-MAC provisioning sweep is measured: raising the PE
 grid from $65{,}536$ to $1{,}048{,}576$ MACs (a $16\times$ increase) reduces the
 objective by $14.0$--$15.7\times$ (Llama-1 13B $15.72\times$, DeepSeek-V3
 $14.98\times$, Llama-3 70B $14.04\times$, Llama-1 65B $14.02\times$), and the
@@ -226,7 +226,7 @@ provisioning factor to the full co-designed chip is $f_2=20.0$--$26.9\times$
 both sub-linear.
 This is the single largest decision on the objective.
 
-\paragraph{(c) DRAM bandwidth: measured, inert in the compute-bound regime.}
+\paragraph{(iii) DRAM bandwidth: measured, inert in the compute-bound regime.}
 Sweeping bandwidth from $900$ to $3{,}350$\,GB/s at the fixed $65{,}536$-MAC
 point moves the objective by $\le0.25\%$ (BW leg $=1.000$--$1.0025\times$ for
 all four LLMs): at the deployed prefill-like batch these workloads are
@@ -237,7 +237,7 @@ the roofline is memory-bound and residency / placement recover a much larger
 share. Thus bandwidth sensitivity is regime-dependent: near-zero when
 compute-bound, first-order when memory-bound.
 
-\paragraph{(d) Interconnect: on-chip NoC and inter-device topology.}
+\paragraph{(iv) Interconnect: on-chip NoC and inter-device topology.}
 \emph{On-chip}, the NoC / crossbar radix and link count set the PE-to-SRAM
 routing capacity; this is the resource bounded by the crossbar / NoC-routing
 gate of \cref{app:gates} (gate 4, $N_{\mathrm{NoC}}=n_{\mathrm{PEs}}\times
