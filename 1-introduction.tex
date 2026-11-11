@@ -10,15 +10,15 @@ span a design space exceeding $\mathcal O(10^{2300})$
 configurations~\citep{zhang_fast}, far too large to enumerate, simulate, or
 materialize as one explicit program. Existing methodology therefore decompose the
 problem by fixing a hardware configuration, mapping each operation in isolation,
-then optimize reuse and fusion on what remains. Every prior co-design flow shares this
+then optimize reuse and fusion on what remains. Prior co-design flow largely share this
 sequential pipeline, and it is why the joint problem has stayed open: each stage
 commits before the global acceleration consequences of its choice are known, and the
-commitment is irreversible downstream. The sub-optimal outcome is concrete. A mapper that
+commitment is irreversible downstream. However, this results in locally optimal but globally sub-optimal outcomes. A mapper that
 exports its fastest isolated tile can consume exactly the on-chip memory needed
 to keep a neighboring tensor resident, so the locally optimal tile forces a DRAM
 round trip and the complete schedule is slower. A slightly slower tile would
-have produced the faster program. No stage of the pipeline can see this
-trade-off, because it exists only in the joint space.
+have produced the faster program. No stage of the decoupled pipeline can see this
+trade-off, since it exists only in the joint space.
 
 \begin{figure}[t]
     \centering
