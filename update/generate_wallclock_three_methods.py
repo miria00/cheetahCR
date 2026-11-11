@@ -7,7 +7,7 @@ fig3/wallclock_three_methods_v1.png (and .pdf).
 Per workload, three stacked bars on a log-hours axis:
   Vizier+Timeloop+LP  (static method, 50 trials, one H100)
                       segments: Timeloop / Vizier + LP build / LP solve
-  Vizier+LP           (LLM-guided joint-tile formulation, 50 trials, one H100)
+  Vizier+LP           (joint-tile formulation driven by the LLM Architect, 50 trials, one H100)
                       segments: Vizier + LP build / LP solve
   Master LP (OCS)     (recorded solve stages of the retained design, A100 host)
                       segments: joint + hardware-screen solves /
@@ -46,7 +46,7 @@ MASTER_COMPONENTS = [
     ("fixed_chip_controls_s", "Fixed-chip controls", "#9e9ac8"),
     ("bnb_certificate_s", "Branch and bound + certificate", "#cbc9e2"),
 ]
-METHOD_LABELS = ["static", "LLM", "master"]
+METHOD_LABELS = ["static", "Architect", "master"]
 
 
 def stack(ax, x, comps, spec):
