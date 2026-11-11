@@ -52,7 +52,7 @@ It does not establish a general automatic solver or discrete-design optimality.
 
 \paragraph{LLM-guided search.}
 FunSearch and AlphaEvolve combine model proposals with deterministic evaluation \citep{romera2024mathematical,novikov2025alphaevolvecodingagentscientific}.
-EvoPrompting, LUMINA, LIMCA and Hawkeye apply language models to architecture, GPU and kernel exploration, and evolutionary algorithm-discovery frameworks generalize the proposal-then-evaluate loop~\citep{chen2023evopromptinglanguagemodelscodelevel,zhang2026luminallmguidedgpuarchitecture,vungarala2025limcallmautomatinganalog,tschand2026hawkeye,surina2025algorithmdiscoveryllmsevolutionary,skydiscover2026}.
+EvoPrompting, LUMINA and LIMCA apply language models to architecture and GPU exploration, and evolutionary algorithm-discovery frameworks generalize the proposal-then-evaluate loop~\citep{chen2023evopromptinglanguagemodelscodelevel,zhang2026luminallmguidedgpuarchitecture,vungarala2025limcallmautomatinganalog,surina2025algorithmdiscoveryllmsevolutionary,skydiscover2026}.
 CHEETAH similarly uses an LLM to propose search interventions, with resource prices and failed-trial diagnostics as context.
 The outer loop edits Vizier search neighborhoods, and current master experiments can also propose implementations and hardware alternatives directly.
 A proposal is admitted only after its numerical, dependency, and resource checks.
