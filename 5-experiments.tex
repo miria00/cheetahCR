@@ -97,10 +97,10 @@ the conditions under which Perf/TDP is a valid comparison.
 \subsection{Workload Results and Fixed-Hardware Controls}
 \label{sec:prog}\label{sec:fixed_hw}
 \input{update/wo24_fixed_hardware}
-The prefill-oriented designs report an average $22.07\times$ predicted
-speedup over the simulated TPU-v3 baseline, reaching $40.1\times$ on Llama-3 70B,
-under their own workload and traffic conventions. Appendix~\ref{app:blueprints}
-shows their blueprints and the separate BF16 decoders (\ref{app:bf16_decoders}).
+The co-designed chips reach up to $24.20\times$ on LLM prefill, $17.93\times$
+on LLM decode and $11.85\times$ on vision over the naive TPU-v3 baseline
+(Figure~\ref{fig:speedup}). Further ablations and results are in the appendix
+(Appendices~\ref{app:blueprints}, \ref{app:bf16_decoders} and \ref{app:native_provenance}).
 
 
 Table~\ref{tab:fixed_hw} reports the fixed-hardware software-search comparisons
