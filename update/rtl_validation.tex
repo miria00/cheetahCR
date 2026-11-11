@@ -1,19 +1,17 @@
 \section{Implementation-Level Validation: Decoder RTL and Schedule-Tape Checks}
 \label{sec:rtl_validation}
 
-Performance results remain analytical. This appendix covers BF16/FP32
-decoder mechanism tests, schedule-tape and INT8 datapath experiments, and
+This appendix covers BF16/FP32
+decoder mechanism tests, schedule-tape, datapath experiments, and
 post-synthesis area and energy measurements. Verilator~\citep{snyder_verilator} executes actual RTL and checks
-its outputs and control faults; simulation ticks do not establish achievable
+its outputs and control faults. We note that simulation ticks do not establish achievable
 frequency, full-chip area or measured model latency. The decoder tests
 cover arithmetic, selected bank/delivery calendars and a KV transition slice.
-They do not supply a complete decoder or inference controller. The
-ASAP7 placement experiment in \cref{sec:asap7} applies to its INT8 tile and
-does not calibrate the BF16 datapath, SRAM macros or external-memory package.
+The ASAP7 placement experiment in \cref{sec:asap7} applies to its INT8 tile.
 
 \input{update/wo24_rtl}
 
-\subsection{Schedule-Tape and INT8 Datapath Checks}\label{app:tape_checks}
+\subsection{Schedule-Tape and Datapath Checks}\label{app:tape_checks}
 The following experiments use their own workloads and hardware and are not
 BF16 decoder validation.
 
@@ -49,7 +47,7 @@ step.
 
 \begin{table}[t]
 \centering
-\caption{Did each decision fire? Per-decision schedule-versus-execution counters from the DeepSeek-V3 tape replay ($\CGM = 8$\,MiB). Every event the LP schedules is executed by the RTL engine exactly once, the capacity row is checked in hardware at every step, and the decisions the LP chose not to use at this cell are confirmed absent while their opcodes are proven live on a synthetic tape. The bound says how good the schedule is; the counters say the schedule is what ran.}
+\caption{Per-decision schedule-versus-execution counters from the DeepSeek-V3 tape replay ($\CGM = 8$\,MiB). Every event the LP schedules is executed by the RTL engine exactly once, the capacity row is checked in hardware at every step, and the decisions the LP chose not to use at this cell are confirmed absent while their opcodes are proven live on a synthetic tape. The bound says how good the schedule is, while the counters say the schedule is what ran.}
 \label{tab:rtl_levers}
 \scriptsize
 \setlength{\tabcolsep}{5pt}

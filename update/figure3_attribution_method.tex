@@ -7,6 +7,12 @@ sequence first extends the compatible mapping menu, then restores active compute
 arrays, off-chip DRAM bandwidth and on-chip delivery bandwidth, each with weight
 and KV residency, paid first imports and installed bank/port reservations held
 fixed. 
+DeepSeek-V3 gains mostly from
+placement and residency and favors a deep memory hierarchy with capacity for
+resident experts and KV. The bandwidth-bound dense Llamas favor off-chip and
+on-chip delivery and gain least from added arrays, and as their parameter
+count grows, weight and KV residency accounts for a growing share of the gain,
+so larger models favor capacity over delivery.
 % all eight combinations of the three resource limits are repriced, and
 % the six release orders move individual shares but not their combined
 % contribution. Off-chip bandwidth is the dominant component at $44$--$45\%$ on

@@ -1,4 +1,4 @@
-\section{Complete Master Rows}
+\section{Master Linear Program and Solve Specifics}
 \label{app:master_rows}\label{app:master_v3}
 Appendices~\ref{app:rows_retained}--\ref{app:rows_scope} list the rows block by
 block: the retained tiling--placement block (\ref{app:rows_retained}), cover,
@@ -10,18 +10,17 @@ the relaxation and recovery details, the reasons off-the-shelf solving fails,
 and the LP matrix structure.
 
 \paragraph{Power and area contracts.}
-Four power conventions appear in this paper, and they belong to separate
-experiments. The fixed-chip causal rows of the full-inference DeepSeek-V3
+In the section we disclose explicit power conventions and reticle area contracts. 
+The fixed-chip causal rows of the full-inference DeepSeek-V3
 execution (Section~\ref{sec:ocs}) are screened against a $300$\,W
-peak-power row, which that design meets at $298.69$\,W. The prefill-oriented
-designs of Appendix~\ref{app:blueprints} were searched under the $700$\,W TDP
+peak-power row, which that design meets at $298.69$\,W. The prefill-only
+experiments of Appendix~\ref{app:blueprints} were searched under the $700$\,W TDP
 cap recorded in Appendix~\ref{app:coeff_provenance}. The power-density gate of
 Appendix~\ref{app:gates} uses a utilization-discounted dynamic power. The BF16
 decoder designs of Appendix~\ref{app:bf16_decoders} report the
 all-components-active installed peak of \ref{app:physical_rooflines} without a
-cap. These are not one contract, and a ratio or gate verdict from one does not
-transfer to another.
-Equation~\eqref{eq:master} is a perspective formulation of a declared finite
+cap. 
+Equation~\eqref{eq:master} is a mathematical formulation of a declared finite
 family. If branch $b$ has equality matrix $E_b$, inequality matrix $G_b$,
 right-hand sides $e_b,g_b$, and coordinate box $[\ell_b,u_b]$, its complete
 block form is
@@ -38,20 +37,18 @@ block form is
 \label{eq:master_block}
 \end{equation}
 This is the explicit coefficient expansion of $\sum_b c_b^Tx_b$: duration
-coordinates carry cost $\kappa_b$ in causal branches; operation latency and
+coordinates carry cost $\kappa_b$ in causal branches, while operation latency and
 rematerialization carry their original costs in retained schedule branches.
 All other coordinates in these blocks have zero objective cost. Branch weights
 are not multiplied into this expression a second time. A native-only instance
 has $\mathcal B_P=\varnothing$. The declared row matrices include the direct
 physical constraints below precisely when that versioned branch includes them.
 Only finite endpoints generate box rows. A branch at weight one retains its
-original constraints and objective; setting every other branch to zero gives
+original constraints and objective, thus setting every other branch to zero gives
 an explicit inclusion map. This does not transfer a lower bound from one
 branch to a larger family. The retained schedule block below explains inclusion
 of the supplied joint LP when it is configured as a branch. The certified
-1,557-branch native instance (Section~\ref{sec:ocs}) uses the causal blocks and their identified extensions;
-its bound is not asserted for a union with additional schedule models or a
-larger implementation library.
+1,557-branch instance (Section~\ref{sec:ocs}) uses the causal blocks and their identified extensions.
 
 \subsection{The Retained Joint Tiling--Placement Block}\label{app:rows_retained}
 For original operation $i$, configuration $c$, edge $e$, and fixed time label
@@ -76,7 +73,7 @@ These rows preserve the original fractional savings convention. Extra cold-start
 copy, or exact-product constraints are not appended to this block. Causal
 execution uses its own complete contract instead.
 
-\subsection{Native Cover, Lifecycle and Storage}\label{app:rows_cover}
+\subsection{Coverage, Lifecycle and Storage}\label{app:rows_cover}
 All following equations use scaled coordinates in one native branch.
 The event range is $0\le e<E$, with storage/completion states at $0\le e\le E$.
 A column covers its original nodes $S_k$, including any conversion nodes; all
@@ -196,7 +193,7 @@ coordinates inside each branch.
 % Eqs.~\eqref{eq:native_state}--\eqref{eq:native_capacity}.
 % Dedicated staging and receiver SRAM cannot simultaneously hold ordinary data.
 
-\subsection{Native Resource Demands and Linear Service Envelopes}\label{app:rows_service}
+\subsection{Resource Demands and Linear Service Envelopes}\label{app:rows_service}
 For original stream bytes $B_k$, MAC demand $M_k$, and vector work $V_k$,
 the native variable-rate demands are
 \begin{align}

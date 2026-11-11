@@ -7,10 +7,10 @@
 
 
 
-\subsection{Linear Program Formulation Details}
+\subsection{Linear Program Structure Details}
 \label{app:lps}
 
-\subsubsection{Relaxation and Integral Recovery}\label{app:lp_relaxation}
+\paragraph{Relaxation and Integral Recovery.}\label{app:lp_relaxation}
 The master is a linear relaxation of a finite implementation and hardware
 library. Its canonical form is
 \begin{equation}
@@ -24,8 +24,9 @@ implementation assignment and checks the resulting schedule. Nearest-integer
 rounding alone is not a feasibility proof. Appendix~\ref{app:master_rows}
 gives the explicit retained joint schedule rows and the expanded causal rows.
 
-\subsubsection{Why Off-the-Shelf Solving Fails}\label{app:naive_fails}
-Three properties of the declared problem defeat standard LP solving.
+\paragraph{Matrix Structure.}\label{append::lp_perform}
+\label{app:naive_fails}
+Three properties of the declared problem cause stalls in general LP solvers.
 \paragraph{Scale.} The problem does not fit in memory. Llama-1 13B's root alone
 is $10.1$M columns by $18.3$M rows, its full execution adds $520$M rows, and
 stored densely in double precision the root alone would occupy 1.48\,PB and
@@ -42,8 +43,8 @@ first-order methods plateau at a $0.999$ primal violation after 2,000
 iterations and never descend, even with the chip pinned. A certificate
 therefore cannot be read off floating-point iterates (Section~\ref{sec:ocs}).
 
-\subsubsection{LP Matrix Structure}\label{append::lp_perform}
-At $L=T=720$ the Llama-3 70B fixed-tile control has 2.07M variables, 2.33M
+\label{append::lp_perform}
+For example, at $L=T=720$ the Llama-3 70B fixed-tile control has 2.07M variables, 2.33M
 constraints and 4.67M nonzeros, and the joint-tile instance is of the same
 order with edge-indexed placement variables. Both are sparse, at about
 $10^{-6}$ density, with a time-banded pattern and a few wide capacity rows.

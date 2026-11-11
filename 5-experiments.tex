@@ -37,14 +37,14 @@ work~\citep{jouppi2021ten,zhang_fast}. All speedups below are analytical and mod
 
 \subsection{Experimental Setup}
 \label{sec:exp_intro}
-Software alone is capped within the declared model (Theorem~\ref{thm:deficiency}), so co-design is the only route past it. The experimental suite comprises EfficientNet-B1--B7, Llama-1 13B/65B, Llama-3 70B,
+Since software optimization alone is capped within the physics of the declared model (Theorem~\ref{thm:deficiency}), co-design is the route past it. The experimental suite comprises EfficientNet-B1--B7, Llama-1 13B/65B, Llama-3 70B,
 DeepSeek-V3~\citep{tan2019efficientnet,llama3modelcard,deepseekv3report} and
 Stable Diffusion~1.5 UNet. DeepSeek-V3 is evaluated on thirty-two 4,096-token
 Wikitext-2 prompts, each decoded greedily for 512 tokens, with FP8 weights
 dequantized to BF16. We compare static pinning, fixed-tile temporal placement
 and joint tiling under one cost convention. These are restricted controls of
 CHEETAH, not separate systems. Small programs are solved directly with
-HiGHS~\citep{huangfu2018parallel}, and the native programs with OCS
+HiGHS~\citep{huangfu2018parallel}, and the native large programs with OCS
 (Section~\ref{sec:ocs}).
 Hardware is shared across each recovered execution with independent
 implementation choices, and the full-input experiment binds actual checkpoint
@@ -55,7 +55,7 @@ timing/precision proxy. The recovered decoder preserves BF16 operands, ordered
 FP32 arithmetic, routing and paid entry obligations, and standalone nonmatrix
 service outside the phase boundary is not silently included.
 
-\paragraph{Physical Design Validation.} Since simulations ultimately leave a gap to real-world physical performance, we validate all results through a five-level audit process (Appendix~\ref{app:details}, \ref{app:validation}): (i) Roofline Auditor, (ii) Campaign Validator, (iii) Causal Ledger, (iv) solver diagnostics, and (v) six pre-RTL gates. Each CHEETAH design must pass all five audit tiers before it is deemed feasible and reported.
+\paragraph{Physical Design Validation.} Since simulation ultimately leave a gap to real-world physical performance, we validate all results through a five-level audit process (Appendix~\ref{app:details}, \ref{app:validation}): (i) Roofline Auditor, (ii) Campaign Validator, (iii) Causal Ledger, (iv) solver diagnostics, and (v) six pre-RTL gates. Each CHEETAH design must pass all five audit tiers before it is deemed feasible and reported.
 Appendix~\ref{app:gates} states the six gates and their thresholds,
 Appendix~\ref{app:coeff_provenance} records where every gate constant and cost
 coefficient comes from, and Appendix~\ref{app:blueprints} gives the complete
@@ -72,7 +72,7 @@ measured energy coefficients (\ref{sec:energy_coeff}).
 
 \begin{table}[t]
 \centering\small
-\caption{Six architectural feasibility gates.}
+\caption{Six architectural feasibility gates. Threshold sources are cited explicitly in Appendix~\ref{app:coeff_provenance}.}
 \label{tab:mfg_gates}
 \begin{tabularx}{\linewidth}{@{}lXr@{}}
 \toprule
@@ -138,7 +138,7 @@ convenience and let the formulation and its certificates carry the contribution.
 \caption{Performance breakdown of each CHEETAH component, relative
 to the naive TPU-v3 baseline. Improvements are
 additive cumulative increments of each
-workload's gain above the baseline. Since HW/SW acceleration is co-dependent, it cannot be strictly separated at a boundary.}\label{fig:accel_decompose}
+workload's gain above the baseline. Since HW/SW acceleration is co-dependent, results cannot be strictly separated at a boundary.}\label{fig:accel_decompose}
 \end{figure}
 \input{update/figure3_attribution_method}
 Appendix~\ref{app:rows_scope} discusses the hardware--software interaction and

@@ -24,10 +24,7 @@ Serving / phase choice & Decode-only; original request order and starting KV fix
 \end{table}
 
 \paragraph{Hardware--software interaction.}
-Hardware and software gains are not independent. Releasing either alone
-recovers most of its benefit, but the combined saving is slightly less than
-the sum, because a wider delivery path removes traffic that better placement
-would otherwise have saved. The two must therefore be co-selected rather than
+Hardware and software gains are not independent. The two must therefore be co-selected rather than
 optimized in sequence. Added on-chip delivery and SRAM are what let storage
 fusion keep intermediates on chip and make a wider mapping menu usable at all.
 A larger menu buys nothing while execution is service-bound. The two model
@@ -38,5 +35,4 @@ on-chip delivery and gain least from added arrays, and as their parameter
 count grows, weight and KV residency accounts for a growing share of the gain,
 so larger models favor capacity over delivery.
 Table~\ref{tab:current_features} records which decision families each decoder
-design exercises. These finite-family controls do not certify unrestricted
-placement, rematerialization or scheduling optima.
+design exercises.
