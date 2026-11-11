@@ -3,9 +3,9 @@ CHEETAH presents a new mathematical abstraction for global HW/SW co-design.
 It exposes tile choice, tensor residency, rematerialization, fusion and hardware provisioning to one linear program, so cross-stage trade-offs that sequential pipelines cannot express become ordinary variables of a single optimization.
 We prove that the lifted sequential feasible set is contained in CHEETAH's, isolate a fixed-hardware free-$y$ gain on Llama-3 70B, and demonstrate a second strict separation on capacity-constrained DeepSeek-V3.
 The decomposition of the speedups in Figure~\ref{fig:speedup}, up to $24.20\times$ on LLM prefill and $17.93\times$ on LLM decode, shows that the gain is not merely the result of adding MACs, and a rounded, simulated replay shows that the trade-offs are not an LP artifact.
-This is the first formal and empirical demonstration that tiling-then-fusion loses solutions, paired with a joint method that recovers them and a certificate that says how far any schedule can still go.
+To the best of our knowledge, this is the first formal and empirical demonstration that tiling-then-fusion loses solutions, paired with a joint method that recovers them and a certificate that says how far any schedule can still go.
 
-The reported efficiency quantities are roofline-model diagnostics, not measured silicon utilization, and real implementations would still incur NoC, SRAM, pipeline and control overheads.
+We note that an in-silicon tapeout would still incur additional control overheads not modeled within the CHEETAH scope.
 The certificate is relative to the declared implementation library and cost model, and the RTL evidence validates mechanisms rather than a fabricated chip.
 
 CHEETAH models co-design from a sequence of heuristics-driven decisions into one reproducible optimization with a certified gap.
