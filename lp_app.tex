@@ -43,6 +43,11 @@ iterations and never descend, even with the chip pinned. A certificate
 therefore cannot be read off floating-point iterates (Section~\ref{sec:ocs}).
 
 \subsubsection{LP Matrix Structure}\label{append::lp_perform}
+At $L=T=720$ the Llama-3 70B fixed-tile control has 2.07M variables, 2.33M
+constraints and 4.67M nonzeros, and the joint-tile instance is of the same
+order with edge-indexed placement variables. Both are sparse, at about
+$10^{-6}$ density, with a time-banded pattern and a few wide capacity rows.
+\iffalse % retained but disabled: fixed-tile versus joint-tile LP structure table
 Table~\ref{tab:lp_structure_v0_v1} records the two controls' sparse
 patterns. Fixed incidence and menus permit index reuse. Numerical coefficient
 changes can still require new scaling and norm checks, and a changed library
@@ -115,3 +120,4 @@ capacity rows. Our solver handles this after preconditioning. & \\
 \end{tabular}%
 }
 \end{table}
+\fi
