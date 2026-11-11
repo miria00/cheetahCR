@@ -6,7 +6,7 @@ fig3/wallclock_three_methods_v1.png (and .pdf).
 
 Bars per workload, log-scale hours:
   Vizier+Timeloop+LP  (static method, 50 trials, one H100)
-  Vizier+LP           (V1 joint-tile formulation, 50 trials, one H100)
+  Vizier+LP           (LLM-guided joint-tile formulation, 50 trials, one H100)
   Master LP (OCS)     (one solve of the finite master program, A100 host)
 
 A missing master_lp_h is drawn as no bar. A static 'inf' is drawn as a red
@@ -28,7 +28,7 @@ OUT = os.path.join(ROOT, "fig3", "wallclock_three_methods_v1")
 
 METHODS = [
     ("static_h", "Vizier + Timeloop + LP (static)", "#f28e2b"),
-    ("v1_h", "Vizier + LP (V1, LLM-guided)", "#4e79a7"),
+    ("v1_h", "Vizier + LP (LLM-guided)", "#4e79a7"),
     ("master_lp_h", "Master LP (OCS, one solve)", "#59a14f"),
 ]
 

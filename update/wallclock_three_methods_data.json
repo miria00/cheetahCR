@@ -1,5 +1,5 @@
 {
- "_note": "Hours of hardware-search wall-clock per workload. static and v1 are the 50-trial totals annotated on the legacy figure fig3/wallclock_new_v6.png (Static = Vizier + Timeloop + LP per trial; V1 = Vizier + LP with cached implementation coefficients), both on one H100. master_lp_h is the summed recorded wall-clock of the OCS numerical solve stages that produced the retained design (see master_lp_sources), on an A100 host. null = no such solve exists for the workload (EfficientNets and UNet are analytical recoveries with no new numerical optimizer call). 'inf' = static infeasible.",
+ "_note": "Hours of hardware-search wall-clock per workload. static and v1 are the 50-trial totals annotated on the legacy figure fig3/wallclock_new_v6.png (Static = Vizier + Timeloop + LP per trial; LLM-guided = Vizier + LP with cached implementation coefficients), both on one H100. master_lp_h is the summed recorded wall-clock of the OCS numerical solve stages that produced the retained design (see master_lp_sources), on an A100 host. null = no such solve exists for the workload (EfficientNets and UNet are analytical recoveries with no new numerical optimizer call). 'inf' = static infeasible.",
  "workloads": [
   {
    "key": "efficientnet_b1",
