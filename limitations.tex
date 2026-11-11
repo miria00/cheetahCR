@@ -1,5 +1,5 @@
 \section{Limitations, Future Work, and Broader Impact}\label{app:limitations}
-CHEETAH is a new mathematical abstraction for global HW/SW co-design.
+CHEETAH presents a new mathematical abstraction for global HW/SW co-design.
 It exposes tile choice, tensor residency, rematerialization, fusion and hardware provisioning to one linear program, so cross-stage trade-offs that sequential pipelines cannot express become ordinary variables of a single optimization.
 We prove that the lifted sequential feasible set is contained in CHEETAH's, isolate a fixed-hardware free-$y$ gain on Llama-3 70B, and demonstrate a second strict separation on capacity-constrained DeepSeek-V3.
 The decomposition of the speedups in Figure~\ref{fig:speedup}, up to $24.20\times$ on LLM prefill and $17.93\times$ on LLM decode, shows that the gain is not merely the result of adding MACs, and a rounded, simulated replay shows that the trade-offs are not an LP artifact.
