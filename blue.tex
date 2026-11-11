@@ -1,40 +1,24 @@
 \section{Examples of CHEETAH Design Blueprints}\label{app:blueprints}
 
 
-We provide detailed blueprints for four prefill-oriented CHEETAH designs
-below, Llama-3 70B and DeepSeek-V3 in two process variants each. For
-each workload we give two variants: \textbf{Variant 1} (TSMC N7~\citep{wu2016iedm7nm,chang2017sram7nm,tsmc_logic_technology,europractice_tsmc7} +
-GDDR/LPDDR~\citep{micron2020gddr6x,jedec2021lpddr5x} commodity memory) and \textbf{Variant 2} (TSMC N5~\citep{yeap2019iedm5nm,wikichip2020tsmc5nm,tsmc_logic_technology} + HBM3~\citep{jedec2022hbm3}
-upgraded memory).  Within a workload, the two variants share the same PE
-grid, so both inherit the same compute floor under the tile-dependent joint-tile
-LP, and achieve the same speedups. 
-The variants differ only in area, TDP, and memory-subsystem cost.  
+We provide detailed blueprints for four prefill-oriented CHEETAH designs below, Llama-3 70B and DeepSeek-V3 in two process variants each.
+For each workload we give two variants: \textbf{Variant 1} (TSMC N7~\citep{wu2016iedm7nm,chang2017sram7nm,tsmc_logic_technology,europractice_tsmc7} + GDDR/LPDDR~\citep{micron2020gddr6x,jedec2021lpddr5x} commodity memory) and \textbf{Variant 2} (TSMC N5~\citep{yeap2019iedm5nm,wikichip2020tsmc5nm,tsmc_logic_technology} + HBM3~\citep{jedec2022hbm3} upgraded memory).
+Within a workload, the two variants share the same PE grid, so both inherit the same compute floor under the tile-dependent joint-tile LP, and achieve the same speedups.
+The variants differ only in area, TDP, and memory-subsystem cost.
 Every blueprint passes the roofline check and all six pre-RTL manufacturability gates of Appendix~\ref{app:details}.
 
 \paragraph{Reading the utilization rows.}
-Three rows below --- compute utilization, fusion efficiency and
-$\rho_{\mathrm{comp}}$ --- are the \emph{same} recorded ratio
-$t_{\mathrm{floor}}/T_{\mathrm{LP}}$ under their recorded names
-for it, and differ only in rounding and percentage formatting. They measure how
-closely the LP objective approaches the mapper-derived compute floor of
-\cref{eq:floor_construction}, not what fraction of the datapath's arithmetic
-the model occupies. In particular they are not comparable to FAST's compute
-utilization, which is a fraction of peak throughput and is reported there as
-$0.14$ for simulated TPU-v3~\citep{zhang_fast}; \cref{app:mfu} sets out the
-distinction and the FLOP-counting conventions a utilization comparison would
-require.
+Three rows below --- compute utilization, fusion efficiency and $\rho_{\mathrm{comp}}$ --- are the \emph{same} recorded ratio $t_{\mathrm{floor}}/T_{\mathrm{LP}}$ under their recorded names for it, and differ only in rounding and percentage formatting.
+They measure how closely the LP objective approaches the mapper-derived compute floor of \cref{eq:floor_construction}, not what fraction of the datapath's arithmetic the model occupies.
+In particular they are not comparable to FAST's compute utilization, which is a fraction of peak throughput and is reported there as $0.14$ for simulated TPU-v3~\citep{zhang_fast}; \cref{app:mfu} sets out the distinction and the FLOP-counting conventions a utilization comparison would require.
 
 \paragraph{Compute boundedness and the bandwidth choice.}
-The binding floor is compute, not bandwidth, at the target workloads examined. At the chip's peak DRAM
-bandwidth (range 544\,GB/s LPDDR5X (N7) to 2{,}457\,GB/s HBM3 (N5)), we
-measure $T_{\text{DRAM}}/T_{\text{compute}} \le 3.3 \times 10^{-3}$ on
-every blueprint.  
-Total per-forward DRAM bytes are (13B / 65B / 70B / DS-V3) $=$ (30.5 / 121.8 / 126.2 / 95.7) GB, and production inference serving amortizes these reads across many forward passes per weight load (typical batches-per-load $\ge 100$ in vLLM and TGI). 
-Therefore the steady-state DRAM traffic the LP charges per forward is far below the full weight tensor.  
-The two TSMC N7 and TSMC N5 variants presented in Subsections~\ref{app:n7} and~\ref{app:n5} aims to make the
-latency--cost--yield trade-off explicit. TSMC N7's commodity memory subsystem
-still meets the bandwidth floor with $\ge 200\times$ headroom (the LP
-consumes $< 0.4\%$ of peak BW), so paying for HBM3 (TSMC N5) buys lower TDP per delivered TFLOP, not higher compute throughput. 
+The binding floor is compute, not bandwidth, at the target workloads examined.
+At the chip's peak DRAM bandwidth (range 544\,GB/s LPDDR5X (N7) to 2{,}457\,GB/s HBM3 (N5)), we measure $T_{\text{DRAM}}/T_{\text{compute}} \le 3.3 \times 10^{-3}$ on every blueprint.
+Total per-forward DRAM bytes are (13B / 65B / 70B / DS-V3) $=$ (30.5 / 121.8 / 126.2 / 95.7) GB, and production inference serving amortizes these reads across many forward passes per weight load (typical batches-per-load $\ge 100$ in vLLM and TGI).
+Therefore the steady-state DRAM traffic the LP charges per forward is far below the full weight tensor.
+The two TSMC N7 and TSMC N5 variants presented in Subsections~\ref{app:n7} and~\ref{app:n5} aims to make the latency--cost--yield trade-off explicit.
+TSMC N7's commodity memory subsystem still meets the bandwidth floor with $\ge 200\times$ headroom (the LP consumes $< 0.4\%$ of peak BW), so paying for HBM3 (TSMC N5) buys lower TDP per delivered TFLOP, not higher compute throughput. 
 
 % \mnote{check this again}
 

@@ -3,11 +3,10 @@
 % 82f5c2ab09ecba8d7f0076c5cd442db54cb760ed5f6330e7779f2a685946853d
 \subsection{BF16/FP32 Decoder Experiments}
 \label{app:wo24_decoder_rtl}
-We compiled and ran six RTL test groups. All twelve build/test commands
-passed (Table~\ref{tab:wo24_rtl}). These are CPU-hosted Verilator
-executions of the selected mechanisms. 
-All sources, fixtures, executables, command lines, timestamps and
-outputs are preserved with the actual-run receipt.
+We compiled and ran six RTL test groups.
+All twelve build/test commands passed (Table~\ref{tab:wo24_rtl}).
+These are CPU-hosted Verilator executions of the selected mechanisms.
+All sources, fixtures, executables, command lines, timestamps and outputs are preserved with the actual-run receipt.
 
 \begin{table}[htbp]
 \centering\small
@@ -36,57 +35,32 @@ PE context isolation & 258 updates; completed output stable during
 \end{table}
 
 \paragraph{Arithmetic is executed in the DUT.}
-Integer SystemVerilog logic implements BF16 multiplication, ordered fused
-FP32 accumulation and final BF16 round-to-nearest-even. The C++
-\texttt{std::fma} oracle is confined to the testbench; no DPI, \texttt{real}
-or \texttt{shortreal} arithmetic supplies DUT outputs. Coverage includes
-1,152 subnormal results, 184 signed-zero results, 32,585 infinities and
-5,234 canonical NaNs. Overflow-cancellation and half-min-subnormal cases
-distinguish fused accumulation from separately rounded multiplication and
-addition. Canonical NaNs use \texttt{0x7fc00000}/\texttt{0x7fc0}; NaN
-payload/sign preservation is not claimed. This tests the declared ordered
-arithmetic contract, not universal reduction semantics of every upstream
-matrix library. The 577-bit exact intermediate is a functional construction
-with no synthesized-area or 1-GHz timing qualification.
+Integer SystemVerilog logic implements BF16 multiplication, ordered fused FP32 accumulation and final BF16 round-to-nearest-even. The C++ \texttt{std::fma} oracle is confined to the testbench; no DPI, \texttt{real} or \texttt{shortreal} arithmetic supplies DUT outputs. Coverage includes 1,152 subnormal results, 184 signed-zero results, 32,585 infinities and 5,234 canonical NaNs. Overflow-cancellation and half-min-subnormal cases distinguish fused accumulation from separately rounded multiplication and addition. Canonical NaNs use \texttt{0x7fc00000}/\texttt{0x7fc0}; NaN payload/sign preservation is not claimed. This tests the declared ordered arithmetic contract, not universal reduction semantics of every upstream matrix library. The 577-bit exact intermediate is a functional construction with no synthesized-area or 1-GHz timing qualification.
 
 \paragraph{Banks, delivery and output installation.}
-The DeepSeek fixtures bind original request/layer/context owners and selected
-source calendars. An actual 256-PE outer-product tile executes both FP32
-contexts. The delivery top contains ping-pong storage, addressed reads/writes,
-Ready/live state, a 64-byte A register file with paid bank preloads,
-registered fanout, matched B delay and K/wave/context tags. A shared 32-byte
-packing buffer arbitrates receiving and completed-context extraction.
-Score/AV tests include 264/516 preload ticks and 704/64 extraction ticks;
-590/30 ticks overlap MAC updates with extraction from a different context.
+The DeepSeek fixtures bind original request/layer/context owners and selected source calendars.
+An actual 256-PE outer-product tile executes both FP32 contexts.
+The delivery top contains ping-pong storage, addressed reads/writes, Ready/live state, a 64-byte A register file with paid bank preloads, registered fanout, matched B delay and K/wave/context tags.
+A shared 32-byte packing buffer arbitrates receiving and completed-context extraction.
+Score/AV tests include 264/516 preload ticks and 704/64 extraction ticks; 590/30 ticks overlap MAC updates with extraction from a different context.
 Output conversion and service remain paid, and reuse waits for installation.
-Both calendars reject four injected faults: port conflict, read-before-Ready,
-live-buffer overwrite and missing output installation.
+Both calendars reject four injected faults: port conflict, read-before-Ready, live-buffer overwrite and missing output installation.
 
-The fixture drives the controller pins from the source calendar. One tile
-instantiates all arithmetic PEs; the rest of the gang is checked through
-bank/route coordinates and demand, not replicated as a whole arithmetic chip.
-The row/column outer-product interface is not a routed nearest-neighbour
-systolic mesh. Route delays and positive output-service intervals remain
-stimulus obligations; there is no physical DRAM/HOST controller.
+The fixture drives the controller pins from the source calendar.
+One tile instantiates all arithmetic PEs; the rest of the gang is checked through bank/route coordinates and demand, not replicated as a whole arithmetic chip.
+The row/column outer-product interface is not a routed nearest-neighbour systolic mesh.
+Route delays and positive output-service intervals remain stimulus obligations; there is no physical DRAM/HOST controller.
 
 \paragraph{Fusion and KV boundaries.}
-The AV test consumes an already aligned BF16 A buffer. The FP32
-softmax/cast producer and its head-strided padding, zero-fill and store routine
-remain source-checked, rather than implemented by this RTL test. Thus the
-selectable producer-layout fusion recorded in Table~\ref{tab:current_features} has
-analytical source/replay evidence, while final output rounding and selected
-delivery/context mechanisms have RTL evidence. The KV controller checks
-one K head/component against functional external backing: initialized padding
-does not confer logical readiness, and every append waits for its write.
-Full V-cache behavior, terminal HOST DMA and the complete inference sequencer
-remain outside this test.
+The AV test consumes an already aligned BF16 A buffer.
+The FP32 softmax/cast producer and its head-strided padding, zero-fill and store routine remain source-checked, rather than implemented by this RTL test.
+Thus the selectable producer-layout fusion recorded in Table~\ref{tab:current_features} has analytical source/replay evidence, while final output rounding and selected delivery/context mechanisms have RTL evidence.
+The KV controller checks one K head/component against functional external backing: initialized padding does not confer logical readiness, and every append waits for its write.
+Full V-cache behavior, terminal HOST DMA and the complete inference sequencer remain outside this test.
 
 \paragraph{What the experiments establish.}
-All injected numerical values are synthetic; task shapes, coordinates,
-reduction order and output boundaries are source-bound. Dense tests cover
-selected mappings for all three Llamas, but not their ordinary-DRAM delivery
-controllers. These experiments support the tested arithmetic and control
-mechanisms. They do not establish trained-weight model quality, full-model bit
-equivalence, physical bank macros, routed timing, complete decoder RTL or the
-predicted accelerator runtimes. The eight N7/N5 architectural views retain
-unknown library/clock/area/power fields and apply no process-node scaling.
+All injected numerical values are synthetic; task shapes, coordinates, reduction order and output boundaries are source-bound.
+Dense tests cover selected mappings for all three Llamas, but not their ordinary-DRAM delivery controllers.
+These experiments support the tested arithmetic and control mechanisms.
+They do not establish trained-weight model quality, full-model bit equivalence, physical bank macros, routed timing, complete decoder RTL or the predicted accelerator runtimes.
+The eight N7/N5 architectural views retain unknown library/clock/area/power fields and apply no process-node scaling.

@@ -1,29 +1,15 @@
 \section{Master Linear Program and Solve Specifics}
 \label{app:master_rows}\label{app:master_v3}
-Appendices~\ref{app:rows_retained}--\ref{app:physical_rooflines} list the rows block by
-block: the retained tiling--placement block and the encoded decision families
-(\ref{app:rows_retained}), cover, lifecycle and storage (\ref{app:rows_cover}),
-capacities, staging and installed hardware (\ref{app:rows_capacity}), resource
-demands and service envelopes (\ref{app:rows_service}) and direct rooflines
-(\ref{app:physical_rooflines}). Subsection~\ref{app:lps} closes the appendix with
-the relaxation and recovery details, the reasons off-the-shelf solving fails,
-and the LP matrix structure.
+Appendices~\ref{app:rows_retained}--\ref{app:physical_rooflines} list the rows block by block: the retained tiling--placement block and the encoded decision families (\ref{app:rows_retained}), cover, lifecycle and storage (\ref{app:rows_cover}), capacities, staging and installed hardware (\ref{app:rows_capacity}), resource demands and service envelopes (\ref{app:rows_service}) and direct rooflines (\ref{app:physical_rooflines}).
+Subsection~\ref{app:lps} closes the appendix with the relaxation and recovery details, the reasons off-the-shelf solving fails, and the LP matrix structure.
 
 \paragraph{Power and area contracts.}
-In the section we disclose explicit power conventions and reticle area contracts. 
-The fixed-chip causal rows of the full-inference DeepSeek-V3
-execution (Section~\ref{sec:ocs}) are screened against a $300$\,W
-peak-power row, which that design meets at $298.69$\,W. The prefill-only
-experiments of Appendix~\ref{app:blueprints} were searched under the $700$\,W TDP
-cap recorded in Appendix~\ref{app:coeff_provenance}. The power-density gate of
-Appendix~\ref{app:gates} uses a utilization-discounted dynamic power. The BF16
-decoder designs behind the decode ratios of Figure~\ref{fig:speedup} report the
-all-components-active installed peak of \ref{app:physical_rooflines} without a
-cap. 
-Equation~\eqref{eq:master} is a mathematical formulation of a declared finite
-family. If branch $b$ has equality matrix $E_b$, inequality matrix $G_b$,
-right-hand sides $e_b,g_b$, and coordinate box $[\ell_b,u_b]$, its complete
-block form is
+In the section we disclose explicit power conventions and reticle area contracts.
+The fixed-chip causal rows of the full-inference DeepSeek-V3 execution (Section~\ref{sec:ocs}) are screened against a $300$\,W peak-power row, which that design meets at $298.69$\,W. The prefill-only experiments of Appendix~\ref{app:blueprints} were searched under the $700$\,W TDP cap recorded in Appendix~\ref{app:coeff_provenance}.
+The power-density gate of Appendix~\ref{app:gates} uses a utilization-discounted dynamic power.
+The BF16 decoder designs behind the decode ratios of Figure~\ref{fig:speedup} report the all-components-active installed peak of \ref{app:physical_rooflines} without a cap.
+Equation~\eqref{eq:master} is a mathematical formulation of a declared finite family.
+If branch $b$ has equality matrix $E_b$, inequality matrix $G_b$, right-hand sides $e_b,g_b$, and coordinate box $[\ell_b,u_b]$, its complete block form is
 \begin{equation}
 \begin{aligned}
  \min_{\lambda,x}\quad&
@@ -36,27 +22,21 @@ block form is
 \end{aligned}
 \label{eq:master_block}
 \end{equation}
-This is the explicit coefficient expansion of $\sum_b c_b^Tx_b$: duration
-coordinates carry cost $\kappa_b$ in causal branches, while operation latency and
-rematerialization carry their original costs in retained schedule branches.
-All other coordinates in these blocks have zero objective cost. Branch weights
-are not multiplied into this expression a second time. A native-only instance
-has $\mathcal B_P=\varnothing$. The declared row matrices include the direct
-physical constraints below precisely when that versioned branch includes them.
-Only finite endpoints generate box rows. A branch at weight one retains its
-original constraints and objective, thus setting every other branch to zero gives
-an explicit inclusion map. This does not transfer a lower bound from one
-branch to a larger family. The retained schedule block below explains inclusion
-of the supplied joint LP when it is configured as a branch. The certified
-1,557-branch instance (Section~\ref{sec:ocs}) uses the causal blocks and their identified extensions.
+This is the explicit coefficient expansion of $\sum_b c_b^Tx_b$: duration coordinates carry cost $\kappa_b$ in causal branches, while operation latency and rematerialization carry their original costs in retained schedule branches.
+All other coordinates in these blocks have zero objective cost.
+Branch weights are not multiplied into this expression a second time.
+A native-only instance has $\mathcal B_P=\varnothing$.
+The declared row matrices include the direct physical constraints below precisely when that versioned branch includes them.
+Only finite endpoints generate box rows.
+A branch at weight one retains its original constraints and objective, thus setting every other branch to zero gives an explicit inclusion map.
+This does not transfer a lower bound from one branch to a larger family.
+The retained schedule block below explains inclusion of the supplied joint LP when it is configured as a branch.
+The certified 1,557-branch instance (Section~\ref{sec:ocs}) uses the causal blocks and their identified extensions.
 
 \subsection{The Retained Block and Encoded Decision Families}\label{app:rows_retained}
-For original operation $i$, configuration $c$, edge $e$, and fixed time label
-$t$, let $P_{ik}=p_{\mathrm{assoc}(i,k),o(i)}$ for an associated activation,
-$P_{iW}=p^W_{i,o(i)}$ for weights, and $P_{ik}=0$ when no placement association
-exists. The block's contribution to the master objective is
-$\alpha_b(\sum_i T_i+\sum_{i,t}c_i^{\rm remat}r_{it})$; $\alpha_b$ converts its
-cost units. Its explicit rows, in the original joint-LP notation, are
+For original operation $i$, configuration $c$, edge $e$, and fixed time label $t$, let $P_{ik}=p_{\mathrm{assoc}(i,k),o(i)}$ for an associated activation, $P_{iW}=p^W_{i,o(i)}$ for weights, and $P_{ik}=0$ when no placement association exists.
+The block's contribution to the master objective is $\alpha_b(\sum_i T_i+\sum_{i,t}c_i^{\rm remat}r_{it})$; $\alpha_b$ converts its cost units.
+Its explicit rows, in the original joint-LP notation, are
 \begin{align*}
 &\sum_c y_{ic}=\lambda_b,\qquad h_b=h_b^P\lambda_b,\\
 &T_i\ge\sum_cT_i^{\min}(c)y_{ic},\qquad
@@ -69,13 +49,10 @@ cost units. Its explicit rows, in the original joint-LP notation, are
 &r_{it}\le p_{et},\quad r_{it}\le p^W_{it}\quad(e\in\mathrm{in}(i),\ t>o(i)),\\
 &T_i\ge0,\qquad 0\le y,w,p,p^W,r\le\lambda_b.
 \end{align*}
-These rows preserve the original fractional savings convention. No aggregate
-bandwidth row is appended: the bandwidth floor of Theorem~\ref{thm:deficiency}
-is implied by the second $T_i$ row, since $T^{\max}_i(c)$ is at least the
-streamed DRAM time $Q_i(c)/b_H$ and each saving $t^k_i(c)$ is the credited
-DRAM time $q^k_i(c)/b_H$ (proof of Theorem~\ref{thm:deficiency}). Extra cold-start,
-copy, or exact-product constraints are not appended to this block. Causal
-execution uses its own complete contract instead.
+These rows preserve the original fractional savings convention.
+No aggregate bandwidth row is appended: the bandwidth floor of Theorem~\ref{thm:deficiency} is implied by the second $T_i$ row, since $T^{\max}_i(c)$ is at least the streamed DRAM time $Q_i(c)/b_H$ and each saving $t^k_i(c)$ is the credited DRAM time $q^k_i(c)/b_H$ (proof of Theorem~\ref{thm:deficiency}).
+Extra cold-start, copy, or exact-product constraints are not appended to this block.
+Causal execution uses its own complete contract instead.
 
 \paragraph{Encoded decision families.}\label{app:rows_scope}
 % retained but disabled: three-column feature table with native results
@@ -117,24 +94,19 @@ Overlap/reordering & Event placement and resource epigraphs \\
 \bottomrule
 \end{tabularx}
 \end{table}
-Table~\ref{tab:feature_scope} lists the encoded families. The generic formulation
-can express further clock, memory technology or reuse
-contracts, but they are not thereby members of the certified finite native
-pool. Adding a branch, implementation, or hardware range requires a new
-instance identity and new bounds. Quality-changing alternatives additionally
-need their own numerical contract.
+Table~\ref{tab:feature_scope} lists the encoded families.
+The generic formulation can express further clock, memory technology or reuse contracts, but they are not thereby members of the certified finite native pool.
+Adding a branch, implementation, or hardware range requires a new instance identity and new bounds.
+Quality-changing alternatives additionally need their own numerical contract.
 
 \input{update/wo24_features}
 
 \subsection{Coverage, Lifecycle and Storage}\label{app:rows_cover}
 All following equations use scaled coordinates in one native branch.
 The event range is $0\le e<E$, with storage/completion states at $0\le e\le E$.
-A column covers its original nodes $S_k$, including any conversion nodes; all
-cover, work-mass, active-state, typed $w=f$, control and operand-readiness rows
-are those in Eq.~\eqref{eq:master}. In particular
-$\sum_k a_{ke}=A_e\le\lambda_b$ is an aggregate active-mass restriction.
-Distinct invocations retain distinct coverage constraints even when coefficients
-are reused.
+A column covers its original nodes $S_k$, including any conversion nodes; all cover, work-mass, active-state, typed $w=f$, control and operand-readiness rows are those in Eq.~\eqref{eq:master}.
+In particular $\sum_k a_{ke}=A_e\le\lambda_b$ is an aggregate active-mass restriction.
+Distinct invocations retain distinct coverage constraints even when coefficients are reused.
 
 Let $O_k$ be implementation outputs and $\tau_k$ their declared destination.
 For initial indicators $I_j,I_{j\tau}$, the birth and tier recurrences are
@@ -147,11 +119,11 @@ For initial indicators $I_j,I_{j\tau}$, the birth and tier recurrences are
    +{\bf1}_{\{\tau=D,\ j\in\mathcal J_{\rm stage}\}}\delta_{je}.
  \label{eq:native_state}
 \end{align}
-$H,D,S$ denote host, DRAM and SRAM. The drain term occurs only in staging
-branches. Ordinary copy links are $H\leftrightarrow D\leftrightarrow S$.
-A copy retains its source and adds destination state at the next event; it
-is not a destructive move or instantaneous readiness. State, eviction,
-copy, choice and lifecycle masses have boxes $[0,\lambda_b]$.
+$H,D,S$ denote host, DRAM and SRAM.
+The drain term occurs only in staging branches.
+Ordinary copy links are $H\leftrightarrow D\leftrightarrow S$.
+A copy retains its source and adds destination state at the next event; it is not a destructive move or instantaneous readiness.
+State, eviction, copy, choice and lifecycle masses have boxes $[0,\lambda_b]$.
 
 For a nonterminal object's original users $\mathcal U_j$, backing requires
 \begin{align}
@@ -163,13 +135,10 @@ For a nonterminal object's original users $\mathcal U_j$, backing requires
            &&(j\text{ terminal}).
  \label{eq:native_backing}
 \end{align}
-Terminal backing implies the corresponding user rows because $D_{ie}\ge0$;
-their exact elimination changes no feasible point. KV appends use original
-object identities, complete prefix operands and these same persistence rules.
-The native certified family adds no recomputation columns. A separate
-recomputation extension must charge repeat work, gate it on prior production,
-restore tier state without a second birth/completion, and explicitly identify
-which backing obligations can be discharged by recomputation.
+Terminal backing implies the corresponding user rows because $D_{ie}\ge0$; their exact elimination changes no feasible point.
+KV appends use original object identities, complete prefix operands and these same persistence rules.
+The native certified family adds no recomputation columns.
+A separate recomputation extension must charge repeat work, gate it on prior production, restore tier state without a second birth/completion, and explicitly identify which backing obligations can be discharged by recomputation.
 
 % retained but disabled: FP8/BF16 selected-representation contract
 % \paragraph{Selected numerical representation.}
@@ -189,10 +158,7 @@ which backing obligations can be discharged by recomputation.
 
 \subsection{Capacities, Staging and Installed Hardware}\label{app:rows_capacity}
 Define the transient ordinary occupancy
-\[
- o_{j\tau e}=p_{j\tau e}-v_{j\tau e}
-              +\sum_{\sigma:\sigma\to\tau}q_{j,\sigma\to\tau,e}.
-\]
+\[ o_{j\tau e}=p_{j\tau e}-v_{j\tau e} +\sum_{\sigma:\sigma\to\tau}q_{j,\sigma\to\tau,e}. \]
 Let $N=h_{b,\rm arrays}$, $S=h_{b,\rm SRAM}$ in MiB, and $V=h_{b,\rm vector}$.
 The source introduces $\chi_e\approx N A_e$ with the four linear inequalities
 \begin{align}
@@ -201,9 +167,7 @@ The source introduces $\chi_e\approx N A_e$ with the four linear inequalities
  \le N+n_-A_e-n_-\lambda_b .
  \label{eq:native_workspace}
 \end{align}
-Let $W_N,W_V$ be the original per-array and active-vector workspace constants,
-$P_k$ private panel SRAM, $D_k$ private DRAM workspace, and
-$O_{k\tau}=\sum_{j\in O_k:\tau_k=\tau}m_j$ output reservation.
+Let $W_N,W_V$ be the original per-array and active-vector workspace constants, $P_k$ private panel SRAM, $D_k$ private DRAM workspace, and $O_{k\tau}=\sum_{j\in O_k:\tau_k=\tau}m_j$ output reservation.
 The newest native branch uses
 \begin{align}
  &\sum_jm_jo_{jSe}+W_N\chi_e+W_VA_e
@@ -216,13 +180,10 @@ The newest native branch uses
  &\sum_jm_jo_{jHe}+\sum_k O_{kH}a_{ke}\le C_H\lambda_b .
  \label{eq:native_capacity}
 \end{align}
-Branch-specific absent terms are zero. Entry and exit capacity rows count the
-resident state and installed dedicated reservations, without active work or
-in-flight transfers. Installed bank, register, controller and receiver
-requirements also give affine hardware rows, alongside area and power
-proxies. Host/local channel counts and receiver variants are whole-program
-choices; arrays, vector lanes, SRAM and DRAM bandwidth remain shared continuous
-coordinates inside each branch.
+Branch-specific absent terms are zero.
+Entry and exit capacity rows count the resident state and installed dedicated reservations, without active work or in-flight transfers.
+Installed bank, register, controller and receiver requirements also give affine hardware rows, alongside area and power proxies.
+Host/local channel counts and receiver variants are whole-program choices; arrays, vector lanes, SRAM and DRAM bandwidth remain shared continuous coordinates inside each branch.
 
 % retained but disabled: explicit parameter staging rows
 % \paragraph{Explicit parameter staging.}
@@ -247,8 +208,7 @@ coordinates inside each branch.
 % Dedicated staging and receiver SRAM cannot simultaneously hold ordinary data.
 
 \subsection{Resource Demands and Linear Service Envelopes}\label{app:rows_service}
-For original stream bytes $B_k$, MAC demand $M_k$, and vector work $V_k$,
-the native variable-rate demands are
+For original stream bytes $B_k$, MAC demand $M_k$, and vector work $V_k$, the native variable-rate demands are
 \begin{align}
  Q_e^B&=\sum_{j,\tau\to\tau'}m_jq_{j,\tau\to\tau',e}
           +\sum_k B_kw_{ke}+\sum_{j\in\mathcal J_{\rm stage}}m_j\delta_{je},
@@ -257,11 +217,10 @@ the native variable-rate demands are
  Q_e^V=\sum_k V_kw_{ke}.
  \label{eq:native_demands}
 \end{align}
-Here one native array has $16\times16$ MACs. All traffic on the same DRAM
-service pool enters $Q_e^B$ before applying its epigraph. Different resource
-services each satisfy $Z_e^r\le d_e$.
-For a rate $r\in[\ell,h]$, $u_-=1/h$, $u_+=1/\ell$, the ideal homogenized
-reciprocal and product rows are
+Here one native array has $16\times16$ MACs.
+All traffic on the same DRAM service pool enters $Q_e^B$ before applying its epigraph.
+Different resource services each satisfy $Z_e^r\le d_e$.
+For a rate $r\in[\ell,h]$, $u_-=1/h$, $u_+=1/\ell$, the ideal homogenized reciprocal and product rows are
 \begin{align}
  &\ell\lambda_b\le r\le h\lambda_b,\quad
  u_-\lambda_b\le u\le u_+\lambda_b,\nonumber\\
@@ -272,13 +231,10 @@ reciprocal and product rows are
  Z\le u_+Q,\quad Z\le\bar Q u+u_-Q-\bar Q u_-\lambda_b .
  \label{eq:native_envelopes}
 \end{align}
-The implemented LP uses outward-rounded reciprocal endpoints and row
-coefficients derived from exact rational interpretations of supplied binary64
-values. Each coefficient error is paid against its original coordinate box in
-the row RHS, rounded upward; errors on unbounded coordinates are refused.
+The implemented LP uses outward-rounded reciprocal endpoints and row coefficients derived from exact rational interpretations of supplied binary64 values.
+Each coefficient error is paid against its original coordinate box in the row RHS, rounded upward; errors on unbounded coordinates are refused.
 Thus stored rows contain the physical graph without asserting equality to it.
-The source demand bounds $\bar Q$ cover the full declared generator domain,
-not just activated working columns.
+The source demand bounds $\bar Q$ cover the full declared generator domain, not just activated working columns.
 
 % retained but disabled: fixed-port service rows
 % Fixed-rate ports use integer-scaled service rows. With $B_k^H,B_k^L$ the
@@ -303,20 +259,15 @@ not just activated working columns.
 % The current source retains the floor row when its implementation contract
 % requires it.
 
-The objective is $\kappa\sum_e d_e$, with $\kappa$ the exact
-stored binary64 conversion from ns to ms. Integral replay adds its declared
-clock, descriptor and dispatch accounting; LP event sharing alone does not
-establish realizable kernel overlap.
+The objective is $\kappa\sum_e d_e$, with $\kappa$ the exact stored binary64 conversion from ns to ms.
+Integral replay adds its declared clock, descriptor and dispatch accounting; LP event sharing alone does not establish realizable kernel overlap.
 
 \subsection{Direct Roofline and Physical Constraints}
 \label{app:physical_rooflines}
-The strengthened fixed-chip implementation uses one installed chip $\bar h_b$
-per whole-program branch. Its scaled coordinates satisfy
-$h_b=\lambda_b\bar h_b$; no operation chooses a separate chip. Let
-$\bar C_b$ be installed BF16 matrix throughput in FLOP/ns, and
-$\bar B_{br}$ the delivered byte/ns rate of interface $r$.
-With original useful work $F_k^{\rm useful}\le F_k^{\rm issued}$ and linear
-traffic incidence $\mathsf B_{bre}$, the source adds
+The strengthened fixed-chip implementation uses one installed chip $\bar h_b$ per whole-program branch.
+Its scaled coordinates satisfy $h_b=\lambda_b\bar h_b$; no operation chooses a separate chip.
+Let $\bar C_b$ be installed BF16 matrix throughput in FLOP/ns, and $\bar B_{br}$ the delivered byte/ns rate of interface $r$.
+With original useful work $F_k^{\rm useful}\le F_k^{\rm issued}$ and linear traffic incidence $\mathsf B_{bre}$, the source adds
 \begin{align}
  &\sum_k F_k^{\rm issued}w_{ke}\le\bar C_b d_e,
  &\mathsf B_{bre}(q,w,\rho,\delta)&\le\bar B_{br}d_e,\nonumber\\
@@ -324,20 +275,14 @@ traffic incidence $\mathsf B_{bre}$, the source adds
  &b&\in\mathcal B_{\rm phys},\ e\in\mathcal E_b .
  \label{eq:hard_roofline_rows}
 \end{align}
-For the suite's $16\times16$ arrays at 1 GHz,
-$\bar C_b=512\bar N_b$ and
-$F_k^{\rm issued}=512\,\mathrm{jobs}_k\,\mathrm{bundle}_k\,
-\mathrm{reductionCycles}_k$; one MAC is two FLOPs. The demand sums include
-every concurrently active implementation and transfer sharing a resource.
-HBM, host, local SRAM, DMA staging and aggregate bank ports have separate
-incidences and limits. The suite's external-copy staging row charges at least
-$64\lceil m/32\rceil$ bytes for a transfer of $m$ bytes, accounting for its
-32-byte-word write and read. This is an alignment-independent necessary bound;
-replay pays actual alignment, commands and queue costs. Kernel local traffic,
-SRAM-copy endpoints and DMA staging enter one aggregate bank-port row.
+For the suite's $16\times16$ arrays at 1 GHz, $\bar C_b=512\bar N_b$ and $F_k^{\rm issued}=512\,\mathrm{jobs}_k\,\mathrm{bundle}_k\, \mathrm{reductionCycles}_k$; one MAC is two FLOPs.
+The demand sums include every concurrently active implementation and transfer sharing a resource.
+HBM, host, local SRAM, DMA staging and aggregate bank ports have separate incidences and limits.
+The suite's external-copy staging row charges at least $64\lceil m/32\rceil$ bytes for a transfer of $m$ bytes, accounting for its 32-byte-word write and read.
+This is an alignment-independent necessary bound; replay pays actual alignment, commands and queue costs.
+Kernel local traffic, SRAM-copy endpoints and DMA staging enter one aggregate bank-port row.
 
-For a selected branch ($\lambda_b=1$), summing over the same event interval
-with total duration $T=\sum_e d_e>0$ gives
+For a selected branch ($\lambda_b=1$), summing over the same event interval with total duration $T=\sum_e d_e>0$ gives
 \begin{equation}
  \mathrm{MFU}=\frac{\sum_{e,k}F_k^{\rm useful}w_{ke}}{\bar C_bT}
  \le\frac{\sum_{e,k}F_k^{\rm issued}w_{ke}}{\bar C_bT}\le1,
@@ -345,18 +290,14 @@ with total duration $T=\sum_e d_e>0$ gives
  \mathrm{MBU}_r=\frac{\sum_e\mathsf B_{bre}}{\bar B_{br}T}\le1.
  \label{eq:hard_roofline_guarantee}
 \end{equation}
-Traffic includes the represented reads, writes, repeated loads and transfers;
-vector arithmetic is not counted as BF16 matrix work. No tolerance declares a
-positive resource residual zero at exact admission. These inequalities remain
-linear because the installed rates are branch constants. In a variable-hardware
-relaxation, $C(h)d_e$ is bilinear; its McCormick envelope does not provide this
-exact fixed-chip guarantee. Fractional branch mixtures and intermediate solver
-iterates are not reported as fabricated or executable chips.
+Traffic includes the represented reads, writes, repeated loads and transfers; vector arithmetic is not counted as BF16 matrix work.
+No tolerance declares a positive resource residual zero at exact admission.
+These inequalities remain linear because the installed rates are branch constants.
+In a variable-hardware relaxation, $C(h)d_e$ is bilinear; its McCormick envelope does not provide this exact fixed-chip guarantee.
+Fractional branch mixtures and intermediate solver iterates are not reported as fabricated or executable chips.
 
-Write installed-component area and all-components-active peak power as
-$\mathsf A_b^\lambda=a_{b0}\lambda_b+a_b^Th_b$ and
-$\mathsf P_b^\lambda=p_{b0}\lambda_b+p_b^Th_b$. The shared constraint compiler
-adds the following exact affine rows:
+Write installed-component area and all-components-active peak power as $\mathsf A_b^\lambda=a_{b0}\lambda_b+a_b^Th_b$ and $\mathsf P_b^\lambda=p_{b0}\lambda_b+p_b^Th_b$.
+The shared constraint compiler adds the following exact affine rows:
 \begin{align}
  &\mathsf A_b^\lambda\le600\lambda_b,
  \quad\mathsf P_b^\lambda\le300\lambda_b,
@@ -370,21 +311,14 @@ adds the following exact affine rows:
  \quad n_bh_{b,N}\le5{,}000{,}000\lambda_b .
  \label{eq:physical_budget_rows}
 \end{align}
-Here area is in $\mathrm{mm}^2$, power in W, $\beta$ is byte/ns per signal pin,
-$\eta$ is delivered efficiency, $n_b$ is the fixed installed bank count,
-and $h_{b,B},h_{b,S},h_{b,N}$ denote bandwidth, SRAM MiB and arrays.
-The declared BF16 scenario uses at most 4,096 combined host/HBM signal pins,
-whole 64-KiB banks with $n_b\le4{,}096$, bank-array aspect between $1/4$ and 4,
-and a logic-depth proxy at most 35. Each bank supplies a combined 32-byte/cycle
-port at 1 GHz. Installed-buffer lower bounds prevent hardware arrays, vector
-registers or DMA storage from borrowing memory already assigned to live data.
-Bank organization, pipeline depth and interface choices are fixed template
-constants; an invalid template cannot become an admitted positive-weight branch.
+Here area is in $\mathrm{mm}^2$, power in W, $\beta$ is byte/ns per signal pin, $\eta$ is delivered efficiency, $n_b$ is the fixed installed bank count, and $h_{b,B},h_{b,S},h_{b,N}$ denote bandwidth, SRAM MiB and arrays.
+The declared BF16 scenario uses at most 4,096 combined host/HBM signal pins, whole 64-KiB banks with $n_b\le4{,}096$, bank-array aspect between $1/4$ and 4, and a logic-depth proxy at most 35.
+Each bank supplies a combined 32-byte/cycle port at 1 GHz.
+Installed-buffer lower bounds prevent hardware arrays, vector registers or DMA storage from borrowing memory already assigned to live data.
+Bank organization, pipeline depth and interface choices are fixed template constants; an invalid template cannot become an admitted positive-weight branch.
 
-Peak power uses 1.2 mW per BF16 MAC in the revised analytical scenario, with
-separately priced SRAM, vector, controller and interface components. It is not
-multiplied by MFU. Inherited area coefficients and their sensitivity factors
-remain declared assumptions. The NoC-size and chip-average density rows are
-proxies, not detailed network congestion or hotspot models; arbitrary bank/link
-overlap additionally needs its actual resource incidence. LP construction and
-recovery use the same identified coefficient set and gates.
+Peak power uses 1.2 mW per BF16 MAC in the revised analytical scenario, with separately priced SRAM, vector, controller and interface components.
+It is not multiplied by MFU.
+Inherited area coefficients and their sensitivity factors remain declared assumptions.
+The NoC-size and chip-average density rows are proxies, not detailed network congestion or hotspot models; arbitrary bank/link overlap additionally needs its actual resource incidence.
+LP construction and recovery use the same identified coefficient set and gates.

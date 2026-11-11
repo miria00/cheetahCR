@@ -1,36 +1,19 @@
 \subsection{Full-Inference DeepSeek Comparison}
 \label{sec:decode_decomp}\label{sec:batch_sensitivity}
-We evaluate DeepSeek-V3 on 32 independent requests of 4,096 prompt and 512
-output tokens: prefill produces the first output and 511 decode forwards
-follow, with captured expert IDs and routing weights defining all
-$61{,}985{,}244$ invocations and the complete KV history preserved. The
-recovered chip has 320 $16\times16$ MAC arrays, 5,248 vector lanes, 1,024 FP8
-receiver lanes, 78.25 MiB SRAM, 64 GiB DRAM and 2 TiB backing, delivering
-1,630 GB/s DRAM, 640 GB/s external and 20,480 GB/s local service at a 1 ns
-analytical clock, and it passes the area, peak-power, density, pin, bank, depth and
-NoC gates at $321.69$ mm$^2$ and $298.69$ W. The reference is a vanilla
-simulated TPU-v3 with published parameters, ordinary compiler behaviour and
-operands supplied from HBM at 900\,GB/s. Its interface assumptions are explicit
-parts of the prediction, not measurements of a calibrated serving stack.
+We evaluate DeepSeek-V3 on 32 independent requests of 4,096 prompt and 512 output tokens: prefill produces the first output and 511 decode forwards follow, with captured expert IDs and routing weights defining all $61{,}985{,}244$ invocations and the complete KV history preserved.
+The recovered chip has 320 $16\times16$ MAC arrays, 5,248 vector lanes, 1,024 FP8 receiver lanes, 78.25 MiB SRAM, 64 GiB DRAM and 2 TiB backing, delivering 1,630 GB/s DRAM, 640 GB/s external and 20,480 GB/s local service at a 1 ns analytical clock, and it passes the area, peak-power, density, pin, bank, depth and NoC gates at $321.69$ mm$^2$ and $298.69$ W. The reference is a vanilla simulated TPU-v3 with published parameters, ordinary compiler behaviour and operands supplied from HBM at 900\,GB/s.
+Its interface assumptions are explicit parts of the prediction, not measurements of a calibrated serving stack.
 
-Phase times add and speedup is the ratio of total predicted latencies. The
-recovered design predicts $\mathbf{5.25\times}$ on the complete task
-($15{,}546$ s to $2{,}963$ s), from $3.57\times$ on prefill, $6.08\times$ on
-decode and $2.01\times$ on conversion. Decode contributes $81.02\%$ of the time
-saved, and Table~\ref{tab:deepseek_vanilla} gives the per-phase ledger. Three
-execution times appear for this task and are not interchangeable. The
-complete-task time in Table~\ref{tab:deepseek_vanilla} is the connected
-execution of this design, with conversion, prefill and decode charged against
-the vanilla reference. The retained execution of Section~\ref{sec:ocs},
-$2{,}718{,}970.51$\,ms, is the branch admitted to the certified master and was
-recovered from this execution afterwards. The control totals in
-Section~\ref{sec:native_features} are measured on the execution that preceded
-Table~\ref{tab:deepseek_vanilla}, against a reference whose external interface
-is 32\,GB/s, so only their matched differences carry over. Data supply is $14.22\%$ of the reference total, so the result is
-largely insensitive to the offload assumption. The expanded master behind this
-design is certified to $0.07\%$
-(Section~\ref{sec:ocs}). Neither that interval nor the
-replayed latency is a discrete-design optimality guarantee.
+Phase times add and speedup is the ratio of total predicted latencies.
+The recovered design predicts $\mathbf{5.25\times}$ on the complete task ($15{,}546$ s to $2{,}963$ s), from $3.57\times$ on prefill, $6.08\times$ on decode and $2.01\times$ on conversion.
+Decode contributes $81.02\%$ of the time saved, and Table~\ref{tab:deepseek_vanilla} gives the per-phase ledger.
+Three execution times appear for this task and are not interchangeable.
+The complete-task time in Table~\ref{tab:deepseek_vanilla} is the connected execution of this design, with conversion, prefill and decode charged against the vanilla reference.
+The retained execution of Section~\ref{sec:ocs}, $2{,}718{,}970.51$\,ms, is the branch admitted to the certified master and was recovered from this execution afterwards.
+The control totals in Section~\ref{sec:native_features} are measured on the execution that preceded Table~\ref{tab:deepseek_vanilla}, against a reference whose external interface is 32\,GB/s, so only their matched differences carry over.
+Data supply is $14.22\%$ of the reference total, so the result is largely insensitive to the offload assumption.
+The expanded master behind this design is certified to $0.07\%$ (Section~\ref{sec:ocs}).
+Neither that interval nor the replayed latency is a discrete-design optimality guarantee.
 \begin{table}[h]
 \centering\small
 \caption{DeepSeek-V3 whole-task comparison against the vanilla simulated TPU-v3
@@ -51,30 +34,24 @@ Complete task & 15{,}546{,}127.51 & 2{,}962{,}572.76 & $\mathbf{5.25\times}$ \\
 
 \subsection{Feature Contributions on the Same Chip}
 \label{sec:native_features}
-The controls retain the same chip and remove one
-mechanism at a time on the same numerical workload. These are matched
-execution controls, not globally optimized feature-off designs. Interacting
-effects are not an additive attribution of the headline speedup.
+The controls retain the same chip and remove one mechanism at a time on the same numerical workload.
+These are matched execution controls, not globally optimized feature-off designs.
+Interacting effects are not an additive attribution of the headline speedup.
 
 \paragraph{Batching and storage fusion.}
-The no-batch control executes every original member separately and reselects
-its tile. Resident weights remain resident, and each streamed member pays its own
-receive. The control expands to exactly $61{,}985{,}244$ kernels and takes
-$2{,}999.86$ seconds, versus $2{,}100.62$ with batching. Thus grouped execution
-and shared streamed-weight delivery give $1.61\times$ decode and
-$1.06\times$ prefill gains. SwiGLU and elementwise storage choices remove
-primitive spills while retaining arithmetic, BF16 rounding, and local/vector
-service. Full-K panels reuse weights across output-row tiles, paying SRAM and
-serialized panel waves. Holding one tile fixed per parameter family adds $0.87$ seconds to decode, while
-panel boundaries, buffers and residency stay fixed. This tests weighted decode
-tile adaptation, rather than every temporal choice in the master.
+The no-batch control executes every original member separately and reselects its tile.
+Resident weights remain resident, and each streamed member pays its own receive.
+The control expands to exactly $61{,}985{,}244$ kernels and takes $2{,}999.86$ seconds, versus $2{,}100.62$ with batching.
+Thus grouped execution and shared streamed-weight delivery give $1.61\times$ decode and $1.06\times$ prefill gains.
+SwiGLU and elementwise storage choices remove primitive spills while retaining arithmetic, BF16 rounding, and local/vector service.
+Full-K panels reuse weights across output-row tiles, paying SRAM and serialized panel waves.
+Holding one tile fixed per parameter family adds $0.87$ seconds to decode, while panel boundaries, buffers and residency stay fixed.
+This tests weighted decode tile adaptation, rather than every temporal choice in the master.
 
 \paragraph{KV and time-indexed placement.}
-Every arm retains complete cached decoding, growth, host backing and mandatory
-writes. Optional DRAM residency selects 246 request/layer/K-or-V prefix chains
-and pays 125,952 copies. A fixed whole-task partition fits 193 chains, and releasing
-prefill temporaries before decode permits 246. Placement's $3.70$-second gain
-is included in the $15.73$-second KV gain. These modest marginal gains reflect
-limited DRAM capacity and the wide custom external interface. Independent
-checks replay changed copies and kernel traffic, and Appendix~\ref{app:native_provenance}
-records exact inputs, costs, controls and their scope.
+Every arm retains complete cached decoding, growth, host backing and mandatory writes.
+Optional DRAM residency selects 246 request/layer/K-or-V prefix chains and pays 125,952 copies.
+A fixed whole-task partition fits 193 chains, and releasing prefill temporaries before decode permits 246.
+Placement's $3.70$-second gain is included in the $15.73$-second KV gain.
+These modest marginal gains reflect limited DRAM capacity and the wide custom external interface.
+Independent checks replay changed copies and kernel traffic, and Appendix~\ref{app:native_provenance} records exact inputs, costs, controls and their scope.

@@ -23,19 +23,16 @@ Wall-clock time decomposition and search acceleration results are presented in F
 
 \subsection{Hardware and Vizier Search}\label{app:vizier_search}
 
-The prefill co-design search used 16 NVIDIA H100 GPUs, each with 80 GB of VRAM,
-and Vizier for hardware search following the experimental conventions of
-\citet{zhang_fast}. Table~\ref{tab:vizier_search_space} records that campaign's
-parameter groups; Figure~\ref{fig:pipeline} depicts its accelerator template.
-The native full-inference extension is solved with OCS
-(Section~\ref{sec:ocs}) with a
-separate finite hardware-search path. It is not an all-H100/Vizier experiment.
+The prefill co-design search used 16 NVIDIA H100 GPUs, each with 80 GB of VRAM, and Vizier for hardware search following the experimental conventions of \citet{zhang_fast}.
+Table~\ref{tab:vizier_search_space} records that campaign's parameter groups; Figure~\ref{fig:pipeline} depicts its accelerator template.
+The native full-inference extension is solved with OCS (Section~\ref{sec:ocs}) with a separate finite hardware-search path.
+It is not an all-H100/Vizier experiment.
 
 A Processing Element (PE) is a repeated compute tile in an accelerator template.
 The datapath can be modeled as a grid of PEs connected by a mesh on-chip network.
-PE systolic arrays perform a matrix-vector multiply each cycle. 
-Vector and scalar MACs are modeled by setting systolic array X and Y dimensions to 1. 
-PEs also contain a VPU for non-MAC vector ops. 
+PE systolic arrays perform a matrix-vector multiply each cycle.
+Vector and scalar MACs are modeled by setting systolic array X and Y dimensions to 1.
+PEs also contain a VPU for non-MAC vector ops.
 L2 and Global Memory structures are optional. 
 
 \begin{figure}[ht!]

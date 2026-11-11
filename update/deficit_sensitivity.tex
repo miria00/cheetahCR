@@ -1,31 +1,15 @@
 \paragraph{Speedup analysis.}
-A large end-to-end speedup number is only credible if two things are shown
-explicitly: (i) the naive baseline actually \emph{carries} that deficit, and
-the deficit can be \emph{localized} to a physical cause; and (ii) the reported
-gain can be \emph{decomposed} into a small number of design decisions, each of
-which is separately sized. This appendix supplies both by sweeping each
-design decision one at a time and reporting the objective's sensitivity
-(\cref{app:deficit:sweeps}). This section is a companion to the
-pre-RTL feasibility gates of \cref{app:details}: the gates certify that a design
-is \emph{buildable}; this section certifies where its speedup \emph{comes from}.
+A large end-to-end speedup number is only credible if two things are shown explicitly: (i) the naive baseline actually \emph{carries} that deficit, and the deficit can be \emph{localized} to a physical cause; and (ii) the reported gain can be \emph{decomposed} into a small number of design decisions, each of which is separately sized.
+This appendix supplies both by sweeping each design decision one at a time and reporting the objective's sensitivity (\cref{app:deficit:sweeps}).
+This section is a companion to the pre-RTL feasibility gates of \cref{app:details}: the gates certify that a design is \emph{buildable}; this section certifies where its speedup \emph{comes from}.
 
 \paragraph{Reading conventions (read before any number below).}
-Throughout, every quantity written \textbf{MFU} in this appendix is the
-\textbf{compute-floor tightness} ratio
-$\rho_{\mathrm{comp}}=t_{\mathrm{floor}}/T_{\mathrm{LP}}$ of \cref{app:mfu}
-(the mapper-derived compute floor over the LP/analytic latency within one
-cost-model convention). It is \emph{not} model-FLOP utilization in the sense of
-\cref{sec:reported_quantities}, because its numerator is a Timeloop tile
-minimum carrying the reference geometry's padding rather than a useful-work
-count, and it is \emph{never} a measured-silicon utilization; the searched
-datapaths are hypothetical, not fabricated. \textbf{Same-silicon} comparisons
-are equal-area and equal-TDP \emph{by construction} (both sides share the PE
-grid, so the area/power model of \cref{app:gates} returns identical budgets).
-The $97\%$ pre-fusion memory-stall figures and the naive MFU values are
-\emph{naive-baseline attributions}, not properties of the co-designed schedule.
-Every quantity is convention-tagged, and we never form a ratio across two
-conventions. The fixed-silicon algorithmic gain on EfficientNet-B7 is
-$2.21\times$ under this paper's naive convention.
+Throughout, every quantity written \textbf{MFU} in this appendix is the \textbf{compute-floor tightness} ratio $\rho_{\mathrm{comp}}=t_{\mathrm{floor}}/T_{\mathrm{LP}}$ of \cref{app:mfu} (the mapper-derived compute floor over the LP/analytic latency within one cost-model convention).
+It is \emph{not} model-FLOP utilization in the sense of \cref{sec:reported_quantities}, because its numerator is a Timeloop tile minimum carrying the reference geometry's padding rather than a useful-work count, and it is \emph{never} a measured-silicon utilization; the searched datapaths are hypothetical, not fabricated.
+\textbf{Same-silicon} comparisons are equal-area and equal-TDP \emph{by construction} (both sides share the PE grid, so the area/power model of \cref{app:gates} returns identical budgets).
+The $97\%$ pre-fusion memory-stall figures and the naive MFU values are \emph{naive-baseline attributions}, not properties of the co-designed schedule.
+Every quantity is convention-tagged, and we never form a ratio across two conventions.
+The fixed-silicon algorithmic gain on EfficientNet-B7 is $2.21\times$ under this paper's naive convention.
 
 % ---------------------------------------------------------------------------
 \iffalse % Appendix F.1 (two-factor speedup decomposition) retained but disabled
@@ -41,23 +25,18 @@ The headline speedup factors \emph{exactly} into two orthogonal terms:
 \underbrace{\frac{T_{\mathrm{joint}}(\text{TPU-v3})}{T_{\mathrm{joint}}(\text{chip})}}_{f_2:\ \text{MAC provisioning}} .
 \label{eq:twofactor}
 \end{equation}
-The first factor $f_1$ is a \emph{fixed-silicon}, same-area / same-TDP
-algorithmic gain: it re-schedules the same $65{,}536$-MAC TPU-v3 and buys
-$\mathbf{1.48}$--$\mathbf{1.78\times}$. The second factor $f_2$ holds the joint
-schedule fixed and provisions the PE grid up to the co-designed chip's MAC
-count, buying $\mathbf{20.0}$--$\mathbf{26.9\times}$. Their product reproduces
-the per-workload Figure-2 headline (and the blueprint ``achieved speedup vs.\
-naive TPU-v3'' rows) to within $1.4\%$
-(\cref{tab:deficit_twofactor}); the residual is the analytic
-chip-endpoint solve's utilization roll-off, cross-checked against the
-blueprints' Timeloop-in-loop objective.
+The first factor $f_1$ is a \emph{fixed-silicon}, same-area / same-TDP algorithmic gain: it re-schedules the same $65{,}536$-MAC TPU-v3 and buys $\mathbf{1.48}$--$\mathbf{1.78\times}$.
+The second factor $f_2$ holds the joint schedule fixed and provisions the PE grid up to the co-designed chip's MAC count, buying $\mathbf{20.0}$--$\mathbf{26.9\times}$.
+Their product reproduces the per-workload Figure-2 headline (and the blueprint ``achieved speedup vs.\ naive TPU-v3'' rows) to within $1.4\%$ (\cref{tab:deficit_twofactor}); the residual is the analytic chip-endpoint solve's utilization roll-off, cross-checked against the blueprints' Timeloop-in-loop objective.
 
 \begin{table}[ht!]
 \centering
 \caption{Two-factor decomposition of the co-design speedup
-(\cref{eq:twofactor}). $f_1$ is the fixed-silicon scheduling gain on TPU-v3
+(\cref{eq:twofactor}).
+$f_1$ is the fixed-silicon scheduling gain on TPU-v3
 (same area/TDP), $f_2$ the MAC-provisioning gain to the co-designed chip.
-Reconstructed $=f_1\times f_2$; headline is the blueprint value. Convention:
+Reconstructed $=f_1\times f_2$; headline is the blueprint value.
+Convention:
 config-0 naive; bf16 cycle basis; HiGHS-Optimal endpoints.}
 \label{tab:deficit_twofactor}
 \small
@@ -84,28 +63,22 @@ blueprint objective (exact by construction); the other three use the
 \end{table}
 
 \paragraph{Is the provisioning factor physically usable?}
-A reader is entitled to ask whether $f_2$ is real parallelism or an artifact of
-a cost model in which compute time falls as $1/\mathrm{MACs}$ without bound. It
-is a fair question: an array can only speed an operation up as far as that
-operation supplies independent tiles to fill it, and a per-token decode GEMV
-supplies few. We measured the answer directly rather than argue it. For every
-event of DeepSeek-V3 we computed the \emph{saturating} MAC count
-$M_{\mathrm{sat}} = (\text{independent output tiles}) \times (\text{lanes per
-tile})$ under the same tile geometry the mapper uses, where independent tiles
-are row tiles times column tiles (k-tiles accumulate into one output and are
-not independent) times the number of GEMMs carrying work (expected active
-experts for routed FFNs). Beyond $M_{\mathrm{sat}}$ a chip has no more
-concurrent tiles to run for that event, and its compute time cannot keep
-falling. \Cref{tab:msat} gives the distribution in multiples of the TPU-v3
-array.
+A reader is entitled to ask whether $f_2$ is real parallelism or an artifact of a cost model in which compute time falls as $1/\mathrm{MACs}$ without bound.
+It is a fair question: an array can only speed an operation up as far as that operation supplies independent tiles to fill it, and a per-token decode GEMV supplies few.
+We measured the answer directly rather than argue it.
+For every event of DeepSeek-V3 we computed the \emph{saturating} MAC count $M_{\mathrm{sat}} = (\text{independent output tiles}) \times (\text{lanes per tile})$ under the same tile geometry the mapper uses, where independent tiles are row tiles times column tiles (k-tiles accumulate into one output and are not independent) times the number of GEMMs carrying work (expected active experts for routed FFNs).
+Beyond $M_{\mathrm{sat}}$ a chip has no more concurrent tiles to run for that event, and its compute time cannot keep falling.
+\Cref{tab:msat} gives the distribution in multiples of the TPU-v3 array.
 
 \begin{table}[ht!]
 \centering
 \small
 \caption{Saturating MAC count per event, DeepSeek-V3, as a multiple of
-TPU-v3's $65{,}536$ MACs. Prefill events saturate three to four orders of
+TPU-v3's $65{,}536$ MACs.
+Prefill events saturate three to four orders of
 magnitude above the largest chip in this paper ($24.4\times$), so the
-provisioning factor $f_2$ is physically usable parallelism at prefill. Decode
+provisioning factor $f_2$ is physically usable parallelism at prefill.
+Decode
 events saturate at $9$--$14\times$ at the low end, which is where a bound on
 usable parallelism would bind, and only for chips beyond it.}
 \label{tab:msat}
@@ -123,85 +96,46 @@ $B{=}32$, ctx $512$   & prefill & $1{,}792\times$  & $1{,}792\times$  & $8{,}192
 \end{tabular}
 \end{table}
 
-At the original prefill operating point, the table's tile geometry supplies
-many independent matrix tiles, so useful parallelism is less restrictive than
-it is for small decode matrices. The bound becomes relevant when installed
-arrays exceed the independent work available to an event. These counts describe
-the mapper's geometry, not placed-array timing, and do not account for growing
-non-matrix costs. The native full-inference model instead charges padded matrix
-service and explicit vector, local, and external service for each implementation
-(Appendix~\ref{app:rows_service}); its results must be read under that contract.
+At the original prefill operating point, the table's tile geometry supplies many independent matrix tiles, so useful parallelism is less restrictive than it is for small decode matrices.
+The bound becomes relevant when installed arrays exceed the independent work available to an event.
+These counts describe the mapper's geometry, not placed-array timing, and do not account for growing non-matrix costs.
+The native full-inference model instead charges padded matrix service and explicit vector, local, and external service for each implementation (Appendix~\ref{app:rows_service}); its results must be read under that contract.
 
 \paragraph{Use only the two-factor form; do not multiply the full decision ladder.}
-It is tempting to read the software-ablation ladder (tile, placement, remat,
-datapath, datatype) as a chain of multiplicative factors and multiply them all.
-That \emph{overshoots} the headline by $1.8$--$2.1\times$ (a mechanical product
-of $70.7$--$73.2\times$ versus the $34$--$40\times$ headline), for two
-convention reasons, neither of them physics:
+It is tempting to read the software-ablation ladder (tile, placement, remat, datapath, datatype) as a chain of multiplicative factors and multiply them all.
+That \emph{overshoots} the headline by $1.8$--$2.1\times$ (a mechanical product of $70.7$--$73.2\times$ versus the $34$--$40\times$ headline), for two convention reasons, neither of them physics:
 \begin{enumerate}
 \item \textbf{The INT8 throughput label double-counts.} The blueprint headline
-$T_{\mathrm{joint}}$ is a \emph{bf16 cycle count} at the chip's MAC count; INT8
-(W8A8) is carried as a throughput / power label (roughly half the area and power
-per MAC), \emph{not} as a separate cycle factor. Multiplying an extra $2\times$
-for INT8 into a cycle product is a double-count. Dropping it lands the mechanical
-ladder at $35$--$37\times$, within $3$--$12\%$ of the headline.
+$T_{\mathrm{joint}}$ is a \emph{bf16 cycle count} at the chip's MAC count; INT8 (W8A8) is carried as a throughput / power label (roughly half the area and power per MAC), \emph{not} as a separate cycle factor.
+Multiplying an extra $2\times$ for INT8 into a cycle product is a double-count.
+Dropping it lands the mechanical ladder at $35$--$37\times$, within $3$--$12\%$ of the headline.
 \item \textbf{The software rows use a $\sim1.3\times$ smaller naive baseline}
-(the scale-$T_{\max}$ naive) than the config-0 naive against which the headline
-is measured, so the two families of factors are not on the same numerator.
+(the scale-$T_{\max}$ naive) than the config-0 naive against which the headline is measured, so the two families of factors are not on the same numerator.
 \end{enumerate}
-\Cref{eq:twofactor} is the form that reconciles \emph{exactly} because $f_1$ and
-$f_2$ share a single naive numerator and a single cycle basis. As a naming
-caution: the same fixed-silicon scheduling recovery is $1.48$--$1.78\times$
-against the config-0 naive (used above) and $2.14$--$2.51\times$ against the
-grid's scale-$T_{\max}$ naive (the fixed-hardware grid convention); the two
-differ only by the naive-baseline
-definition, and must never be crossed within one ratio.
+\Cref{eq:twofactor} is the form that reconciles \emph{exactly} because $f_1$ and $f_2$ share a single naive numerator and a single cycle basis.
+As a naming caution: the same fixed-silicon scheduling recovery is $1.48$--$1.78\times$ against the config-0 naive (used above) and $2.14$--$2.51\times$ against the grid's scale-$T_{\max}$ naive (the fixed-hardware grid convention); the two differ only by the naive-baseline definition, and must never be crossed within one ratio.
 
 \paragraph{The provisioning factor is sub-linear (the anti-``just add MACs''
-result).} $f_2$ is not free scaling. Measured as delivered throughput per
-provisioned MAC in an equal-area / equal-TDP resource-matched ablation,
-$20.0$--$27.0\times$ more MACs realize only $\approx16\times$ provisioning
-throughput, a linearity of $\mathbf{0.59}$--$\mathbf{0.81}$ (Llama-3 70B is
-worst, $27\times$ MACs $\to$ $16.0\times$). Equivalently, the fixed-family MAC
-leg from $65{,}536$ to $1{,}048{,}576$ MACs (a $16\times$ increase) yields only
-$14.0$--$15.7\times$ cycle reduction, because a residual memory floor remains.
-Added silicon buys sub-linearly, which is exactly why capturing the free
-scheduling factor $f_1$ first (and provisioning MACs only up to the point of
-diminishing return) is the efficient order of operations.
-\fi
+result).} $f_2$ is not free scaling. Measured as delivered throughput per provisioned MAC in an equal-area / equal-TDP resource-matched ablation, $20.0$--$27.0\times$ more MACs realize only $\approx16\times$ provisioning throughput, a linearity of $\mathbf{0.59}$--$\mathbf{0.81}$ (Llama-3 70B is worst, $27\times$ MACs $\to$ $16.0\times$). Equivalently, the fixed-family MAC leg from $65{,}536$ to $1{,}048{,}576$ MACs (a $16\times$ increase) yields only $14.0$--$15.7\times$ cycle reduction, because a residual memory floor remains. Added silicon buys sub-linearly, which is exactly why capturing the free scheduling factor $f_1$ first (and provisioning MACs only up to the point of diminishing return) is the efficient order of operations. \fi
 
 % ---------------------------------------------------------------------------
 \subsection{One-Decision-at-a-Time Sensitivity Sweeps}
 \label{app:deficit:sweeps}
 
-We now hold the design fixed and sweep a single decision, reporting the objective
-(LP cycles) sensitivity. Two decisions have dedicated measured sweeps: global buffer and MAC count;
-Table~\ref{tab:deficit_sweepsummary} summarizes them.
+We now hold the design fixed and sweep a single decision, reporting the objective (LP cycles) sensitivity.
+Two decisions have dedicated measured sweeps: global buffer and MAC count; Table~\ref{tab:deficit_sweepsummary} summarizes them.
 
 \paragraph{(i) Global-buffer size $C_{\mathrm{GM}}$: measured, near-inert in
-the compute-bound regime.} \Cref{tab:deficit_cgm} sweeps $C_{\mathrm{GM}}$ from
-$1$ to $64$\,MiB for DeepSeek-V3 on TPU-v3 ($900$\,GB/s), for the joint (free-$y$)
-LP and for a fixed-tile FAST-subset LP. The joint LP is \emph{flat}: its objective
-moves $0.39\%$ across a $64\times$ buffer sweep ($1.0723\times10^{12}\to
-1.0682\times10^{12}$ cycles), and is bit-identical from $8$\,MiB upward. By
-contrast the fixed-tile schedule \emph{needs} the buffer, improving $1.18\times$
-over the same sweep. The joint formulation substitutes tile choice for buffer
-capacity: when tiling is free, a larger global buffer buys almost nothing. The
-tile-dependent capacity extension is likewise inert here: it matches the retained joint model
-to within $0.08\%$ across the full $C_{\mathrm{GM}}\in\{4,\dots,64\}$\,MiB sweep.
-Under bandwidth pressure ($64$--$128$\,GB/s) the buffer regains a modest decision
-($\approx1.19\times$ for Llama-1 13B over $8\to64$\,MiB), but \emph{only through
-placement}: with placement frozen (row A) the objective is constant across
-$C_{\mathrm{GM}}$, so $C_{\mathrm{GM}}$ helps exclusively by enabling
-time-indexed residency, never on its own. The blueprints adopt
-$C_{\mathrm{GM}}=64$\,MiB.
+the compute-bound regime.} \Cref{tab:deficit_cgm} sweeps $C_{\mathrm{GM}}$ from $1$ to $64$\,MiB for DeepSeek-V3 on TPU-v3 ($900$\,GB/s), for the joint (free-$y$) LP and for a fixed-tile FAST-subset LP. The joint LP is \emph{flat}: its objective moves $0.39\%$ across a $64\times$ buffer sweep ($1.0723\times10^{12}\to 1.0682\times10^{12}$ cycles), and is bit-identical from $8$\,MiB upward. By contrast the fixed-tile schedule \emph{needs} the buffer, improving $1.18\times$ over the same sweep. The joint formulation substitutes tile choice for buffer capacity: when tiling is free, a larger global buffer buys almost nothing. The tile-dependent capacity extension is likewise inert here: it matches the retained joint model to within $0.08\%$ across the full $C_{\mathrm{GM}}\in\{4,\dots,64\}$\,MiB sweep. Under bandwidth pressure ($64$--$128$\,GB/s) the buffer regains a modest decision ($\approx1.19\times$ for Llama-1 13B over $8\to64$\,MiB), but \emph{only through placement}: with placement frozen (row A) the objective is constant across $C_{\mathrm{GM}}$, so $C_{\mathrm{GM}}$ helps exclusively by enabling time-indexed residency, never on its own. The blueprints adopt $C_{\mathrm{GM}}=64$\,MiB.
 
 \begin{table}[ht!]
 \centering
 \caption{Global-buffer sweep, DeepSeek-V3 on TPU-v3 ($900$\,GB/s, native cache
-convention, HiGHS-Optimal). The joint (free-$y$) LP is essentially
+convention, HiGHS-Optimal).
+The joint (free-$y$) LP is essentially
 $C_{\mathrm{GM}}$-insensitive ($0.39\%$ over a $64\times$ sweep); the fixed-tile
-FAST-subset LP is not ($1.18\times$). Objective in LP cycles.}
+FAST-subset LP is not ($1.18\times$).
+Objective in LP cycles.}
 \label{tab:deficit_cgm}
 \small
 \resizebox{\linewidth}{!}{%
@@ -219,37 +153,18 @@ Fixed-tile (FAST-subset)   & 1.4627 & 1.4459 & 1.4327 & 1.4161 & 1.3863
 \end{table}
 
 \paragraph{(ii) Peak throughput / MAC-unit count.} The total-MAC provisioning sweep is measured: raising the PE
-grid from $65{,}536$ to $1{,}048{,}576$ MACs (a $16\times$ increase) reduces the
-objective by $14.0$--$15.7\times$ (Llama-1 13B $15.72\times$, DeepSeek-V3
-$14.98\times$, Llama-3 70B $14.04\times$, Llama-1 65B $14.02\times$), and the
-provisioning factor to the full co-designed chip is $f_2=20.0$--$26.9\times$
-both sub-linear.
+grid from $65{,}536$ to $1{,}048{,}576$ MACs (a $16\times$ increase) reduces the objective by $14.0$--$15.7\times$ (Llama-1 13B $15.72\times$, DeepSeek-V3 $14.98\times$, Llama-3 70B $14.04\times$, Llama-1 65B $14.02\times$), and the provisioning factor to the full co-designed chip is $f_2=20.0$--$26.9\times$ both sub-linear.
 This is the single largest decision on the objective.
 
 \paragraph{(iii) DRAM bandwidth: measured, inert in the compute-bound regime.}
-Sweeping bandwidth from $900$ to $3{,}350$\,GB/s at the fixed $65{,}536$-MAC
-point moves the objective by $\le0.25\%$ (BW leg $=1.000$--$1.0025\times$ for
-all four LLMs): at the deployed prefill-like batch these workloads are
-compute-bound, so bandwidth beyond the floor buys nothing. Bandwidth becomes the
-dominant decision only in the bandwidth-starved regime: at $64$\,GB/s (the compact
-NPU) the joint-vs-naive fixed-hardware gain is $5.9$--$31.4\times$, because there
-the roofline is memory-bound and residency / placement recover a much larger
-share. Thus bandwidth sensitivity is regime-dependent: near-zero when
-compute-bound, first-order when memory-bound.
+Sweeping bandwidth from $900$ to $3{,}350$\,GB/s at the fixed $65{,}536$-MAC point moves the objective by $\le0.25\%$ (BW leg $=1.000$--$1.0025\times$ for all four LLMs): at the deployed prefill-like batch these workloads are compute-bound, so bandwidth beyond the floor buys nothing.
+Bandwidth becomes the dominant decision only in the bandwidth-starved regime: at $64$\,GB/s (the compact NPU) the joint-vs-naive fixed-hardware gain is $5.9$--$31.4\times$, because there the roofline is memory-bound and residency / placement recover a much larger share.
+Thus bandwidth sensitivity is regime-dependent: near-zero when compute-bound, first-order when memory-bound.
 
 \paragraph{(iv) Interconnect: on-chip NoC and inter-device topology.}
-\emph{On-chip}, the NoC / crossbar radix and link count set the PE-to-SRAM
-routing capacity; this is the resource bounded by the crossbar / NoC-routing
-gate of \cref{app:gates} (gate 4, $N_{\mathrm{NoC}}=n_{\mathrm{PEs}}\times
-n_{\mathrm{banks}}\le5\times10^{6}$ cells), and its provisioning follows the
-network-on-package accounting of Simba~\citep{shao2019simba}. In the single-chip
-compute-bound regime the on-chip NoC is provisioned to the compute floor and is
-not the binding resource.
-\emph{Across devices}, in the multi-GPU / mixture-of-experts regime the
-inter-device topology (radix and link count of the NVLink-class fabric) binds
-only when experts are dispatched \emph{across} devices; when the active-expert
-set is package-resident, as in every blueprint here, the communication term is
-zero.
+\emph{On-chip}, the NoC / crossbar radix and link count set the PE-to-SRAM routing capacity; this is the resource bounded by the crossbar / NoC-routing gate of \cref{app:gates} (gate 4, $N_{\mathrm{NoC}}=n_{\mathrm{PEs}}\times n_{\mathrm{banks}}\le5\times10^{6}$ cells), and its provisioning follows the network-on-package accounting of Simba~\citep{shao2019simba}.
+In the single-chip compute-bound regime the on-chip NoC is provisioned to the compute floor and is not the binding resource.
+\emph{Across devices}, in the multi-GPU / mixture-of-experts regime the inter-device topology (radix and link count of the NVLink-class fabric) binds only when experts are dispatched \emph{across} devices; when the active-expert set is package-resident, as in every blueprint here, the communication term is zero.
 
 \begin{table}[ht!]
 \centering

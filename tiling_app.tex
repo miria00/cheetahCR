@@ -2,9 +2,12 @@
 \label{app:tiling}
 \suppressfloats[t]
 This section shows examples of optimal tiling, where accepting a locally slower/smaller tiling to enable better fusion or placement.
-This showcases the strength of the CHEETAH formulation, which discovers nontrivial tiling-placement-fusion trade-offs that less expressive methods would miss. The first example is Llama-3 70B on a simulated H100~\citep{nvidia2022hopper}; the second is DeepSeek-V3 on a simulated RTX~5090~\citep{nvidia2024blackwell}.
+This showcases the strength of the CHEETAH formulation, which discovers nontrivial tiling-placement-fusion trade-offs that less expressive methods would miss.
+The first example is Llama-3 70B on a simulated H100~\citep{nvidia2022hopper}; the second is DeepSeek-V3 on a simulated RTX~5090~\citep{nvidia2024blackwell}.
 
-By fixing the architecture, the inner loop derives optimal tiling and scheduling strategies that can act as custom speedups for targeted inference tasks. Therefore this section briefly provides motivation for future work on expanded hardware variants. This is motivated and similar in spirit to the speedups seen be FlashAttention \citep{dao2022flashattention} due to tiling optimization. 
+By fixing the architecture, the inner loop derives optimal tiling and scheduling strategies that can act as custom speedups for targeted inference tasks.
+Therefore this section briefly provides motivation for future work on expanded hardware variants.
+This is motivated and similar in spirit to the speedups seen be FlashAttention \citep{dao2022flashattention} due to tiling optimization. 
 
 % \begin{table}[ht!]
 % \centering
@@ -35,7 +38,8 @@ By fixing the architecture, the inner loop derives optimal tiling and scheduling
 Example per-layer tiling cache for EfficientNet-B7 layer L4.
 Left: Timeloop-evaluated candidates plotted by fused/on-chip cost
 \(T_{\min}(c)\) and spilled/off-chip cost \(T_{\max}(c)\); the frontier shows
-non-dominated choices and the star is the LP-rounded selection. Right: the
+non-dominated choices and the star is the LP-rounded selection.
+Right: the
 16 tiling choices; labels such as \(4\times4\),
 \(8\times8\), and \(32\times32\) denote active tile rows/columns inside the
 fixed accelerator, white dots indicate active PE/MAC sites.
@@ -47,13 +51,13 @@ These are schedule choices, not different chips.
 \subsection{Joint-Tile LP Solution: Llama-3 70B on Simulated H100}\label{app:tiling_llama}
 
 \noindent\textbf{Problem dimensions:}
-$L = 720$ layers, $C = 20$ tile configs, $T = 720$ timesteps,
-$E = 703$ activation edges.
+$L = 720$ layers, $C = 20$ tile configs, $T = 720$ timesteps, $E = 703$ activation edges.
 Total LP variables: 1{,}601{,}280.
 Objective: $542{,}790{,}817$ cycles.
 \texttt{CONVERGED\_STRICT} in 1{,}800 PDLP iterations.
 
-\paragraph{Tile-Config Selection ($y_{i,c}$):} The joint-tile LP heavily favours small/fast configurations. Table~\ref{tab:tile_band} groups tiles into three size bands, and Table~\ref{tab:config_histogram} gives the per-config histogram.
+\paragraph{Tile-Config Selection ($y_{i,c}$):} The joint-tile LP heavily favours small/fast configurations.
+Table~\ref{tab:tile_band} groups tiles into three size bands, and Table~\ref{tab:config_histogram} gives the per-config histogram.
 
 \begin{table}[h]
 \centering
@@ -88,18 +92,11 @@ Layers & 285 & 1 & 1 & 140 & 1 & 148 & 125 & 15 & 3 \\
 
 \noindent Config $c=0$ (largest tile) was selected for ${\approx}40\%$
 of layers, with $c \in \{4, 8, 12\}$ covering most of the remainder.
-The LP decisively favours large tiles for this 70B model on H100:
-with 1.05M MACs and a 50 MB global buffer, reducing tile size to fit
-memory is unnecessary and incurs iteration overhead.
+The LP decisively favours large tiles for this 70B model on H100: with 1.05M MACs and a 50 MB global buffer, reducing tile size to fit memory is unnecessary and incurs iteration overhead.
 
 \paragraph{Per-Layer Execution Time $T_i$:}
 
-\[
-    T_i^{\min} = 1{,}204 \text{ cycles}, \quad
-    T_i^{\mathrm{med}} = 524{,}288, \quad
-    T_i^{\max} = 1{,}835{,}008, \quad
-    \textstyle\sum T_i = 542{,}790{,}817.
-\]
+\[ T_i^{\min} = 1{,}204 \text{ cycles}, \quad T_i^{\mathrm{med}} = 524{,}288, \quad T_i^{\max} = 1{,}835{,}008, \quad \textstyle\sum T_i = 542{,}790{,}817. \]
 
 \noindent The ten longest layers (Table~\ref{tab:longest_layers}) all hit the same $1{,}835{,}008$-cycle bound: these are the large FFN gate/up/down and Q/K/V/output projection sublayers in the transformer middle blocks:
 
@@ -140,21 +137,15 @@ projection sublayers.}
 
 \noindent The joint-tile LP makes almost no use of the global buffer for
 long-lived tensor residency and nearly everything streams through.
-With the L1/L2 buffer multipliers in this hardware configuration,
-\textbf{tiling alone is sufficient to keep the chip fed}; persistent pins are not needed.
+With the L1/L2 buffer multipliers in this hardware configuration, \textbf{tiling alone is sufficient to keep the chip fed}; persistent pins are not needed.
 
 \paragraph{Rematerialization Events $r_{i,t}$}
 
-\[
-    \text{Layers with} \geq 1\ \text{remat event}: 0\ /\ 720.
-    \qquad
-    \text{Total remat events}: 0.
-\]
+\[ \text{Layers with} \geq 1\ \text{remat event}: 0\ /\ 720. \qquad \text{Total remat events}: 0. \]
 
 \noindent Zero Rematerialization. joint-tile has the freedom to recompute
-layers to free memory pressure, but on this cell determined it was
-not worth the additional cycles. Activation streaming combined with
-tile-config selection is sufficient.
+layers to free memory pressure, but on this cell determined it was not worth the additional cycles.
+Activation streaming combined with tile-config selection is sufficient.
 
 \paragraph{Eviction / Restoration Timeline}
 
@@ -166,12 +157,8 @@ tile-config selection is sufficient.
 
 \paragraph{One Concrete Layer: Layer 360 (Deep Transformer Block)}
 
-\[
-    \text{Selected config}\ c = 0, \qquad T_i = 524{,}288\ \text{cycles}.
-\]
-\[
-    \mathbf{y}_{\mathrm{bin}}\ \text{nonzero indices}: \{0,\ 16\}
-\]
+\[ \text{Selected config}\ c = 0, \qquad T_i = 524{,}288\ \text{cycles}. \]
+\[ \mathbf{y}_{\mathrm{bin}}\ \text{nonzero indices}: \{0,\ 16\} \]
 The LP relaxation assigned nonzero weight to two equally-good configs
 
 \paragraph{What This Reveals About joint-tile on Llama-3 70B / H100}
@@ -179,22 +166,14 @@ The LP relaxation assigned nonzero weight to two equally-good configs
 \begin{enumerate}
 
     \item \textbf{Tile choice does most of the work, not placement or remat.} Of 1.6M decision variables, only ${\approx}720$
-          (the $y_{i,c}$ selections) are doing real work; placement
-          ($p$, $p^W$) and rematerialisation ($r$) variables are
-          essentially all zero.
+          (the $y_{i,c}$ selections) are doing real work; placement ($p$, $p^W$) and rematerialisation ($r$) variables are essentially all zero.
 
     \item \textbf{Large tiles win because H100 is large.} With
-          1.05M MACs and 3.35 TB/s DRAM bandwidth, there is no memory
-          slack pressure forcing small working sets. The LP exploits
-          this by selecting the largest physically permissible tiles.
+          1.05M MACs and 3.35 TB/s DRAM bandwidth, there is no memory slack pressure forcing small working sets.
+The LP exploits this by selecting the largest physically permissible tiles.
 
     \item \textbf{The $1.53\times$ lift over the naive baseline comes
-          entirely from per-layer tile selection.} Ten different configs
-          are active across the 720 layers, versus the naive
-          one-size-fits-all heuristic. On smaller chips (e.g.\ TPU-v3)
-          this same mechanism yields a $2.11\times$ lift, because the
-          memory slack disappears and per-layer tile choice becomes
-          correspondingly more impactful.
+          entirely from per-layer tile selection.} Ten different configs are active across the 720 layers, versus the naive one-size-fits-all heuristic. On smaller chips (e.g.\ TPU-v3) this same mechanism yields a $2.11\times$ lift, because the memory slack disappears and per-layer tile choice becomes correspondingly more impactful.
 
 \end{enumerate}
 
@@ -205,7 +184,13 @@ The LP relaxation assigned nonzero weight to two equally-good configs
 This example shows the LP makes real per-sublayer scheduling decisions that are directly readable from layer names.
 
 
-As a qualitative example of joint-tile’s solution structure, we inspect the rounded joint-tile LP solution for DeepSeek-V3 on an RTX-5090-like hardware point. The model contains L=903 layers, including 174 MoE sublayers, and the joint-tile LP has 2.5M variables. Although the Pareto cache exposes 20 tile configurations per layer, the solution uses only five configs (Table~\ref{tab:ds_tile_configs}), {0,4,8,12,16}, suggesting that joint-tile compresses the available tiling space into a small workload-specific alphabet. The most revealing behavior occurs in the FFN sublayers: ffn\_up, ffn\_gate, and ffn\_down have identical compute time, yet joint-tile assigns them different tile configs in a rotating pattern (Table~\ref{tab:ds_ffn_stagger}). This indicates that the LP is not merely selecting the fastest per-layer tile; it is interleaving large- and small-working-set choices across adjacent sublayers to manage memory pressure. joint-tile also automatically identifies structural outliers: the only seven layers assigned the smallest tile c=16 correspond to unusual sublayers such as rotary-key projections, low-rank Q projections, shared/expert gates, and expert down-projections (Table~\ref{tab:ds_outliers}). Finally, weight churn is highly localized: only four attention-path weights in the first block are evicted/refetched (Table~\ref{tab:ds_evictions}), while the MoE sublayers stream without churn. This case illustrates how joint-tile exposes interpretable schedule structure that is unavailable in a sequential Timeloop→fusion pipeline.
+As a qualitative example of joint-tile’s solution structure, we inspect the rounded joint-tile LP solution for DeepSeek-V3 on an RTX-5090-like hardware point.
+The model contains L=903 layers, including 174 MoE sublayers, and the joint-tile LP has 2.5M variables.
+Although the Pareto cache exposes 20 tile configurations per layer, the solution uses only five configs (Table~\ref{tab:ds_tile_configs}), {0,4,8,12,16}, suggesting that joint-tile compresses the available tiling space into a small workload-specific alphabet.
+The most revealing behavior occurs in the FFN sublayers: ffn\_up, ffn\_gate, and ffn\_down have identical compute time, yet joint-tile assigns them different tile configs in a rotating pattern (Table~\ref{tab:ds_ffn_stagger}).
+This indicates that the LP is not merely selecting the fastest per-layer tile; it is interleaving large- and small-working-set choices across adjacent sublayers to manage memory pressure. joint-tile also automatically identifies structural outliers: the only seven layers assigned the smallest tile c=16 correspond to unusual sublayers such as rotary-key projections, low-rank Q projections, shared/expert gates, and expert down-projections (Table~\ref{tab:ds_outliers}).
+Finally, weight churn is highly localized: only four attention-path weights in the first block are evicted/refetched (Table~\ref{tab:ds_evictions}), while the MoE sublayers stream without churn.
+This case illustrates how joint-tile exposes interpretable schedule structure that is unavailable in a sequential Timeloop→fusion pipeline.
 
 \paragraph{Problem Dimensions}
 
@@ -272,8 +257,8 @@ different tile configs to the FFN up/gate/down trio within each block, staggerin
 \end{tabular}
 \end{table}
 
-This is the scheduling intelligence in joint-tile: same compute cost,
-different tiles, rotated so that any window of timesteps contains at most one large-working-set tile and two smaller ones. A naive mapper assigns one tile size to all FFN layers; joint-tile detects the working-set conflict and breaks the symmetry automatically.
+This is the scheduling intelligence in joint-tile: same compute cost, different tiles, rotated so that any window of timesteps contains at most one large-working-set tile and two smaller ones.
+A naive mapper assigns one tile size to all FFN layers; joint-tile detects the working-set conflict and breaks the symmetry automatically.
 
 \paragraph{Structural Outliers: The 7 Layers That Pick Config $c=16$}
 
@@ -282,7 +267,8 @@ The LP assigned the tightest working-set tile ($c = 16$) to exactly the sublayer
 \begin{table}[h]
 \centering
 \caption{The seven layers assigned config $c=16$ (smallest tile /
-tightest working set). All correspond to structurally atypical sublayers
+tightest working set).
+All correspond to structurally atypical sublayers
 in the DeepSeek-V3 MoE architecture.}
 \label{tab:ds_outliers}
 \begin{tabular}{rllr}
@@ -353,18 +339,14 @@ MoE routers          & 35{,}840      & $1.4\%$ ($72\times$ smaller) \\
           picking.} The FFN trio tile rotation is a genuine scheduling decision: no naive per-layer mapper can produce this.
 
     \item \textbf{joint-tile discovers structural outliers automatically.}
-          The seven $c=16$ picks land exactly on \texttt{K\_rope}, \texttt{Q\_a}, \texttt{Q\_b},
-          \texttt{expert\_gate}, and \texttt{expert\_down} sublayers without any
-          hand-labeled outlier feature in the input.
+          The seven $c=16$ picks land exactly on \texttt{K\_rope}, \texttt{Q\_a}, \texttt{Q\_b}, \texttt{expert\_gate}, and \texttt{expert\_down} sublayers without any hand-labeled outlier feature in the input.
 
     \item \textbf{joint-tile commits to a 5-config alphabet, not a 20-config
-          sweep.} This is actionable for hardware designers: only 5 of
-          20 candidate tile shapes ever matter for this workload
-          (Figure~\ref{fig:tiling_rotate}).
+          sweep.} This is actionable for hardware designers: only 5 of 20 candidate tile shapes ever matter for this workload (Figure~\ref{fig:tiling_rotate}).
 
     \item \textbf{Memory churn is highly localized.} Only 4 evictions
           occur, all in transformer block~1, all in the attention path.
-          The 174 MoE blocks have zero churn: joint-tile streams them entirely.
+The 174 MoE blocks have zero churn: joint-tile streams them entirely.
 
 \end{enumerate}
 

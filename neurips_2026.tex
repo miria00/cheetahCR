@@ -15,8 +15,7 @@
 \usepackage{booktabs}
 \usepackage{array}
 \usepackage{ragged2e}
-\newcolumntype{Y}{>{\RaggedRight\arraybackslash}X}
-\DeclareMathOperator*{\minimize}{minimize}
+\newcolumntype{Y}{>{\RaggedRight\arraybackslash}X} \DeclareMathOperator*{\minimize}{minimize}
  \usepackage[final,main]{neurips_2026}
 \usepackage[breakable]{tcolorbox}
 \usepackage[utf8]{inputenc} % allow utf-8 input
@@ -25,9 +24,7 @@
 \hypersetup{colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue}
 \usepackage{url}            % simple URL typesetting
 \usepackage{titletoc}       % appendix-only local table of contents (Hawkeye-style)
-\dottedcontents{section}[1.6em]{\bfseries}{1.6em}{0.7pc}
-\dottedcontents{subsection}[4.0em]{}{2.4em}{0.7pc}
-\dottedcontents{subsubsection}[6.8em]{}{3.2em}{0.7pc}
+\dottedcontents{section}[1.6em]{\bfseries}{1.6em}{0.7pc} \dottedcontents{subsection}[4.0em]{}{2.4em}{0.7pc} \dottedcontents{subsubsection}[6.8em]{}{3.2em}{0.7pc}
 \usepackage{booktabs}       % professional-quality tables
 \usepackage{amsfonts}       % blackboard math symbols
 \usepackage{amsmath}
@@ -49,8 +46,7 @@
 \usepackage{wrapfig}
 \usepackage{tikz}
 \usepackage{colortbl}
-\usetikzlibrary{arrows.meta,positioning,fit,backgrounds}
-\newtheorem{proposition}{Proposition}
+\usetikzlibrary{arrows.meta,positioning,fit,backgrounds} \newtheorem{proposition}{Proposition}
 \definecolor{skyblue}{RGB}{65, 155, 225}
 
 \usepackage[T1]{fontenc}
@@ -62,25 +58,13 @@
 \usepackage{enumitem}
 \usepackage{microtype}
 \usepackage{pdflscape}
-\theoremstyle{plain}
-\newtheorem{theorem}{Theorem}
-\newtheorem{corollary}{Corollary}
-\newtheorem{definition}{Definition}
-\theoremstyle{remark}
-\newtheorem*{remark}{Remark}
+\theoremstyle{plain} \newtheorem{theorem}{Theorem} \newtheorem{corollary}{Corollary} \newtheorem{definition}{Definition} \theoremstyle{remark} \newtheorem*{remark}{Remark}
 
 
 \newcommand{\mnote}[1]{}
 \renewcommand{\mnote}[1]{\textcolor{blue}{\textbf{[NOTE: #1]}}}
 
-\newcommand{\ie}{\textit{i.e.}}
-\newcommand{\eg}{\textit{e.g.}}
-\newcommand{\acroletter}[1]{\textbf{\textsc{#1}}}
-\newcommand{\etal}{\textit{et al.}}
-\newcommand{\todo}[1]{\textcolor{red}{\textbf{[TODO: #1]}}}
-\newcommand{\Tmax}{T^{\max}}
-\newcommand{\Tmin}{T^{\min}}
-\newcommand{\CGM}{C_{\text{GM}}}
+\newcommand{\ie}{\textit{i.e.}} \newcommand{\eg}{\textit{e.g.}} \newcommand{\acroletter}[1]{\textbf{\textsc{#1}}} \newcommand{\etal}{\textit{et al.}} \newcommand{\todo}[1]{\textcolor{red}{\textbf{[TODO: #1]}}} \newcommand{\Tmax}{T^{\max}} \newcommand{\Tmin}{T^{\min}} \newcommand{\CGM}{C_{\text{GM}}}
 
 
 \DeclareMathOperator*{\argmin}{arg\,min}
@@ -88,27 +72,8 @@
 % ---- (Master) LP box, constraint labels, and constraint references (Sec. 4) ----
 \definecolor{lpboxbg}{HTML}{F3F2EF}
 \definecolor{lpaccent}{HTML}{C2620E}
-\tcbuselibrary{skins}
-\newtcolorbox{lpbox}{enhanced,colback=lpboxbg,frame hidden,arc=6pt,
-  boxrule=0pt,left=8pt,right=8pt,top=2pt,bottom=4pt,before skip=0pt,after skip=0pt}
-\newcommand{\lplabel}[1]{\text{\makebox[5.75em][l]{\textcolor{lpaccent}{\sffamily\footnotesize #1}}}}
-\newcommand{\lpcons}[1]{\text{\raisebox{0pt}[0pt][0pt]{\hypertarget{lpcons:#1}{}}%
-  \makebox[5.75em][l]{\textcolor{lpaccent}{\sffamily\footnotesize constraint~#1}}}}
-\ExplSyntaxOn
-\cs_new_protected:Npn \__lpref_list:n #1
-  {
-    \bool_set_false:N \l_tmpa_bool
-    \clist_map_inline:nn {#1}
-      { \bool_if:NT \l_tmpa_bool {,~} \bool_set_true:N \l_tmpa_bool
-        \hyperlink{lpcons:##1}{##1} }
-  }
-\NewDocumentCommand{\lpref}{m}
-  {{ \mdseries\sffamily\footnotesize \hypersetup{linkcolor=lpaccent}\color{lpaccent}
-     [\int_compare:nNnTF {\clist_count:n {#1}} = 1 {constraint} {constraints}~\__lpref_list:n {#1}] }}
-\NewDocumentCommand{\lprefobj}{m}
-  {{ \mdseries\sffamily\footnotesize \hypersetup{linkcolor=lpaccent}\color{lpaccent}
-     [objective;~\int_compare:nNnTF {\clist_count:n {#1}} = 1 {constraint} {constraints}~\__lpref_list:n {#1}] }}
-\ExplSyntaxOff
+\tcbuselibrary{skins} \newtcolorbox{lpbox}{enhanced,colback=lpboxbg,frame hidden,arc=6pt, boxrule=0pt,left=8pt,right=8pt,top=2pt,bottom=4pt,before skip=0pt,after skip=0pt} \newcommand{\lplabel}[1]{\text{\makebox[5.75em][l]{\textcolor{lpaccent}{\sffamily\footnotesize #1}}}} \newcommand{\lpcons}[1]{\text{\raisebox{0pt}[0pt][0pt]{\hypertarget{lpcons:#1}{}}%
+  \makebox[5.75em][l]{\textcolor{lpaccent}{\sffamily\footnotesize constraint~#1}}}} \ExplSyntaxOn \cs_new_protected:Npn \__lpref_list:n #1 { \bool_set_false:N \l_tmpa_bool \clist_map_inline:nn {#1} { \bool_if:NT \l_tmpa_bool {,~} \bool_set_true:N \l_tmpa_bool \hyperlink{lpcons:##1}{##1} } } \NewDocumentCommand{\lpref}{m} {{ \mdseries\sffamily\footnotesize \hypersetup{linkcolor=lpaccent}\color{lpaccent} [\int_compare:nNnTF {\clist_count:n {#1}} = 1 {constraint} {constraints}~\__lpref_list:n {#1}] }} \NewDocumentCommand{\lprefobj}{m} {{ \mdseries\sffamily\footnotesize \hypersetup{linkcolor=lpaccent}\color{lpaccent} [objective;~\int_compare:nNnTF {\clist_count:n {#1}} = 1 {constraint} {constraints}~\__lpref_list:n {#1}] }} \ExplSyntaxOff
 
 
 \title{Accelerating the Inference Era with AI-Driven, Globally Optimized HW/SW Co-Design}
@@ -137,8 +102,7 @@
     Azalia Mirhoseini \\
     Computer Science \\
     Stanford University \\
-    \texttt{azalia@stanford.edu}
-}
+    \texttt{azalia@stanford.edu} }
 
 
 
@@ -148,7 +112,13 @@
 
 
 \begin{abstract}
-Deep learning inference demand is projected to grow $10{,}000\times$ over the next five years, a trajectory that general-purpose accelerators cannot match. Custom accelerators offer a path forward, but designing them requires co-optimizing hardware datapaths, software schedules, and compiler transforms across a search space exceeding $\mathcal O(10^{2300})$. Existing methodologies rely on decoupled, sequential pipelines that miss critical cross-stage trade-offs. We introduce \textsc{CHEETAH}: a globally optimized, AI-driven framework for inference accelerator co-design, and the first to combine \textit{joint} tiling-fusion, dynamic placement, and rematerialization in a single linear program (LP). Key contributions include: (i) time-indexed variables for dynamic memory management, (ii) rematerialization variables that trade cheap recomputation for costly DRAM reloads, and (iii) joint tiling-fusion optimization via McCormick linearization. An LLM-guided outer loop steers the inner optimization formulation through causal interventions based on deployment profiles and Lagrangian sensitivity signals. In under 6 hours, \textsc{CHEETAH} discovers Pareto-frontier designs across $12$ workloads spanning CNNs, diffusion, dense and mixture-of-experts LLMs, reaching up to $\sim24.20\times$ on LLM prefill, and $\sim17.93\times$ on LLM decode over a simulated TPU-v3 baseline, unlocking efficiency previously inaccessible to sequential pipelines.
+Deep learning inference demand is projected to grow $10{,}000\times$ over the next five years, a trajectory that general-purpose accelerators cannot match.
+Custom accelerators offer a path forward, but designing them requires co-optimizing hardware datapaths, software schedules, and compiler transforms across a search space exceeding $\mathcal O(10^{2300})$.
+Existing methodologies rely on decoupled, sequential pipelines that miss critical cross-stage trade-offs.
+We introduce \textsc{CHEETAH}: a globally optimized, AI-driven framework for inference accelerator co-design, and the first to combine \textit{joint} tiling-fusion, dynamic placement, and rematerialization in a single linear program (LP).
+Key contributions include: (i) time-indexed variables for dynamic memory management, (ii) rematerialization variables that trade cheap recomputation for costly DRAM reloads, and (iii) joint tiling-fusion optimization via McCormick linearization.
+An LLM-guided outer loop steers the inner optimization formulation through causal interventions based on deployment profiles and Lagrangian sensitivity signals.
+In under 6 hours, \textsc{CHEETAH} discovers Pareto-frontier designs across $12$ workloads spanning CNNs, diffusion, dense and mixture-of-experts LLMs, reaching up to $\sim24.20\times$ on LLM prefill, and $\sim17.93\times$ on LLM decode over a simulated TPU-v3 baseline, unlocking efficiency previously inaccessible to sequential pipelines.
 \end{abstract}
 
 
@@ -175,8 +145,7 @@ Deep learning inference demand is projected to grow $10{,}000\times$ over the ne
 \newpage
 \appendix
 
-\startcontents[appendix]
-{\noindent\normalsize\textbf{Appendix}\par}
+\startcontents[appendix] {\noindent\normalsize\textbf{Appendix}\par}
 \vspace{2pt}
 \begin{center}{\Large\textbf{Table of Contents}}\end{center}
 \vspace{4pt}

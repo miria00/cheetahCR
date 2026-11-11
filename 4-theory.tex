@@ -1,82 +1,60 @@
 \section{Modeling Theory and Containment}
 \label{sec:theory}\label{app:containment}
-The following statements concern represented feasible sets. They do not imply
-that a numerical solver has optimized the complete master or that arbitrary
-rounding preserves feasibility.
+The following statements concern represented feasible sets.
+They do not imply that a numerical solver has optimized the complete master or that arbitrary rounding preserves feasibility.
 
 \subsection{Bounded Products and Epigraphs}\label{app:bounded_products}
 \begin{proposition}\label{prop:mccormick_exact}
-For $0\le y,p\le1$, the inequalities $0\le w$, $w\le y$, $w\le p$,
-and $w\ge y+p-1$ describe the convex hull of the graph $w=yp$.
+For $0\le y,p\le1$, the inequalities $0\le w$, $w\le y$, $w\le p$, and $w\ge y+p-1$ describe the convex hull of the graph $w=yp$.
 If either factor is integral, these inequalities force $w=yp$.
 \end{proposition}
 \begin{proof}
-The lower envelope is $\max(0,y+p-1)$ and the upper envelope is
-$\min(y,p)$~\citep{mccormick1976computability}. For $y=0$ they both force
-$w=0$; for $y=1$ they force $w=p$. The cases for integral $p$ are symmetric.
+The lower envelope is $\max(0,y+p-1)$ and the upper envelope is $\min(y,p)$~\citep{mccormick1976computability}.
+For $y=0$ they both force $w=0$; for $y=1$ they force $w=p$.
+The cases for integral $p$ are symmetric.
 \end{proof}
-This is an individual-product property, not a convex-hull theorem for the
-complete program. For example,
+This is an individual-product property, not a convex-hull theorem for the complete program.
+For example,
 \begin{equation}
 y_1=y_2=p=\tfrac12,\quad w_1=w_2=\tfrac12
 \label{eq:rlt_counterexample}
 \end{equation}
-satisfies the separate envelopes and $y_1+y_2=1$, but violates the identity
-$w_1+w_2=p$ that holds for exact products. Linking rows
+satisfies the separate envelopes and $y_1+y_2=1$, but violates the identity $w_1+w_2=p$ that holds for exact products.
+Linking rows
 \begin{equation}
 \sum_c w_{ick}=p_{\mathrm{assoc}(i,k)}
 \label{eq:rlt_linking}
 \end{equation}
 can strengthen a branch when its intended integral semantics justify them~\citep{sherali1990hierarchy}.
-They must not be added to an immutable compatibility branch while claiming
-containment of every original fractional point.
+They must not be added to an immutable compatibility branch while claiming containment of every original fractional point.
 
 \begin{corollary}[Disaggregated service epigraphs]\label{cor:v3_hull}
-For fixed resource costs $a_c,b_c$, the one-choice epigraph has the perspective
-form $\sum_c y_c=1$, $y_c\ge0$, $t_c\ge a_cy_c$, $t_c\ge b_cy_c$,
-$T\ge\sum_ct_c$. It gives $T\ge\sum_c y_c\max(a_c,b_c)$ and dominates
-$T\ge\max(\sum_ca_cy_c,\sum_cb_cy_c)$.
+For fixed resource costs $a_c,b_c$, the one-choice epigraph has the perspective form $\sum_c y_c=1$, $y_c\ge0$, $t_c\ge a_cy_c$, $t_c\ge b_cy_c$, $T\ge\sum_ct_c$.
+It gives $T\ge\sum_c y_c\max(a_c,b_c)$ and dominates $T\ge\max(\sum_ca_cy_c,\sum_cb_cy_c)$.
 \end{corollary}
 \begin{proof}
-For each $c$, minimizing $t_c$ gives $y_c\max(a_c,b_c)$. Summing maxima is
-at least either sum separately. With a one-hot choice the two formulations
-coincide. For shared variable hardware, every additional coupling must also
-be disaggregated consistently, and separate product envelopes alone do not prove
-the convex hull of the entire HW/SW problem.
+For each $c$, minimizing $t_c$ gives $y_c\max(a_c,b_c)$.
+Summing maxima is at least either sum separately.
+With a one-hot choice the two formulations coincide.
+For shared variable hardware, every additional coupling must also be disaggregated consistently, and separate product envelopes alone do not prove the convex hull of the entire HW/SW problem.
 \end{proof}
 
 \subsection{Containment of Lifted Sequential Fusion}
 \label{app:fast_containment}
-This subsection concerns the retained joint tiling--placement block of
-Section~\ref{sec:master_lp}, whose coordinates are the tile selection
-$y_{ic}$, activation residency $p_{et}$, weight residency $p^W_{it}$,
-rematerialization $r_{it}$, the one-hot global-buffer selector
-$h_{\mathrm{GM}}\in[0,1]^K$ over a discrete grid $g_1,\ldots,g_K$, and the
-per-operation latencies $T_i$ that the objective sums. Write that block's
-feasible set at a fixed chip $H$ and workload graph $G$ as
+This subsection concerns the retained joint tiling--placement block of Section~\ref{sec:master_lp}, whose coordinates are the tile selection $y_{ic}$, activation residency $p_{et}$, weight residency $p^W_{it}$, rematerialization $r_{it}$, the one-hot global-buffer selector $h_{\mathrm{GM}}\in[0,1]^K$ over a discrete grid $g_1,\ldots,g_K$, and the per-operation latencies $T_i$ that the objective sums.
+Write that block's feasible set at a fixed chip $H$ and workload graph $G$ as
 \begin{equation}
 \mathcal P_V(H,G)=\{x=(y,p,p^W,r,h_{\mathrm{GM}},T):A_Vx\le b_V(H,G)\},
 \label{eq:pv}
 \end{equation}
-with $\sum_cy_{ic}=1$, $\sum_kh_{\mathrm{GM},k}=1$, all selection and residency
-coordinates in $[0,1]$, $T\in\mathbb R^L_{\ge0}$, and Timeloop-derived constants
-$T^{\min}_i(c),T^{\max}_i(c),t^k_i(c)$ at $C$ Pareto tile configurations per
-operation.
+with $\sum_cy_{ic}=1$, $\sum_kh_{\mathrm{GM},k}=1$, all selection and residency coordinates in $[0,1]$, $T\in\mathbb R^L_{\ge0}$, and Timeloop-derived constants $T^{\min}_i(c),T^{\max}_i(c),t^k_i(c)$ at $C$ Pareto tile configurations per operation.
 
 \paragraph{The lifted sequential fusion set.}
-A sequential co-design pipeline runs the mapper first, commits to one tile
-choice $c^{\mathrm{S}}_i$ per operation, and only then solves a fusion problem
-over tensor pinning at a fixed buffer split, without rematerialization. Any
-schedule of this shape belongs to the class, whichever system produced it.
-FAST~\citep{zhang_fast} is the member whose constants we match in
-Section~\ref{sec:experiments}. Of the systems in
-Table~\ref{tab:capability-matrix}, the per-op mappers Timeloop and CoSA fit
-the class with an empty fusion pattern, and the fusion-aware mappers DeFiNES,
-Fast-and-Fusiest and Gemini fit it on the schedules where their fusion stage
-consumes committed tiles and their partial placement and recomputation
-features are off. To compare a pipeline with CHEETAH in one variable space we
-lift the pipeline's feasible set by encoding its committed mapper choice as a
-singleton one-hot,
+A sequential co-design pipeline runs the mapper first, commits to one tile choice $c^{\mathrm{S}}_i$ per operation, and only then solves a fusion problem over tensor pinning at a fixed buffer split, without rematerialization.
+Any schedule of this shape belongs to the class, whichever system produced it.
+FAST~\citep{zhang_fast} is the member whose constants we match in Section~\ref{sec:experiments}.
+Of the systems in Table~\ref{tab:capability-matrix}, the per-op mappers Timeloop and CoSA fit the class with an empty fusion pattern, and the fusion-aware mappers DeFiNES, Fast-and-Fusiest and Gemini fit it on the schedules where their fusion stage consumes committed tiles and their partial placement and recomputation features are off.
+To compare a pipeline with CHEETAH in one variable space we lift the pipeline's feasible set by encoding its committed mapper choice as a singleton one-hot,
 \begin{equation}
 \begin{aligned}
 \mathcal F^{\mathrm{lift}}_S(H,G)=\Bigl\{(y,p,p^W,T):\ &
@@ -85,45 +63,29 @@ y_{i,c^{\mathrm{S}}_i}=1,\ y_{ic}=0\ \forall c\ne c^{\mathrm{S}}_i,\\
 \end{aligned}
 \label{eq:fflift}
 \end{equation}
-where $A_S,b_S$ encode the pipeline's buffer capacity at its fixed $g$, its
-bandwidth, and its per-stage compute floor under the fixed-$y$ projection.
-The pipeline commits to $r=0$ and to that fixed $g$ by construction. The first
-$LC+ET+LT$ columns of $A_V$ coincide with $A_S$, and both use the same
-bandwidth $b$ and the same mapper cost vectors.
+where $A_S,b_S$ encode the pipeline's buffer capacity at its fixed $g$, its bandwidth, and its per-stage compute floor under the fixed-$y$ projection.
+The pipeline commits to $r=0$ and to that fixed $g$ by construction.
+The first $LC+ET+LT$ columns of $A_V$ coincide with $A_S$, and both use the same bandwidth $b$ and the same mapper cost vectors.
 
 \begin{theorem}[Containment of lifted sequential fusion]\label{thm:containment}
-Fix $H$, $G$, a grid value $g\in\{g_1,\ldots,g_K\}$ and the mapper-derived
-constants, and let $k^\star$ satisfy $g_{k^\star}=g$. The map
+Fix $H$, $G$, a grid value $g\in\{g_1,\ldots,g_K\}$ and the mapper-derived constants, and let $k^\star$ satisfy $g_{k^\star}=g$.
+The map
 \begin{equation}
 \iota:\mathcal F^{\mathrm{lift}}_S(H,G)\hookrightarrow\mathcal P_V(H,G),\qquad
 \iota(y,p,p^W,T)=\bigl(y,\tilde p,p^W,r=0,h_{\mathrm{GM}}=e_{k^\star},T\bigr),
 \label{eq:iota}
 \end{equation}
-with $\tilde p_{et}=1$ exactly on the timesteps covered by the pipeline's
-consecutive fusion region for the edge supplying $e$ and zero elsewhere, is well defined and
-injective, and it preserves the objective:
-$\mathbf c^\top\iota(x)=\mathbf c^\top x$ for every
-$x\in\mathcal F^{\mathrm{lift}}_S(H,G)$.
+with $\tilde p_{et}=1$ exactly on the timesteps covered by the pipeline's consecutive fusion region for the edge supplying $e$ and zero elsewhere, is well defined and injective, and it preserves the objective: $\mathbf c^\top\iota(x)=\mathbf c^\top x$ for every $x\in\mathcal F^{\mathrm{lift}}_S(H,G)$.
 \end{theorem}
 \begin{proof}
-\emph{Feasibility.} The integer cube embeds into the LP cube,
-$\{0,1\}^d\subset[0,1]^d$, so any integer-feasible $(y,p,p^W)$ lies in
-$\mathcal P_V$ along the shared coordinates. The lifted $\tilde p$ is zero off
-the pipeline's consecutive fusion region by construction, so the
-activation-persistence and capacity rows of $\mathcal P_V$ reduce to the
-pipeline's. Setting $r=0$ disables
-rematerialization and $h_{\mathrm{GM}}=e_{k^\star}$ pins the buffer-capacity row
-to the pipeline's $g$. The per-stage compute floor evaluates identically because both
-sets consume the same mapper cost vectors under the singleton-$y$ projection.
+\emph{Feasibility.} The integer cube embeds into the LP cube, $\{0,1\}^d\subset[0,1]^d$, so any integer-feasible $(y,p,p^W)$ lies in $\mathcal P_V$ along the shared coordinates.
+The lifted $\tilde p$ is zero off the pipeline's consecutive fusion region by construction, so the activation-persistence and capacity rows of $\mathcal P_V$ reduce to the pipeline's.
+Setting $r=0$ disables rematerialization and $h_{\mathrm{GM}}=e_{k^\star}$ pins the buffer-capacity row to the pipeline's $g$.
+The per-stage compute floor evaluates identically because both sets consume the same mapper cost vectors under the singleton-$y$ projection.
 Hence $\iota(x)\in\mathcal P_V$.
-\emph{Injectivity.} $\iota$ is the identity on the shared coordinates and
-constant on the new ones, so $\iota(x)=\iota(x')$ implies $x=x'$.
-\emph{Objective preservation.} The objective $\sum_iT_i$ depends only on the
-shared coordinate $T$, so $\mathbf c^\top\iota(x)=\mathbf c^\top x$. If the
-objective additionally carries an $\varepsilon$-tiebreaker
-$\varepsilon\sum_kk\,h_{\mathrm{GM},k}$, that term equals the constant
-$\varepsilon k^\star$ on $\iota(x)$ and changes neither the optimum nor its
-minimizer at fixed $g$.
+\emph{Injectivity.} $\iota$ is the identity on the shared coordinates and constant on the new ones, so $\iota(x)=\iota(x')$ implies $x=x'$.
+\emph{Objective preservation.} The objective $\sum_iT_i$ depends only on the shared coordinate $T$, so $\mathbf c^\top\iota(x)=\mathbf c^\top x$.
+If the objective additionally carries an $\varepsilon$-tiebreaker $\varepsilon\sum_kk\,h_{\mathrm{GM},k}$, that term equals the constant $\varepsilon k^\star$ on $\iota(x)$ and changes neither the optimum nor its minimizer at fixed $g$.
 \end{proof}
 
 \begin{corollary}[The relaxation dominates the lifted sequential objective]\label{cor:optimum}
@@ -135,99 +97,53 @@ For every chip $H$, workload $G$ and matched mapper constants,
 \end{equation}
 \end{corollary}
 \begin{proof}
-Let $x^\star_S$ attain the lifted sequential minimum. By
-Theorem~\ref{thm:containment}, $\iota(x^\star_S)\in\mathcal P_V$ and
-$\mathbf c^\top\iota(x^\star_S)=\mathbf c^\top x^\star_S$, so the minimum over
-$\mathcal P_V$ is at most that value.
+Let $x^\star_S$ attain the lifted sequential minimum.
+By Theorem~\ref{thm:containment}, $\iota(x^\star_S)\in\mathcal P_V$ and $\mathbf c^\top\iota(x^\star_S)=\mathbf c^\top x^\star_S$, so the minimum over $\mathcal P_V$ is at most that value.
 \end{proof}
 
-Consequently a fixed-hardware gap between a sequential pipeline and CHEETAH
-cannot be attributed to the pipeline's solutions lying outside the search space:
-it must come from
-the extra continuous degrees of freedom $y$, $r$ and $h_{\mathrm{GM}}$, from
-relaxation versus integral rounding, or from differences in cost model or
-baseline normalization.
+Consequently a fixed-hardware gap between a sequential pipeline and CHEETAH cannot be attributed to the pipeline's solutions lying outside the search space: it must come from the extra continuous degrees of freedom $y$, $r$ and $h_{\mathrm{GM}}$, from relaxation versus integral rounding, or from differences in cost model or baseline normalization.
 
 \begin{remark}[Scope]\label{rem:scope}
-Theorem~\ref{thm:containment} is a modeling-containment result and bounds the
-relaxation, not the rounded executable schedule, which is reported separately.
-It does not predict numerical equivalence of reported speedups: those also move
-with baseline normalization, simulator overheads, depthwise mapping on
-$128\times128$ arrays, and batch and core conventions. Containment is also not
-automatic reproduction of a published chip, since the branch and its complete
-contract must be imported, and unbounded branches can retain recession
-directions at zero weight.
+Theorem~\ref{thm:containment} is a modeling-containment result and bounds the relaxation, not the rounded executable schedule, which is reported separately.
+It does not predict numerical equivalence of reported speedups: those also move with baseline normalization, simulator overheads, depthwise mapping on $128\times128$ arrays, and batch and core conventions.
+Containment is also not automatic reproduction of a published chip, since the branch and its complete contract must be imported, and unbounded branches can retain recession directions at zero weight.
 \end{remark}
 
 \begin{corollary}[Branch containment in the full master]\label{cor:branch_containment}
-Write an included branch as
-$P_b=\{x:E_bx=e_b,\ G_bx\le g_b,\ \ell_b\le x\le u_b\}$; the master homogenizes
-its rows and finite boxes with $\lambda_b$. For every included branch $p$ and
-every $x\in P_p$, the assignment $\lambda_p=1$, $x_p=x$, and $\lambda_b=0,x_b=0$
-for $b\ne p$ is master-feasible with the same objective and hardware readout, so
-$\inf_{z\in P_M}c_M^\top z\le\min_b\inf_{x\in P_b}c_b^\top x$.
+Write an included branch as $P_b=\{x:E_bx=e_b,\ G_bx\le g_b,\ \ell_b\le x\le u_b\}$; the master homogenizes its rows and finite boxes with $\lambda_b$.
+For every included branch $p$ and every $x\in P_p$, the assignment $\lambda_p=1$, $x_p=x$, and $\lambda_b=0,x_b=0$ for $b\ne p$ is master-feasible with the same objective and hardware readout, so $\inf_{z\in P_M}c_M^\top z\le\min_b\inf_{x\in P_b}c_b^\top x$.
 \end{corollary}
 \begin{proof}
-Every active-branch row and bound becomes its original constraint, and every
-inactive-branch row has zero on both sides, which satisfies each homogenized
-finite box. The weights sum to one, active hardware coordinates are unchanged,
-and $\sum_bc_b^\top x_b=c_p^\top x$. The argument covers fractional points as
-well as integral schedules.
+Every active-branch row and bound becomes its original constraint, and every inactive-branch row has zero on both sides, which satisfies each homogenized finite box.
+The weights sum to one, active hardware coordinates are unchanged, and $\sum_bc_b^\top x_b=c_p^\top x$.
+The argument covers fractional points as well as integral schedules.
 \end{proof}
 
 \subsection{A Fixed-Hardware Ceiling on Any Scheduler}
 \label{app:deficiency}
-For a workload $G$ on a fixed chip $H$ with DRAM bandwidth $b_H$, define the
-\emph{baseline-deficiency ratio}
+For a workload $G$ on a fixed chip $H$ with DRAM bandwidth $b_H$, define the \emph{baseline-deficiency ratio}
 \begin{equation}
 \mathcal D(H,G)=\frac{T_{\rm naive}(H,G)}{\max\bigl(T^{\rm LB}_{\rm compute}(H,G),\,T_{\rm memory}(H,G)\bigr)},
 \label{eq:deficiency}
 \end{equation}
-where $T_{\rm naive}=\sum_iT^{\max}_i$ is the naive streaming time,
-$T^{\rm LB}_{\rm compute}=\sum_i\min_cT^{\min}_i(c)$ is the
-schedule-independent per-operation compute floor, and
-$T_{\rm memory}=\sum_i\mathrm{bytes}_i/b_H$ is the bandwidth floor, where
-$\mathrm{bytes}_i=\min_c\bigl[Q_i(c)-\sum_kq^k_i(c)\bigr]$ is the DRAM traffic
-of operation $i$ that no residency can remove: $Q_i(c)$ is its streamed traffic
-under configuration $c$ and $q^k_i(c)$ the traffic credited when operand $k$ is
-resident. The
-denominator is the optimistic compute-plus-DRAM roofline bound~\citep{williams2009roofline,huang2024mindthegap} on the cycles any
-scheduler needs to execute $G$ on $H$. Adding NoC, SRAM, vector or control
-floors can only raise it and lower $\mathcal D$.
+where $T_{\rm naive}=\sum_iT^{\max}_i$ is the naive streaming time, $T^{\rm LB}_{\rm compute}=\sum_i\min_cT^{\min}_i(c)$ is the schedule-independent per-operation compute floor, and $T_{\rm memory}=\sum_i\mathrm{bytes}_i/b_H$ is the bandwidth floor, where $\mathrm{bytes}_i=\min_c\bigl[Q_i(c)-\sum_kq^k_i(c)\bigr]$ is the DRAM traffic of operation $i$ that no residency can remove: $Q_i(c)$ is its streamed traffic under configuration $c$ and $q^k_i(c)$ the traffic credited when operand $k$ is resident.
+The denominator is the optimistic compute-plus-DRAM roofline bound~\citep{williams2009roofline,huang2024mindthegap} on the cycles any scheduler needs to execute $G$ on $H$.
+Adding NoC, SRAM, vector or control floors can only raise it and lower $\mathcal D$.
 \begin{theorem}[Fixed-hardware deficiency ceiling]\label{thm:deficiency}
-For every chip $H$, workload $G$ and feasible point $x\in\mathcal P_V(H,G)$,
-$\mathrm{speedup}(x):=T_{\rm naive}(H,G)/\mathbf c^\top x\le\mathcal D(H,G)$;
-in particular $\min_{x\in\mathcal P_V}\mathbf c^\top x\ge\max(T^{\rm LB}_{\rm compute},T_{\rm memory})$.
+For every chip $H$, workload $G$ and feasible point $x\in\mathcal P_V(H,G)$, $\mathrm{speedup}(x):=T_{\rm naive}(H,G)/\mathbf c^\top x\le\mathcal D(H,G)$; in particular $\min_{x\in\mathcal P_V}\mathbf c^\top x\ge\max(T^{\rm LB}_{\rm compute},T_{\rm memory})$.
 \end{theorem}
 \begin{proof}
-Both floors follow from the two latency rows of the retained block
-(Appendix~\ref{app:rows_retained}),
-$T_i\ge\sum_cT^{\min}_i(c)\,y_{ic}$ and
-$T_i\ge\sum_cT^{\max}_i(c)\,y_{ic}-\sum_{c,k}t^k_i(c)\,w_{ick}$.
-\emph{Compute.} Since $\sum_cy_{ic}=1$ and $y\ge0$, the first row gives
-$T_i\ge\min_cT^{\min}_i(c)$ for every feasible $y$, and summing over $i$
-gives $\sum_iT_i\ge T^{\rm LB}_{\rm compute}$.
-\emph{Bandwidth.} In the cost model $T^{\max}_i(c)$ is the streamed latency,
-which is at least the DRAM time $Q_i(c)/b_H$, and the residency saving for
-operand $k$ is its credited DRAM time, $t^k_i(c)=q^k_i(c)/b_H$. With
-$0\le w_{ick}\le y_{ic}$ and $t^k_i(c)\ge0$ the second row gives
-$T_i\ge\sum_cy_{ic}\,[Q_i(c)-\sum_kq^k_i(c)]/b_H\ge\min_c[Q_i(c)-\sum_kq^k_i(c)]/b_H
-=\mathrm{bytes}_i/b_H$, and summing over $i$ gives
-$\sum_iT_i\ge T_{\rm memory}$. Hence
-$\mathbf c^\top x=\sum_iT_i\ge\max(T^{\rm LB}_{\rm compute},T_{\rm memory})$,
-and dividing $T_{\rm naive}$ by both sides gives the claim.
+Both floors follow from the two latency rows of the retained block (Appendix~\ref{app:rows_retained}), $T_i\ge\sum_cT^{\min}_i(c)\,y_{ic}$ and $T_i\ge\sum_cT^{\max}_i(c)\,y_{ic}-\sum_{c,k}t^k_i(c)\,w_{ick}$.
+\emph{Compute.} Since $\sum_cy_{ic}=1$ and $y\ge0$, the first row gives $T_i\ge\min_cT^{\min}_i(c)$ for every feasible $y$, and summing over $i$ gives $\sum_iT_i\ge T^{\rm LB}_{\rm compute}$.
+\emph{Bandwidth.} In the cost model $T^{\max}_i(c)$ is the streamed latency, which is at least the DRAM time $Q_i(c)/b_H$, and the residency saving for operand $k$ is its credited DRAM time, $t^k_i(c)=q^k_i(c)/b_H$.
+With $0\le w_{ick}\le y_{ic}$ and $t^k_i(c)\ge0$ the second row gives $T_i\ge\sum_cy_{ic}\,[Q_i(c)-\sum_kq^k_i(c)]/b_H\ge\min_c[Q_i(c)-\sum_kq^k_i(c)]/b_H =\mathrm{bytes}_i/b_H$, and summing over $i$ gives $\sum_iT_i\ge T_{\rm memory}$.
+Hence $\mathbf c^\top x=\sum_iT_i\ge\max(T^{\rm LB}_{\rm compute},T_{\rm memory})$, and dividing $T_{\rm naive}$ by both sides gives the claim.
 \end{proof}
-The bound is set by the physics of the declared model, not by physics outside
-it. Its denominator is built from the retained LP's per-operation compute
-floors and its bandwidth row, so it limits every scheduler that draws
-implementations from the declared library and is costed by the declared model,
-not only CHEETAH or the sequential pipelines above. Those compute floors are mapper minima and can
-contain padding and mapping inefficiency (Appendix~\ref{app:mfu}), so a
-ceiling for fabricated silicon would need further assumptions about unavoidable
-work, compulsory traffic and implementation coverage that the theorem does not
-make. Within the physics of the declared model, $\mathcal D$ measures how much
-any software can extract on a given chip--workload pair. Table~\ref{tab:deficiency} evaluates it on fixed
-TPU-v3 (65,536 MACs, 900\,GB/s, 32\,MiB, BF16).
+The bound is set by the physics of the declared model, not by physics outside it.
+Its denominator is built from the retained LP's per-operation compute floors and its bandwidth row, so it limits every scheduler that draws implementations from the declared library and is costed by the declared model, not only CHEETAH or the sequential pipelines above.
+Those compute floors are mapper minima and can contain padding and mapping inefficiency (Appendix~\ref{app:mfu}), so a ceiling for fabricated silicon would need further assumptions about unavoidable work, compulsory traffic and implementation coverage that the theorem does not make.
+Within the physics of the declared model, $\mathcal D$ measures how much any software can extract on a given chip--workload pair.
+Table~\ref{tab:deficiency} evaluates it on fixed TPU-v3 (65,536 MACs, 900\,GB/s, 32\,MiB, BF16).
 \begin{table}[h]
 \centering\small
 \caption{Fixed-TPU-v3 deficiency ceiling and the fixed-hardware LP solution.
@@ -244,24 +160,17 @@ DeepSeek-V3 & $5.88\times10^{10}$ & $2.65\times10^{10}$ & $2.22\times$ & $2.22\t
 \bottomrule
 \end{tabular}
 \end{table}
-On every LLM the fixed-hardware solution reaches the ceiling, so the modest
-fixed-TPU-v3 gains of Table~\ref{tab:fixed_hw} measure the chip, not the
-formulation: TPU-v3 has only about $2.5\times$ of extractable inefficiency on
-these workloads, and the larger gains of Section~\ref{sec:experiments} require
-co-designing the chip itself.
+On every LLM the fixed-hardware solution reaches the ceiling, so the modest fixed-TPU-v3 gains of Table~\ref{tab:fixed_hw} measure the chip, not the formulation: TPU-v3 has only about $2.5\times$ of extractable inefficiency on these workloads, and the larger gains of Section~\ref{sec:experiments} require co-designing the chip itself.
 
 \subsection{Structure and Safe Pruning}\label{app:invar}
 \begin{proposition}\label{prop:invariance}
-For fixed graph incidence, variable domains, and candidate library, changes
-only to numerical costs and bounds preserve the structural row/column pattern.
+For fixed graph incidence, variable domains, and candidate library, changes only to numerical costs and bounds preserve the structural row/column pattern.
 \end{proposition}
 \begin{proof}
-The same indexed row templates address the same coordinates. Hardware-dependent
-coefficients can change their values, but changing the implementation library or
-introducing different lifetimes need not preserve the pattern.
+The same indexed row templates address the same coordinates.
+Hardware-dependent coefficients can change their values, but changing the implementation library or introducing different lifetimes need not preserve the pattern.
 \end{proof}
-This permits reuse of indexing and warm starts. A new scaling or norm bound
-must still be checked when coefficients change. Pareto pruning similarly needs
-componentwise dominance in every resource and interface used by the branch.
-A two-axis latency plot alone is insufficient when workspace, traffic tiers,
-or numerical formats differ.
+This permits reuse of indexing and warm starts.
+A new scaling or norm bound must still be checked when coefficients change.
+Pareto pruning similarly needs componentwise dominance in every resource and interface used by the branch.
+A two-axis latency plot alone is insufficient when workspace, traffic tiers, or numerical formats differ.

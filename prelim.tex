@@ -1,30 +1,20 @@
 \section{Preliminaries}\label{sec:prelim}
 \subsection{Linear Relaxation and Recovery}
 \label{sec:lps}
-Discrete selections are relaxed to $[0,1]$ and bounded products to convex
-envelopes (Appendix~\ref{app:containment}), so the LP optimum lower-bounds only
-the domain the formulation and its certificate cover. Recovery then chooses
-integral hardware and implementations and checks dependencies, storage,
-transfers and predicted latency (Appendix~\ref{app:lps}).
+Discrete selections are relaxed to $[0,1]$ and bounded products to convex envelopes (Appendix~\ref{app:containment}), so the LP optimum lower-bounds only the domain the formulation and its certificate cover.
+Recovery then chooses integral hardware and implementations and checks dependencies, storage, transfers and predicted latency (Appendix~\ref{app:lps}).
 
 \subsection{Capability Comparison}
 \label{sec:capability-matrix}
-Table~\ref{tab:capability-matrix} compares decision spaces and their features considered in prior work. CHEETAH's row summarizes the comprehensive features our system encapsulates. Appendix~\ref{app:master_rows} identifies further optimization and modeling details exercised by
-the full-inference execution. The table distinguishes searched decisions from
-restricted or user-specified support. DeFiNES chooses caching versus overlap
-recomputation, and Fast-and-Fusiest searches dependency-respecting orders within
-its fused mapspace. Gemini's fusion and order support concerns layer pipelines.
-Pluto optimizes affine schedules, and Tiramisu also exposes explicit storage,
-copies and redundant computation through its scheduling language. These differ
-from unrestricted cost-driven temporal placement. CoSA's guarantee concerns a
-per-layer proxy objective and Fast-and-Fusiest's its fixed-hardware mapspace,
-but neither is a bound over a joint hardware--schedule domain. The last column
-denotes one joint mathematical program rather than staged co-search, and DOSA's
-qualifying program is nonconvex.
-Analysis of the comparison is also presented rigorously in  Theorem~\ref{thm:containment} of
-Appendix~\ref{app:fast_containment}. This exhibits an injective, objective-preserving
-embedding of the lifted sequential solution set into our relaxation, so by
-Corollary~\ref{cor:optimum} our bound is never worse than the matched sequential
-objective and any fixed-hardware gap must come from the extra degrees of
-freedom, from rounding, or from cost-model and baseline conventions rather than
-points lying outside the search space.
+Table~\ref{tab:capability-matrix} compares decision spaces and their features considered in prior work.
+CHEETAH's row summarizes the comprehensive features our system encapsulates.
+Appendix~\ref{app:master_rows} identifies further optimization and modeling details exercised by the full-inference execution.
+The table distinguishes searched decisions from restricted or user-specified support.
+DeFiNES chooses caching versus overlap recomputation, and Fast-and-Fusiest searches dependency-respecting orders within its fused mapspace.
+Gemini's fusion and order support concerns layer pipelines.
+Pluto optimizes affine schedules, and Tiramisu also exposes explicit storage, copies and redundant computation through its scheduling language.
+These differ from unrestricted cost-driven temporal placement.
+CoSA's guarantee concerns a per-layer proxy objective and Fast-and-Fusiest's its fixed-hardware mapspace, but neither is a bound over a joint hardware--schedule domain.
+The last column denotes one joint mathematical program rather than staged co-search, and DOSA's qualifying program is nonconvex.
+Analysis of the comparison is also presented rigorously in  Theorem~\ref{thm:containment} of Appendix~\ref{app:fast_containment}.
+This exhibits an injective, objective-preserving embedding of the lifted sequential solution set into our relaxation, so by Corollary~\ref{cor:optimum} our bound is never worse than the matched sequential objective and any fixed-hardware gap must come from the extra degrees of freedom, from rounding, or from cost-model and baseline conventions rather than points lying outside the search space.

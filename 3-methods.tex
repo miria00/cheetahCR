@@ -1,28 +1,22 @@
 \section{CHEETAH Formulation for HW/SW Co-Design}
 \label{sec:methods}
-CHEETAH minimizes predicted workload inference latency under a declared hardware
-budget. Its inputs are independent logical invocations, a finite implementation
-library, and a numerical contract. Each whole-program branch specifies compatible
-hardware and execution semantics, and hardware is shared across all invocations within
-that branch. The same master LP formulation admits the retained joint tiling--placement
-model and causal execution branches. Variable-hardware branches retain their declared physical rows and resource
-envelopes. Fixed-chip wrappers additionally impose exact installed-rate ceilings.
+CHEETAH minimizes predicted workload inference latency under a declared hardware budget.
+Its inputs are independent logical invocations, a finite implementation library, and a numerical contract.
+Each whole-program branch specifies compatible hardware and execution semantics, and hardware is shared across all invocations within that branch.
+The same master LP formulation admits the retained joint tiling--placement model and causal execution branches.
+Variable-hardware branches retain their declared physical rows and resource envelopes.
+Fixed-chip wrappers additionally impose exact installed-rate ceilings.
 
 \subsection{Pruning, Variables, and the Encoded Features}
 \label{sec:v1}\label{sec:master_lp}\label{sec:v3}
 \paragraph{Pareto pruning pre-pass.}
-For each operation we discard infeasible tiles and configurations dominated in
-every cost, traffic, workspace and interface dimension within the same
-implementation contract and hardware class. Timeloop or any other native analytical
-software supplies the retained coefficients once (Figure~\ref{fig:tiles}), so the
-solver never calls the mapper during the search. Appendix~\ref{app:invar} states
-when the dominance relation survives a change of hardware and resulting search efficiency.
+For each operation we discard infeasible tiles and configurations dominated in every cost, traffic, workspace and interface dimension within the same implementation contract and hardware class.
+Timeloop or any other native analytical software supplies the retained coefficients once (Figure~\ref{fig:tiles}), so the solver never calls the mapper during the search.
+Appendix~\ref{app:invar} states when the dominance relation survives a change of hardware and resulting search efficiency.
 
-Let $i\in\mathcal N$ index logical nodes, $j\in\mathcal J$ storage objects,
-$e\in\mathcal E_b=\{0,\ldots,E_b-1\}$ events in branch $b$, and $\tau$ memory
-tiers. An implementation $k$ covers members $S_k$ and specifies inputs,
-outputs, workspace $W_{k\tau}$ and resource demands. $\mathcal K_b$ is the
-finite implementation set of branch $b$, generated on demand.
+Let $i\in\mathcal N$ index logical nodes, $j\in\mathcal J$ storage objects, $e\in\mathcal E_b=\{0,\ldots,E_b-1\}$ events in branch $b$, and $\tau$ memory tiers.
+An implementation $k$ covers members $S_k$ and specifies inputs, outputs, workspace $W_{k\tau}$ and resource demands.
+$\mathcal K_b$ is the finite implementation set of branch $b$, generated on demand.
 Table~\ref{tab:var_digest} defines the coordinates.
 
 \begin{table}[t]
@@ -48,21 +42,13 @@ $T_i,p_{et},p^W_{it},r_{it},w_{ick}$ & retained schedule block & Latency, reside
 \end{tabularx}
 \end{table}
 
-The family $\mathcal B=\mathcal B_C\mathbin{\dot\cup}\mathcal B_P$ holds causal
-branches and retained joint tiling--placement branches. The
-objective charges causal event durations and retained operation latencies plus
-rematerialization~\citep{chen2016trainingdeepnetssublinear}, with $\kappa_b,\alpha_b$ converting to ms. Each $x_b$ holds
-the branch coordinates already scaled by $\lambda_b$, and right-hand sides and
-bounds scale likewise. Below we suppress branch indices and write $E=E_b$.
-$\mathcal R_k$ lists required object/tier pairs, $\mathcal D_k$ completed
-controls, $\mathsf D^r_e$ linear resource demand, and $\mathsf{Cap}_{b,\tau e}$
-live objects, incoming copies, active outputs, workspace and reservations.
-$B_b,J_b$ hold the remaining state, backing and implementation rows
-(Appendix~\ref{app:master_rows} and Table~\ref{tab:feature_scope}). For
-$b\in\mathcal B_{\rm phys}\subseteq\mathcal B_C$ the installed chip $\bar h_b$
-fixes rates $\bar R_{br}$ and $\mathsf D^{r,\rm phys}_{be}$ is the issued work or
-traffic on resource $r$ at event $e$, while $\mathsf A_b^\lambda$ and
-$\mathsf P_b^\lambda$ denote affine area and peak power.
+The family $\mathcal B=\mathcal B_C\mathbin{\dot\cup}\mathcal B_P$ holds causal branches and retained joint tiling--placement branches.
+The objective charges causal event durations and retained operation latencies plus rematerialization~\citep{chen2016trainingdeepnetssublinear}, with $\kappa_b,\alpha_b$ converting to ms.
+Each $x_b$ holds the branch coordinates already scaled by $\lambda_b$, and right-hand sides and bounds scale likewise.
+Below we suppress branch indices and write $E=E_b$.
+$\mathcal R_k$ lists required object/tier pairs, $\mathcal D_k$ completed controls, $\mathsf D^r_e$ linear resource demand, and $\mathsf{Cap}_{b,\tau e}$ live objects, incoming copies, active outputs, workspace and reservations.
+$B_b,J_b$ hold the remaining state, backing and implementation rows (Appendix~\ref{app:master_rows} and Table~\ref{tab:feature_scope}).
+For $b\in\mathcal B_{\rm phys}\subseteq\mathcal B_C$ the installed chip $\bar h_b$ fixes rates $\bar R_{br}$ and $\mathsf D^{r,\rm phys}_{be}$ is the issued work or traffic on resource $r$ at event $e$, while $\mathsf A_b^\lambda$ and $\mathsf P_b^\lambda$ denote affine area and peak power.
 
 % \begin{figure}[t]
 % \begingroup\small
@@ -158,15 +144,11 @@ $\mathsf P_b^\lambda$ denote affine area and peak power.
 \end{lpbox}
 \end{figure}
 \begingroup\clubpenalty=10000
-The cover, lifecycle, service and $B_b,J_b$ rows apply to causal branches, and
-$A_b^P,G_b^P$ to retained schedule branches. $\mathcal W,\mathcal R,\mathcal M$
-are linear workspace-product, reciprocal and service-product envelopes. Copy,
-conversion, KV restoration and permitted repeat costs enter the shared service
-demands and hence $d_e$, so the event epigraph already represents their overlap.
-The objective minimizes latency over the declared task boundary, not area,
-energy or Perf/TDP. Setting $\lambda_b=1$ recovers that branch exactly
-(Corollary~\ref{cor:branch_containment}), fractional weights describe the LP
-relaxation, and recovery selects one program.
+The cover, lifecycle, service and $B_b,J_b$ rows apply to causal branches, and $A_b^P,G_b^P$ to retained schedule branches.
+$\mathcal W,\mathcal R,\mathcal M$ are linear workspace-product, reciprocal and service-product envelopes.
+Copy, conversion, KV restoration and permitted repeat costs enter the shared service demands and hence $d_e$, so the event epigraph already represents their overlap.
+The objective minimizes latency over the declared task boundary, not area, energy or Perf/TDP.
+Setting $\lambda_b=1$ recovers that branch exactly (Corollary~\ref{cor:branch_containment}), fractional weights describe the LP relaxation, and recovery selects one program.
 \par\endgroup
 
 \subsection{Features and Their Mathematical Encoding}
@@ -174,127 +156,99 @@ relaxation, and recovery selects one program.
 % \paragraph{Joint tiling and fusion.}
 \paragraph{Joint tiling and fusion~\lprefobj{2,15}.}
 For an isolated operation, the cover row reduces to $\sum_c y_{i,c}=1$.
-A tile's traffic savings depend on residency. In the retained schedule block,
-$w_{ick}$ represents $y_{ic}p_{\mathrm{assoc}(i,k),o(i)}$ through
+A tile's traffic savings depend on residency.
+In the retained schedule block, $w_{ick}$ represents $y_{ic}p_{\mathrm{assoc}(i,k),o(i)}$ through
 \begin{equation}
 0\le w_{ick},\quad w_{ick}\le y_{ic},\quad w_{ick}\le p,\quad
 w_{ick}\ge y_{ic}+p-1.
 \label{eq:mccormick}
 \end{equation}
-By Proposition~\ref{prop:mccormick_exact} these McCormick inequalities give the
-convex hull of one bounded bilinear graph and fix the product when either
-binary-domain factor is integral~\citep{mccormick1976computability}. They do not
-make every fractional solution executable, and
-Appendix~\ref{app:bounded_products} gives a fractional point satisfying each separate
-envelope while violating the exact-product identity. Tile-dependent footprints use the
-same construction. The displayed unit-bound rows are for a branch at weight
-one, and homogenization replaces $1$ by $\lambda_b$. Native fused atoms carry their complete input,
-output, workspace and service recipe, so fusion cannot silently remove work.
+By Proposition~\ref{prop:mccormick_exact} these McCormick inequalities give the convex hull of one bounded bilinear graph and fix the product when either binary-domain factor is integral~\citep{mccormick1976computability}.
+They do not make every fractional solution executable, and Appendix~\ref{app:bounded_products} gives a fractional point satisfying each separate envelope while violating the exact-product identity.
+Tile-dependent footprints use the same construction.
+The displayed unit-bound rows are for a branch at weight one, and homogenization replaces $1$ by $\lambda_b$.
+Native fused atoms carry their complete input, output, workspace and service recipe, so fusion cannot silently remove work.
 Appendix~\ref{app:tiling} discusses two detailed examples of solved instances in which a locally slower tile yields globally faster inference.
 
 % \paragraph{Shared hardware and resource epigraphs.}
 \paragraph{Shared hardware and resource epigraphs~\lprefobj{10,11,14,16}.}
-Compute, vector lanes, SRAM, and delivered memory service are shared decisions
-under linear area/power proxies $F_bh_b\le g_b$. Finite implementation or
-technology menus use disaggregated copies with linking equalities and scaled
-bounds. Resource epigraphs charge the maximum of concurrent service demands,
-while demands on the same port add. Corollary~\ref{cor:v3_hull} shows the
-disaggregated perspective form dominates the aggregated maximum-of-sums
-alternative. Native rows aggregate work and transfer
-demands per event before applying the service envelopes. Arbitrary executable
-overlap is not inferred from fractional sharing. Native replay uses its
-declared inter-kernel ordering and internal panel pipelines.
+Compute, vector lanes, SRAM, and delivered memory service are shared decisions under linear area/power proxies $F_bh_b\le g_b$.
+Finite implementation or technology menus use disaggregated copies with linking equalities and scaled bounds.
+Resource epigraphs charge the maximum of concurrent service demands, while demands on the same port add.
+Corollary~\ref{cor:v3_hull} shows the disaggregated perspective form dominates the aggregated maximum-of-sums alternative.
+Native rows aggregate work and transfer demands per event before applying the service envelopes.
+Arbitrary executable overlap is not inferred from fractional sharing.
+Native replay uses its declared inter-kernel ordering and internal panel pipelines.
 \label{eq:v3_caps}\label{eq:v3_epigraph}
 
 % \paragraph{Hard rooflines and physical budgets.}
 \paragraph{Hard rooflines and physical budgets~\lpref{12,13,14}.}
-The strengthened fixed-chip branches enforce resource ceilings \emph{inside the LP}:
-$\sum_k F_k^{\rm issued}w_{ke}\le\bar C_b d_e$ for matrix work, and
-$\mathsf D^{r,\rm phys}_{be}\le\bar R_{br}d_e$ for shared HBM, host, vector,
-DMA-staging and SRAM-bank-port service. Padded issued work bounds useful work, and
-simultaneous kernels and copies share the same supply. Summing over events
-therefore gives MFU and accounted MBU at most one. Affine installed-component
-costs enforce area $\le600\,\mathrm{mm}^2$, peak power $\le300\,\mathrm W$ and
-chip-average density $\le2\,\mathrm{W/mm}^2$, without discounting peak power by MFU.
-The same identified template supplies combined host/HBM pin, controller,
-whole-bank capacity/count/aspect, logic-depth and NoC-size constraints in
-$F_bh_b\le g_b\lambda_b$. Fixed rates keep these ceilings linear. A
-variable-rate McCormick envelope alone cannot enforce the exact physical
-product. These are hard limits of the declared model, with the same
-predicates used in recovery. Aggregate bank and NoC proxies do not prove
-conflict-free placement. Appendix~\ref{app:physical_rooflines} gives
-the rows and distinguishes their current implementation from the frozen certificate.
+The strengthened fixed-chip branches enforce resource ceilings \emph{inside the LP}: $\sum_k F_k^{\rm issued}w_{ke}\le\bar C_b d_e$ for matrix work, and $\mathsf D^{r,\rm phys}_{be}\le\bar R_{br}d_e$ for shared HBM, host, vector, DMA-staging and SRAM-bank-port service.
+Padded issued work bounds useful work, and simultaneous kernels and copies share the same supply.
+Summing over events therefore gives MFU and accounted MBU at most one.
+Affine installed-component costs enforce area $\le600\,\mathrm{mm}^2$, peak power $\le300\,\mathrm W$ and chip-average density $\le2\,\mathrm{W/mm}^2$, without discounting peak power by MFU.
+The same identified template supplies combined host/HBM pin, controller, whole-bank capacity/count/aspect, logic-depth and NoC-size constraints in $F_bh_b\le g_b\lambda_b$.
+Fixed rates keep these ceilings linear.
+A variable-rate McCormick envelope alone cannot enforce the exact physical product.
+These are hard limits of the declared model, with the same predicates used in recovery.
+Aggregate bank and NoC proxies do not prove conflict-free placement.
+Appendix~\ref{app:physical_rooflines} gives the rows and distinguishes their current implementation from the frozen certificate.
 
 % \paragraph{Reciprocal and product envelopes.}
 \paragraph{Reciprocal and product envelopes~\lpref{8,10}.}
-For a rate $r\in[\ell,h]$, $\mathcal R$ bounds $u\approx1/r$ by tangents
-$u\ge2/a-r/a^2$ and the global secant $u\le(\ell+h-r)/(\ell h)$.
-$\mathcal M$ bounds $Z\approx Qu$ by four McCormick inequalities on
-$[0,\bar Q]\times[1/h,1/\ell]$. All coefficients are constants, so the program
-is linear. Outward coefficient rounding preserves graph containment.
-These relax physical service, and replay reinstates the exact rates
-and products. Selecting a discrete bandwidth fixes that rate, but continuous-rate
-envelopes remain relaxations even when implementation selectors are integral.
+For a rate $r\in[\ell,h]$, $\mathcal R$ bounds $u\approx1/r$ by tangents $u\ge2/a-r/a^2$ and the global secant $u\le(\ell+h-r)/(\ell h)$.
+$\mathcal M$ bounds $Z\approx Qu$ by four McCormick inequalities on $[0,\bar Q]\times[1/h,1/\ell]$.
+All coefficients are constants, so the program is linear.
+Outward coefficient rounding preserves graph containment.
+These relax physical service, and replay reinstates the exact rates and products.
+Selecting a discrete bandwidth fixes that rate, but continuous-rate envelopes remain relaxations even when implementation selectors are integral.
 
 % \paragraph{Time-indexed placement and KV across steps.}
 \paragraph{Time-indexed placement and KV across steps~\lpref{7,9}.}
-Residency $p_{j\tau e}$ changes with events rather than being fixed for the whole
-run. KV production creates immutable append objects, and each decode attention
-operation depends on its required prefix. The state rows preserve earlier
-entries while the prefix grows. Capacity accounts for resident data, incoming
-copies, and active workspace simultaneously. Long skip connections and
-multi-fanout tensors use the same object identities and consumer readiness.
+Residency $p_{j\tau e}$ changes with events rather than being fixed for the whole run.
+KV production creates immutable append objects, and each decode attention operation depends on its required prefix.
+The state rows preserve earlier entries while the prefix grows.
+Capacity accounts for resident data, incoming copies, and active workspace simultaneously.
+Long skip connections and multi-fanout tensors use the same object identities and consumer readiness.
 
 % \paragraph{Spill, restoration, and rematerialization.}
 \paragraph{Spill, restoration, and rematerialization~\lprefobj{7,14}.}
-Copies retain a valid source, reserve their destination, consume service, and
-become readable only after completion. Boundary rows require the declared
-terminal backing. A permitted repeat executes the original producer again and
-pays its work, input and workspace demands. It restores storage without
-advancing primary logical completion twice. Keeping full KV history in a
-slower tier is therefore different from deleting history. The native results
-credit paid KV restoration and retention. No native recomputation gain or lossy
-KV budget is claimed.
+Copies retain a valid source, reserve their destination, consume service, and become readable only after completion.
+Boundary rows require the declared terminal backing.
+A permitted repeat executes the original producer again and pays its work, input and workspace demands.
+It restores storage without advancing primary logical completion twice.
+Keeping full KV history in a slower tier is therefore different from deleting history.
+The native results credit paid KV restoration and retention.
+No native recomputation gain or lossy KV budget is claimed.
 
 % \paragraph{Weight residency and expert supply.}
 \paragraph{Weight residency and expert supply~\lpref{5,9}.}
-A weight tensor is an immutable object with its own residency trajectory
-$p_{j\tau e}$, so retaining it across uses and paying a reload are different
-points of the same rows rather than separate models. First loads and every
-kernel read stay charged, and only repeated imports of a retained tensor disappear.
-Capacity couples this to activation placement through the shared
-$\mathsf{Cap}_{b,\tau e}$ row, so weight retention competes with KV and live
-activations for the same tier. Expert weights use the identical object
-identities under the declared routing model: which experts are resident versus
-fetched is a residency choice subject to storage capacity, and a retained
-expert still pays its first import and its per-use reads.
+A weight tensor is an immutable object with its own residency trajectory $p_{j\tau e}$, so retaining it across uses and paying a reload are different points of the same rows rather than separate models.
+First loads and every kernel read stay charged, and only repeated imports of a retained tensor disappear.
+Capacity couples this to activation placement through the shared $\mathsf{Cap}_{b,\tau e}$ row, so weight retention competes with KV and live activations for the same tier.
+Expert weights use the identical object identities under the declared routing model: which experts are resident versus fetched is a residency choice subject to storage capacity, and a retained expert still pays its first import and its per-use reads.
 
 % \paragraph{Batching and causal scheduling.}
 % \paragraph{Batching and causal scheduling~\lpref{2,3,4,5,6,8}.}
 \paragraph{Batching, cover and scheduling~\lpref{1,14}.}
-A batch column covers several compatible invocations and loads shared parameters
-once where its recipe permits. Cover constraints retain every member, and
-start/finish and readiness rows prevent using future tokens or expert selections
-before their router dependencies complete. Event placement can vary within the
-finite library. The current native execution uses a recovered serial schedule.
+A batch column covers several compatible invocations and loads shared parameters once where its recipe permits.
+Cover constraints retain every member, and start/finish and readiness rows prevent using future tokens or expert selections before their router dependencies complete.
+Event placement can vary within the finite library.
+The current native execution uses a recovered serial schedule.
 A larger scheduling domain does not imply that its optimum has been found.
 
 % \paragraph{Implementation menus and recovery.}
 \paragraph{Implementation menus and recovery~\lpref{1,14}.}
-Parameter staging has explicit receive, occupancy and drain states. Full-K
-panels and FP8-to-BF16 receiver implementations pay buffer, port and conversion
-costs. Selected-reader backing keeps the raw or converted representation needed
-by each consumer and cannot discard both. These rows connect hardware provisioning
-to software reuse.
-Precision, sparsity, array aspect, memory technology, and validated overlap
-policies enter as implementation choices with their own numerical and resource
-contracts. Accuracy-changing cache eviction or approximate reuse needs separate
-quality evidence and is disabled in the full-input result. Larger
-cross-GEMM fusion and unrestricted overlap have no credited gain there.
-Recovery pins hardware and mappings, schedules transfers, and replays the
-original obligations. The resulting chip and schedule have a predicted latency
-under the analytical model. Section~\ref{sec:ocs} distinguishes hardware
-branch-and-bound, continuous LP certification, and integral recovery.
+Parameter staging has explicit receive, occupancy and drain states.
+Full-K panels and FP8-to-BF16 receiver implementations pay buffer, port and conversion costs.
+Selected-reader backing keeps the raw or converted representation needed by each consumer and cannot discard both.
+These rows connect hardware provisioning to software reuse.
+Precision, sparsity, array aspect, memory technology, and validated overlap policies enter as implementation choices with their own numerical and resource contracts.
+Accuracy-changing cache eviction or approximate reuse needs separate quality evidence and is disabled in the full-input result.
+Larger cross-GEMM fusion and unrestricted overlap have no credited gain there.
+Recovery pins hardware and mappings, schedules transfers, and replays the original obligations.
+The resulting chip and schedule have a predicted latency under the analytical model.
+Section~\ref{sec:ocs} distinguishes hardware branch-and-bound, continuous LP certification, and integral recovery.
 
 \iffalse % Table 3 (features and decisions) retained but disabled
 \begin{table}[htbp]
@@ -347,32 +301,17 @@ branch-and-bound, continuous LP certification, and integral recovery.
 
 % \paragraph{Serving and phase choice.}
 \paragraph{Serving and phase choice~\lpref{6}.}
-Prefill and decode are the same master over different event sequences and
-boundary rows, not two models. A decode step inherits the KV prefix its
-attention operations require, and the declared task boundary fixes which
-preparation and loading costs the objective charges. Phase latencies are
-therefore comparable only under one declared boundary, and the selected chip
-is shared across every phase represented in a branch.
+Prefill and decode are the same master over different event sequences and boundary rows, not two models.
+A decode step inherits the KV prefix its attention operations require, and the declared task boundary fixes which preparation and loading costs the objective charges.
+Phase latencies are therefore comparable only under one declared boundary, and the selected chip is shared across every phase represented in a branch.
 
 \subsection{LLM Architect Diagnostic Outer Search}
 \label{sec:llm_outer}
-The LLM architect reads a ledger of resource prices, slacks, invalid trials,
-and replay outcomes, then proposes candidate implementations or search
-neighborhoods. Deterministic validation checks each proposal before evaluation.
-The architect is conditioned on a \emph{deployment profile}, a natural-language
-statement of what the deployment values, because the right chip depends on it:
-an overnight financial-analysis workload values sustained throughput and memory
-bandwidth and tolerates latency and power, whereas streaming speech inference
-values single-request latency at small batch and moderate power. The profile
-sets the objective mode and steers which implementations and hardware regions
-the architect proposes. Appendix~\ref{app:profiles} runs both profiles and
-reports the resulting best chips (Table~\ref{tab:profile_best_chips}) and
-invalid-trial rates (Table~\ref{tab:profile_invalid_rates}).
-The outer loop uses Vizier~\citep{google_vizier} to search hardware
-neighborhoods, while the master also represents hardware choices directly.
-Dual prices guide search,
-but an LLM proposal is not a complete pricing oracle: a full-domain optimality
-claim requires checking all omitted alternatives. The controller and
-prompts are documented in Appendix~\ref{app:llm_loop}: the prompts in
-Appendix~\ref{app:prompt} and the price and validation signals in
-Appendix~\ref{app:llm_duals}.
+The LLM architect reads a ledger of resource prices, slacks, invalid trials, and replay outcomes, then proposes candidate implementations or search neighborhoods.
+Deterministic validation checks each proposal before evaluation.
+The architect is conditioned on a \emph{deployment profile}, a natural-language statement of what the deployment values, because the right chip depends on it: an overnight financial-analysis workload values sustained throughput and memory bandwidth and tolerates latency and power, whereas streaming speech inference values single-request latency at small batch and moderate power.
+The profile sets the objective mode and steers which implementations and hardware regions the architect proposes.
+Appendix~\ref{app:profiles} runs both profiles and reports the resulting best chips (Table~\ref{tab:profile_best_chips}) and invalid-trial rates (Table~\ref{tab:profile_invalid_rates}).
+The outer loop uses Vizier~\citep{google_vizier} to search hardware neighborhoods, while the master also represents hardware choices directly.
+Dual prices guide search, but an LLM proposal is not a complete pricing oracle: a full-domain optimality claim requires checking all omitted alternatives.
+The controller and prompts are documented in Appendix~\ref{app:llm_loop}: the prompts in Appendix~\ref{app:prompt} and the price and validation signals in Appendix~\ref{app:llm_duals}.

@@ -1,9 +1,10 @@
 \section{Experiments}
 \label{sec:experiments}
-We evaluate predicted latency, search cost, and recovered schedules. Studies include prefill/decode and fixed-hardware mapping. The full-input DeepSeek case
-adds autoregressive decode and phase-specific controls. TPU-v3 provides a
-publicly documented baseline consistent with prior
-work~\citep{jouppi2021ten,zhang_fast}. All speedups below are analytical and modeled results.
+We evaluate predicted latency, search cost, and recovered schedules.
+Studies include prefill/decode and fixed-hardware mapping.
+The full-input DeepSeek case adds autoregressive decode and phase-specific controls.
+TPU-v3 provides a publicly documented baseline consistent with prior work~\citep{jouppi2021ten,zhang_fast}.
+All speedups below are analytical and modeled results.
 
 % \paragraph{What a new paradigm should be judged on.}
 % A sequential pipeline returns a design. CHEETAH returns a design \emph{and} a
@@ -37,38 +38,24 @@ work~\citep{jouppi2021ten,zhang_fast}. All speedups below are analytical and mod
 
 \subsection{Experimental Setup}
 \label{sec:exp_intro}
-Since software optimization alone is capped within the physics of the declared model (Theorem~\ref{thm:deficiency}), co-design is the route past it. The experimental suite comprises EfficientNet-B1--B7, Llama-1 13B/65B, Llama-3 70B,
-DeepSeek-V3~\citep{tan2019efficientnet,llama3modelcard,deepseekv3report} and
-Stable Diffusion~1.5 UNet~\citep{rombach2022ldm}. DeepSeek-V3 is evaluated on thirty-two 4,096-token
-Wikitext-2 prompts, each decoded greedily for 512 tokens, with FP8 weights
-dequantized to BF16. We compare static pinning, fixed-tile temporal placement
-and joint tiling under one cost convention. These are restricted controls of
-CHEETAH, not separate systems. Small programs are solved directly with
-HiGHS~\citep{huangfu2018parallel}, and the native large programs with OCS
-(Section~\ref{sec:ocs}).
-Hardware is shared across each recovered execution with independent
-implementation choices, and the full-input experiment binds actual checkpoint
-routes and preserves every logical invocation
-(Section~\ref{sec:ocs}). All ratios use the naive TPU-v3
-reference with its original per-operation mapper rescaling, streaming sum and
-timing/precision proxy. The recovered decoder preserves BF16 operands, ordered
-FP32 arithmetic, routing and paid entry obligations, and standalone nonmatrix
-service outside the phase boundary is not silently included.
+Since software optimization alone is capped within the physics of the declared model (Theorem~\ref{thm:deficiency}), co-design is the route past it.
+The experimental suite comprises EfficientNet-B1--B7, Llama-1 13B/65B, Llama-3 70B, DeepSeek-V3~\citep{tan2019efficientnet,llama3modelcard,deepseekv3report} and Stable Diffusion~1.5 UNet~\citep{rombach2022ldm}.
+DeepSeek-V3 is evaluated on thirty-two 4,096-token Wikitext-2 prompts, each decoded greedily for 512 tokens, with FP8 weights dequantized to BF16.
+We compare static pinning, fixed-tile temporal placement and joint tiling under one cost convention.
+These are restricted controls of CHEETAH, not separate systems.
+Small programs are solved directly with HiGHS~\citep{huangfu2018parallel}, and the native large programs with OCS (Section~\ref{sec:ocs}).
+Hardware is shared across each recovered execution with independent implementation choices, and the full-input experiment binds actual checkpoint routes and preserves every logical invocation (Section~\ref{sec:ocs}).
+All ratios use the naive TPU-v3 reference with its original per-operation mapper rescaling, streaming sum and timing/precision proxy.
+The recovered decoder preserves BF16 operands, ordered FP32 arithmetic, routing and paid entry obligations, and standalone nonmatrix service outside the phase boundary is not silently included.
 
-\paragraph{Physical Design Validation.} Since simulation ultimately leave a gap to real-world physical performance, we validate all results through a five-level audit process (Appendix~\ref{app:details}, \ref{app:validation}): (i) Roofline Auditor, (ii) Campaign Validator, (iii) Causal Ledger, (iv) solver diagnostics, and (v) six pre-RTL gates. Each CHEETAH design must pass all five audit tiers before it is deemed feasible and reported.
-Appendix~\ref{app:gates} states the six gates and their thresholds,
-Appendix~\ref{app:coeff_provenance} records where every gate constant and cost
-coefficient comes from, and Appendix~\ref{app:blueprints} gives the complete
-blueprints of the designs that pass them, so each reported chip can be audited
-from its headline speedup down to the provenance of each constant it was
-checked against.
+\paragraph{Physical Design Validation.} Since simulation ultimately leave a gap to real-world physical performance, we validate all results through a five-level audit process (Appendix~\ref{app:details}, \ref{app:validation}): (i) Roofline Auditor, (ii) Campaign Validator, (iii) Causal Ledger, (iv) solver diagnostics, and (v) six pre-RTL gates.
+Each CHEETAH design must pass all five audit tiers before it is deemed feasible and reported.
+Appendix~\ref{app:gates} states the six gates and their thresholds, Appendix~\ref{app:coeff_provenance} records where every gate constant and cost coefficient comes from, and Appendix~\ref{app:blueprints} gives the complete blueprints of the designs that pass them, so each reported chip can be audited from its headline speedup down to the provenance of each constant it was checked against.
 
 The roofline check~\citep{williams2009roofline} rejects costs below compute or memory service floors.
-Table~\ref{tab:mfg_gates} lists the architectural screening thresholds. These are modeling checks, not fabricated-chip timing or packaging sign-off.
-RTL and synthesis evidence is in Appendix~\ref{sec:rtl_validation}: BF16/FP32
-decoder tests (\ref{app:wo24_decoder_rtl}), schedule-tape and INT8 datapath
-checks (\ref{app:tape_checks}), post-synthesis area (\ref{sec:asap7}) and
-measured energy coefficients (\ref{sec:energy_coeff}).
+Table~\ref{tab:mfg_gates} lists the architectural screening thresholds.
+These are modeling checks, not fabricated-chip timing or packaging sign-off.
+RTL and synthesis evidence is in Appendix~\ref{sec:rtl_validation}: BF16/FP32 decoder tests (\ref{app:wo24_decoder_rtl}), schedule-tape and INT8 datapath checks (\ref{app:tape_checks}), post-synthesis area (\ref{sec:asap7}) and measured energy coefficients (\ref{sec:energy_coeff}).
 
 \begin{table}[t]
 \centering\small
@@ -89,46 +76,31 @@ SRAM macros & 64 KiB banks, aspect ratio $1{:}4$--$4{:}1$ & $\le4{,}096$ banks \
 \end{table}
 
 \paragraph{Reported efficiency quantities.}
-MFU, per-resource MBU and Perf/TDP are read off the scheduled execution, never
-assumed. Appendix~\ref{app:reported_quantities} defines each, states the
-fixed-chip rows that guarantee $\mathrm{MFU}\le1$ by construction, and gives
-the conditions under which Perf/TDP is a valid comparison.
+MFU, per-resource MBU and Perf/TDP are read off the scheduled execution, never assumed.
+Appendix~\ref{app:reported_quantities} defines each, states the fixed-chip rows that guarantee $\mathrm{MFU}\le1$ by construction, and gives the conditions under which Perf/TDP is a valid comparison.
 
 \subsection{Workload Results and Fixed-Hardware Controls}
 \label{sec:prog}\label{sec:fixed_hw}
 \input{update/wo24_fixed_hardware}
-Co-designed chips reach up to $24.20\times$ on LLM prefill, $17.93\times$
-on LLM decode and $11.85\times$ on vision over the naive TPU-v3 baseline
-(Figure~\ref{fig:speedup}). Appendices~\ref{app:solver} and \ref{app:blueprints}
-give more ablations and results.
+Co-designed chips reach up to $24.20\times$ on LLM prefill, $17.93\times$ on LLM decode and $11.85\times$ on vision over the naive TPU-v3 baseline (Figure~\ref{fig:speedup}).
+Appendices~\ref{app:solver} and \ref{app:blueprints} give more ablations and results.
 
 
-Table~\ref{tab:fixed_hw} reports the fixed-hardware software-search comparisons
-for five workloads on the simulated TPU-v3 and compact NPU. Each entry keeps
-its matrix graph, full implementation menu, memory policy, timing
-library and streaming-reference formula. The TPU LLM producer and
-the vision/compact producer use different LP conventions, including the
-table's capacity treatment. The stored precision proxies are
-retained, and these results do not constitute matched INT8/BF16 experiments
-or recovered full-decode executions on either chip.
+Table~\ref{tab:fixed_hw} reports the fixed-hardware software-search comparisons for five workloads on the simulated TPU-v3 and compact NPU.
+Each entry keeps its matrix graph, full implementation menu, memory policy, timing library and streaming-reference formula.
+The TPU LLM producer and the vision/compact producer use different LP conventions, including the table's capacity treatment.
+The stored precision proxies are retained, and these results do not constitute matched INT8/BF16 experiments or recovered full-decode executions on either chip.
 
 \subsection{Search Cost and LLM Guidance}
 \label{sec:breakdown}
-Cached implementation coefficients remove repeated mapper calls from the inner
-search. In the 50-trial comparison, joint tiling searches Llama-70B in $1.17$
-hours and DeepSeek-V3 in $2.17$ hours where the static method is infeasible,
-and the OCS solves behind the retained decoders take minutes (Figure~\ref{fig:wallclock}). Appendix~\ref{app:solver} gives the hardware
-search space (\ref{app:vizier_search}) and Appendix~\ref{append::lp_perform}
-the LP sizes. These are search times,
-not inference speedups. LLM guidance reduces mean invalid trials
-from $24.5\%$ to $5.9\%$ while reaching the same best observed Perf/TDP score
-as its full-space Vizier control (Figure~\ref{fig:llm}). Appendix~\ref{app:profiles} repeats the
-search under a throughput-oriented and a latency-oriented deployment profile.
-This tests proposal efficiency, not proof of
-an optimal architecture or causal validity of every dual suggestion. Whether the
-LLM outperforms a rule-based controller driven by the same duals and failure
-classes is not established here, so we present the architect as a search
-convenience and let the formulation and its certificates carry the contribution.
+Cached implementation coefficients remove repeated mapper calls from the inner search.
+In the 50-trial comparison, joint tiling searches Llama-70B in $1.17$ hours and DeepSeek-V3 in $2.17$ hours where the static method is infeasible, and the OCS solves behind the retained decoders take minutes (Figure~\ref{fig:wallclock}).
+Appendix~\ref{app:solver} gives the hardware search space (\ref{app:vizier_search}) and Appendix~\ref{append::lp_perform} the LP sizes.
+These are search times, not inference speedups.
+LLM guidance reduces mean invalid trials from $24.5\%$ to $5.9\%$ while reaching the same best observed Perf/TDP score as its full-space Vizier control (Figure~\ref{fig:llm}).
+Appendix~\ref{app:profiles} repeats the search under a throughput-oriented and a latency-oriented deployment profile.
+This tests proposal efficiency, not proof of an optimal architecture or causal validity of every dual suggestion.
+Whether the LLM outperforms a rule-based controller driven by the same duals and failure classes is not established here, so we present the architect as a search convenience and let the formulation and its certificates carry the contribution.
 
 
 \begin{figure}[t]
@@ -136,8 +108,10 @@ convenience and let the formulation and its certificates carry the contribution.
 % \includegraphics[width=\linewidth]{fig3/feature_contributions_wo24.pdf}
 \includegraphics[width=\linewidth]{fig3/figure3.png}
 \caption{Performance breakdown of each CHEETAH component, relative
-to the naive TPU-v3 baseline. Improvements are
+to the naive TPU-v3 baseline.
+Improvements are
 cumulative increments of each
-workload's gain above the baseline. Since HW/SW acceleration is co-dependent, results cannot be separated at a boundary.}\label{fig:accel_decompose}
+workload's gain above the baseline.
+Since HW/SW acceleration is co-dependent, results cannot be separated at a boundary.}\label{fig:accel_decompose}
 \end{figure}
 \input{update/figure3_attribution_method}
