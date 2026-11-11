@@ -7,7 +7,7 @@ Examples include: datapath and memory sizing, per-operation tiling, which tensor
 These choices interact through shared capacity and bandwidth, and jointly they span a design space exceeding $\mathcal O(10^{2300})$ configurations~\citep{zhang_fast}. 
 This presents a search landscape far too large to enumerate, simulate, or materialize as one explicit program.
 Existing methodologies therefore decompose the problem by fixing a hardware configuration, mapping each operation in isolation, then optimize reuse and fusion on what remains.
-Prior co-design flows largely share this sequential pipeline for tractability, and it is why the joint problem has stayed open: each stage commits before the global acceleration consequences of its choice are known, and the commitment is irreversible downstream.
+Prior co-design flows largely share this sequential pipeline for tractability, and it is why the joint problem has remained open: each stage commits before the global acceleration consequences of its choice are known, and the commitment is irreversible downstream.
 This results in locally optimal but globally sub-optimal outcomes.
 A mapper that exports its fastest isolated tile can consume the on-chip memory needed to keep a neighboring tensor resident, so the locally optimal tile forces a DRAM round trip and the complete schedule is slower.
 A slightly slower tile would have produced the faster program.
@@ -27,18 +27,18 @@ No stage of the decoupled pipeline can see this trade-off, since it exists only 
 
 
 In this paper we introduce \textbf{\textsc{CHEETAH}}: \acroletter{C}o-designed \acroletter{H}ardware \acroletter{E}xploration via \acroletter{E}fficient \acroletter{T}hroughput and \acroletter{H}ybrid-search, a mathematically principled hardware--software (HW/SW) co-design framework with an outer-loop LLM Architect.
-CHEETAH is a new paradigm for co-design.
-Rather than adding one more stage to the sequential pipeline (Figure~\ref{fig::workflow}), it unifies in a single CHEETAH master linear program (LP) the decision spaces that prior hardware and software methods each cover only in part: time-indexed residency and reuse, shared hardware under area and power budgets, and McCormick-coupled tiling and fusion, over one capacity accounting for convolutions, GEMMs, attention, KV prefixes, expert weights and skip connections (Section~\ref{sec:methods}).
+CHEETAH presents a new paradigm for co-design.
+Rather than adding one more stage to the sequential pipeline (Figure~\ref{fig::workflow}), it unifies in a single large-scale master linear program (LP) the decision spaces that prior hardware and software methods each cover only in part. This includes variables for time-indexed residency and reuse, shared hardware under area and power budgets, and McCormick-coupled tiling and fusion, over one capacity accounting for convolutions, GEMMs, attention, KV prefixes, expert weights and skip connections (Section~\ref{sec:methods}).
 Table~\ref{tab:capability-matrix} positions our framework against nine such systems, and Theorem~\ref{thm:containment} (Appendix~\ref{app:fast_containment}) proves that the staged tiling-then-fusion search of prior sequential pipelines embeds in CHEETAH's relaxation at the same objective.
-Therefore our formulation subsumes those pipelines rather than resembling them.
+Therefore our formulation subsumes such prior methods rather than resembling them.
 Prefill and decode are the same program over different event sequences, which is most relevant for decode: with top-$k$ routing, batch 32 touches about 163 of 256 experts rather than 8, so provisioning, batching and temporal residency must be chosen together.
 
 Three properties make off-the-shelf solving of the inner optimization problem difficult: (i) the LP does not fit in memory (Llama-1 13B alone is $10.1$M columns by $18.3$M rows, 1.48\,PB dense, over $10^{2300}$ branches), (ii) its optimal surface is massively degenerate, and (iii) its coefficients span $10^{-6}$ to $10^{15}$.
 Standard first-order methods plateau and off-the-shelf solvers return no usable certificate or do not converge (Appendix~\ref{app:naive_fails}).
-CHEETAH solves the master LP by branch and bound over whole-program branches with OCS~\citep{feng2026ocs}, our in-house solver developed for scale, which certifies a lower bound $L_b$ per branch by exact checks over the original domain.
+CHEETAH solves the master LP by branch and bound over whole-program branches with a specialized variant of OCS~\citep{feng2026ocs}, our in-house solver developed for scale, and certifies a lower bound $L_b$ per branch by exact checks over the original domain.
 Pruning leaves $L=\min_bL_b$ and the best feasible cost $U$ bracketing the optimum.
 For example, the 1,557-branch DeepSeek-V3 master LP closes to a certified $0.07\%$ gap.
-Integral recovery and replay return the relaxation into a chip and a schedule, outputs distinct from the bound, and an LLM Architect reads the resulting Lagrangian duals to propose profile-targeted designs and search neighborhoods, replacing brute-force hardware configuration outer search.
+Integral recovery and replay return the relaxation into a chip and a schedule, outputs distinct from the bound, and the LLM Architect reads the resulting Lagrangian duals to propose profile-targeted designs and search neighborhoods, replacing brute-force hardware configuration outer search.
 The crucial HW/SW interactions and physical feasibility constraints that must not be violated live in the inner mathematical formulation, not in the LLM.
 
 % \begin{figure}[ht!]
@@ -53,7 +53,7 @@ The crucial HW/SW interactions and physical feasibility constraints that must no
 % \label{fig::workflow}
 % \end{figure}
 \paragraph{Contributions.} CHEETAH presents a new paradigm for unified co-design
-and certified optimization with an LLM Architect that proposes implementations and hardware search neighborhoods.
+and certified optimization with an LLM Architect that proposes precise implementation and hardware search neighborhoods.
 \begin{enumerate}
 
 \item \textbf{CHEETAH formulation.}
@@ -66,18 +66,17 @@ These couplings expose tiling--placement trade-offs that sequential pipelines ca
     certificates checked over the original domain bound the complete master LP rather than a restricted support, and analytical replay validates the separately recovered design (Section~\ref{sec:solver_vm}).
 Broad global discrete optimality remains open, and Appendix~\ref{app:lps} details optimization specifics. 
 
-    \item \textbf{LLM Architect Outer Loop.} The Architect interprets Lagrangian duals and a causal ledger of trials to propose hardware and implementation changes.
+    \item \textbf{LLM Architect Outer Loop.} The Architect interprets Lagrangian duals and a causal ledger of trials to propose hardware and software design changes.
 Deterministic checks admit proposals, and the LLM itself supplies no certificate.
 This couples architecture exploration with the optimizer's diagnostics rather than relying only on black-box scores. 
 
-    \item \textbf{Inference speedup.} Across 12 workloads, CHEETAH co-designs
-    chips that outperform the naive TPU-v3 baseline by up to $24.20\times$ on LLM prefill, $17.93\times$ on LLM decode and $11.85\times$ on vision (Figure~\ref{fig:speedup}, Section~\ref{sec:experiments}), and improve search efficiency $100$--$300\times$ over the standard baseline method.
-On a fixed chip, CHEETAH's schedules reach the model's compute-or-bandwidth ceiling exactly on every LLM (Theorem~\ref{thm:deficiency}), so no software on that chip can do better and the remaining gain must come from hardware.
-These results are presented with the simulated TPU-v3 baseline to be in accordance with Google's prior work~\citep{zhang_fast}.
+    \item \textbf{Inference speedup.} Empirically, CHEETAH co-designs
+    chips that outperform the naive TPU-v3 baseline by up to $24.20\times$ on LLM prefill, $17.93\times$ on LLM decode and $11.85\times$ on vision across 12 input workloads (Figure~\ref{fig:speedup}, Section~\ref{sec:experiments}).
+Theoretically, Theorems~\ref{thm:containment} and~\ref{thm:deficiency} show that the sequential pipeline's solutions embed in CHEETAH's search space and that its schedules reach the fixed-chip model ceiling exactly on every LLM, thus any remaining gain must come from hardware.
 \end{enumerate}
 
 The following paper is organized as follows.
-Section~\ref{sec:prelim} provides background, Section~\ref{sec:methods} presents the master CHEETAH formulation and its features, and Section~\ref{sec:ocs} describes our optimization methodology, its certificate and hardware search.
+Section~\ref{sec:prelim} provides background, Section~\ref{sec:methods} presents the master CHEETAH LP formulation and its features, and Section~\ref{sec:ocs} describes our optimization methodology, its certificate and hardware search.
 Section~\ref{sec:experiments} reports experimental results and ablations, the Appendix provides related work, containment theorems, physical-validation details, co-design blueprints, pre-RTL evidence, extended baselines, further discussion, limitations and future work.
 
 

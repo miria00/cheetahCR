@@ -7,12 +7,12 @@
 
 
 
-\subsection{Linear Program Structure Details}
+\subsection{Linear Program and Structure Details}
 \label{app:lps}
 
 \paragraph{Relaxation and Integral Recovery.}\label{app:lp_relaxation}
 The master is a linear relaxation of a finite implementation and hardware library.
-Its canonical form is
+Its high-level general canonical form can be expressed as
 \begin{equation}
 \min_x c^Tx\qquad\text{subject to}\qquad
 \ell_c\le Ax\le u_c,\quad\ell_v\le x\le u_v.
@@ -21,7 +21,7 @@ Its canonical form is
 McCormick envelopes and epigraphs retain linearity, but do not guarantee a small integrality gap.
 Integral recovery selects a concrete hardware and implementation assignment and checks the resulting schedule.
 Nearest-integer rounding alone is not a feasibility proof.
-Appendix~\ref{app:master_rows} gives the explicit retained joint schedule rows and the expanded causal rows.
+% Appendix~\ref{app:master_rows} gives the explicit retained joint schedule rows and the expanded causal rows.
 
 \paragraph{Matrix Structure.}\label{append::lp_perform}
 \label{app:naive_fails}
@@ -38,7 +38,7 @@ reciprocal rate variable spans $80\times$ inside its own box.
 Standard first-order methods plateau at a $0.999$ primal violation after 2,000 iterations and never descend, even with the chip pinned.
 A certificate therefore cannot be read off floating-point iterates (Section~\ref{sec:ocs}).
 
-For example, at $L=T=720$ the Llama-3 70B fixed-tile control has 2.07M variables, 2.33M constraints and 4.67M nonzeros, and the joint-tile instance is of the same order with edge-indexed placement variables.
+As a concrete example, at $L=T=720$ the Llama-3 70B fixed-tile control has 2.07M variables, 2.33M constraints and 4.67M nonzeros, and the joint-tile instance is of the same order with edge-indexed placement variables.
 Both are sparse, at about $10^{-6}$ density, with a time-banded pattern and a few wide capacity rows.
 % retained but disabled: fixed-tile versus joint-tile LP structure table
 % Table~\ref{tab:lp_structure_v0_v1} records the two controls' sparse
