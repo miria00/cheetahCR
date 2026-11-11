@@ -4,7 +4,8 @@ AI inference demand is expected to grow by $10{,}000\times$ over the next five y
 This motivates the recent surge in designing accelerators specialized to their deep learning workloads.
 However, designing specialized accelerators spans a wide breadth of complex coupled decisions.
 Examples include: datapath and memory sizing, per-operation tiling, which tensors stay resident and when, what is fused, and what is recomputed rather than reloaded.
-These choices interact through shared capacity and bandwidth, and jointly they span a design space exceeding $\mathcal O(10^{2300})$ configurations~\citep{zhang_fast}, far too large to enumerate, simulate, or materialize as one explicit program.
+These choices interact through shared capacity and bandwidth, and jointly they span a design space exceeding $\mathcal O(10^{2300})$ configurations~\citep{zhang_fast}. 
+This presents a search landscape far too large to enumerate, simulate, or materialize as one explicit program.
 Existing methodologies therefore decompose the problem by fixing a hardware configuration, mapping each operation in isolation, then optimize reuse and fusion on what remains.
 Prior co-design flows largely share this sequential pipeline, and it is why the joint problem has stayed open: each stage commits before the global acceleration consequences of its choice are known, and the commitment is irreversible downstream.
 This results in locally optimal but globally sub-optimal outcomes.
