@@ -3,14 +3,14 @@
 AI inference demand is expected to grow by $10{,}000\times$ over the next five
 years~\citep{cra2026aifuture}, and general-purpose accelerators leave much of
 the attainable efficiency unrealized. This motivates the recent surge in designing accelerators specialized to
-their deep learning workloads. However, designing specialized accelerators span a wide breadth of numerous complex coupled decisions. Examples include: datapath and memory sizing, per-operation tiling, which tensors stay
+their deep learning workloads. However, designing specialized accelerators spans a wide breadth of complex coupled decisions. Examples include: datapath and memory sizing, per-operation tiling, which tensors stay
 resident and when, what is fused, and what is recomputed rather than reloaded.
 These choices interact through shared capacity and bandwidth, and jointly they
 span a design space exceeding $\mathcal O(10^{2300})$
 configurations~\citep{zhang_fast}, far too large to enumerate, simulate, or
-materialize as one explicit program. Existing methodology therefore decompose the
+materialize as one explicit program. Existing methodologies therefore decompose the
 problem by fixing a hardware configuration, mapping each operation in isolation,
-then optimize reuse and fusion on what remains. Prior co-design flow largely share this
+then optimize reuse and fusion on what remains. Prior co-design flows largely share this
 sequential pipeline, and it is why the joint problem has stayed open: each stage
 commits before the global acceleration consequences of its choice are known, and the
 commitment is irreversible downstream. This results in locally optimal but globally sub-optimal outcomes. A mapper that
@@ -58,7 +58,7 @@ Three properties make off-the-shelf solving of the inner optimization problem di
 rows, 1.48\,PB dense, over $10^{2300}$ branches), (ii) its optimal surface is massively
 degenerate, and (iii) its coefficients span $10^{-6}$ to $10^{15}$. Standard
 first-order methods plateau and off-the-shelf solvers return no usable
-certificate or do not converge. CHEETAH solves the master LP by branch and bound over
+certificate or do not converge (Appendix~\ref{app:naive_fails}). CHEETAH solves the master LP by branch and bound over
 whole-program branches with OCS~\citep{feng2026ocs}, our in-house solver developed for scale,
 which certifies a lower bound $L_b$ per branch by exact checks over the
 original domain. Pruning leaves $L=\min_bL_b$ and
@@ -105,9 +105,15 @@ proposes implementations and hardware search neighborhoods.
     \item \textbf{LLM Architect Outer Loop.} The architect interprets Lagrangian duals and a causal ledger of trials to propose hardware and implementation changes. Deterministic checks admit proposals, and the LLM itself supplies no certificate. This couples architecture exploration with the optimizer's diagnostics rather than relying only on black-box scores. 
 
     \item \textbf{Inference speedup.} Across 12 workloads, CHEETAH co-designs
-    chips that outperform the naive TPU-v3 baseline by an order of magnitude on
-    vision, LLM prefill and LLM decode (Figure~\ref{fig:speedup},
-    Section~\ref{sec:experiments}). These analytical results are presented with the simulated TPU-v3 baseline to be in accordance with Google's prior work~\citep{zhang_fast}. Supporting pre-RTL and Verilog experiments are summarized in Appendix~\ref{sec:rtl_validation} 
+    chips that outperform the naive TPU-v3 baseline by up to $24.20\times$ on
+    LLM prefill, $17.93\times$ on LLM decode and $11.85\times$ on vision
+    (Figure~\ref{fig:speedup}, Section~\ref{sec:experiments}), search
+    $100$--$300\times$ faster than the static method, and return designs for
+    Llama-3 70B and DeepSeek-V3, where the static method has no feasible point
+    at all. On a fixed chip, CHEETAH's schedules reach the model's
+    compute-or-bandwidth ceiling exactly on every LLM
+    (Theorem~\ref{thm:deficiency}), so no software on that chip can do better
+    and the remaining gain must come from hardware. These analytical results are presented with the simulated TPU-v3 baseline to be in accordance with Google's prior work~\citep{zhang_fast}. Supporting pre-RTL and Verilog experiments are summarized in Appendix~\ref{sec:rtl_validation}. 
 \end{enumerate}
 
 The paper is organized as follows. Section~\ref{sec:prelim} summarizes background and Appendix~\ref{app:related_work} related work, Section~\ref{sec:methods}
