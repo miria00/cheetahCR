@@ -54,9 +54,9 @@ routing, batch 32 touches about 163 of 256 experts rather than 8, so
 provisioning, batching and temporal residency must be chosen together.
 
 Three properties make off-the-shelf solving of the inner optimization problem difficult:
-(1) the LP does not fit in memory (Llama-1 13B alone is $10.1$M columns by $18.3$M
-rows, 1.48\,PB dense, over $10^{2300}$ branches), (2) its optimal surface is massively
-degenerate, and (3) its coefficients span $10^{-6}$ to $10^{15}$. Standard
+(i) the LP does not fit in memory (Llama-1 13B alone is $10.1$M columns by $18.3$M
+rows, 1.48\,PB dense, over $10^{2300}$ branches), (ii) its optimal surface is massively
+degenerate, and (iii) its coefficients span $10^{-6}$ to $10^{15}$. Standard
 first-order methods plateau and off-the-shelf solvers return no usable
 certificate or do not converge. CHEETAH solves the master LP by branch and bound over
 whole-program branches with OCS~\citep{feng2026ocs}, our in-house solver developed for scale,
