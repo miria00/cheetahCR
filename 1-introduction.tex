@@ -26,7 +26,7 @@ No stage of the decoupled pipeline can see this trade-off, since it exists only 
 \end{figure}
 
 
-In this paper we introduce \textbf{\textsc{CHEETAH}}: \acroletter{C}o-designed \acroletter{H}ardware \acroletter{E}xploration via \acroletter{E}fficient \acroletter{T}hroughput and \acroletter{H}ybrid-search, a mathematically principled hardware--software (HW/SW) co-design framework with an LLM Architect.
+In this paper we introduce \textbf{\textsc{CHEETAH}}: \acroletter{C}o-designed \acroletter{H}ardware \acroletter{E}xploration via \acroletter{E}fficient \acroletter{T}hroughput and \acroletter{H}ybrid-search, a mathematically principled hardware--software (HW/SW) co-design framework with an outer-loop LLM Architect.
 CHEETAH is a new paradigm for co-design.
 Rather than adding one more stage to the sequential pipeline (Figure~\ref{fig::workflow}), it unifies in a single CHEETAH master linear program (LP) the decision spaces that prior hardware and software methods each cover only in part: time-indexed residency and reuse, shared hardware under area and power budgets, and McCormick-coupled tiling and fusion, over one capacity accounting for convolutions, GEMMs, attention, KV prefixes, expert weights and skip connections (Section~\ref{sec:methods}).
 Table~\ref{tab:capability-matrix} positions our framework against nine such systems, and Theorem~\ref{thm:containment} (Appendix~\ref{app:fast_containment}) proves that the staged tiling-then-fusion search of prior sequential pipelines embeds in CHEETAH's relaxation at the same objective.
