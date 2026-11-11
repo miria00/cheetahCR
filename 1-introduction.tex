@@ -54,9 +54,9 @@ routing, batch 32 touches about 163 of 256 experts rather than 8, so
 provisioning, batching and temporal residency must be chosen together.
 
 Three properties make off-the-shelf solving of the inner optimization problem difficult:
-the LP does not fit in memory (Llama-1 13B alone is $10.1$M columns by $18.3$M
-rows, 1.48\,PB dense, over $10^{2300}$ branches), its optimal surface is massively
-degenerate, and its coefficients span $10^{-6}$ to $10^{15}$. Standard
+(1) the LP does not fit in memory (Llama-1 13B alone is $10.1$M columns by $18.3$M
+rows, 1.48\,PB dense, over $10^{2300}$ branches), (2) its optimal surface is massively
+degenerate, and (3) its coefficients span $10^{-6}$ to $10^{15}$. Standard
 first-order methods plateau and off-the-shelf solvers return no usable
 certificate or do not converge. CHEETAH solves the master LP by branch and bound over
 whole-program branches with OCS~\citep{feng2026ocs}, our in-house solver developed for scale,
@@ -87,8 +87,10 @@ proposes implementations and hardware search neighborhoods.
 \begin{enumerate}
 
 \item \textbf{CHEETAH formulation.}
-    We introduce time-indexed LP variables $p_{i,t}^k$ and rematerialization variables $r_{i,t}$ to enable cheap recompute operations instead of paying DRAM reload costs, supporting skip connections and multi-fanout nodes.
-    We unify tiling and fusion through McCormick envelopes and resource
+    We unify time-indexed placement, rematerialization, tiling and fusion in
+    one global linear program, so cheap recompute replaces DRAM reloads and
+    skip connections and multi-fanout nodes are native.
+    Tiling and fusion are coupled through McCormick envelopes and resource
     epigraphs. Binary tile--residency products are exact at integral choices, while
     continuous hardware/service products retain their explicit relaxation.
     These couplings expose tiling--placement trade-offs that sequential
@@ -108,8 +110,8 @@ proposes implementations and hardware search neighborhoods.
     Section~\ref{sec:experiments}). These analytical results are presented with the simulated TPU-v3 baseline to be in accordance with Google's prior work~\citep{zhang_fast}. Supporting pre-RTL and Verilog experiments are summarized in Appendix~\ref{sec:rtl_validation} 
 \end{enumerate}
 
-The following paper is organized as follows. Section~\ref{sec:prelim} summarizes preliminary background and Appendix~\ref{app:related_work} discusses related work, Section~\ref{sec:methods}
-presents the master CHEETAH mathematical formulation and its features, and Section~\ref{sec:ocs} describes
+The paper is organized as follows. Section~\ref{sec:prelim} summarizes background and Appendix~\ref{app:related_work} related work, Section~\ref{sec:methods}
+presents the master CHEETAH formulation and its features, and Section~\ref{sec:ocs} describes
 the solver algorithm, its certificate and hardware search. Section~\ref{sec:experiments}
 reports experimental results and ablations, the Appendix provides containment
 theorems, physical-validation details, co-design blueprints, pre-RTL evidence, extended baselines, further discussion, limitations and future work.
@@ -132,6 +134,6 @@ theorems, physical-validation details, co-design blueprints, pre-RTL evidence, e
 \begin{figure}[t]
     \centering
 \includegraphics[width=1.0\linewidth]{fig3/speedup_final_v8.png}
-\caption{Speedup over the simulated naive TPU-v3 baseline, for EfficientNet, SD1.5 UNet and LLM workloads. Vision workloads compare naive TPU-v3, static and CHEETAH. LLMs add separate CHEETAH prefill and decode results. Red crosses mark static infeasibility.}
+\caption{Speedup over the simulated naive TPU-v3 baseline, for EfficientNet, SD1.5 UNet and LLM workloads. Vision workloads compare naive TPU-v3, static and CHEETAH. LLMs add separate CHEETAH prefill and decode results. Red crosses mark static infeasibility: fixed one-level tensor pinning leaves too little placement freedom for a network of this scale, so no feasible point exists.}
 \label{fig:speedup}
 \end{figure}
