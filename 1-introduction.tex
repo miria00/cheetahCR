@@ -38,7 +38,7 @@ Standard first-order methods plateau and off-the-shelf solvers return no usable 
 CHEETAH solves the master LP by branch and bound over whole-program branches with OCS~\citep{feng2026ocs}, our in-house solver developed for scale, which certifies a lower bound $L_b$ per branch by exact checks over the original domain.
 Pruning leaves $L=\min_bL_b$ and the best feasible cost $U$ bracketing the optimum.
 For example, the 1,557-branch DeepSeek-V3 master LP closes to a certified $0.07\%$ gap.
-Integral recovery and replay return the relaxation into a chip and a schedule, outputs distinct from the bound, and an LLM architect reads the resulting Lagrangian duals to propose profile-targeted designs and hardware neighborhoods, replacing brute-force hardware configuration outer search.
+Integral recovery and replay return the relaxation into a chip and a schedule, outputs distinct from the bound, and an LLM architect reads the resulting Lagrangian duals to propose profile-targeted designs and search neighborhoods, replacing brute-force hardware configuration outer search.
 The crucial hardware--software interactions and physical feasibility constraints that must not be violated live in the inner mathematical formulation, not in the LLM.
 
 % \begin{figure}[ht!]
