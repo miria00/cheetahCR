@@ -192,14 +192,21 @@ $i$ gives $\sum_iT_i\ge T^{\rm LB}_{\rm compute}$, and with the bandwidth floor
 $\mathbf c^\top x\ge\max(T^{\rm LB}_{\rm compute},T_{\rm memory})$. Dividing
 $T_{\rm naive}$ by both sides gives the claim.
 \end{proof}
-The bound is physical rather than algorithmic: it limits every scheduler, not
-only CHEETAH or FAST, so $\mathcal D$ measures how much any software can extract
-on a given chip--workload pair. Table~\ref{tab:deficiency} evaluates it on fixed
+The bound is relative to the declared model rather than to physics. Its
+denominator is built from the retained LP's per-operation compute floors and
+its bandwidth row, so it limits every scheduler that draws implementations
+from the declared library and is costed by the declared model, not only
+CHEETAH or FAST. Those compute floors are mapper minima and can contain padding
+and mapping inefficiency (Appendix~\ref{app:mfu}), so a universal physical
+ceiling would need further assumptions about unavoidable work, compulsory
+traffic and implementation coverage that the theorem does not make. Within the
+declared model, $\mathcal D$ measures how much any software can extract on a
+given chip--workload pair. Table~\ref{tab:deficiency} evaluates it on fixed
 TPU-v3 (65,536 MACs, 900\,GB/s, 32\,MiB, BF16).
 \begin{table}[h]
 \centering\small
 \caption{Fixed-TPU-v3 deficiency ceiling and the fixed-hardware LP solution.
-CHEETAH saturates the physical ceiling exactly on every LLM.}
+CHEETAH saturates the model ceiling exactly on every LLM.}
 \label{tab:deficiency}
 \begin{tabular}{@{}lrrrr@{}}
 \toprule

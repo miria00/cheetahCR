@@ -1,7 +1,9 @@
 \section{Examples of CHEETAH Design Blueprints}\label{app:blueprints}
 
 
-We provide detailed blueprints for eight CHEETAH designs below. For
+We provide detailed blueprints for eight prefill-oriented CHEETAH designs
+below, and Subsection~\ref{app:bf16_decoders} adds the four BF16 decoder
+designs behind the LLM decode ratios of Figure~\ref{fig:speedup}. For
 each workload we give two variants: \textbf{Variant 1} (TSMC N7~\citep{wu2016iedm7nm,chang2017sram7nm,tsmc_logic_technology,europractice_tsmc7} +
 GDDR/LPDDR~\citep{micron2020gddr6x,jedec2021lpddr5x} commodity memory) and \textbf{Variant 2} (TSMC N5~\citep{yeap2019iedm5nm,wikichip2020tsmc5nm,tsmc_logic_technology} + HBM3~\citep{jedec2022hbm3}
 upgraded memory).  Within a workload, the two variants share the same PE
@@ -136,7 +138,7 @@ Fused model OpInt       & $4.02 \times 10^{6}$\,FLOP/byte \\
 Performance (QPS)       & 1.37\,QPS @ batch=256 \\
 Inference latency       & 729.94\,ms\,/\,sample \\
 Normalized Perf/TDP     & $28.83\times$ \\
-Achieved speedup vs.\ naive TPU-v3 & $34.60\times$ \\
+Achieved speedup vs.\ naive TPU-v3 & $34.33\times$ \\
 $\rho_{\mathrm{comp}}$ (Eq~\ref{eq:mfu_audit}) & 1.000 \\
 Bound by                & compute \\
 Roofline gate (Eq~7)    & \textcolor{green!60!black}{\textbf{PASS}} \\
@@ -397,7 +399,7 @@ Fused model OpInt       & $4.02 \times 10^{6}$\,FLOP/byte \\
 Performance (QPS)       & 1.37\,QPS @ batch=256 \\
 Inference latency       & 729.94\,ms\,/\,sample \\
 Normalized Perf/TDP     & $19.93\times$ \\
-Achieved speedup vs.\ naive TPU-v3 & $34.60\times$ \\
+Achieved speedup vs.\ naive TPU-v3 & $34.33\times$ \\
 $\rho_{\mathrm{comp}}$ (Eq~\ref{eq:mfu_audit}) & 1.000 \\
 Bound by                & compute \\
 Roofline gate (Eq~7)    & \textcolor{green!60!black}{\textbf{PASS}} \\
@@ -559,5 +561,136 @@ LP solve time           &  \\
 \end{table}
 
 
+\subsection{BF16 Decoder Designs for the Decode Ratios}
+\label{app:bf16_decoders}
+The four designs below produce the LLM decode ratios in Figure~\ref{fig:speedup}.
+They are a separate population from the eight prefill-oriented designs above:
+BF16 operands with ordered FP32 arithmetic, 32 requests of 512 output tokens
+each (prompts of 1,536 tokens for Llama-1 and 4,096 for Llama-3 and
+DeepSeek-V3), a decode-phase objective, one chip per workload, and the unchanged
+naive TPU-v3 reference of Figure~\ref{fig:speedup}. Each array is an $8\times32$
+systolic tile of 256 MACs at the 1\,GHz analytical clock. Area is the linear
+area proxy of Appendix~\ref{app:coeff_provenance}, and power is the
+all-components-active installed peak of \ref{app:physical_rooflines}, reported
+without a cap. The LLM prefill ratios in Figure~\ref{fig:speedup} come from
+separate prefill chip identities and are not those of these tables. All four
+decoders pass the $600$\,mm$^2$ area proxy. Their power, pin and SRAM-macro
+qualification is not claimed, and none has a calibrated floorplan or signed-off
+clock (Appendix~\ref{app:native_provenance}).
+
+\begin{table}[h]
+\centering
+\caption{Workload: \texttt{deepseek\_v3}~$\cdot$~BF16 decode~$\cdot$~1.0\,GHz.}
+\label{tab:cheetah_bf16_deepseek_v3}
+\small\setlength{\tabcolsep}{6pt}
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Field} & \textbf{Value} \\
+\midrule
+Arrays                             & 384 ($8\times32$, 256 MACs each) \\
+Total MACs                         & 98{,}304 \\
+Vector lanes                       & 16{,}384 \\
+SRAM                               & 26.94\,MiB in 2{,}800 banks (1\,KiB operand banks) \\
+DRAM                               & 2{,}048\,GiB at 23{,}549\,GB/s \\
+Host interface                     & 512\,GB/s \\
+Local service                      & 65{,}536\,GB/s \\
+Area proxy                         & 599.99\,mm$^2$ (cap 600) \\
+Installed peak power               & 592.51\,W \\
+\midrule
+Decode time (32 requests)          & 63.99\,s \\
+Speedup vs.\ naive TPU-v3 (decode) & $7.82\times$ \\
+Strict latency target              & 41.59\,s (miss) \\
+Useful BF16 MFU                    & 12.32\% \\
+Issued-slot utilization            & 51.28\% \\
+Converter lanes                    & 1{,}024 \\
+Private workspace per array        & 4\,KiB \\
+Host backing                       & 2\,TiB \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[h]
+\centering
+\caption{Workload: \texttt{llama1\_13b}~$\cdot$~BF16 decode~$\cdot$~1.0\,GHz.}
+\label{tab:cheetah_bf16_llama1_13b}
+\small\setlength{\tabcolsep}{6pt}
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Field} & \textbf{Value} \\
+\midrule
+Arrays                             & 640 ($8\times32$, 256 MACs each) \\
+Total MACs                         & 163{,}840 \\
+Vector lanes                       & 2{,}560 \\
+SRAM                               & 6.38\,MiB in 2{,}560 banks (1\,KiB operand banks) \\
+DRAM                               & 288\,GiB at 8{,}601\,GB/s \\
+Host interface                     & 192\,GB/s \\
+Local service                      & 32{,}768\,GB/s \\
+Area proxy                         & 599.05\,mm$^2$ (cap 600) \\
+Installed peak power               & 400.49\,W \\
+\midrule
+Decode time (32 requests)          & 10.44\,s \\
+Speedup vs.\ naive TPU-v3 (decode) & $11.09\times$ \\
+Strict latency target              & 10.51\,s (pass) \\
+Useful BF16 MFU                    & 12.99\% \\
+Issued-slot utilization            & 18.94\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[h]
+\centering
+\caption{Workload: \texttt{llama1\_65b}~$\cdot$~BF16 decode~$\cdot$~1.0\,GHz.}
+\label{tab:cheetah_bf16_llama1_65b}
+\small\setlength{\tabcolsep}{6pt}
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Field} & \textbf{Value} \\
+\midrule
+Arrays                             & 512 ($8\times32$, 256 MACs each) \\
+Total MACs                         & 131{,}072 \\
+Vector lanes                       & 2{,}048 \\
+SRAM                               & 9.63\,MiB in 2{,}048 banks (2\,KiB operand banks) \\
+DRAM                               & 300\,GiB at 8{,}960\,GB/s \\
+Host interface                     & 192\,GB/s \\
+Local service                      & 32{,}768\,GB/s \\
+Area proxy                         & 597.84\,mm$^2$ (cap 600) \\
+Installed peak power               & 362.62\,W \\
+\midrule
+Decode time (32 requests)          & 40.14\,s \\
+Speedup vs.\ naive TPU-v3 (decode) & $13.99\times$ \\
+Strict latency target              & 55.68\,s (pass) \\
+Useful BF16 MFU                    & 20.94\% \\
+Issued-slot utilization            & 26.49\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[h]
+\centering
+\caption{Workload: \texttt{llama3\_70b}~$\cdot$~BF16 decode~$\cdot$~1.0\,GHz.}
+\label{tab:cheetah_bf16_llama3_70b}
+\small\setlength{\tabcolsep}{6pt}
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Field} & \textbf{Value} \\
+\midrule
+Arrays                             & 512 ($8\times32$, 256 MACs each) \\
+Total MACs                         & 131{,}072 \\
+Vector lanes                       & 4{,}096 \\
+SRAM                               & 9.63\,MiB in 2{,}048 banks (2\,KiB operand banks) \\
+DRAM                               & 297\,GiB at 8{,}870\,GB/s \\
+Host interface                     & 192\,GB/s \\
+Local service                      & 32{,}768\,GB/s \\
+Area proxy                         & 598.34\,mm$^2$ (cap 600) \\
+Installed peak power               & 364.21\,W \\
+\midrule
+Decode time (32 requests)          & 33.87\,s \\
+Speedup vs.\ naive TPU-v3 (decode) & $17.93\times$ \\
+Strict latency target              & 52.44\,s (pass) \\
+Useful BF16 MFU                    & 27.70\% \\
+Issued-slot utilization            & 43.59\% \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \newpage

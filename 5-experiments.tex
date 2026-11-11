@@ -37,7 +37,7 @@ work~\citep{jouppi2021ten,zhang_fast}. All speedups below are analytical and mod
 
 \subsection{Experimental Setup}
 \label{sec:exp_intro}
-Software alone is physics-capped (Theorem~\ref{thm:deficiency}, Appendix~\ref{app:deficiency}), so co-design is the only route past the performance ceiling. The experimental suite comprises EfficientNet-B1--B7, Llama-1 13B/65B, Llama-3 70B,
+Software alone is capped within the declared model (Theorem~\ref{thm:deficiency}), so co-design is the only route past it. The experimental suite comprises EfficientNet-B1--B7, Llama-1 13B/65B, Llama-3 70B,
 DeepSeek-V3~\citep{tan2019efficientnet,llama3modelcard,deepseekv3report} and
 Stable Diffusion~1.5 UNet. DeepSeek-V3 is evaluated on thirty-two 4,096-token
 Wikitext-2 prompts, each decoded greedily for 512 tokens, with FP8 weights
@@ -99,7 +99,8 @@ the conditions under which Perf/TDP is a valid comparison.
 \input{update/wo24_fixed_hardware}
 The prefill-oriented designs report an average $22.07\times$ predicted
 speedup over the simulated TPU-v3 baseline, reaching $40.1\times$ on Llama-3 70B,
-under their own workload and traffic conventions. Appendix~\ref{app:blueprints} shows the concrete hardware blueprints. 
+under their own workload and traffic conventions. Appendix~\ref{app:blueprints}
+shows their blueprints and the separate BF16 decoders (\ref{app:bf16_decoders}).
 
 
 Table~\ref{tab:fixed_hw} reports the fixed-hardware software-search comparisons

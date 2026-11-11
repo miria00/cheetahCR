@@ -16,8 +16,17 @@ parts of the prediction, not measurements of a calibrated serving stack.
 Phase times add and speedup is the ratio of total predicted latencies. The
 recovered design predicts $\mathbf{5.25\times}$ on the complete task
 ($15{,}546$ s to $2{,}963$ s), from $3.57\times$ on prefill, $6.08\times$ on
-decode and $2.01\times$ on conversion. Decode contributes $80.45\%$ of the time
-saved, and Table~\ref{tab:deepseek_vanilla} gives the per-phase ledger. Data supply is $14.22\%$ of the reference total, so the result is
+decode and $2.01\times$ on conversion. Decode contributes $81.02\%$ of the time
+saved, and Table~\ref{tab:deepseek_vanilla} gives the per-phase ledger. Three
+execution times appear for this task and are not interchangeable. The
+complete-task time in Table~\ref{tab:deepseek_vanilla} is the connected
+execution of this design, with conversion, prefill and decode charged against
+the vanilla reference. The retained execution of Section~\ref{sec:ocs},
+$2{,}718{,}970.51$\,ms, is the branch admitted to the certified master and was
+recovered from this execution afterwards. The control totals in
+Section~\ref{sec:native_features} are measured on the execution that preceded
+Table~\ref{tab:deepseek_vanilla}, against a reference whose external interface
+is 32\,GB/s, so only their matched differences carry over. Data supply is $14.22\%$ of the reference total, so the result is
 largely insensitive to the offload assumption. The expanded master behind this
 design is certified to $0.07\%$
 (Section~\ref{sec:ocs}). Neither that interval nor the

@@ -55,7 +55,7 @@ provisioning, batching and temporal residency must be chosen together.
 
 Three properties make off-the-shelf solving of the inner optimization problem difficult:
 the LP does not fit in memory (Llama-1 13B alone is $10.1$M columns by $18.3$M
-rows, 51\,PB dense, over $10^{2300}$ branches), its optimal surface is massively
+rows, 1.48\,PB dense, over $10^{2300}$ branches), its optimal surface is massively
 degenerate, and its coefficients span $10^{-6}$ to $10^{15}$. Standard
 first-order methods plateau and off-the-shelf solvers return no usable
 certificate or do not converge. CHEETAH solves the master LP by branch and bound over

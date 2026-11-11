@@ -1,11 +1,26 @@
-\section{Complete Rows of the Master Blocks}
+\section{Complete Master Rows}
 \label{app:master_rows}\label{app:master_v3}
 Appendices~\ref{app:rows_retained}--\ref{app:rows_scope} list the rows block by
 block: the retained tiling--placement block (\ref{app:rows_retained}), cover,
 lifecycle and storage (\ref{app:rows_cover}), capacities, staging and installed
 hardware (\ref{app:rows_capacity}), resource demands and service envelopes
 (\ref{app:rows_service}), direct rooflines (\ref{app:physical_rooflines}) and feature
-scope (\ref{app:rows_scope}).
+scope (\ref{app:rows_scope}). Subsection~\ref{app:lps} closes the appendix with
+the relaxation and recovery details, the reasons off-the-shelf solving fails,
+and the LP matrix structure.
+
+\paragraph{Power and area contracts.}
+Four power conventions appear in this paper, and they belong to separate
+experiments. The fixed-chip causal rows of the full-inference DeepSeek-V3
+execution (Appendix~\ref{sec:decode_decomp}) are screened against a $300$\,W
+peak-power row, which that design meets at $298.69$\,W. The prefill-oriented
+designs of Appendix~\ref{app:blueprints} were searched under the $700$\,W TDP
+cap recorded in Appendix~\ref{app:coeff_provenance}. The power-density gate of
+Appendix~\ref{app:gates} uses a utilization-discounted dynamic power. The BF16
+decoder designs of Appendix~\ref{app:bf16_decoders} report the
+all-components-active installed peak of \ref{app:physical_rooflines} without a
+cap. These are not one contract, and a ratio or gate verdict from one does not
+transfer to another.
 Equation~\eqref{eq:master} is a perspective formulation of a declared finite
 family. If branch $b$ has equality matrix $E_b$, inequality matrix $G_b$,
 right-hand sides $e_b,g_b$, and coordinate box $[\ell_b,u_b]$, its complete
@@ -34,7 +49,7 @@ original constraints and objective; setting every other branch to zero gives
 an explicit inclusion map. This does not transfer a lower bound from one
 branch to a larger family. The retained schedule block below explains inclusion
 of the supplied joint LP when it is configured as a branch. The certified
-21-branch native instance uses the causal blocks and their identified extensions;
+1,557-branch native instance (Section~\ref{sec:ocs}) uses the causal blocks and their identified extensions;
 its bound is not asserted for a union with additional schedule models or a
 larger implementation library.
 
