@@ -8,7 +8,18 @@
    "family": "vision",
    "static_h": 10.57,
    "v1_h": 0.07,
-   "master_lp_h": null
+   "master_lp_h": null,
+   "static_components": {
+    "timeloop_h": 10.5122,
+    "vizier_lp_build_h": 0.0474,
+    "lp_solve_h": 0.0
+   },
+   "llm_guided_components": {
+    "timeloop_h": 0.0,
+    "vizier_lp_build_h": 0.0516,
+    "lp_solve_h": 0.0096
+   },
+   "master_lp_components": null
   },
   {
    "key": "efficientnet_b2",
@@ -17,7 +28,18 @@
    "family": "vision",
    "static_h": 7.08,
    "v1_h": 0.06,
-   "master_lp_h": null
+   "master_lp_h": null,
+   "static_components": {
+    "timeloop_h": 7.003,
+    "vizier_lp_build_h": 0.0658,
+    "lp_solve_h": 0.0
+   },
+   "llm_guided_components": {
+    "timeloop_h": 0.0,
+    "vizier_lp_build_h": 0.0466,
+    "lp_solve_h": 0.0047
+   },
+   "master_lp_components": null
   },
   {
    "key": "efficientnet_b3",
@@ -26,7 +48,18 @@
    "family": "vision",
    "static_h": 8.44,
    "v1_h": 0.06,
-   "master_lp_h": null
+   "master_lp_h": null,
+   "static_components": {
+    "timeloop_h": 8.3785,
+    "vizier_lp_build_h": 0.0511,
+    "lp_solve_h": 0.0
+   },
+   "llm_guided_components": {
+    "timeloop_h": 0.0,
+    "vizier_lp_build_h": 0.0465,
+    "lp_solve_h": 0.0048
+   },
+   "master_lp_components": null
   },
   {
    "key": "efficientnet_b4",
@@ -35,7 +68,18 @@
    "family": "vision",
    "static_h": 17.93,
    "v1_h": 0.06,
-   "master_lp_h": null
+   "master_lp_h": null,
+   "static_components": {
+    "timeloop_h": 17.8696,
+    "vizier_lp_build_h": 0.0503,
+    "lp_solve_h": 0.0
+   },
+   "llm_guided_components": {
+    "timeloop_h": 0.0,
+    "vizier_lp_build_h": 0.0465,
+    "lp_solve_h": 0.0048
+   },
+   "master_lp_components": null
   },
   {
    "key": "efficientnet_b5",
@@ -44,7 +88,18 @@
    "family": "vision",
    "static_h": 13.8,
    "v1_h": 0.07,
-   "master_lp_h": null
+   "master_lp_h": null,
+   "static_components": {
+    "timeloop_h": 13.7306,
+    "vizier_lp_build_h": 0.0583,
+    "lp_solve_h": 0.0
+   },
+   "llm_guided_components": {
+    "timeloop_h": 0.0,
+    "vizier_lp_build_h": 0.0472,
+    "lp_solve_h": 0.0136
+   },
+   "master_lp_components": null
   },
   {
    "key": "efficientnet_b6",
@@ -53,7 +108,18 @@
    "family": "vision",
    "static_h": 17.4,
    "v1_h": 0.07,
-   "master_lp_h": null
+   "master_lp_h": null,
+   "static_components": {
+    "timeloop_h": 17.338,
+    "vizier_lp_build_h": 0.0516,
+    "lp_solve_h": 0.0
+   },
+   "llm_guided_components": {
+    "timeloop_h": 0.0,
+    "vizier_lp_build_h": 0.0474,
+    "lp_solve_h": 0.0135
+   },
+   "master_lp_components": null
   },
   {
    "key": "efficientnet_b7",
@@ -62,7 +128,18 @@
    "family": "vision",
    "static_h": 24.96,
    "v1_h": 0.08,
-   "master_lp_h": null
+   "master_lp_h": null,
+   "static_components": {
+    "timeloop_h": 24.897,
+    "vizier_lp_build_h": 0.0519,
+    "lp_solve_h": 0.0013
+   },
+   "llm_guided_components": {
+    "timeloop_h": 0.0,
+    "vizier_lp_build_h": 0.0474,
+    "lp_solve_h": 0.0234
+   },
+   "master_lp_components": null
   },
   {
    "key": "llama1_13b",
@@ -71,7 +148,22 @@
    "family": "llm",
    "static_h": 27.25,
    "v1_h": 0.1,
-   "master_lp_h": 0.0298
+   "master_lp_h": 0.0298,
+   "static_components": {
+    "timeloop_h": 27.1991,
+    "vizier_lp_build_h": 0.0416,
+    "lp_solve_h": 0.0
+   },
+   "llm_guided_components": {
+    "timeloop_h": 0.0,
+    "vizier_lp_build_h": 0.0472,
+    "lp_solve_h": 0.0431
+   },
+   "master_lp_components": {
+    "joint_hardware_screen_s": 0.0,
+    "fixed_chip_controls_s": 0.00497,
+    "bnb_certificate_s": 0.0248
+   }
   },
   {
    "key": "llama1_65b",
@@ -80,7 +172,22 @@
    "family": "llm",
    "static_h": 47.0,
    "v1_h": 0.23,
-   "master_lp_h": 0.0274
+   "master_lp_h": 0.0274,
+   "static_components": {
+    "timeloop_h": 46.9304,
+    "vizier_lp_build_h": 0.0497,
+    "lp_solve_h": 0.0099
+   },
+   "llm_guided_components": {
+    "timeloop_h": 0.0,
+    "vizier_lp_build_h": 0.045,
+    "lp_solve_h": 0.175
+   },
+   "master_lp_components": {
+    "joint_hardware_screen_s": 0.01668,
+    "fixed_chip_controls_s": 0.01072,
+    "bnb_certificate_s": 0.0
+   }
   },
   {
    "key": "llama3_70b",
@@ -89,7 +196,18 @@
    "family": "llm",
    "static_h": "inf",
    "v1_h": 1.17,
-   "master_lp_h": 0.0102
+   "master_lp_h": 0.0102,
+   "static_components": null,
+   "llm_guided_components": {
+    "timeloop_h": 0.0,
+    "vizier_lp_build_h": 0.0,
+    "lp_solve_h": 1.1608
+   },
+   "master_lp_components": {
+    "joint_hardware_screen_s": 0.00593,
+    "fixed_chip_controls_s": 0.00423,
+    "bnb_certificate_s": 0.0
+   }
   },
   {
    "key": "deepseek_v3",
@@ -98,7 +216,18 @@
    "family": "llm",
    "static_h": "inf",
    "v1_h": 2.17,
-   "master_lp_h": 0.5345
+   "master_lp_h": 0.5345,
+   "static_components": null,
+   "llm_guided_components": {
+    "timeloop_h": 0.0,
+    "vizier_lp_build_h": 0.0,
+    "lp_solve_h": 2.1593
+   },
+   "master_lp_components": {
+    "joint_hardware_screen_s": 0.16369,
+    "fixed_chip_controls_s": 0.0,
+    "bnb_certificate_s": 0.37078
+   }
   }
  ],
  "master_lp_sources": {
@@ -156,5 +285,6 @@
     "hours": 0.0102
    }
   }
- }
+ },
+ "_components_note": "static_components and llm_guided_components (hours) were digitized from the stacked segments of the legacy figure fig3/wallclock_new_v6.png against its log axis and scaled so that they sum to the annotated totals; treat each segment as approximate to about ten percent. Static LP-solve segments below the legacy axis floor of 0.01 h read as zero. master_lp_components (hours) group the recorded stages in master_lp_sources by type: joint and hardware-screen solves, fixed-chip control reoptimizations (including saved completions and the attribution continuation), and branch-and-bound plus exact-certificate stages."
 }
