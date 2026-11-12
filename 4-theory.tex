@@ -133,11 +133,39 @@ Adding NoC, SRAM, vector or control floors can only raise it and lower $\mathcal
 For every chip $H$, workload $G$ and feasible point $x\in\mathcal P_V(H,G)$, $\mathrm{speedup}(x):=T_{\rm naive}(H,G)/\mathbf c^\top x\le\mathcal D(H,G)$; in particular $\min_{x\in\mathcal P_V}\mathbf c^\top x\ge\max(T^{\rm LB}_{\rm compute},T_{\rm memory})$.
 \end{theorem}
 \begin{proof}
-Both floors follow from the two latency rows of the retained block (Appendix~\ref{app:rows_retained}), $T_i\ge\sum_cT^{\min}_i(c)\,y_{ic}$ and $T_i\ge\sum_cT^{\max}_i(c)\,y_{ic}-\sum_{c,k}t^k_i(c)\,w_{ick}$.
-\emph{Compute.} Since $\sum_cy_{ic}=1$ and $y\ge0$, the first row gives $T_i\ge\min_cT^{\min}_i(c)$ for every feasible $y$, and summing over $i$ gives $\sum_iT_i\ge T^{\rm LB}_{\rm compute}$.
-\emph{Bandwidth.} In the cost model $T^{\max}_i(c)$ is the streamed latency, which is at least the DRAM time $Q_i(c)/b_H$, and the residency saving for operand $k$ is its credited DRAM time, $t^k_i(c)=q^k_i(c)/b_H$.
-With $0\le w_{ick}\le y_{ic}$ and $t^k_i(c)\ge0$ the second row gives $T_i\ge\sum_cy_{ic}\,[Q_i(c)-\sum_kq^k_i(c)]/b_H\ge\min_c[Q_i(c)-\sum_kq^k_i(c)]/b_H =\mathrm{bytes}_i/b_H$, and summing over $i$ gives $\sum_iT_i\ge T_{\rm memory}$.
-Hence $\mathbf c^\top x=\sum_iT_i\ge\max(T^{\rm LB}_{\rm compute},T_{\rm memory})$, and dividing $T_{\rm naive}$ by both sides gives the claim.
+Both floors follow from the two latency rows of the retained block (Appendix~\ref{app:rows_retained}),
+\begin{equation}
+T_i\ \ge\ \sum_c T^{\min}_i(c)\,y_{ic}
+\qquad\text{and}\qquad
+T_i\ \ge\ \sum_c T^{\max}_i(c)\,y_{ic}-\sum_{c,k}t^k_i(c)\,w_{ick}.
+\label{eq:thm2_rows}
+\end{equation}
+
+\emph{Step 1 (compute floor).}
+Since $\sum_cy_{ic}=1$ and $y\ge0$, the first row of \eqref{eq:thm2_rows} gives $T_i\ge\min_cT^{\min}_i(c)$ for every feasible $y$.
+Summing over $i$,
+\begin{equation}
+\sum_iT_i\ \ge\ \sum_i\min_cT^{\min}_i(c)\ =\ T^{\rm LB}_{\rm compute}.
+\label{eq:thm2_compute}
+\end{equation}
+
+\emph{Step 2 (bandwidth floor).}
+In the cost model $T^{\max}_i(c)$ is the streamed latency, which is at least the DRAM time $Q_i(c)/b_H$, and the residency saving for operand $k$ is its credited DRAM time, $t^k_i(c)=q^k_i(c)/b_H$.
+With $0\le w_{ick}\le y_{ic}$ and $t^k_i(c)\ge0$, the second row of \eqref{eq:thm2_rows} gives
+\begin{equation}
+T_i\ \ge\ \sum_c y_{ic}\,\frac{Q_i(c)-\sum_kq^k_i(c)}{b_H}
+\ \ge\ \min_c\frac{Q_i(c)-\sum_kq^k_i(c)}{b_H}
+\ =\ \frac{\mathrm{bytes}_i}{b_H}.
+\label{eq:thm2_bandwidth}
+\end{equation}
+Summing over $i$ gives $\sum_iT_i\ge T_{\rm memory}$.
+
+\emph{Step 3 (conclusion).}
+Combining \eqref{eq:thm2_compute} and \eqref{eq:thm2_bandwidth},
+\begin{equation*}
+\mathbf c^\top x\ =\ \sum_iT_i\ \ge\ \max\bigl(T^{\rm LB}_{\rm compute},\,T_{\rm memory}\bigr),
+\end{equation*}
+and dividing $T_{\rm naive}$ by both sides gives $\mathrm{speedup}(x)\le\mathcal D(H,G)$.
 \end{proof}
 The bound is set by the physics of the declared model, not by physics outside it.
 Its denominator is built from the retained LP's per-operation compute floors and its bandwidth row, so it limits every scheduler that draws implementations from the declared library and is costed by the declared model, not only CHEETAH or the sequential pipelines above.
