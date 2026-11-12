@@ -98,6 +98,6 @@ Section~\ref{sec:experiments} reports experimental results and ablations, the Ap
 \begin{figure}[t]
     \centering
 \includegraphics[width=1.0\linewidth]{fig3/speedup_final_v8.png}
-\caption{Speedup over the simulated naive TPU-v3 baseline, for EfficientNet, SD1.5 UNet and LLM workloads. Vision workloads compare naive TPU-v3, static and CHEETAH. LLMs add separate CHEETAH prefill and decode results. Red crosses mark static infeasibility, since fixed one-level tensor pinning leaves too little placement freedom for a network of this scale and no feasible point is returned.}
+\caption{Speedup over the naive TPU-v3 baseline, for EfficientNet, SD1.5 UNet and LLM workloads. Vision workloads compare naive TPU-v3, static and CHEETAH. LLMs add separate CHEETAH prefill and decode results. Red crosses mark static infeasibility, since fixed one-level tensor pinning leaves too little placement freedom for a network of this scale and no feasible point is returned.}
 \label{fig:speedup}
 \end{figure}
