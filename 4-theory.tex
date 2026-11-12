@@ -4,7 +4,7 @@ The following statements concern represented feasible sets.
 They do not imply that a numerical solver has optimized the complete master or that arbitrary rounding preserves feasibility.
 
 \subsection{Bounded Products and Epigraphs}\label{app:bounded_products}
-\begin{proposition}\label{prop:mccormick_exact}
+\begin{proposition}[McCormick exactness]\label{prop:mccormick_exact}
 For $0\le y,p\le1$, the inequalities $0\le w$, $w\le y$, $w\le p$, and $w\ge y+p-1$ describe the convex hull of the graph $w=yp$.
 If either factor is integral, these inequalities force $w=yp$.
 \end{proposition}
@@ -198,7 +198,7 @@ DeepSeek-V3 & $5.88\times10^{10}$ & $2.65\times10^{10}$ & $2.22\times$ & $2.22\t
 On every LLM the fixed-hardware solution reaches the ceiling, so the modest fixed-TPU-v3 gains of Table~\ref{tab:fixed_hw} measure the chip, not the formulation: TPU-v3 has only about $2.5\times$ of extractable inefficiency on these workloads, and the larger gains of Section~\ref{sec:experiments} require co-designing the chip itself.
 
 \subsection{Structure and Safe Pruning}\label{app:invar}
-\begin{proposition}\label{prop:invariance}
+\begin{proposition}[Structural invariance]\label{prop:invariance}
 For fixed graph incidence, variable domains, and candidate library, changes only to numerical costs and bounds preserve the structural row/column pattern.
 \end{proposition}
 \begin{proof}
