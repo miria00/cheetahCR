@@ -259,7 +259,7 @@ These bound reticle area, interface pins, logic depth, interconnect size, power 
 % Every CHEETAH chip configuration must therefore pass the roofline + area-aware LP audit and clear this stack of six hard gates.
 The gate thresholds are calibrated end-to-end against a modeled TPU-v3 operating point: the published $65{,}536$ MACs, $900\,\mathrm{GB/s}$ and $32\,\mathrm{MiB}$ CGM, with a $700\,\mathrm{MHz}$ clock and $250\,\mathrm{W}$ TDP ($0.36\,\mathrm{W/mm}^2$ over a $700\,\mathrm{mm}^2$ die).
 These clock and power values describe a process-shrunk TPU-v3, not the $16$\,nm silicon, which lists $940\,\mathrm{MHz}$ and $450\,\mathrm{W}$ chip and $660\,\mathrm{W}$ system TDP~\citep{jouppi2021ten}.
-We follow FAST~\citep{zhang_fast}, which evaluates its designs against a hypothetical TPU-v3 re-modeled in the same sub-$10$\,nm process, so that the baseline and every design share one process, power and area model.
+In order to be consistent with Google's prior work, we follow FAST's same-process TPU-v3 baseline~\citep{zhang_fast}.
 The thresholds are therefore pinned to a stated, reproducible reference rather than chosen arbitrarily.
 
 \paragraph{(i) Pin count.}

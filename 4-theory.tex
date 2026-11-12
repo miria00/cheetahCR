@@ -41,13 +41,18 @@ For shared variable hardware, every additional coupling must also be disaggregat
 
 \subsection{Containment of Lifted Sequential Fusion}
 \label{app:fast_containment}
-This subsection concerns the retained joint tiling--placement block of Section~\ref{sec:master_lp}, whose coordinates are the tile selection $y_{ic}$, activation residency $p_{et}$, weight residency $p^W_{it}$, rematerialization $r_{it}$, the one-hot global-buffer selector $h_{\mathrm{GM}}\in[0,1]^K$ over a discrete grid $g_1,\ldots,g_K$, and the per-operation latencies $T_i$ that the objective sums.
+This subsection concerns the retained joint tiling--placement block of Section~\ref{sec:master_lp}, whose coordinates are the tile selection $y_{ic}$, activation residency $p_{et}$, weight residency $p^W_{it}$, rematerialization $r_{it}$, the one-hot global-buffer selector $h_{\mathrm{GM}}\in[0,1]^K$ over a discrete grid $g_1,\ldots,g_K$, the tile--residency product variables $w_{ick}$, and the per-operation latencies $T_i$.
 Write that block's feasible set at a fixed chip $H$ and workload graph $G$ as
 \begin{equation}
-\mathcal P_V(H,G)=\{x=(y,p,p^W,r,h_{\mathrm{GM}},T):A_Vx\le b_V(H,G)\},
+\mathcal P_V(H,G)=\{x=(y,p,p^W,r,h_{\mathrm{GM}},w,T):A_Vx\le b_V(H,G)\},
 \label{eq:pv}
 \end{equation}
 with $\sum_cy_{ic}=1$, $\sum_kh_{\mathrm{GM},k}=1$, all selection and residency coordinates in $[0,1]$, $T\in\mathbb R^L_{\ge0}$, and Timeloop-derived constants $T^{\min}_i(c),T^{\max}_i(c),t^k_i(c)$ at $C$ Pareto tile configurations per operation.
+The rows $A_V$ are those of Appendix~\ref{app:rows_retained}, including the McCormick rows that bound each $w_{ick}$ by $y_{ic}$ and its associated residency $P_{ik}$, and the objective is
+\begin{equation}
+\mathbf c^\top x=\sum_iT_i+\sum_{i,t}c^{\mathrm{remat}}_i\,r_{it},\qquad c^{\mathrm{remat}}_i\ge0.
+\label{eq:pv_objective}
+\end{equation}
 
 \paragraph{The lifted sequential fusion set.}
 A sequential co-design pipeline runs the mapper first, commits to one tile choice $c^{\mathrm{S}}_i$ per operation, and only then solves a fusion problem over tensor pinning at a fixed buffer split, without rematerialization.
@@ -72,20 +77,22 @@ Fix $H$, $G$, a grid value $g\in\{g_1,\ldots,g_K\}$ and the mapper-derived const
 The map
 \begin{equation}
 \iota:\mathcal F^{\mathrm{lift}}_S(H,G)\hookrightarrow\mathcal P_V(H,G),\qquad
-\iota(y,p,p^W,T)=\bigl(y,\tilde p,p^W,r=0,h_{\mathrm{GM}}=e_{k^\star},T\bigr),
+\iota(y,p,p^W,T)=\bigl(y,\tilde p,p^W,r=0,h_{\mathrm{GM}}=e_{k^\star},\tilde w,T\bigr),
 \label{eq:iota}
 \end{equation}
-with $\tilde p_{et}=1$ exactly on the timesteps covered by the pipeline's consecutive fusion region for the edge supplying $e$ and zero elsewhere, is well defined and injective, and it preserves the objective: $\mathbf c^\top\iota(x)=\mathbf c^\top x$ for every $x\in\mathcal F^{\mathrm{lift}}_S(H,G)$.
+with $\tilde p_{et}=1$ exactly on the timesteps covered by the pipeline's consecutive fusion region for the edge supplying $e$ and zero elsewhere, and with the exact products $\tilde w_{ick}=y_{ic}\tilde P_{ik}$, where $\tilde P_{ik}$ is the residency association of Appendix~\ref{app:rows_retained} evaluated at $(\tilde p,p^W)$, is well defined and injective, and it preserves the objective: $\mathbf c^\top\iota(x)=\mathbf c^\top x$ for every $x\in\mathcal F^{\mathrm{lift}}_S(H,G)$.
 \end{theorem}
 \begin{proof}
 \emph{Feasibility.} The integer cube embeds into the LP cube, $\{0,1\}^d\subset[0,1]^d$, so any integer-feasible $(y,p,p^W)$ lies in $\mathcal P_V$ along the shared coordinates.
 The lifted $\tilde p$ is zero off the pipeline's consecutive fusion region by construction, so the activation-persistence and capacity rows of $\mathcal P_V$ reduce to the pipeline's.
 Setting $r=0$ disables rematerialization and $h_{\mathrm{GM}}=e_{k^\star}$ pins the buffer-capacity row to the pipeline's $g$.
+Because $y$ is a singleton one-hot, Proposition~\ref{prop:mccormick_exact} shows that $\tilde w$ satisfies its McCormick rows with equality, so the second latency row reduces to the pipeline's fused latency.
 The per-stage compute floor evaluates identically because both sets consume the same mapper cost vectors under the singleton-$y$ projection.
 Hence $\iota(x)\in\mathcal P_V$.
-\emph{Injectivity.} $\iota$ is the identity on the shared coordinates and constant on the new ones, so $\iota(x)=\iota(x')$ implies $x=x'$.
-\emph{Objective preservation.} The objective $\sum_iT_i$ depends only on the shared coordinate $T$, so $\mathbf c^\top\iota(x)=\mathbf c^\top x$.
-If the objective additionally carries an $\varepsilon$-tiebreaker $\varepsilon\sum_kk\,h_{\mathrm{GM},k}$, that term equals the constant $\varepsilon k^\star$ on $\iota(x)$ and changes neither the optimum nor its minimizer at fixed $g$.
+\emph{Injectivity.} $\iota$ is the identity on the shared coordinates, and its new coordinates are functions of them, so $\iota(x)=\iota(x')$ implies $x=x'$.
+\emph{Objective preservation.} On $\iota(x)$ the rematerialization term of \eqref{eq:pv_objective} vanishes because $r=0$, and $\sum_iT_i$ depends only on the shared coordinate $T$, so $\mathbf c^\top\iota(x)=\mathbf c^\top x$.
+If CHEETAH's objective additionally carries an $\varepsilon$-tiebreaker $\varepsilon\sum_kk\,h_{\mathrm{GM},k}$, that term equals the constant $\varepsilon k^\star$ on $\iota(x)$, and the comparison charges the lifted pipeline objective the same offset $\varepsilon k^\star$ for its fixed $g$.
+Both compared objectives then include the identical constant, so the equality $\mathbf c^\top\iota(x)=\mathbf c^\top x$ holds with the offset included.
 \end{proof}
 
 \begin{corollary}[The relaxation dominates the lifted sequential objective]\label{cor:optimum}
@@ -161,9 +168,9 @@ T_i\ \ge\ \sum_c y_{ic}\,\frac{Q_i(c)-\sum_kq^k_i(c)}{b_H}
 Summing over $i$ gives $\sum_iT_i\ge T_{\rm memory}$.
 
 \emph{Step 3 (conclusion).}
-Combining \eqref{eq:thm2_compute} and \eqref{eq:thm2_bandwidth},
+The rematerialization costs in \eqref{eq:pv_objective} are nonnegative, so combining \eqref{eq:thm2_compute} and \eqref{eq:thm2_bandwidth},
 \begin{equation*}
-\mathbf c^\top x\ =\ \sum_iT_i\ \ge\ \max\bigl(T^{\rm LB}_{\rm compute},\,T_{\rm memory}\bigr),
+\mathbf c^\top x\ \ge\ \sum_iT_i\ \ge\ \max\bigl(T^{\rm LB}_{\rm compute},\,T_{\rm memory}\bigr),
 \end{equation*}
 and dividing $T_{\rm naive}$ by both sides gives $\mathrm{speedup}(x)\le\mathcal D(H,G)$.
 \end{proof}
