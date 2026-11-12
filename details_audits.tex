@@ -257,8 +257,10 @@ joint-tile & DeepSeek-V3 & 1{,}048{,}576 &  64 & $3.47\times10^{15}$ & $9.57\tim
 The study applies six physical-design gates to its candidate accelerators, which are additionally screened post design output for safety.
 These bound reticle area, interface pins, logic depth, interconnect size, power density, and SRAM organization under the stated models.
 % Every CHEETAH chip configuration must therefore pass the roofline + area-aware LP audit and clear this stack of six hard gates.
-The gate thresholds are calibrated end-to-end to reproduce TPU-v3's published headline numbers ($700\,\mathrm{mm}^2$ die, $250\,\mathrm{W}$ TDP, $0.36\,\mathrm{W/mm}^2$ density at $65{,}536$ MACs / $900\,\mathrm{GB/s}$ / $32\,\mathrm{MiB}$ CGM) when fed TPU-v3 inputs.
-Therefore, they are not arbitrary but pinned to a known-quality silicon.
+The gate thresholds are calibrated end-to-end against a modeled TPU-v3 operating point: the published $65{,}536$ MACs, $900\,\mathrm{GB/s}$ and $32\,\mathrm{MiB}$ CGM, with a $700\,\mathrm{MHz}$ clock and $250\,\mathrm{W}$ TDP ($0.36\,\mathrm{W/mm}^2$ over a $700\,\mathrm{mm}^2$ die).
+These clock and power values describe a process-shrunk TPU-v3, not the $16$\,nm silicon, which lists $940\,\mathrm{MHz}$ and $450\,\mathrm{W}$ chip and $660\,\mathrm{W}$ system TDP~\citep{jouppi2021ten}.
+We follow FAST~\citep{zhang_fast}, which evaluates its designs against a hypothetical TPU-v3 re-modeled in the same sub-$10$\,nm process, so that the baseline and every design share one process, power and area model.
+The thresholds are therefore pinned to a stated, reproducible reference rather than chosen arbitrarily.
 
 \paragraph{(i) Pin count.}
 Converts off-chip bandwidth into HBM3-class signal wires at $6.4\,\mathrm{Gb/s/pin}$ ($0.8\,\mathrm{GB/s/pin}$) and rejects designs needing more than $4{,}096$ high-speed pins, which is the practical ceiling for four HBM3 stacks on a single package.
@@ -287,7 +289,7 @@ The cap is the empirical budget for a 2-level hierarchical NoC (cluster-local cr
 \paragraph{(v) Power density.}
 Computes dynamic power as
 \[ P_{\mathrm{dyn}} \;=\; \mathrm{total\_MACs} \times 1\,\mathrm{GHz} \times 0.5_{\mathrm{util}} \times 0.4\,\mathrm{mW/MAC} \]
-(the $0.4\,\mathrm{mW/MAC}$ constant is calibrated against TPU-v3's $250\,\mathrm{W}$ envelope, and bumps to $1.2\,\mathrm{mW}$ for bf16), divides by the same linear area model from gate~(2), and rejects anything above $2.0\,\mathrm{W/mm}^2$.
+(the $0.4\,\mathrm{mW/MAC}$ constant is calibrated against the modeled TPU-v3's $250\,\mathrm{W}$ envelope, and bumps to $1.2\,\mathrm{mW}$ for bf16), divides by the same linear area model from gate~(2), and rejects anything above $2.0\,\mathrm{W/mm}^2$.
 This is the realistic ceiling for an AIO-cooled package today (TPU-v3 $0.36$, TPU-v4 $0.55$, H100 $0.7$, MI300X $0.6$, Cerebras WSE-3 $1.5$).
 This prevents ``thin-but-hot'' tiny-MAC chips that would melt without exotic cooling.
 
