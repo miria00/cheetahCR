@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "checks": [
+    "exact increments partition S_final-1",
+    "each increment used once",
+    "4-5 display groups per pie",
+    "rounded percentages sum to 100.000%",
+    "all reference and final endpoints unchanged",
+    "Llama underlying stages unchanged",
+    "Llama Hardware + DRAM is final legend group",
+    "Figure 2 source and artwork byte-identical",
+    "paper compiles without overfull boxes or unresolved references",
+    "Figure 3 and all 12 workload rows on page 15",
+    "rendered pages 15 and 16 visually inspected",
+    "source and plot identities match"
+  ],
+  "new_optimizer_calls": 0,
+  "new_source_admission": false,
+  "new_physical_checks": false,
+  "pdf_sha256": "b937b0e66b5d9d563b2b92ce90e6db369599b85b0ef4c14e57c661f52309282f",
+  "figure3_pdf_sha256": "c74ff75efe7ad5461c2ecdbdddcd792481c0cb1ad36b81049b8ebead62941a58"
+}

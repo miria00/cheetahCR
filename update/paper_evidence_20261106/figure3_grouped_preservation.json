@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "destination": "/media/miria/Elements/cheetah_paper_grouped_pies_20261107T060245Z",
+  "files": 29,
+  "bytes": 11908185,
+  "manifest_sha256": "3b2bbdd9c5bbf6b11058b639919f22fe2d23e79a33b8751f17ff55221109c08e",
+  "all_copied_file_contents_read_back": true,
+  "scope": "Paper revision overlay: rebuilt PDF, grouped Figure 3 plots, caption and method, exact cumulative regrouping and frozen WO23 DeepSeek hardware-control evidence. Every copied file content-read back. Final performance and Figure 2 unchanged. Inherited producer inputs and earlier controls remain in authenticated parent overlays and WO23/WO24 roots; not a complete project copy or new source/physical admission.",
+  "parent": {
+    "destination": "/media/miria/Elements/cheetah_paper_resource_pies_20261107T055332Z",
+    "manifest_sha256": "b640412284ce29a5245ee5a3eb93cf96ab45f028f155ed1c96e2def3d9f6993a"
+  }
+}

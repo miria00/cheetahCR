@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "destination": "/media/miria/Elements/cheetah_paper_clean_pies_20261107T065502Z",
+  "files": 23,
+  "bytes": 12459425,
+  "manifest_sha256": "8f0c955700248d1c51ecfb770830026ea231360a0fef2a739485aad5bb9a37cf",
+  "all_copied_file_contents_read_back": true,
+  "scope": "Presentation-only paper overlay: DeepSeek last, dagger annotations and SRAM figure note removed, subtitles reduced to Decode and speedup. Numeric shares, four-group structure, original reference and final performance unchanged. Parent evidence retained in prior authenticated overlays; not a new experiment or full project copy.",
+  "parent": {
+    "destination": "/media/miria/Elements/cheetah_paper_four_group_pies_20261107T064805Z",
+    "manifest_sha256": "022244cddd5f0665c2b7a3ee52aa10b05f97691ce239ee00483899795857707f"
+  }
+}

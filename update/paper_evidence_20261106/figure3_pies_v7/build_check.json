@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "checks": [
+    "Five slices in every pie",
+    "Exact shares sum to one; displayed percentages sum to 100.000%",
+    "Llama yellow split uses original stages 1 and 4 exactly once",
+    "DeepSeek shares unchanged",
+    "Every slice mapped to frozen Table 10 families",
+    "All original stages, endpoints and reference values unchanged",
+    "Figure 2 source and artwork byte-identical",
+    "No overfull boxes or unresolved references",
+    "Figure 3 and all 12 workload rows on page 15; pages 15 and 16 visually inspected"
+  ],
+  "new_optimizer_calls": 0,
+  "new_source_admission": false,
+  "new_physical_checks": false,
+  "pdf_sha256": "bb6832a236bf9129eea2268b961660ba080b9d0f2ae3bf259e99a5c11863d02e",
+  "figure3_pdf_sha256": "d2171ee74c74400920d528f516e12f82bafba24c514a20c9f57f384e0e0eeebb"
+}

@@ -18,7 +18,9 @@
     "/home/miria/CHEETAH/rebuttal/grid_completion/highs_highbw_cells.json": "b5797857dac6660b2ab5c10cc79a6eea6893616ed3ff0a63292aa2bdfabf3b12",
     "/home/miria/CHEETAH/rebuttal/grid_completion/pdlp_cells.json": "b80c1c7a05d1a957bf820179386a9022900c7b8ead706872c8194bbdd71effcc",
     "/tmp/cheetah_wo24_20261106_v1/authoritative_dataset_v1/result.json": "8262d444cf7e02af8f82aacf8374a8787dd678caafd3ab194eb948f42a9c6b2b",
-    "/tmp/cheetah_wo24_20261106_v1/postseal_actual_v1/result.json": "82f5c2ab09ecba8d7f0076c5cd442db54cb760ed5f6330e7779f2a685946853d"
+    "/tmp/cheetah_wo24_20261106_v1/postseal_actual_v1/result.json": "82f5c2ab09ecba8d7f0076c5cd442db54cb760ed5f6330e7779f2a685946853d",
+    "cheetahCR/update/paper_evidence_20261106/table5_precision_v3/result.json": "f3cf1ec198cc43bd127f5d4fd20a34ac41136f3390144b95ae23c31d28538c39",
+    "cheetahCR/update/paper_evidence_20261106/table5_original_contract/result.json": "8c7b295840099632be37ea9bd5964a859667b47632b7df2f460c703a8bb6d4bb"
   },
   "performance": [
     {
@@ -168,114 +170,307 @@
     "515034293900/8601"
   ],
   "fixed_hardware": {
-    "efficientnet_b1@tpuv3": {
-      "ratio": 1.4450448606877098,
-      "source": "effnet_cells.json",
-      "cell": "efficientnet_b1__tpuv3__bw900_cgm32_ref900_joint",
-      "scope": "single-pred; V2.1 free-y joint LP; naive=cache Sum_i T_max_c[i,0]; floor=Sum_i min_c T_min_c; HiGHS"
-    },
-    "efficientnet_b2@tpuv3": {
-      "ratio": 1.469697655966465,
-      "source": "effnet_cells.json",
-      "cell": "efficientnet_b2__tpuv3__bw900_cgm32_ref900_joint",
-      "scope": "single-pred; V2.1 free-y joint LP; naive=cache Sum_i T_max_c[i,0]; floor=Sum_i min_c T_min_c; HiGHS"
-    },
-    "efficientnet_b3@tpuv3": {
-      "ratio": 1.2848870264950518,
-      "source": "effnet_cells.json",
-      "cell": "efficientnet_b3__tpuv3__bw900_cgm32_ref900_joint",
-      "scope": "single-pred; V2.1 free-y joint LP; naive=cache Sum_i T_max_c[i,0]; floor=Sum_i min_c T_min_c; HiGHS"
-    },
-    "efficientnet_b4@tpuv3": {
-      "ratio": 1.2474568949442322,
-      "source": "effnet_cells.json",
-      "cell": "efficientnet_b4__tpuv3__bw900_cgm32_ref900_joint",
-      "scope": "single-pred; V2.1 free-y joint LP; naive=cache Sum_i T_max_c[i,0]; floor=Sum_i min_c T_min_c; HiGHS"
-    },
-    "efficientnet_b5@tpuv3": {
-      "ratio": 1.2642577718640775,
-      "source": "effnet_cells.json",
-      "cell": "efficientnet_b5__tpuv3__bw900_cgm32_ref900_joint",
-      "scope": "single-pred; V2.1 free-y joint LP; naive=cache Sum_i T_max_c[i,0]; floor=Sum_i min_c T_min_c; HiGHS"
-    },
-    "efficientnet_b6@tpuv3": {
-      "ratio": 1.4233023163827654,
-      "source": "effnet_cells.json",
-      "cell": "efficientnet_b6__tpuv3__bw900_cgm32_ref900_joint",
-      "scope": "single-pred; V2.1 free-y joint LP; naive=cache Sum_i T_max_c[i,0]; floor=Sum_i min_c T_min_c; HiGHS"
-    },
-    "llama1_13b@tpuv3": {
-      "ratio": 2.1419242032993253,
-      "source": "highs_anchors.json",
-      "cell": "llama1_13b@tpuv3(900,32)/joint",
-      "scope": "single-predecessor graph; CHEETAH LP (V2 form) at fixed TPU-v3; post-Fix-A; LP objective (fractional)"
-    },
-    "llama1_65b@tpuv3": {
-      "ratio": 2.1422622996130456,
-      "source": "highs_anchors.json",
-      "cell": "llama1_65b@tpuv3(900,32)/joint",
-      "scope": "single-predecessor graph; CHEETAH LP (V2 form) at fixed TPU-v3; post-Fix-A; LP objective (fractional)"
-    },
-    "llama3_70b@tpuv3": {
-      "ratio": 2.5087282835860663,
-      "source": "highs_anchors.json",
-      "cell": "llama3_70b@tpuv3(900,32)/joint",
-      "scope": "single-predecessor graph; CHEETAH LP (V2 form) at fixed TPU-v3; post-Fix-A; LP objective (fractional)"
-    },
-    "deepseek_v3@tpuv3": {
-      "ratio": 2.2186856099467254,
-      "source": "highs_anchors.json",
-      "cell": "deepseek_v3@tpuv3(900,32)/joint",
-      "scope": "single-predecessor graph; CHEETAH LP (V2 form) at fixed TPU-v3; post-Fix-A; LP objective (fractional)"
-    },
-    "llama1_13b@compact_npu": {
-      "ratio": 31.393800087412913,
-      "source": "pdlp_cells.json",
-      "cell": "llama1_13b__compact_npu__bw64_cgm16_ref64_joint",
-      "scope": "single-pred",
-      "gap": "corgi-gap=1.25e-01"
-    },
-    "sd15_unet@tpuv3": {
-      "ratio": 1.4982596513946103,
-      "source": "highs_highbw_cells.json",
-      "cell": "sd15_unet__tpuv3__bw900_cgm32_ref900_joint",
-      "scope": "dag-clean",
-      "gap": null
-    },
-    "sd15_unet@compact_npu": {
-      "ratio": 5.892797236722703,
-      "source": "highs_highbw_cells.json",
-      "cell": "sd15_unet__compact_npu__bw64_cgm16_ref64_joint",
-      "scope": "dag-clean",
-      "gap": null
-    },
-    "deepseek_v3@compact_npu": {
-      "ratio": 7.757469705357298,
-      "source": "pdlp_cells.json",
-      "cell": "deepseek_v3__compact_npu__bw64_cgm16_ref64_joint",
-      "scope": "single-pred",
-      "gap": "corgi-gap=1.90e-02"
-    },
-    "llama3_70b@compact_npu": {
-      "ratio": 7.655995473512754,
-      "source": "highs_highbw_cells.json",
-      "cell": "llama3_70b__compact_npu__bw64_cgm16_ref64_joint",
-      "scope": "single-pred",
-      "gap": null
+    "efficientnet_b7@tpuv3": {
+      "reference_cycles": 71054952340.0,
+      "objective_cycles": 32112738155.0,
+      "ratio": 2.212671868622223,
+      "original_receipt": {
+        "cell_key": "efficientnet_b7__tpuv3__bw900_cgm32_ref900_joint",
+        "workload": "efficientnet_b7",
+        "template": "tpuv3",
+        "operating_point": {
+          "bw": 900.0,
+          "cgm": 32.0,
+          "ref": 900.0
+        },
+        "row": "joint",
+        "T_joint": 32112738155.0,
+        "T_naive": 71054952340.0,
+        "speedup": 2.2127,
+        "compute_floor_best": 32112738155.0,
+        "solver_tag": "highs-simplex",
+        "status": "done",
+        "convention_tag": "single-pred",
+        "sanity_pass": true,
+        "src": "build=single-pred; pareto=tpuv3; ref=900; HiGHS",
+        "wall_clock_s": 4.35,
+        "highs_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "highs_iters": 6563,
+        "n_vars": 390663,
+        "n_rows": 634935,
+        "sanity_detail": {
+          "speedup_ge_1": true,
+          "naive_ge_floor": true,
+          "Tjoint_ge_floor": true
+        },
+        "naive_key": "naive_cache_sum_Tmax_c0",
+        "cell_tag": "canonical_highbw"
+      },
+      "source": "table5_original_contract/result.json"
     },
     "efficientnet_b7@compact_npu": {
+      "reference_cycles": 711506063267.0,
+      "objective_cycles": 35553100000.0,
       "ratio": 20.012490141984806,
-      "source": "pdlp_cells.json",
-      "cell": "efficientnet_b7__compact_npu__bw64_cgm16_ref64_joint",
-      "scope": "single-pred",
-      "gap": "corgi-gap=2.01e-02"
+      "original_receipt": {
+        "cell_key": "efficientnet_b7__compact_npu__bw64_cgm16_ref64_joint",
+        "workload": "efficientnet_b7",
+        "template": "compact_npu",
+        "row": "joint",
+        "operating_point": {
+          "bw_gbps": 64.0,
+          "cgm_mib": 16.0,
+          "traffic_bw_ref": 64.0
+        },
+        "T_joint": 35553100000.0,
+        "gap_tag": "corgi-gap=2.01e-02",
+        "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+        "convention_tag": "single-pred",
+        "cell_tag": "compact_vetted",
+        "iters": 52400,
+        "wall_s": 83.3,
+        "src": "build=single-pred; pareto=compact_npu; ref=64.0",
+        "T_naive": 711506063267.0,
+        "naive_key": "naive_cache_sum_Tmax_c0 (native ref64, vetted)",
+        "speedup": 20.0125,
+        "compute_floor_best": 34196339598.0,
+        "sanity_pass": true,
+        "sanity_detail": {
+          "naive_ge_floor": true,
+          "speedup_ge_1": true
+        }
+      },
+      "source": "table5_original_contract/result.json"
     },
-    "efficientnet_b7@tpuv3": {
-      "ratio": 2.212671868622223,
-      "source": "highs_highbw_cells.json",
-      "cell": "efficientnet_b7__tpuv3__bw900_cgm32_ref900_joint",
-      "scope": "single-pred",
-      "gap": null
+    "sd15_unet@tpuv3": {
+      "reference_cycles": 11859241889.0,
+      "objective_cycles": 7915344898.970736,
+      "ratio": 1.4982596513946103,
+      "original_receipt": {
+        "cell_key": "sd15_unet__tpuv3__bw900_cgm32_ref900_joint",
+        "workload": "sd15_unet",
+        "template": "tpuv3",
+        "operating_point": {
+          "bw": 900.0,
+          "cgm": 32.0,
+          "ref": 900.0
+        },
+        "row": "joint",
+        "T_joint": 7915344898.970736,
+        "T_naive": 11859241889.0,
+        "speedup": 1.4983,
+        "compute_floor_best": 7623643099.0,
+        "solver_tag": "highs-simplex",
+        "status": "done",
+        "convention_tag": "dag-clean",
+        "sanity_pass": true,
+        "src": "build=dag-clean; pareto=tpuv3; ref=900; HiGHS",
+        "wall_clock_s": 12.99,
+        "highs_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "highs_iters": 68532,
+        "n_vars": 866060,
+        "n_rows": 1342867,
+        "sanity_detail": {
+          "speedup_ge_1": true,
+          "naive_ge_floor": true,
+          "Tjoint_ge_floor": true
+        },
+        "naive_key": "naive_cache_sum_Tmax_c0",
+        "cell_tag": "canonical_highbw"
+      },
+      "source": "table5_original_contract/result.json"
+    },
+    "sd15_unet@compact_npu": {
+      "reference_cycles": 130045709738.125,
+      "objective_cycles": 22068587211.470104,
+      "ratio": 5.892797236722703,
+      "original_receipt": {
+        "cell_key": "sd15_unet__compact_npu__bw64_cgm16_ref64_joint",
+        "workload": "sd15_unet",
+        "template": "compact_npu",
+        "operating_point": {
+          "bw": 64.0,
+          "cgm": 16.0,
+          "ref": 64.0
+        },
+        "row": "joint",
+        "T_joint": 22068587211.470104,
+        "T_naive": 130045709738.125,
+        "speedup": 5.8928,
+        "compute_floor_best": 4924838134.578125,
+        "solver_tag": "highs-simplex",
+        "status": "done",
+        "convention_tag": "dag-clean",
+        "sanity_pass": true,
+        "src": "build=dag-clean; pareto=compact_npu; ref=64; HiGHS",
+        "wall_clock_s": 11.64,
+        "highs_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "highs_iters": 49513,
+        "n_vars": 866060,
+        "n_rows": 1342521,
+        "sanity_detail": {
+          "speedup_ge_1": true,
+          "naive_ge_floor": true,
+          "Tjoint_ge_floor": true
+        },
+        "naive_key": "naive_cache_sum_Tmax_c0 (native ref64, vetted)",
+        "cell_tag": "compact_retry_tighten"
+      },
+      "source": "table5_original_contract/result.json"
+    },
+    "llama1_13b@tpuv3": {
+      "reference_cycles": 28973017042.844437,
+      "objective_cycles": 13526630400.0,
+      "ratio": 2.1419242032993253,
+      "original_receipt": {
+        "cell": "llama1_13b@tpuv3(900,32)/joint",
+        "objective": 13526630400.0,
+        "convention": "single-predecessor graph; CHEETAH LP (V2 form) at fixed TPU-v3; post-Fix-A; LP objective (fractional)",
+        "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+        "src": "/home/miria/CORGIsolve/systems/results/row2_llms_at_tpu_v3/llama1_13b_v2_lp.json",
+        "naive_sum_Tmax": 28973017042.844437,
+        "speedup_vs_naive": 2.1419242032993253,
+        "mfu": 1.0
+      },
+      "source": "table5_original_contract/result.json"
+    },
+    "llama1_13b@compact_npu": {
+      "reference_cycles": 18141786406914.0,
+      "objective_cycles": 577878000000.0,
+      "ratio": 31.393800087412913,
+      "original_receipt": {
+        "cell_key": "llama1_13b__compact_npu__bw64_cgm16_ref64_joint",
+        "workload": "llama1_13b",
+        "template": "compact_npu",
+        "row": "joint",
+        "operating_point": {
+          "bw_gbps": 64.0,
+          "cgm_mib": 16,
+          "traffic_bw_ref": 64.0
+        },
+        "T_joint": 577878000000.0,
+        "gap_tag": "corgi-gap=1.25e-01",
+        "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+        "convention_tag": "single-pred",
+        "cell_tag": "compact_retry",
+        "iters": 429000,
+        "wall_s": 201.0,
+        "src": "build=single-pred; pareto=compact_npu; ref=64.0",
+        "T_naive": 18141786406914.0,
+        "naive_key": "naive_cache_sum_Tmax_c0 (native ref64, vetted)",
+        "speedup": 31.3938,
+        "compute_floor_best": 401122197569.0,
+        "sanity_pass": true,
+        "sanity_detail": {
+          "naive_ge_floor": true,
+          "speedup_ge_1": true
+        }
+      },
+      "source": "table5_original_contract/result.json"
+    },
+    "llama3_70b@tpuv3": {
+      "reference_cycles": 185193714301.15558,
+      "objective_cycles": 73819757808.3,
+      "ratio": 2.5087282835860663,
+      "original_receipt": {
+        "cell": "llama3_70b@tpuv3(900,32)/joint",
+        "objective": 73819757808.3,
+        "convention": "single-predecessor graph; CHEETAH LP (V2 form) at fixed TPU-v3; post-Fix-A; LP objective (fractional)",
+        "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+        "src": "/home/miria/CORGIsolve/systems/results/row2_llms_at_tpu_v3/llama3_70b_v2_lp.json",
+        "naive_sum_Tmax": 185193714301.15558,
+        "speedup_vs_naive": 2.5087282835860663,
+        "mfu": 0.9999998996433986
+      },
+      "source": "table5_original_contract/result.json"
+    },
+    "llama3_70b@compact_npu": {
+      "reference_cycles": 48882271649863.0,
+      "objective_cycles": 6384835495133.155,
+      "ratio": 7.655995473512754,
+      "original_receipt": {
+        "cell_key": "llama3_70b__compact_npu__bw64_cgm16_ref64_joint",
+        "workload": "llama3_70b",
+        "template": "compact_npu",
+        "operating_point": {
+          "bw": 64.0,
+          "cgm": 16.0,
+          "ref": 64.0
+        },
+        "row": "joint",
+        "T_joint": 6384835495133.155,
+        "T_naive": 48882271649863.0,
+        "speedup": 7.656,
+        "compute_floor_best": 2107882078208.0,
+        "solver_tag": "highs-simplex",
+        "status": "done",
+        "convention_tag": "single-pred",
+        "sanity_pass": true,
+        "src": "build=single-pred; pareto=compact_npu; ref=64; HiGHS",
+        "wall_clock_s": 60.13,
+        "highs_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "highs_iters": 84105,
+        "n_vars": 2639520,
+        "n_rows": 4249377,
+        "sanity_detail": {
+          "speedup_ge_1": true,
+          "naive_ge_floor": true,
+          "Tjoint_ge_floor": true
+        },
+        "naive_key": "naive_cache_sum_Tmax_c0 (native ref64, vetted)",
+        "cell_tag": "compact_retry_tighten"
+      },
+      "source": "table5_original_contract/result.json"
+    },
+    "deepseek_v3@tpuv3": {
+      "reference_cycles": 58769886850.22221,
+      "objective_cycles": 26488605049.2,
+      "ratio": 2.2186856099467254,
+      "original_receipt": {
+        "cell": "deepseek_v3@tpuv3(900,32)/joint",
+        "objective": 26488605049.2,
+        "convention": "single-predecessor graph; CHEETAH LP (V2 form) at fixed TPU-v3; post-Fix-A; LP objective (fractional)",
+        "solver": "HiGHS (scipy linprog highs via solve_with_highs)",
+        "src": "/home/miria/CORGIsolve/systems/results/row2_llms_at_tpu_v3/deepseek_v3_v2_lp.json",
+        "naive_sum_Tmax": 58769886850.22221,
+        "speedup_vs_naive": 2.2186856099467254,
+        "mfu": 0.9999999084436498
+      },
+      "source": "table5_original_contract/result.json"
+    },
+    "deepseek_v3@compact_npu": {
+      "reference_cycles": 23124862042276.0,
+      "objective_cycles": 2980980000000.0,
+      "ratio": 7.757469705357298,
+      "original_receipt": {
+        "cell_key": "deepseek_v3__compact_npu__bw64_cgm16_ref64_joint",
+        "workload": "deepseek_v3",
+        "template": "compact_npu",
+        "row": "joint",
+        "operating_point": {
+          "bw_gbps": 64.0,
+          "cgm_mib": 16,
+          "traffic_bw_ref": 64.0
+        },
+        "T_joint": 2980980000000.0,
+        "gap_tag": "corgi-gap=1.90e-02",
+        "solver_tag": "corgi_rhpdhg_vm_window_one_sided+presolve",
+        "convention_tag": "single-pred",
+        "cell_tag": "compact_retry",
+        "iters": 93800,
+        "wall_s": 354.5,
+        "src": "build=single-pred; pareto=compact_npu; ref=64.0",
+        "T_naive": 23124862042276.0,
+        "naive_key": "naive_cache_sum_Tmax_c0 (native ref64, vetted)",
+        "speedup": 7.7575,
+        "compute_floor_best": 982847586651.0,
+        "sanity_pass": true,
+        "sanity_detail": {
+          "naive_ge_floor": true,
+          "speedup_ge_1": true
+        }
+      },
+      "source": "table5_original_contract/result.json"
     }
   },
   "archived_tables": [
@@ -286,5 +481,6 @@
   "deleted_tables": [
     4,
     5
-  ]
+  ],
+  "fixed_hardware_status": "original_contract_restored"
 }

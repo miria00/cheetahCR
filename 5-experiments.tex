@@ -93,14 +93,16 @@ The stored precision proxies are retained, and these results do not constitute m
 
 \subsection{Search Cost and LLM Architect}
 \label{sec:breakdown}
-Cached implementation coefficients remove repeated mapper calls from the inner search.
-In the 50-trial comparison, joint tiling searches Llama-70B in $1.17$ hours and DeepSeek-V3 in $2.17$ hours where the static method is infeasible, and the OCS solves behind the retained decoders take minutes (Figure~\ref{fig:wallclock}).
-Appendix~\ref{app:solver} gives the hardware search space (\ref{app:vizier_search}) and Appendix~\ref{append::lp_perform} the LP sizes.
-These are search times, not inference speedups.
-The LLM Architect reduces mean invalid trials from $24.5\%$ to $5.9\%$ while reaching the same best observed Perf/TDP score as its full-space Vizier control (Figure~\ref{fig:llm}).
-Appendix~\ref{app:profiles} repeats the search under a throughput-oriented and a latency-oriented deployment profile.
-This tests proposal efficiency, not proof of an optimal architecture or causal validity of every dual suggestion.
-Whether the LLM outperforms a rule-based controller driven by the same duals and failure classes is not established here, so we present the Architect as a search convenience and let the formulation and its certificates carry the contribution.
+Cached coefficients avoid repeated mapper calls. The 50-trial joint-tiling searches take
+$1.17$ hours for Llama-70B and $2.17$ hours for DeepSeek-V3 where the static method is
+infeasible; retained-decoder OCS solves take minutes (Figure~\ref{fig:wallclock}).
+These are search times, not inference speedups. Appendices~\ref{app:vizier_search}
+and~\ref{append::lp_perform} give the hardware domain and LP sizes.
+The LLM Architect reduces mean invalid trials from $24.5\%$ to $5.9\%$ at the same
+best observed Perf/TDP as full-space Vizier (Figure~\ref{fig:llm});
+Appendix~\ref{app:profiles} repeats throughput- and latency-oriented profiles.
+This tests proposal efficiency, not optimality or causal validity of dual suggestions;
+an advantage over a rule-based controller using the same duals and failure classes is unestablished.
 
 
 \begin{figure}[t]

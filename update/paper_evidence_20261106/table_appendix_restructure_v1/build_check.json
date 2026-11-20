@@ -1,0 +1,40 @@
+{
+  "passed": true,
+  "build_return_code": 0,
+  "labels": {
+    "app:related_work": {
+      "number": "A",
+      "page": 24
+    },
+    "app:containment": {
+      "number": "B",
+      "page": 25
+    },
+    "app:lps": {
+      "number": "C",
+      "page": 27
+    },
+    "sec:rtl_validation": {
+      "number": "D",
+      "page": 29
+    },
+    "app:original_results": {
+      "number": "E",
+      "page": 34
+    },
+    "tab:current_features": {
+      "number": "6",
+      "page": 14
+    },
+    "tab:fixed_hw": {
+      "number": "5",
+      "page": 12
+    }
+  },
+  "forbidden_labels_absent": true,
+  "removed_minitable_absent_from_pdf": true,
+  "removed_tco_appendix_absent_from_pdf": true,
+  "unresolved_references_or_overfull_boxes": [],
+  "pages": 88,
+  "pdf_sha256": "9ee210c81b142815d734f881e95c88d3fe1d7aca4fefa81fe42beaa9b5444bb4"
+}

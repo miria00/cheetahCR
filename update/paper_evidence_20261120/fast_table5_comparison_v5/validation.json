@@ -1,0 +1,21 @@
+{
+  "date": "2026-11-20",
+  "passed": true,
+  "build": "latexmk -pdf -interaction=nonstopmode -halt-on-error neurips_2026.tex",
+  "page_count": 73,
+  "table_page": 10,
+  "visual_review_passed": true,
+  "reference_area_display": "unreported dash",
+  "removed_FAST_area_note": true,
+  "perf_per_tdp_row_absent": true,
+  "no_overfull_boxes": true,
+  "no_undefined_references": true,
+  "existing_warnings": "Font substitution and float/underfull warnings remain.",
+  "new_numerical_experiments": false,
+  "incorporated_upstream_commit": "ff00ba47c69ade0e24cb1fbbef7d0be5e54f65e2",
+  "paper_files_sha256": {
+    "update/blueprint_architecture_comparison.tex": "daf89e6d835c52ef18da5c5b742ddaf9397f523137e99ae18f8b87bf375e1596",
+    "neurips_2026.tex": "3a8b61cf8bef208f969492e134bcc50874a541a793e65b109fcf56c3b78cc4d9",
+    "neurips_2026.pdf": "a4d72bff5ce1d41b622f702d4d1035b5e9c8646a1795d860cfd31cc5361e1606"
+  }
+}

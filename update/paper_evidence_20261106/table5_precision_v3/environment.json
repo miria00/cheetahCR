@@ -1,0 +1,8 @@
+{
+  "python": "3.10.12 (main, Aug 31 2026, 10:18:17) [GCC 11.4.0]",
+  "platform": "Linux-6.8.0-138-generic-x86_64-with-glibc2.35",
+  "numpy": "1.26.4",
+  "scipy": "1.15.3",
+  "solver": "HiGHS 1.15.1",
+  "GPU_calls": 0
+}

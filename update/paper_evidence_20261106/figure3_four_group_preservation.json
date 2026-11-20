@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "destination": "/media/miria/Elements/cheetah_paper_four_group_pies_20261107T064805Z",
+  "files": 23,
+  "bytes": 12506696,
+  "manifest_sha256": "022244cddd5f0665c2b7a3ee52aa10b05f97691ce239ee00483899795857707f",
+  "all_copied_file_contents_read_back": true,
+  "scope": "Paper revision overlay merging the two sequential DeepSeek scheduling increments into one slice. Four groups in every pie; all Llama data, final performance and Figure 2 unchanged. Parent controls and earlier producer evidence remain in authenticated prior overlays; no new experiment or complete-project copy.",
+  "parent": {
+    "destination": "/media/miria/Elements/cheetah_paper_memory_pies_20261107T064350Z",
+    "manifest_sha256": "ed40aa3ed4fcf9cad874cf6ad857291aa36e4d9e80febf26fa202a508b24dcd0"
+  }
+}

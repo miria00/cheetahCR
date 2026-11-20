@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "reviewed_pages": [
+    13,
+    14,
+    22
+  ],
+  "observations": [
+    "Figure 3 artwork and pie order preserved.",
+    "Main feature-coverage table retained as Table 6; lower mini-table absent.",
+    "Appendix contents shows requested A-E order and following appendices.",
+    "No observed clipped or overlapping content."
+  ]
+}

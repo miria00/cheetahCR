@@ -1,0 +1,53 @@
+% FAST Table 5 metrics, with workload-specific row prefixes changed to Llama-70B.
+% Data and qualification checks: paper_evidence_20261120/fast_table5_comparison_v5.
+\begingroup
+\setlength{\intextsep}{1pt}
+\begin{table}[H]
+\centering
+\captionsetup{font=footnotesize}
+\caption{Recovered Llama-3 70B decoder versus modeled TPU-v3, using FAST's
+Table~5 metrics~\citep{zhang_fast}. Same task: 32 requests, 4,096 prompt tokens
+and 511 decode forwards; unchanged Baseline 2.}
+\label{tab:decoder_blueprint_comparison}
+\begingroup
+\footnotesize
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{0.90}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lrrr@{}}
+\toprule
+Field & Modeled TPU-v3 & CHEETAH N7 & CHEETAH N5 \\
+\midrule
+Normalized TDP & --- & $1.056\times$ & $1.056\times$ \\
+Normalized Area & --- & $0.997\times$ & $0.997\times$ \\
+Peak Compute & 131.072 TFLOPS & 262.144 TFLOPS & 262.144 TFLOPS \\
+Peak Bandwidth & 900 GB/s & 11,088 GB/s & 11,088 GB/s \\
+Batch Size & 32 & 32 & 32 \\
+Num PEs & $2\times2$ & 512 & 512 \\
+PE Systolic Array Dims & $128\times128$ & $8\times32$ & $8\times32$ \\
+PE Vector Width & 512 & 4,096 shared lanes & 4,096 shared lanes \\
+PE L1 Buffer Size & $2\times64$ KiB & --- & --- \\
+PE L1 Buffer Config & Shared & --- & --- \\
+PE L2 Buffer Config & Disabled & --- & --- \\
+Global Buffer Size & $2\times16$ MiB & 4 MiB staging & 4 MiB staging \\
+\midrule
+Compute Utilization & 0.0309 & 0.2770 & 0.2770 \\
+Pre-fusion Mem Stall \% & --- & --- & --- \\
+Fusion Efficiency & --- & --- & --- \\
+OpInt Ridgepoint & 145.636 & 23.642 & 23.642 \\
+Fused Model OpInt & --- & 24.732 & 24.732 \\
+Llama-70B Performance (QPS) & 0.0527 & 0.9449 & 0.9449 \\
+Llama-70B Inference Latency & 607.283 s & 33.865 s & 33.865 s \\
+\bottomrule
+\end{tabular*}
+\endgroup
+\par\vspace{3pt}
+\parbox{\linewidth}{\scriptsize
+N7/N5 are unqualified TSMC port labels; no scaling is applied. CHEETAH TDP/area
+proxies normalize to 345 W/600 mm$^2$; package peak power is unqualified.
+Peaks use 1 GHz and two operations/MAC; delivered DRAM bandwidth is 8,870 GB/s.
+Total SRAM is 9.625 MiB, including 4 MiB staging; vector lanes are chip-shared.
+OpInt is useful operations/charged DRAM bytes; no new fusion is claimed.
+QPS is $32/T_{\rm decode}$; latency excludes prefill and keeps the original
+precision/traffic boundary. Dashes mean unreported, not zero.}
+\end{table}
+\endgroup

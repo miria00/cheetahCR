@@ -1,0 +1,25 @@
+{
+  "table_number": 5,
+  "pdf_page": 12,
+  "pages": 88,
+  "cell_count": 20,
+  "workload_count": 5,
+  "undefined_references": false,
+  "overfull_boxes": false,
+  "visual_check": "page 12 inspected; four columns and five rows visible without clipping",
+  "unchanged_artwork": {
+    "fig3/speedup_final_v6.png": "0e90c08b5481e1622351f8a086a07a7bdd160c2f8982b0e68ee434037330e496",
+    "fig3/feature_contributions_wo24.pdf": "a0dd1666ba00d1a9e0332d52b6811cb88759e161a3c1c45d90569d76492c00f6",
+    "fig3/feature_contributions_wo24.png": "7a920e5d889a1cb3c2dd276f727dd7db65b8b5fba27cde16839e06668b40e501",
+    "fig3/feature_contributions_wo24.svg": "d08d50153b60914f860b60135f5f41aaba5516e6bdfe1713762eeb48270f4f2a"
+  },
+  "source_sha256": {
+    "neurips_2026.pdf": "4b4ae3ab962d4ad1334cd54b33d4d03eb3babdb63a83921624ce7e8d851d7d7a",
+    "5-experiments.tex": "cf884b55139431c982f457d2870711d0cba3873c7a8c0fc1a716840c28e9b264",
+    "update/wo24_fixed_hardware.tex": "3f18ce227ccaa42c5667c8dfa24834cb67967cb0ca241045788a6ec1c9c48b38",
+    "update/figure3_attribution_method.tex": "297224c81b148000879ba0eb3751414be47edb8ffc58892034da6a62dc113c86",
+    "update/generate_current_tables.py": "4d6699517c544f5abc23a0b9dcd6518d03600ceb0c039fff1b003c93735a3acd",
+    "update/generate_table5_precision.py": "b1af2dbcb53275d41e2debf683f6964865d842179d4383ce47a2f562a9c5e399",
+    "update/paper_evidence_20261106/values.json": "61c1d94c75d9ec0944846ff101cde9b7b5f4eda50a36fca4c7824ed0b1ccb4a3"
+  }
+}

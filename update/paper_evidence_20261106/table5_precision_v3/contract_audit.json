@@ -1,0 +1,206 @@
+{
+  "passed": true,
+  "cells": [
+    {
+      "cell": "deepseek_v3__compact_npu__16bit",
+      "passed": true,
+      "source_ops": 903,
+      "selected_topology_column": 0,
+      "operand_bits": 16,
+      "maximum_tile_workspace_bytes": 2097152.0,
+      "baseline_cycles": 11558976735381.875,
+      "native_precision_validation": false
+    },
+    {
+      "cell": "deepseek_v3__compact_npu__8bit",
+      "passed": true,
+      "source_ops": 903,
+      "selected_topology_column": 0,
+      "operand_bits": 8,
+      "maximum_tile_workspace_bytes": 1048576.0,
+      "baseline_cycles": 7042931811695.9375,
+      "native_precision_validation": false
+    },
+    {
+      "cell": "deepseek_v3__tpuv3__16bit",
+      "passed": true,
+      "source_ops": 903,
+      "selected_topology_column": 0,
+      "operand_bits": 16,
+      "maximum_tile_workspace_bytes": 2097152.0,
+      "baseline_cycles": 1905725388707.0,
+      "native_precision_validation": false
+    },
+    {
+      "cell": "deepseek_v3__tpuv3__8bit",
+      "passed": true,
+      "source_ops": 903,
+      "selected_topology_column": 0,
+      "operand_bits": 8,
+      "maximum_tile_workspace_bytes": 1048576.0,
+      "baseline_cycles": 1584584416356.0,
+      "native_precision_validation": false
+    },
+    {
+      "cell": "efficientnet_b7__compact_npu__16bit",
+      "passed": true,
+      "source_ops": 273,
+      "selected_topology_column": 0,
+      "operand_bits": 16,
+      "maximum_tile_workspace_bytes": 2004608.0,
+      "baseline_cycles": 217963918746.5,
+      "native_precision_validation": false
+    },
+    {
+      "cell": "efficientnet_b7__compact_npu__8bit",
+      "passed": true,
+      "source_ops": 273,
+      "selected_topology_column": 0,
+      "operand_bits": 8,
+      "maximum_tile_workspace_bytes": 1002304.0,
+      "baseline_cycles": 176357684140.25,
+      "native_precision_validation": false
+    },
+    {
+      "cell": "efficientnet_b7__tpuv3__16bit",
+      "passed": true,
+      "source_ops": 273,
+      "selected_topology_column": 0,
+      "operand_bits": 16,
+      "maximum_tile_workspace_bytes": 2004608.0,
+      "baseline_cycles": 73293055911.0,
+      "native_precision_validation": false
+    },
+    {
+      "cell": "efficientnet_b7__tpuv3__8bit",
+      "passed": true,
+      "source_ops": 273,
+      "selected_topology_column": 0,
+      "operand_bits": 8,
+      "maximum_tile_workspace_bytes": 1002304.0,
+      "baseline_cycles": 70334390339.0,
+      "native_precision_validation": false
+    },
+    {
+      "cell": "llama1_13b__compact_npu__16bit",
+      "passed": true,
+      "source_ops": 360,
+      "selected_topology_column": 0,
+      "operand_bits": 16,
+      "maximum_tile_workspace_bytes": 1671168.0,
+      "baseline_cycles": 4487052657362.5,
+      "native_precision_validation": false
+    },
+    {
+      "cell": "llama1_13b__compact_npu__8bit",
+      "passed": true,
+      "source_ops": 360,
+      "selected_topology_column": 0,
+      "operand_bits": 8,
+      "maximum_tile_workspace_bytes": 835584.0,
+      "baseline_cycles": 2794626417081.25,
+      "native_precision_validation": false
+    },
+    {
+      "cell": "llama1_13b__tpuv3__16bit",
+      "passed": true,
+      "source_ops": 360,
+      "selected_topology_column": 0,
+      "operand_bits": 16,
+      "maximum_tile_workspace_bytes": 1671168.0,
+      "baseline_cycles": 791800709240.0,
+      "native_precision_validation": false
+    },
+    {
+      "cell": "llama1_13b__tpuv3__8bit",
+      "passed": true,
+      "source_ops": 360,
+      "selected_topology_column": 0,
+      "operand_bits": 8,
+      "maximum_tile_workspace_bytes": 835584.0,
+      "baseline_cycles": 671450398820.0,
+      "native_precision_validation": false
+    },
+    {
+      "cell": "llama3_70b__compact_npu__16bit",
+      "passed": true,
+      "source_ops": 720,
+      "selected_topology_column": 0,
+      "operand_bits": 16,
+      "maximum_tile_workspace_bytes": 1835008.0,
+      "baseline_cycles": 17497918205025.0,
+      "native_precision_validation": false
+    },
+    {
+      "cell": "llama3_70b__compact_npu__8bit",
+      "passed": true,
+      "source_ops": 720,
+      "selected_topology_column": 0,
+      "operand_bits": 8,
+      "maximum_tile_workspace_bytes": 917504.0,
+      "baseline_cycles": 10755618993712.5,
+      "native_precision_validation": false
+    },
+    {
+      "cell": "llama3_70b__tpuv3__16bit",
+      "passed": true,
+      "source_ops": 720,
+      "selected_topology_column": 0,
+      "operand_bits": 16,
+      "maximum_tile_workspace_bytes": 1835008.0,
+      "baseline_cycles": 2965564667920.0,
+      "native_precision_validation": false
+    },
+    {
+      "cell": "llama3_70b__tpuv3__8bit",
+      "passed": true,
+      "source_ops": 720,
+      "selected_topology_column": 0,
+      "operand_bits": 8,
+      "maximum_tile_workspace_bytes": 917504.0,
+      "baseline_cycles": 2486112279560.0,
+      "native_precision_validation": false
+    },
+    {
+      "cell": "sd15_unet__compact_npu__16bit",
+      "passed": true,
+      "source_ops": 346,
+      "selected_topology_column": 0,
+      "operand_bits": 16,
+      "maximum_tile_workspace_bytes": 2017280.0,
+      "baseline_cycles": 49336358210.6875,
+      "native_precision_validation": false
+    },
+    {
+      "cell": "sd15_unet__compact_npu__8bit",
+      "passed": true,
+      "source_ops": 346,
+      "selected_topology_column": 0,
+      "operand_bits": 8,
+      "maximum_tile_workspace_bytes": 1008640.0,
+      "baseline_cycles": 34403659383.34375,
+      "native_precision_validation": false
+    },
+    {
+      "cell": "sd15_unet__tpuv3__16bit",
+      "passed": true,
+      "source_ops": 346,
+      "selected_topology_column": 0,
+      "operand_bits": 16,
+      "maximum_tile_workspace_bytes": 2017280.0,
+      "baseline_cycles": 11859241889.0,
+      "native_precision_validation": false
+    },
+    {
+      "cell": "sd15_unet__tpuv3__8bit",
+      "passed": true,
+      "source_ops": 346,
+      "selected_topology_column": 0,
+      "operand_bits": 8,
+      "maximum_tile_workspace_bytes": 1008640.0,
+      "baseline_cycles": 10797361083.5,
+      "native_precision_validation": false
+    }
+  ],
+  "scope": "Checks fixed topology and budgets, same-width costs, source identities, and actual saved LP compute rows; not a native dtype or implementation certificate."
+}

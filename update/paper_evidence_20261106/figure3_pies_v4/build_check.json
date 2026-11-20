@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "page": 15,
+  "figure_and_twelve_workload_table_share_page": true,
+  "current_figure2_unchanged": true,
+  "exact_cumulative_sums": true,
+  "displayed_percentages_sum_to_100": true,
+  "pdf_sha256": "0dc75ba078a5a788248e38f549f943b547006ed30c0326942eba598fd5087f25",
+  "plot_input_sha256": "6744796536526428c30618fb9634b800a14d5ba091c8525f9ddd6de72a0709b4",
+  "no_overfull_boxes_or_unresolved_references": true,
+  "pdfinfo": "Title:           \nSubject:         \nKeywords:        \nAuthor:          \nCreator:         LaTeX with hyperref\nProducer:        pdfTeX-1.40.22\nCreationDate:    Fri Nov  6 21:39:54 2026 PST\nModDate:         Fri Nov  6 21:39:54 2026 PST\nCustom Metadata: yes\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           93\nEncrypted:       no\nPage size:       612 x 792 pts (letter)\nPage rot:        0\nFile size:       10270229 bytes\nOptimized:       no\nPDF version:     1.5\n",
+  "source_scope": "Fresh exact finite-menu and descriptor cost controls using inherited source contracts. Not new OCS search, full-model execution, lifetime admission or physical sign-off.",
+  "new_optimizer_calls": 0
+}

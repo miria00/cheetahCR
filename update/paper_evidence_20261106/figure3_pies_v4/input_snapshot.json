@@ -1,0 +1,8 @@
+{
+  "unchanged_figure2": {
+    "1-introduction.tex": "48c7db6383ee6f28d7012c0fd3fa0a7df60f99405091e7643a121f6196d5257a",
+    "fig3/speedup_final_v6.png": "0e90c08b5481e1622351f8a086a07a7bdd160c2f8982b0e68ee434037330e496"
+  },
+  "figure2_tex_block": "\\begin{figure}[H]\n    \\centering\n\\includegraphics[width=1.0\\linewidth]{fig3/speedup_final_v6.png}\n\\caption{Speedup over the modeled naive TPU-v3 baseline for (a) EfficientNet forward execution and the Stable Diffusion 1.5 UNet denoiser, (b) LLM prefill, and (c) LLM decode. CHEETAH achieves up to $11.85\\times$, $24.20\\times$, and $17.93\\times$ speedup in the three panels, respectively. Red crosses indicate static infeasibility for SD1.5 UNet, Llama-3 70B, and DeepSeek-V3. See Section~\\ref{sec:experiments} for full analysis and wall-clock time breakdowns.}\n\\label{fig:speedup}\n\\end{figure}",
+  "note": "The user working copy already references speedup_final_v6.png. Preserve this current figure and introduction. The old v2 whole-introduction hash no longer describes the user working copy; the rejected stale check is retained."
+}

@@ -1,0 +1,10 @@
+{
+  "completed_utc": "2026-11-07T07:26:43.328633+00:00",
+  "destination": "/media/miria/Elements/cheetah_table5_precision_20261107_v1",
+  "files": 365,
+  "bytes": 891054062,
+  "all_content_readbacks_pass": true,
+  "manifest_sha256": "4be6074d058b914d80f78f6923aee679d294ac0543c8dcb1eb0eb3d04ac0ce29",
+  "scope": "Append-only Table 5 final twenty-cell LP rerun, two unadopted preparation attempts, saved matrices/witnesses, frozen graph/tile inputs, checkers, paper before/after and result index; no copy or new admission of historical model checkpoints.",
+  "numerical_claim": "20 final optimal LP points with independently checked numerical witnesses; no exact rational, integer execution, native dtype or new silicon claim"
+}

@@ -1,0 +1,102 @@
+[
+  {
+    "cell": "efficientnet_b7__tpuv3__8bit",
+    "returncode": 0,
+    "seconds": 3.273348808288574
+  },
+  {
+    "cell": "efficientnet_b7__tpuv3__16bit",
+    "returncode": 0,
+    "seconds": 3.32537579536438
+  },
+  {
+    "cell": "efficientnet_b7__compact_npu__8bit",
+    "returncode": 0,
+    "seconds": 3.421649694442749
+  },
+  {
+    "cell": "efficientnet_b7__compact_npu__16bit",
+    "returncode": 0,
+    "seconds": 3.423225164413452
+  },
+  {
+    "cell": "sd15_unet__tpuv3__8bit",
+    "returncode": 0,
+    "seconds": 7.732232570648193
+  },
+  {
+    "cell": "sd15_unet__tpuv3__16bit",
+    "returncode": 0,
+    "seconds": 8.136673212051392
+  },
+  {
+    "cell": "sd15_unet__compact_npu__8bit",
+    "returncode": 0,
+    "seconds": 7.980130195617676
+  },
+  {
+    "cell": "sd15_unet__compact_npu__16bit",
+    "returncode": 0,
+    "seconds": 7.68606162071228
+  },
+  {
+    "cell": "llama1_13b__tpuv3__8bit",
+    "returncode": 0,
+    "seconds": 5.574990749359131
+  },
+  {
+    "cell": "llama1_13b__tpuv3__16bit",
+    "returncode": 0,
+    "seconds": 5.980902671813965
+  },
+  {
+    "cell": "llama1_13b__compact_npu__8bit",
+    "returncode": 0,
+    "seconds": 5.925196886062622
+  },
+  {
+    "cell": "llama1_13b__compact_npu__16bit",
+    "returncode": 0,
+    "seconds": 8.937678575515747
+  },
+  {
+    "cell": "llama3_70b__tpuv3__8bit",
+    "returncode": 0,
+    "seconds": 25.420783519744873
+  },
+  {
+    "cell": "llama3_70b__tpuv3__16bit",
+    "returncode": 0,
+    "seconds": 27.080132007598877
+  },
+  {
+    "cell": "llama3_70b__compact_npu__8bit",
+    "returncode": 0,
+    "seconds": 38.67057824134827
+  },
+  {
+    "cell": "llama3_70b__compact_npu__16bit",
+    "returncode": 0,
+    "seconds": 44.02027916908264
+  },
+  {
+    "cell": "deepseek_v3__tpuv3__8bit",
+    "returncode": 0,
+    "seconds": 41.91464185714722
+  },
+  {
+    "cell": "deepseek_v3__tpuv3__16bit",
+    "returncode": 0,
+    "seconds": 42.521371603012085
+  },
+  {
+    "cell": "deepseek_v3__compact_npu__8bit",
+    "returncode": 0,
+    "seconds": 42.46423816680908
+  },
+  {
+    "cell": "deepseek_v3__compact_npu__16bit",
+    "returncode": 0,
+    "seconds": 46.03157138824463
+  }
+]

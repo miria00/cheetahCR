@@ -120,59 +120,13 @@ claim follows from the final column.
 \end{table}
 ''')
 
-# Historical fixed-hardware objective comparisons: only supported cells.
-R=Path('/home/miria/CHEETAH/rebuttal/grid_completion')
-en=read_json(R/'effnet_cells.json'); anchors=read_json(R/'highs_anchors.json')['cells']
-hi=read_json(R/'highs_highbw_cells.json'); pd=read_json(R/'pdlp_cells.json')
-fixed={}
-for c in en['cells']: fixed[(c['workload'],'tpuv3')]=dict(ratio=c['T_naive']/c['T_joint'],source='effnet_cells.json',cell=c['cell_key'],scope=c['convention_tag'])
-for c in anchors:
-    if c['cell'].endswith('@tpuv3(900,32)/joint'):
-        fixed[(c['cell'].split('@')[0],'tpuv3')]=dict(ratio=c['naive_sum_Tmax']/c['objective'],source='highs_anchors.json',cell=c['cell'],scope=c['convention'])
-for cs,fn in [(pd,'pdlp_cells.json'),(hi,'highs_highbw_cells.json')]:
-    for c in cs:
-        cell=c.get('cell_key','')
-        if c.get('row')!='joint':continue
-        hw=c.get('template');key=c.get('workload')
-        if hw=='compact_npu' and '__bw64_cgm16_ref64_joint' in cell or hw=='tpuv3' and '__bw900_cgm32_ref900_joint' in cell:
-            # Preserve the original LLM TPU anchors' own denominator convention.
-            if hw=='tpuv3' and key.startswith(('llama','deepseek')):continue
-            fixed[(key,hw)]=dict(ratio=c['T_naive']/c['T_joint'],source=fn,cell=cell,scope=c.get('convention_tag'),gap=c.get('gap_tag'))
-fixedrows=[]
-for key,label in names:
-    k='sd15_unet' if key=='unet' else key
-    vals=[]
-    for hw in ['tpuv3','compact_npu']:
-        v=fixed.get((k,hw));vals.append(f"${v['ratio']:.3f}\\times$" if v else 'NR')
-    fixedrows.append(label+' & '+' & '.join(vals)+r' \\')
-write('wo24_fixed_hardware.tex',r'''
-\begin{table}[htbp]
-\centering\small
-\caption{Fixed-hardware software-search comparisons for all twelve model
-families. These are \emph{historical LP-objective ratios} against streaming
-on the same modeled chip, under each stored cell's original convention;
-they are not new decode measurements or the co-design ratios of
-Table~\ref{tab:current_phase_speedups}. NR: no supported stored result.}
-\label{tab:fixed_hw}
-\begin{tabular}{@{}lrr@{}}
-\toprule
-Workload & Modeled TPU-v3 & Compact NPU \\
-\midrule
-'''+ '\n'.join(fixedrows)+r'''
-\bottomrule
-\end{tabular}
-\par\smallskip\begin{minipage}{\linewidth}\footnotesize
-TPU-v3: 900~GB/s, 32~MiB; compact NPU: 64~GB/s, 16~MiB, 32,768 historical
-INT8 MAC units at 1~GHz. Ratios are $T_{\rm streaming}/T_{\rm joint\,LP}$,
-not integral execution certificates. Compact-NPU B7/13B/DeepSeek use stored
-iterative objectives (reported relative gap tags 0.020/0.125/0.019);
-other shown cells use stored HiGHS optima. EfficientNet TPU cells retain the
-historical single-predecessor graph/workspace approximation. No compact-NPU
-B1--B6/65B result or current full-decode fixed-hardware replay is supplied;
-no cross-convention geometric mean is formed.
-\end{minipage}
-\end{table}
-''')
+# Restore original contracts; the narrower precision rerun is a diagnostic.
+import runpy
+fixed_data=read_json(E/'table5_original_contract/result.json')
+fixed_renderer=runpy.run_path(str(U/'generate_table5_original.py'))
+write('wo24_fixed_hardware.tex',fixed_renderer['render'](fixed_data))
+fixed={(r['workload'],h):dict(c,source='table5_original_contract/result.json')
+       for r in fixed_data['rows'] for h,c in r['cells'].items()}
 
 dataset=read_json('/tmp/cheetah_wo24_20261106_v1/authoritative_dataset_v1/result.json')
 rtl_receipt=read_json('/tmp/cheetah_wo24_20261106_v1/postseal_actual_v1/result.json')
@@ -216,26 +170,6 @@ Scheduling / concurrency & Cross-N prefetch and two contexts selectable; arbitra
 Serving / phase choice & Decode-only; original request order and starting KV fixed & Same restriction \\
 \bottomrule
 \end{tabularx}
-\medskip
-\begin{tabular}{@{}llrr@{}}
-\toprule
-Workload & Disabled choice (other choices retained) & Time saved, s & Factor \\
-\midrule
-DeepSeek & Rounded producer-layout storage fusion & 1.348604 & $1.021076\times$ \\
-DeepSeek & New delivery / concurrency recipes & 4.210287 & $1.065797\times$ \\
-DeepSeek & Second context; prefetch still available & 2.870741 & $1.044863\times$ \\
-Llama-1 13B & Six new full-K mappings & 0.059881 & $1.005735\times$ \\
-\bottomrule
-\end{tabular}
-\par\smallskip\begin{minipage}{\linewidth}\footnotesize
-Same-chip controls reoptimize the declared feature-off menu. Saved time is
-$T_{\rm off}-T_{\rm on}$ and factor is $T_{\rm off}/T_{\rm on}$, with
-$T_{\rm on}=63.988923$~s (DeepSeek) or $10.441348$~s (13B).
-The second-context control is part of the delivery family, so these gains
-must not be added. Fixed, unavailable and unisolated features receive no
-invented individual speedup credit. Compatible alternatives remain selectable;
-unselected alternatives are not declared absent.
-\end{minipage}
 \end{table}
 
 \paragraph{Hardware--software interaction.}

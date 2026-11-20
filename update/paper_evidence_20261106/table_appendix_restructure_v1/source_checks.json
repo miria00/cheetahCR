@@ -1,0 +1,61 @@
+{
+  "passed": true,
+  "active_tex_files": [
+    "neurips_2026.tex",
+    "1-introduction.tex",
+    "2-related-work.tex",
+    "prelim.tex",
+    "update/comparison_matrix.tex",
+    "3-methods.tex",
+    "update/solver_vm.tex",
+    "5-experiments.tex",
+    "update/wo24_fixed_hardware.tex",
+    "update/figure3_attribution_method.tex",
+    "update/wo24_features.tex",
+    "update/decode_decomp.tex",
+    "6-conclusion.tex",
+    "related_work_appendix.tex",
+    "4-theory.tex",
+    "lp_app.tex",
+    "update/rtl_validation.tex",
+    "update/wo24_rtl.tex",
+    "update/discussion.tex",
+    "details_audits.tex",
+    "update/deficit_sensitivity.tex",
+    "solver_app.tex",
+    "profiles_app.tex",
+    "tiling_app.tex",
+    "blue.tex",
+    "limitations.tex",
+    "shape_aggregation.tex",
+    "master_v3_lp.tex",
+    "update/native_provenance.tex",
+    "update/native_solve_workflow.tex",
+    "update/expanded_lp_certificate.tex",
+    "update/native_lp_certificate.tex",
+    "coeff_provenance.tex"
+  ],
+  "removed_label_references_absent": [
+    "tab:current_phase_speedups",
+    "tab:decode_efficiency",
+    "tab:uniform_llama_controls",
+    "tab:figure3_breakdown",
+    "tab:native_features",
+    "sec:tco"
+  ],
+  "figure_assets_unchanged": {
+    "fig3/speedup_final_v6.png": "0e90c08b5481e1622351f8a086a07a7bdd160c2f8982b0e68ee434037330e496",
+    "fig3/feature_contributions_wo24.pdf": "a0dd1666ba00d1a9e0332d52b6811cb88759e161a3c1c45d90569d76492c00f6"
+  },
+  "changed_files": [
+    "1-introduction.tex",
+    "5-experiments.tex",
+    "neurips_2026.tex",
+    "update/wo24_fixed_hardware.tex",
+    "update/figure3_attribution_method.tex",
+    "update/wo24_features.tex",
+    "update/decode_decomp.tex",
+    "update/generate_current_tables.py"
+  ],
+  "table_generator_syntax": "pass"
+}

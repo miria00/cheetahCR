@@ -1,0 +1,28 @@
+{
+  "sources": {
+    "deepseek_metrics.json": {
+      "sha256": "061ed9d7c36de5cbce740a5de4a55688faeb565ab8ff371c34298d0ff1747e30",
+      "original_path": "/tmp/cheetah_wo23_20261106_v1/deepseek_controls_metrics_v1/result.json"
+    },
+    "deepseek_finite.json": {
+      "sha256": "882bed846c546f25aa6dd870b6672ce819bf4e137603eb0d0935eca63a255726",
+      "original_path": "/tmp/cheetah_wo23_20261106_v1/deepseek_final6_exact_certificate_v1/result.json"
+    },
+    "deepseek_metrics_review.json": {
+      "sha256": "4ca00fc9d279108071194890ee89100444ef6c207b775a5dd0be3e231c13fd6a",
+      "original_path": "/tmp/cheetah_wo23_20261106_v1/deepseek_metrics_independent_v1/result.json"
+    },
+    "parent_controls.json": {
+      "sha256": "8c783a318bfd6b03b7de49693fbd9ebb91e85b36a9102d884dd6fc4e1ff31324",
+      "original_path": "/home/miria/CORGIsolve/cheetahCR/update/paper_evidence_20261106/figure3_pies_v5/cumulative_controls.json"
+    },
+    "wo23_composition.json": {
+      "sha256": "15fafe2d3a4cb91006b35a55e0ce92cd715d4bcbe0cc1567e97af8a34ba99c69",
+      "original_path": "/tmp/cheetah_wo23_20261106_v1/final_composition_v2/result.json"
+    }
+  },
+  "unchanged_figure2": {
+    "1-introduction.tex": "48c7db6383ee6f28d7012c0fd3fa0a7df60f99405091e7643a121f6196d5257a",
+    "fig3/speedup_final_v6.png": "0e90c08b5481e1622351f8a086a07a7bdd160c2f8982b0e68ee434037330e496"
+  }
+}

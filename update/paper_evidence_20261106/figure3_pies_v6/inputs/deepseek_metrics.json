@@ -1,0 +1,179 @@
+{
+  "DRAM_local_traffic_scope": "Selected kernels and named expert gather/down-input/A-packing copies are complete in their separate ledgers. They exclude entry decoder internal DRAM/local traffic, fixed boundary/append/initial packing paths; these have paid latency but are not summed into a purported complete DRAM/local total.",
+  "HOST_payload_scope": "Complete paid HOST payload in this decoder matrix-service model; no aggregate HOST busy/overlap claim.",
+  "HW_SW_cells_ns": {
+    "H0_S0": "114392152593",
+    "H0_S1": "457470204541599/4939",
+    "H1_S0": "88840822077",
+    "H1_S1": "3136267555187/45"
+  },
+  "bindings": {
+    "/home/miria/CORGIsolve/systems/cheetah_joint/tools/wo13_deepseek_hardware_replay.py": "d1db04e47b5f8d13df7046a5e49ee7b756ad84edfc08cba80dacf39ecae24bdc",
+    "/home/miria/CORGIsolve/systems/cheetah_joint/tools/wo23_deepseek_controls_metrics.py": "0b96a8d6ba6249a1a0dd905ef7901298c328223e0be5405895e910ff11129fc3",
+    "/home/miria/CORGIsolve/systems/cheetah_joint/wo22_deepseek_entry.py": "4c9df20a74b856bc3c0468bc34a83d87acf636ed5d30e1f4d5a11c7e41cc1388",
+    "/home/miria/CORGIsolve/systems/cheetah_joint/wo22_deepseek_fixed.py": "a62dd92cf1921804e957a658cd062bfebe24129ad06562c9ae4999c587db6774",
+    "/home/miria/CORGIsolve/systems/cheetah_joint/wo22_exact_boundary.py": "bec495e014cf4c0ebd9935a9b96d58f6464105ca8ee7df3dffc5f731b3e1dfae",
+    "/home/miria/CORGIsolve/systems/cheetah_joint/wo22_packed_execution_n32_v2.py": "976fa06b863051cf5a7c9c2d07bdc1af9a05e3f6a3ca7ed241c5395f5ac06e56",
+    "/home/miria/CORGIsolve/systems/cheetah_joint/wo23_attention_dynamic_replay_v2.py": "8e65598b43bf68fcdb0b1b98df7bb71e6e932f9518935aaec5010f59f717ea8d",
+    "/home/miria/CORGIsolve/systems/cheetah_joint/wo23_broadcast_kernel_v2.py": "1a8c2584edfb23bfd71f2bfb1f6b6f4a2678c3616bd12bc8f551681ee5242bcd",
+    "/home/miria/CORGIsolve/systems/cheetah_joint/wo23_expert_actions.py": "502c33ac069256c051175675ad705dacee847894a4a6090645171dc189b2ba6f",
+    "/home/miria/CORGIsolve/systems/cheetah_joint/wo23_expert_dynamic_v2.py": "32b0405b1fa6381bc28c98d415b3cf35f9816de993dedc6f781d5675433ee8f8",
+    "/tmp/cheetah_serving120_20261103/deepseek_serial_candidate_v1/source/input/profiles.json": "caee5c3230f2cde3f3bd63213a802e5b27f7e2337c7808ffea198d7adc27b335",
+    "/tmp/cheetah_wo13_20261104_v1/deepseek/prepared_v2/result.json": "bd147c394e575cda9b4a960be3ab1e999ced73e660af09626bc768244e7c0ef2",
+    "/tmp/cheetah_wo13_20261104_v1/deepseek/prepared_v2/unchanged_unweighted_profiles.json": "55eacf436265809a57107911f3838f4720f392c86dd8a4faffa61c81bee5354f",
+    "/tmp/cheetah_wo13_20261104_v1/deepseek/prepared_v2/unweighted_DMA_histogram.json": "3016feb4286dc57d42be5c5e206ad486fa37c76214f4a77de6179813333b22a8",
+    "/tmp/cheetah_wo13_20261104_v1/deepseek/prepared_v2/weighted_group_histograms.json": "abba8b709716688013d690cda23381f880e3f13d97d960656a73cfd5a1551e25",
+    "/tmp/cheetah_wo13_20261104_v1/deepseek/prepared_v2/weighted_input_owner_extent.json": "b47726e8762bdfc3d5f45e07a81490572dc9526e38e0096a85df5dfb53a5c348",
+    "/tmp/cheetah_wo20_20261105_v1/fusion_admission_controls_v1/result.json": "0aa0807fed2b934c64a6d52746eb1714482089f1cab66e15cdc79467abb7e38f",
+    "/tmp/cheetah_wo22_20261105_v1/deepseek_execution/entry_v2/result.json": "751df5894ea3fd5877f4100399c94606a4e54a54197ba6d7a02fe9564b09a3fb",
+    "/tmp/cheetah_wo23_20261106_v1/attention_lane_v1/N16_format_join_v1/result.json": "73c4414d8be2b98ad7bde8978d2c8d32cb5b09c3dd4d2b87ffbf3642a37a62df",
+    "/tmp/cheetah_wo23_20261106_v1/deepseek_candidate_screen_v1/old_bank_control/manifest.json": "c0b1ce6aca4b4b9d26bed2339bc8b8bf52251f5cbec7744d5ea9c1046b39ccb3",
+    "/tmp/cheetah_wo23_20261106_v1/deepseek_candidate_screen_v1/same_resource_smallbank/manifest.json": "cf999e75615bdc1bac022e5479bb0c2d8436213671821b2aa76fdad2ff1fc682",
+    "/tmp/cheetah_wo23_20261106_v1/deepseek_final6_exact_certificate_v1/result.json": "882bed846c546f25aa6dd870b6672ce819bf4e137603eb0d0935eca63a255726",
+    "/tmp/cheetah_wo23_20261106_v1/deepseek_final6_exact_source_replay_v1/attention/counts.npy": "2a91817279c7a3636ef9e4f0d2ffd39deaa3fba88e90de40c67909e68d106d02",
+    "/tmp/cheetah_wo23_20261106_v1/deepseek_final6_exact_source_replay_v1/attention/result.json": "b7775e128b984bfbf79aa356bc0663eac5cd34ed49f4d9594cf7af9a5ff3cda0",
+    "/tmp/cheetah_wo23_20261106_v1/deepseek_final6_exact_source_replay_v1/expert_tables.json": "b649858cf25a0dc2b698e0f3b0a6aa27ad40615fd308ac41f64c538f42d67ff5",
+    "/tmp/cheetah_wo23_20261106_v1/deepseek_final6_exact_source_replay_v1/fixed.json": "2c95455d981b002d6b314204fbdf0278ec3a12273cb50233b2ce8b0ae156dbde",
+    "/tmp/cheetah_wo23_20261106_v1/deepseek_final6_exact_source_replay_v1/lift.json": "818616a05a061b06c270f0ad9cb1b27e92521bfdc81aa7de2e74c9c6a576d8d6",
+    "/tmp/cheetah_wo23_20261106_v1/deepseek_final6_exact_source_replay_v1/result.json": "4f3e7fe22f10a3c93cd1451b23413affe2582d9429505e122991d9c1defd7729",
+    "/tmp/cheetah_wo23_20261106_v1/old_N32_crosscontrols_v1/A384_L65536/result.json": "4cafdb78c9e1946001af66e16228d146a52a7ad88de597ef693d3810f111da04"
+  },
+  "controls_scope": "H0=sealedP020,H1=selectedA384/L65536. S0=complete oldN32 expert/attention menus; S1=complete frozen N16 menu. Each cell selects its supported maps at that hardware. These are finite-menu conditional controls, not unrestricted hardware or software optima.",
+  "decode_ns": "3136267555187/45",
+  "expert_attention_mixed_format_factorial": {
+    "reason": "No mixed N32/N16 expert-versus-KV owner/recovery branch was admitted in the frozen family. No gain assigned by splicing coefficients.",
+    "supported": false
+  },
+  "files": {
+    "expert_auxiliary_copy_traffic.json": "d7cbb7fdfce9371f3c020a97a70573dc46d8194df4a702afe8f7c0194946a80b",
+    "latency_breakdown.json": "166e08c8cf09b551a2d7d751abaab7c3e46595acccee1e48ba70ee569759ca02",
+    "original_HOST_payload.json": "83528354c772347947fa787d871ea7f406f5cb875df6435d421a8d6f285029bd",
+    "other_mapping.json": "42eec34b236dc05bf7a0aab308d3d334b17af6525e10c2610edc4ee80b9de7fa",
+    "selected_kernel_traffic.json": "24978ea4c3a79fc84cbbb4acb5ab0836df5043664d9edaa95ad085ec6e530d21"
+  },
+  "full_master": false,
+  "full_native_serving": false,
+  "hardware": {
+    "DRAM_bytes": 2199023255552,
+    "accumulator_banks": 384,
+    "array_columns": 32,
+    "array_rows": 8,
+    "array_workspace_bytes": 4096,
+    "bandwidth": 23040,
+    "clock_GHz": 1,
+    "converter_lanes": 1024,
+    "geometry": "8x32",
+    "host_GBps": 512,
+    "host_bytes": 2199023255552,
+    "host_interface_units": 16,
+    "legacy_bank_control": false,
+    "local_GBps": 65536,
+    "local_service_units": 16,
+    "operand_bank_bytes": 2048,
+    "operand_banks": 2304,
+    "per_bank_control_bytes": 256,
+    "sram_mib": 29.1875,
+    "tiles": 384,
+    "vector_lanes": 16384
+  },
+  "issued_active_array_MAC_slots": 3225638408290304,
+  "issued_by_role": {
+    "attention_scores": 856520631779328,
+    "attention_values": 571013754519552,
+    "expert_down": 503312923230208,
+    "expert_gate_up_separate_panels": 1006625846460416,
+    "other_BF16": 288165252300800,
+    "other_F32": 0
+  },
+  "issued_slot_utilization": "1476580081920/3136267555187",
+  "issued_slots_analytical_not_measured": true,
+  "live_storage": {
+    "DRAM_capacity_bytes": 2199023255552,
+    "DRAM_regions": {
+      "expert_output_holding": [
+        2083953573888,
+        2083957243904
+      ],
+      "kernel_scratch": [
+        2079121735680,
+        2083416702976
+      ],
+      "packed_KV": [
+        1342266408960,
+        2079121735680
+      ],
+      "parameters": [
+        0,
+        1342265729024
+      ],
+      "temporary_arenas": [
+        2083416702976,
+        2083953573888
+      ]
+    },
+    "attention_A_workspace_max": 1179648,
+    "expert_private_chain_per_partition_bytes": 524288,
+    "expert_region_output_hold_bytes": 3670016,
+    "fixed_kernel_scratch_bytes": 4294967296,
+    "format_source_path": "/tmp/cheetah_wo23_20261106_v1/attention_lane_v1/N16_format_join_v1/result.json",
+    "initialized_layout_reserved_address_high": 2083957243904,
+    "installed_SRAM_bytes": 30605312,
+    "packed_KV_capacity_bytes": 736855326720,
+    "reservation_is_not_measured_temporal_peak": true
+  },
+  "metric_scope": "Original matrix-service decoder boundary including paid entry/copies, excluding standalone native primitives in both matrix bars.",
+  "original_FP32_router_MACs": 1740350947328,
+  "original_HOST_payload_bytes": 1990192872704,
+  "original_output_install": {
+    "bytes_per_output": 14336,
+    "exact_address_delta_ns": "-2321722368",
+    "original_HOST_owners": true,
+    "original_order": true,
+    "original_outputs": 7587328,
+    "original_regions": 29638,
+    "per_region_ns": 86528,
+    "unrefined_per_output_ns": 644
+  },
+  "passed": true,
+  "peak_BF16_MAC_per_ns": 98304,
+  "physical_qualified": false,
+  "positive_original_output_install_ns": "2564516864",
+  "primary_area_pass": true,
+  "reference_ns": "50055666134987/100",
+  "reference_ratio": "450500995214883/62725351103740",
+  "signed_savings_ns": {
+    "hardware_under_S0": "25551330516",
+    "hardware_under_S1": "5096133749303362/222255",
+    "interaction": "-582777214530218/222255",
+    "joint_vs_old": "2011379311498/45",
+    "software_on_H0": "107512637115228/4939",
+    "software_on_H1": "861569438278/45"
+  },
+  "source_replay_path": "/tmp/cheetah_wo23_20261106_v1/deepseek_final6_exact_source_replay_v1/result.json",
+  "source_replay_sha256": "4f3e7fe22f10a3c93cd1451b23413affe2582d9429505e122991d9c1defd7729",
+  "strict_target_pass": false,
+  "unchanged_rate_smallbank_control": {
+    "all_region_coefficients_bit_identical": true,
+    "both_joined_menu_decode_ns": "110268388419",
+    "macro_and_periphery_characterized": false,
+    "new_SRAM_bytes": 28639232,
+    "new_area_mm2": "6917882/15625",
+    "old_S0_decode_ns": "114392152593",
+    "old_SRAM_bytes": 133365760,
+    "old_area_mm2": "1874482/3125",
+    "passed": true,
+    "smallbank_S0_decode_ns": "114392152593"
+  },
+  "useful_BF16_MACs": 774952343044096,
+  "useful_BF16_MFU": "354745030080/3136267555187",
+  "useful_by_role": {
+    "attention_scores": 106684370386944,
+    "attention_values": 71122913591296,
+    "expert_down": 111382460628992,
+    "expert_gate_up_separate_panels": 222764921257984,
+    "other_BF16": 262997677178880,
+    "other_F32": 1740350947328
+  },
+  "useful_to_issued_efficiency": "369526073/1538104252",
+  "whole_source_replay_provenance": "Exact finite-column constructed discrete point; not raw OCS convergence."
+}

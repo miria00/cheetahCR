@@ -1,0 +1,77 @@
+          DeepSeek-V3                                  Llama-1 13B                                  Llama-1 65B                             Llama-3 70B
+       Decode · 7.823× vs B2                      Decode · 11.092× vs B2                       Decode · 13.985× vs B2                  Decode · 17.932× vs B2
+
+
+
+                                                         11.67%
+
+
+
+
+                   90.61%                                      83.14%                                   89.94%                                   97.09%
+
+
+
+
+   1. Datapath + base memory         90.61%    1. Hardware + KV retention          0.73%   1. Hardware + KV retention       1.63%   1. Hardware + KV retention        1.02%
+   2. Hardware refinement             0.22%    2. Tiling extension                 0.01%   2. Tiling extension              0.01%   2. Tiling extension               0.01%
+   3. Producer-layout fusion          2.09%    3. Attention-weight residency       4.45%   3. Attention-weight residency    4.04%   3. KV-head reuse (GQA)            0.45%
+   4. Cross-wave prefetch             2.16%    4. MLP-weight residency            83.14%   4. MLP-weight residency         89.94%   4. Attention-weight residency     1.43%
+   5. Double-buffered accumulators    4.92%    5. Output-weight residency         11.67%   5. Output-weight residency       4.38%   5. MLP/output-weight residency   97.09%
+
+                                          Cumulative additions in numbered order · 100% of speedup gain above the 1× baseline
+
+
+Figure 3: Cumulative speedup contributions, following FAST’s Figure 15 [Zhang et al., 2022]. Each
+numbered stage retains earlier additions: Si = TB2 /Ti , S0 = 1; slice pi = (Si − Si−1 )/(Sfinal − 1).
+Five slices sum to 100% of the gain above baseline. The first stage groups coupled datapath, base
+mappings and memory policies; later stages assign interactions to the newly enabled feature in this
+order. Llama weight groups are independently selectable parameter classes. Analytical decode
+endpoints match Table 1; Figure 2 is unchanged. Table 9 separately reports conditional ablations for
+all twelve workloads.
+
+
+
+Table 9: Per-workload contributions grouped by four types of LP decisions. Each feature cell names
+the tested choice and its conditional speedup factor. Total is the selected design’s acceleration over
+unchanged Baseline 2 (modeled TPU-v3); the feature factors do not partition that total.
+Workload                       Total Hardware / datapath                       Mapping / tiling                  Placement / residency Fusion / overlap
+                                                                                                                 Owners
+EfficientNet-B1 11.849× Fixed; NR                                              Inherited; NR                     1.4049×                    No new recipe
+                                                                                                                 Owners/mode
+EfficientNet-B2             6.680× Fixed; NR                                   Inherited; NR                     1.3818×                    No new recipe
+                                                                                                                 Owners
+EfficientNet-B3 11.427× Fixed; NR                                              Inherited; NR                     2.3882×                    No new recipe
+                                                                               Spatial + buffers†
+EfficientNet-B4             9.621× Fixed; NR                                   1.1413×                           Owners; NR                 With tiling†
+                                                                                                                 Owners
+EfficientNet-B5             9.937× Fixed; NR                                   Inherited; NR                     1.3937×                    No new recipe
+                                                                               Spatial + buffers†
+EfficientNet-B6             7.803× Fixed; NR                                   1.0874×                           Owners; NR                 With tiling†
+                                                                                                                 Owners
+EfficientNet-B7             7.800× Fixed; NR                                   Inherited; NR                     1.1330×                    No new recipe
+                                                                                                                                            Cast 1.0426×
+SD1.5 UNet                2.246× Unchanged; NR                                 Matrix modes; NR                  Resident; fixed            Buffers 1.3296×
+                                 HW menu                                                                                                    Producer 1.0211×
+DeepSeek-V3               7.823× 1.0006×                                       Full-K; NR                        Resident; fixed            Delivery 1.0658×
+                                 HW menu                                       25 to 31 maps                     Weights 10.3244×
+Llama-1 13B              11.092× 1.0178×                                       1.0057×                           KV 19.1375×                No new recipe
+                                 HW menu                                       14 to 25 maps                     Weights 11.5259×
+Llama-1 65B              13.985× 1.3866×                                       1.0098×                           KV 14.2042×                No new recipe
+                                 HW menu                                       14–25 maps 1.0142×                Weights
+Llama-3 70B              17.932× 1.5446×                                       GQA 1.9310×                       14.3409×                   No new recipe
+EfficientNets: forward; UNet: one denoiser call; LLMs: decode. Software factors are Toff /Ton on the selected chip. Hardware
+factors compare old/new chip branches with the same new software menu; the 65B old-chip control exceeds the primary area
+bound. Mapping factors measure the stated menu extension, not all tiling benefit. Owners denotes whole-tensor retention;
+Producer denotes rounded attention-layout fusion; Delivery includes paid prefetch/two contexts. Weights and KV are separate
+retention controls; GQA measures private KV-head reuse, not KV retention or offload. † B4/B6 mapping and buffering
+are one combined control, credited once. Factors must not be added or multiplied; they are conditional, not an exhaustive
+decomposition. NR means not isolated, not zero. Fixed/inherited policies are not newly free selectors. Rematerialization
+belongs to the placement/lifetime group, but no new decoder recipe or gain is established. WO24 updates DeepSeek/13B; the
+other ten points retain earlier results. All totals use analytical matrix-and-associated-traffic accounting and separate chips;
+physical decoder qualification remains open.
+
+
+
+
+                                                                                      15

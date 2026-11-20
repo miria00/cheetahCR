@@ -1,0 +1,94 @@
+{
+  "passed": true,
+  "files": [
+    {
+      "path": "systems/vizier_full.py",
+      "sha256": "3674f8522adafa0f02692d72fbfb2bf7e818ef76730c89fa4eca9c9c2301d33f",
+      "bytes": 105188,
+      "archive": "/media/miria/Elements/CORGIsolve_cleanup_20261025T231840Z/archives/systems_files.tar.zst",
+      "manifest": "/media/miria/Elements/CORGIsolve_cleanup_20261025T231840Z/manifests/systems_files.jsonl",
+      "passed": true
+    },
+    {
+      "path": "systems/build_joint_lp_cgm_internal.py",
+      "sha256": "40a0e3296f40f5f3cb87497409a73ce07ad785a39e3c17aaae142b119282efb5",
+      "bytes": 15038,
+      "archive": "/media/miria/Elements/CORGIsolve_cleanup_20261025T231840Z/archives/systems_files.tar.zst",
+      "manifest": "/media/miria/Elements/CORGIsolve_cleanup_20261025T231840Z/manifests/systems_files.jsonl",
+      "passed": true
+    },
+    {
+      "path": "systems/main_fast_pipeline_v0.py",
+      "sha256": "b0eda7b8ba659c5418266a18bb346cd0e8d07387a4309dd73f26658c22f5217f",
+      "bytes": 58976,
+      "archive": "/media/miria/Elements/CORGIsolve_cleanup_20261025T231840Z/archives/systems_files.tar.zst",
+      "manifest": "/media/miria/Elements/CORGIsolve_cleanup_20261025T231840Z/manifests/systems_files.jsonl",
+      "passed": true
+    },
+    {
+      "path": "systems/main_fast_pipeline_v1.py",
+      "sha256": "ff18deb2dd1b78fe4fdab439def4d4e7c4ea501a6c27122711d9d96c2c096711",
+      "bytes": 48923,
+      "archive": "/media/miria/Elements/CORGIsolve_cleanup_20261025T231840Z/archives/systems_files.tar.zst",
+      "manifest": "/media/miria/Elements/CORGIsolve_cleanup_20261025T231840Z/manifests/systems_files.jsonl",
+      "passed": true
+    },
+    {
+      "path": "systems/run_v2_lp_at_tpu_v3_llms.py",
+      "sha256": "6f3e0eec61b3e1b58b62b8c86d2f7a7e7aecca5ec1e6bb6a38c0b1c3b2fc4d7e",
+      "bytes": 10470,
+      "archive": "/media/miria/Elements/CORGIsolve_cleanup_20261025T231840Z/archives/systems_files.tar.zst",
+      "manifest": "/media/miria/Elements/CORGIsolve_cleanup_20261025T231840Z/manifests/systems_files.jsonl",
+      "passed": true
+    },
+    {
+      "path": "systems/Timeloop_pareto/llama1_13b_pareto_C16.npz",
+      "sha256": "c46da98d6d759c440931783406cd7438dd20bfa8666a5424c9e38afe24499256",
+      "bytes": 279144,
+      "archive": "/media/miria/Elements/CORGIsolve_cleanup_20261025T231840Z/archives/systems__Timeloop_pareto.tar.zst",
+      "manifest": "/media/miria/Elements/CORGIsolve_cleanup_20261025T231840Z/manifests/systems__Timeloop_pareto.jsonl",
+      "passed": true
+    },
+    {
+      "path": "systems/Timeloop_pareto/deepseek_v3_pareto_C16.npz",
+      "sha256": "ecb6aac3b2de88264dc82501eda1b41d345b5d98d73611c53049fe863851d066",
+      "bytes": 696168,
+      "archive": "/media/miria/Elements/CORGIsolve_cleanup_20261025T231840Z/archives/systems__Timeloop_pareto.tar.zst",
+      "manifest": "/media/miria/Elements/CORGIsolve_cleanup_20261025T231840Z/manifests/systems__Timeloop_pareto.jsonl",
+      "passed": true
+    },
+    {
+      "path": "systems/Timeloop_pareto/llama3_70b_pareto_C16.npz",
+      "sha256": "37126f6a37524382b1adbd8ab442fe7dc47ea572d7a85c51fbadf787316a26e5",
+      "bytes": 555624,
+      "archive": "/media/miria/Elements/CORGIsolve_cleanup_20261025T231840Z/archives/systems__Timeloop_pareto.tar.zst",
+      "manifest": "/media/miria/Elements/CORGIsolve_cleanup_20261025T231840Z/manifests/systems__Timeloop_pareto.jsonl",
+      "passed": true
+    },
+    {
+      "path": "systems/Timeloop_pareto.bak_20260428_1645_prepatch/llama1_13b_pareto_C16.npz",
+      "sha256": "fdd48e3aa4e1f5c1e5ea9256bf9aabe91f42ba06366a659134ad75b190f3bbf5",
+      "bytes": 278880,
+      "archive": "/media/miria/Elements/CORGIsolve_cleanup_20261025T231840Z/archives/systems__Timeloop_pareto.bak_20260428_1645_prepatch.tar.zst",
+      "manifest": "/media/miria/Elements/CORGIsolve_cleanup_20261025T231840Z/manifests/systems__Timeloop_pareto.bak_20260428_1645_prepatch.jsonl",
+      "passed": true
+    },
+    {
+      "path": "systems/Timeloop_pareto.bak_20260428_1645_prepatch/deepseek_v3_pareto_C16.npz",
+      "sha256": "f14bd76104fc6e8da54871734221bcc3ceb5a315bc07302e1525fbf9d0af86dd",
+      "bytes": 695904,
+      "archive": "/media/miria/Elements/CORGIsolve_cleanup_20261025T231840Z/archives/systems__Timeloop_pareto.bak_20260428_1645_prepatch.tar.zst",
+      "manifest": "/media/miria/Elements/CORGIsolve_cleanup_20261025T231840Z/manifests/systems__Timeloop_pareto.bak_20260428_1645_prepatch.jsonl",
+      "passed": true
+    },
+    {
+      "path": "systems/Timeloop_pareto.bak_20260428_1645_prepatch/llama3_70b_pareto_C16.npz",
+      "sha256": "6263bc0282899d9a4a276ac05c4d78eee55f8626dac16ec26154125ef28b10fc",
+      "bytes": 555360,
+      "archive": "/media/miria/Elements/CORGIsolve_cleanup_20261025T231840Z/archives/systems__Timeloop_pareto.bak_20260428_1645_prepatch.tar.zst",
+      "manifest": "/media/miria/Elements/CORGIsolve_cleanup_20261025T231840Z/manifests/systems__Timeloop_pareto.bak_20260428_1645_prepatch.jsonl",
+      "passed": true
+    }
+  ],
+  "original_preprocessing_outputs_byte_identical_to_archived_patched_caches": true
+}

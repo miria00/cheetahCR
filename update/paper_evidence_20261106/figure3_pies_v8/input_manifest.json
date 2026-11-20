@@ -1,0 +1,12 @@
+{
+  "sources": {
+    "parent_controls.json": {
+      "original_path": "/home/miria/CORGIsolve/cheetahCR/update/paper_evidence_20261106/figure3_pies_v7/grouped_controls.json",
+      "sha256": "a6357660cc353052778b6d76833cd0b3562521dd270d5e9549602bd689b7555b"
+    },
+    "resource_controls.json": {
+      "original_path": "/home/miria/CORGIsolve/cheetahCR/update/paper_evidence_20261106/figure3_pies_v5/cumulative_controls.json",
+      "sha256": "8c783a318bfd6b03b7de49693fbd9ebb91e85b36a9102d884dd6fc4e1ff31324"
+    }
+  }
+}

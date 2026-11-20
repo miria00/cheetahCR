@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "destination": "/media/miria/Elements/cheetah_paper_fast_cumulative_pies_20261107T054052Z",
+  "files": 30,
+  "bytes": 11980509,
+  "manifest_sha256": "bdae72c5d93941cb7979170b2aa073ddc7910a1fc3b0f020d62eb26f8bf6f24c",
+  "all_copied_file_contents_read_back": true,
+  "scope": "Paper revision overlay: current compiled PDF, edited figure/caption, cumulative exact controls, descriptor ledger, generation sources, current Figure 2 input and selected records. Earlier frozen evidence remains in the authenticated parent overlays and original WO23/WO24 roots. This is not a complete project copy or a fresh full-source admission.",
+  "parent": {
+    "destination": "/media/miria/Elements/cheetah_paper_decoder_pies_20261106T234739Z",
+    "manifest_sha256": "76f42ba4b0f94722f2194e3f2e21ca162b2dc309763f8b50d59e57c278207393"
+  }
+}

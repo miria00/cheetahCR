@@ -1,0 +1,228 @@
+--- before/1-introduction.tex
++++ 1-introduction.tex
+@@ -82,8 +82,7 @@
+     \item \textbf{Inference speedup.} The accepted prefill-oriented campaign
+     reports an average $22.07\times$ predicted speedup and up to $40.1\times$
+     under its original contracts (Figure~\ref{fig:speedup}).
+-    Table~\ref{tab:current_phase_speedups} adds the current twelve-workload
+-    summary against unchanged paper Baseline 2: the latest separate decoder
++    Against unchanged paper Baseline 2, the latest separate decoder
+     designs predict $7.823\times$ for DeepSeek-V3 and
+     $11.092$--$17.932\times$ for the three Llamas. These are analytical
+     matrix-and-associated-traffic results with the original timing proxy,
+@@ -99,7 +98,7 @@
+ presents the CHEETAH master and its features, and Section~\ref{sec:ocs} describes
+ certificate-producing optimization, OCS working supports and hardware search. Section~\ref{sec:experiments}
+ reports experimental results and ablations, and the appendix provides containment
+-theorems, physical-validation details, economics, co-design blueprints, and reproduction evidence.
++theorems, physical-validation details, co-design blueprints, and reproduction evidence.
+ 
+ 
+ % ---- plots restored from the long version, original placement ----
+@@ -119,4 +118,3 @@
+ \caption{Speedup over the modeled naive TPU-v3 baseline for (a) EfficientNet forward execution and the Stable Diffusion 1.5 UNet denoiser, (b) LLM prefill, and (c) LLM decode. CHEETAH achieves up to $11.85\times$, $24.20\times$, and $17.93\times$ speedup in the three panels, respectively. Red crosses indicate static infeasibility for SD1.5 UNet, Llama-3 70B, and DeepSeek-V3. See Section~\ref{sec:experiments} for full analysis and wall-clock time breakdowns.}
+ \label{fig:speedup}
+ \end{figure}
+-\input{update/wo24_suite_summary}
+--- before/5-experiments.tex
++++ 5-experiments.tex
+@@ -125,14 +125,12 @@
+ =(T_{\mathrm{baseline}}/T_{\mathrm{design}})\cdot(\mathrm{TDP}_{\mathrm{baseline}}/\mathrm{TDP}_{\mathrm{design}})$,
+ so a latency objective does not by itself maximize it.
+ 
+-Table~\ref{tab:decode_efficiency} gives numerical values for all three
+-quantities on the current decode interval. The last is explicitly a chip-power
++For the current decode designs, performance per TDP uses a chip-power
+ proxy because complete package TDP is unavailable. Matched prefill and
+ whole-task efficiency triples have not been re-established for these
+ decode-only chips, so no such values or cross-phase averages are claimed.
+ Fractional objective bounds, replayed executions and physical qualification
+ remain distinct.
+-\input{update/wo24_efficiency}
+ 
+ \subsection{Workload Results and Fixed-Hardware Controls}
+ \label{sec:prog}\label{sec:fixed_hw}
+@@ -143,7 +141,6 @@
+ Appendix~\ref{app:original_results} has the original plots and restricted
+ controls. 
+ 
+-\input{update/uniform_bf16_suite}
+ 
+ In the historical controls, Table~\ref{tab:fixed_hw} holds each chip
+ fixed and compares its joint LP objective against streaming every tensor. The
+@@ -184,11 +181,8 @@
+ effect. Compute parallelism means active compute arrays; off-chip bandwidth
+ means DRAM, not BRAM. SRAM capacity is fixed in the resource controls.
+ All pies have four groups, combining DeepSeek's two scheduling increments.
+-Attribution is order-dependent. Endpoints match
+-Table~\ref{tab:current_phase_speedups}; Figure~\ref{fig:speedup} is unchanged.}\label{fig:accel_decompose}
+-\end{figure}
+-\input{update/figure3_table}
+-\clearpage
++Attribution is order-dependent.}\label{fig:accel_decompose}
++\end{figure}
+ \endgroup
+ \input{update/figure3_attribution_method}
+ \input{update/wo24_features}
+--- before/neurips_2026.tex
++++ neurips_2026.tex
+@@ -161,17 +161,15 @@
+ \printcontents[appendix]{}{1}{\setcounter{tocdepth}{3}}
+ \clearpage
+ 
+-\input{update/tco}
+-\clearpage
+-\input{update/rtl_validation}
+-\clearpage
+-\input{update/discussion}
+-\clearpage
+ \input{related_work_appendix}
+ \clearpage
+ \input{4-theory}
+ \clearpage
+ \input{lp_app}
++\clearpage
++\input{update/rtl_validation}
++\clearpage
++\input{update/discussion}
+ \clearpage
+ \input{details_audits}
+ \clearpage
+--- before/update/wo24_fixed_hardware.tex
++++ update/wo24_fixed_hardware.tex
+@@ -3,8 +3,8 @@
+ \caption{Fixed-hardware software-search comparisons for all twelve model
+ families. These are \emph{historical LP-objective ratios} against streaming
+ on the same modeled chip, under each stored cell's original convention;
+-they are not new decode measurements or the co-design ratios of
+-Table~\ref{tab:current_phase_speedups}. NR: no supported stored result.}
++they are not new decode measurements or the current co-design ratios.
++NR: no supported stored result.}
+ \label{tab:fixed_hw}
+ \begin{tabular}{@{}lrr@{}}
+ \toprule
+--- before/update/figure3_attribution_method.tex
++++ update/figure3_attribution_method.tex
+@@ -54,6 +54,4 @@
+ Table~\ref{tab:fixed_hw} are historical fractional-LP comparisons under
+ their stored conventions. They are not matched full-decode controls for
+ these designs and are not subtracted from the current decode speedups.
+-Table~\ref{tab:figure3_breakdown} retains the separate conditional
+-feature-removal controls for all twelve workloads; those factors cannot
+-be added to the cumulative shares.
++Conditional feature-removal factors cannot be added to the cumulative shares.
+--- before/update/wo24_features.tex
++++ update/wo24_features.tex
+@@ -21,26 +21,6 @@
+ Serving / phase choice & Decode-only; original request order and starting KV fixed & Same restriction \\
+ \bottomrule
+ \end{tabularx}
+-\medskip
+-\begin{tabular}{@{}llrr@{}}
+-\toprule
+-Workload & Disabled choice (other choices retained) & Time saved, s & Factor \\
+-\midrule
+-DeepSeek & Rounded producer-layout storage fusion & 1.348604 & $1.021076\times$ \\
+-DeepSeek & New delivery / concurrency recipes & 4.210287 & $1.065797\times$ \\
+-DeepSeek & Second context; prefetch still available & 2.870741 & $1.044863\times$ \\
+-Llama-1 13B & Six new full-K mappings & 0.059881 & $1.005735\times$ \\
+-\bottomrule
+-\end{tabular}
+-\par\smallskip\begin{minipage}{\linewidth}\footnotesize
+-Same-chip controls reoptimize the declared feature-off menu. Saved time is
+-$T_{\rm off}-T_{\rm on}$ and factor is $T_{\rm off}/T_{\rm on}$, with
+-$T_{\rm on}=63.988923$~s (DeepSeek) or $10.441348$~s (13B).
+-The second-context control is part of the delivery family, so these gains
+-must not be added. Fixed, unavailable and unisolated features receive no
+-invented individual speedup credit. Compatible alternatives remain selectable;
+-unselected alternatives are not declared absent.
+-\end{minipage}
+ \end{table}
+ 
+ \paragraph{Hardware--software interaction.}
+--- before/update/decode_decomp.tex
++++ update/decode_decomp.tex
+@@ -27,8 +27,8 @@
+ comparisons, not established reproduction of FAST's modeled TPU-v3 baseline.
+ 
+ The historical phase comparison is archived in \texttt{backup.tex}
+-(original Table 10). Current Baseline 2 phase ratios appear in
+-Table~\ref{tab:current_phase_speedups}; the reference conventions differ.
++(original Table 10). Its reference convention differs from the current
++Baseline 2 comparison.
+ 
+ Phase times add; speedup is the ratio of total predicted inference latencies.
+ Decode contributes $80.45\%$ of time saved, prefill $19.41\%$, and preparation
+@@ -43,30 +43,11 @@
+ 
+ \subsection{Feature Contributions on the Same Chip}
+ \label{sec:native_features}
+-Table~\ref{tab:native_features} retains the archived chip and removes one
++The archived controls retain the same chip and remove one
+ mechanism at a time on the original numerical workload. These are matched
+ execution controls, not globally optimized feature-off designs. Interacting
+-rows are not an additive attribution of the headline speedup. They have not
++effects are not an additive attribution of the headline speedup. They have not
+ been retimed to the corrected chip in \texttt{backup.tex} (original Table 10).
+-
+-\begin{table}[t]
+-\centering\small
+-\caption{Archived-chip feature controls: predicted time saved (seconds).}
+-\label{tab:native_features}
+-\begin{tabular}{@{}lrr@{}}
+-\toprule
+-Feature & Prefill & Decode \\
+-\midrule
+-Matrix batching & 43.173 & 856.070 \\
+-SwiGLU primitive fusion & 14.579 & 1.819 \\
+-Other elementwise register storage & 257.071 & 34.026 \\
+-Full-K panel reuse & 32.445 & 0 \\
+-Per-use weighted decode tiles & 0 & 0.866 \\
+-Optional KV residency & 0 & 15.726 \\
+-Phase-reused placement (included above) & 0 & 3.698 \\
+-\bottomrule
+-\end{tabular}
+-\end{table}
+ 
+ \paragraph{Batching and storage fusion.}
+ The no-batch control executes every original member separately and reselects
+--- before/update/generate_current_tables.py
++++ update/generate_current_tables.py
+@@ -151,8 +151,8 @@
+ \caption{Fixed-hardware software-search comparisons for all twelve model
+ families. These are \emph{historical LP-objective ratios} against streaming
+ on the same modeled chip, under each stored cell's original convention;
+-they are not new decode measurements or the co-design ratios of
+-Table~\ref{tab:current_phase_speedups}. NR: no supported stored result.}
++they are not new decode measurements or the current co-design ratios.
++NR: no supported stored result.}
+ \label{tab:fixed_hw}
+ \begin{tabular}{@{}lrr@{}}
+ \toprule
+@@ -216,26 +216,6 @@
+ Serving / phase choice & Decode-only; original request order and starting KV fixed & Same restriction \\
+ \bottomrule
+ \end{tabularx}
+-\medskip
+-\begin{tabular}{@{}llrr@{}}
+-\toprule
+-Workload & Disabled choice (other choices retained) & Time saved, s & Factor \\
+-\midrule
+-DeepSeek & Rounded producer-layout storage fusion & 1.348604 & $1.021076\times$ \\
+-DeepSeek & New delivery / concurrency recipes & 4.210287 & $1.065797\times$ \\
+-DeepSeek & Second context; prefetch still available & 2.870741 & $1.044863\times$ \\
+-Llama-1 13B & Six new full-K mappings & 0.059881 & $1.005735\times$ \\
+-\bottomrule
+-\end{tabular}
+-\par\smallskip\begin{minipage}{\linewidth}\footnotesize
+-Same-chip controls reoptimize the declared feature-off menu. Saved time is
+-$T_{\rm off}-T_{\rm on}$ and factor is $T_{\rm off}/T_{\rm on}$, with
+-$T_{\rm on}=63.988923$~s (DeepSeek) or $10.441348$~s (13B).
+-The second-context control is part of the delivery family, so these gains
+-must not be added. Fixed, unavailable and unisolated features receive no
+-invented individual speedup credit. Compatible alternatives remain selectable;
+-unselected alternatives are not declared absent.
+-\end{minipage}
+ \end{table}
+ 
+ \paragraph{Hardware--software interaction.}

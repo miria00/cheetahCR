@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "destination": "/media/miria/Elements/cheetah_paper_resource_pies_20261107T055332Z",
+  "files": 29,
+  "bytes": 11940535,
+  "manifest_sha256": "b640412284ce29a5245ee5a3eb93cf96ab45f028f155ed1c96e2def3d9f6993a",
+  "all_copied_file_contents_read_back": true,
+  "scope": "Paper revision overlay: current PDF, resource-attribution pies and caption/method, 24 exact resource cells, three old-menu controls, all 18 hardware orders, source scripts and readback checks. Final performance and Figure 2 unchanged. Inherited source inputs and prior controls remain in authenticated parent overlays and WO23/WO24 roots; not a full project copy or new source/physical admission.",
+  "parent": {
+    "destination": "/media/miria/Elements/cheetah_paper_fast_cumulative_pies_20261107T054052Z",
+    "manifest_sha256": "bdae72c5d93941cb7979170b2aa073ddc7910a1fc3b0f020d62eb26f8bf6f24c"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "unchanged_figure2": {
+    "1-introduction.tex": "48c7db6383ee6f28d7012c0fd3fa0a7df60f99405091e7643a121f6196d5257a",
+    "fig3/speedup_final_v6.png": "0e90c08b5481e1622351f8a086a07a7bdd160c2f8982b0e68ee434037330e496"
+  },
+  "diagnostic_caps": {
+    "active_arrays": 256,
+    "delivered_DRAM_GBps": 900,
+    "delivered_local_GBps": 8192
+  },
+  "meaning": "Common reduced-service controls on each selected custom design. Installed capacity, ports, formats, clock, host path, weights and KV retention remain fixed. Not a modeled TPU-v3 implementation.",
+  "stage_order": [
+    "resident base datapath with old mapping menu",
+    "extend mapping menu",
+    "restore selected active arrays",
+    "restore selected DRAM bandwidth",
+    "restore selected local bandwidth"
+  ],
+  "order_chosen_before_full_factorial_replay": true
+}

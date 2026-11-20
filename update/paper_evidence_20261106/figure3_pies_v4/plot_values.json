@@ -1,0 +1,366 @@
+{
+  "passed": true,
+  "panels": [
+    {
+      "workload": "deepseek_v3",
+      "label": "DeepSeek-V3",
+      "phase": "Decode",
+      "reference_ns": "50055666134987/100",
+      "final_ns": "1506875157083872/23549",
+      "final_speedup_exact": "1178760881812808863/150687515708387200",
+      "final_speedup": 7.822551697606888,
+      "stages": [
+        {
+          "label": "Datapath + base memory",
+          "time_ns": "3136267555187/45",
+          "scope": "WO23 source-checked custom configuration: joint datapath, existing N16 mappings, resident arenas, original routing and KV policy. This grouped transition from Baseline 2 is not an isolated hardware or memory ablation.",
+          "order": 1,
+          "signed_time_saved_ns": "387775644111143/900",
+          "speedup_exact": "450500995214883/62725351103740",
+          "speedup": 7.1821199449296005,
+          "added_speedup_exact": "387775644111143/62725351103740",
+          "share_exact": "2921647423166391261986703928480/3224313142465184123167570815981",
+          "color": "#4075ae",
+          "display_percent": "90.61"
+        },
+        {
+          "label": "Hardware refinement",
+          "time_ns": "1637781469863934/23549",
+          "scope": "WO24 hardware with the old software policy; all earlier capabilities retained.",
+          "order": 2,
+          "signed_time_saved_ns": "155798513221633/1059705",
+          "speedup_exact": "1178760881812808863/163778146986393400",
+          "speedup": 7.197302591967533,
+          "added_speedup_exact": "7798598362149419326826573771/513652088642073160372592565800",
+          "share_exact": "5875757065998966573700411880363652721160656/2640360158884114642509688722211771490711364627",
+          "color": "#72a0ce",
+          "display_percent": "0.22"
+        },
+        {
+          "label": "Producer-layout fusion",
+          "time_ns": "1606023197887240/23549",
+          "scope": "Enable rounded attention producer-layout storage fusion; no cross-wave prefetch or second accumulator.",
+          "order": 3,
+          "signed_time_saved_ns": "31758271976694/23549",
+          "speedup_exact": "1178760881812808863/160602319788724000",
+          "speedup": 7.3396255008239955,
+          "added_speedup_exact": "18717704340049417921817706319461/131515751683566983449953740108000",
+          "share_exact": "1175218486152559971546095613144015883116784708/56336600637115820443063895133691004309644649835",
+          "color": "#55a67c",
+          "display_percent": "2.09"
+        },
+        {
+          "label": "Cross-wave prefetch",
+          "time_ns": "1574478235292744/23549",
+          "scope": "Enable paid cross-wave prefetch while retaining producer fusion and one FP32 accumulator context.",
+          "order": 4,
+          "signed_time_saved_ns": "31544962594496/23549",
+          "speedup_exact": "1178760881812808863/157447823529274400",
+          "speedup": 7.486676254966719,
+          "added_speedup_exact": "580999498822502748293528497157/3951013391326110967599534666500",
+          "share_exact": "67345670081062287225614091287869480827888608/3124562797495601150005471405524326897616984915",
+          "color": "#e5a745",
+          "display_percent": "2.16"
+        },
+        {
+          "label": "Double-buffered accumulators",
+          "time_ns": "1506875157083872/23549",
+          "scope": "Add the second FP32 context with fusion and prefetch retained. Original output conversion, stores and reduction order remain paid.",
+          "order": 5,
+          "signed_time_saved_ns": "67603078208872/23549",
+          "speedup_exact": "1178760881812808863/150687515708387200",
+          "speedup": 7.822551697606888,
+          "added_speedup_exact": "9960983010343780233810665854067/29656776726648639931391012809600",
+          "share_exact": "9960983010343780233810665854067/202334892401945119392859702539159",
+          "color": "#d77969",
+          "display_percent": "4.92"
+        }
+      ]
+    },
+    {
+      "workload": "llama1_13b",
+      "label": "Llama-1 13B",
+      "phase": "Decode",
+      "reference_ns": "62176466544446484375/536870912",
+      "final_ns": "29935343674115/2867",
+      "final_speedup_exact": "35651985916585614140625/3214283051871110168576",
+      "final_speedup": 11.09173813918838,
+      "stages": [
+        {
+          "label": "Hardware + KV retention",
+          "time_ns": "927712092333545/8601",
+          "scope": "Current chip and original source policy, with all original KV owners, first imports, stores, full-K arithmetic, mapping workspace and delivery costs. The initial transition groups hardware, base tiling and KV retention; these are not separately attributed.",
+          "mapping_count": 25,
+          "retained_weight_groups": [],
+          "order": 1,
+          "signed_time_saved_ns": "36718151664245699766335/4617626714112",
+          "speedup_exact": "106955957749756842421875/99612327416907702468608",
+          "speedup": 1.0737221037122626,
+          "added_speedup_exact": "7343630332849139953267/99612327416907702468608",
+          "share_exact": "6280974223699843816704274147930963/859795691289089116133231044110430963",
+          "color": "#4075ae",
+          "display_percent": "0.73"
+        },
+        {
+          "label": "Tiling extension",
+          "time_ns": "309065686013215/2867",
+          "scope": "Extend 25 to 31 compatible logical mappings, with weight retention still disabled and unchanged KV policy.",
+          "mapping_count": 31,
+          "retained_weight_groups": [],
+          "order": 2,
+          "signed_time_saved_ns": "515034293900/8601",
+          "speedup_exact": "35651985916585614140625/33185675343564076220416",
+          "speedup": 1.0743185289281705,
+          "added_speedup_exact": "918099769634070803890732608984375/1539337615423978198447933013660532736",
+          "share_exact": "3140986529271053738014452015546669710985937500/53146669031893750410647206542837450716630992635209",
+          "color": "#52abc9",
+          "display_percent": "0.01"
+        },
+        {
+          "label": "Attention-weight residency",
+          "time_ns": "217936943625855/2867",
+          "scope": "Enable only this additional class of the original independent weight selectors. All prior retained classes stay on; first loads and every kernel weight read remain charged.",
+          "retained_weight_groups": [
+            "attention"
+          ],
+          "order": 3,
+          "signed_time_saved_ns": "91128742387360/2867",
+          "speedup_exact": "11883995305528538046875/7800267045527024041984",
+          "speedup": 1.5235369809990393,
+          "added_speedup_exact": "6768584667063160867877439244296875/15067468034450521538005733648367616",
+          "share_exact": "1296767412453638246920777690808881299982802500000/29132011593883627588689238287457234123584462278899",
+          "color": "#d99c46",
+          "display_percent": "4.45"
+        },
+        {
+          "label": "MLP-weight residency",
+          "time_ns": "33492596965485/2867",
+          "scope": "Enable only this additional class of the original independent weight selectors. All prior retained classes stay on; first loads and every kernel weight read remain charged.",
+          "retained_weight_groups": [
+            "attention",
+            "MLP"
+          ],
+          "order": 4,
+          "signed_time_saved_ns": "184444346660370/2867",
+          "speedup_exact": "11883995305528538046875/1198746738540557631488",
+          "speedup": 9.913683118751996,
+          "added_speedup_exact": "73064524994770512143461912958828125/8708373345966368392370531921297408",
+          "share_exact": "874884666441768301659968546179396901664918593750/1052318614093425490687248445083903914995947694307",
+          "color": "#7b5ca2",
+          "display_percent": "83.14"
+        },
+        {
+          "label": "Output-weight residency",
+          "time_ns": "29935343674115/2867",
+          "scope": "Enable only this additional class of the original independent weight selectors. All prior retained classes stay on; first loads and every kernel weight read remain charged.",
+          "retained_weight_groups": [
+            "attention",
+            "MLP",
+            "output"
+          ],
+          "order": 5,
+          "signed_time_saved_ns": "3557253291370/2867",
+          "speedup_exact": "35651985916585614140625/3214283051871110168576",
+          "speedup": 11.09173813918838,
+          "added_speedup_exact": "4227438141521702072471036509296875/3588489559643606976112888813453312",
+          "share_exact": "8454876283043404144942073018593750/72428193902269405814341021110515251",
+          "color": "#69aaa1",
+          "display_percent": "11.67"
+        }
+      ]
+    },
+    {
+      "workload": "llama1_65b",
+      "label": "Llama-1 65B",
+      "phase": "Decode",
+      "reference_ns": "37675158186255203125/67108864",
+      "final_ns": "1404992478347/35",
+      "final_speedup_exact": "1318630536518932109375/94287449150411767808",
+      "final_speedup": 13.985218058189174,
+      "stages": [
+        {
+          "label": "Hardware + KV retention",
+          "time_ns": "3241501951039/7",
+          "scope": "Current chip and original source policy, with all original KV owners, first imports, stores, full-K arithmetic, mapping workspace and delivery costs. The initial transition groups hardware, base tiling and KV retention; these are not separately attributed.",
+          "mapping_count": 14,
+          "retained_weight_groups": [],
+          "order": 1,
+          "signed_time_saved_ns": "46192593715775512179/469762048",
+          "speedup_exact": "263726107303786421875/217533513588010909696",
+          "speedup": 1.2123470216329983,
+          "added_speedup_exact": "46192593715775512179/217533513588010909696",
+          "share_exact": "21633415575334498189155497429371/1322903502148723841193329730179371",
+          "color": "#4075ae",
+          "display_percent": "1.63"
+        },
+        {
+          "label": "Tiling extension",
+          "time_ns": "16193797507547/35",
+          "scope": "Extend 14 to 25 compatible logical mappings, with weight retention still disabled and unchanged KV policy.",
+          "mapping_count": 25,
+          "retained_weight_groups": [],
+          "order": 2,
+          "signed_time_saved_ns": "13712247648/35",
+          "speedup_exact": "1318630536518932109375/1086747354577510596608",
+          "speedup": 1.2133735876739904,
+          "added_speedup_exact": "10273516177819718706959671875/10007652472015546950160593453056",
+          "share_exact": "153964938197471203595281788000407065500000/1947530130529200136220305348249130193185110267",
+          "color": "#52abc9",
+          "display_percent": "0.01"
+        },
+        {
+          "label": "Attention-weight residency",
+          "time_ns": "11308771401947/35",
+          "scope": "Enable only this additional class of the original independent weight selectors. All prior retained classes stay on; first loads and every kernel weight read remain charged.",
+          "retained_weight_groups": [
+            "attention"
+          ],
+          "order": 3,
+          "signed_time_saved_ns": "977005221120/7",
+          "speedup_exact": "1318630536518932109375/758918802020350558208",
+          "speedup": 1.7375120144718363,
+          "added_speedup_exact": "25162283572407490245824021484375/48006942986670734443280861495296",
+          "share_exact": "3016773901420100654580609724804966825500000000/74738780710124946451669197789981530869944890701",
+          "color": "#d99c46",
+          "display_percent": "4.04"
+        },
+        {
+          "label": "MLP-weight residency",
+          "time_ns": "209228972621/5",
+          "scope": "Enable only this additional class of the original independent weight selectors. All prior retained classes stay on; first loads and every kernel weight read remain charged.",
+          "retained_weight_groups": [
+            "attention",
+            "MLP"
+          ],
+          "order": 4,
+          "signed_time_saved_ns": "1968833718720/7",
+          "speedup_exact": "188375790931276015625/14041118668482412544",
+          "speedup": 13.416010175465313,
+          "added_speedup_exact": "28975047576253547640446373046875/2481059394523094475439432794112",
+          "share_exact": "868474109960164423778171386122159100875000000/965648625384991085805837572044013967339482443",
+          "color": "#7b5ca2",
+          "display_percent": "89.94"
+        },
+        {
+          "label": "Output-weight residency",
+          "time_ns": "1404992478347/35",
+          "scope": "Enable only this additional class of the original independent weight selectors. All prior retained classes stay on; first loads and every kernel weight read remain charged.",
+          "retained_weight_groups": [
+            "attention",
+            "MLP",
+            "output"
+          ],
+          "order": 5,
+          "signed_time_saved_ns": "11922066000/7",
+          "speedup_exact": "1318630536518932109375/94287449150411767808",
+          "speedup": 13.985218058189174,
+          "added_speedup_exact": "701821441339023163280712890625/1232979132299714592348515074048",
+          "share_exact": "3743047687141456870830468750000/85389348768579584494334470412369",
+          "color": "#69aaa1",
+          "display_percent": "4.38"
+        }
+      ]
+    },
+    {
+      "workload": "llama3_70b",
+      "label": "Llama-3 70B",
+      "phase": "Decode",
+      "reference_ns": "40754094532407265625/67108864",
+      "final_ns": "150193403141761/4435",
+      "final_speedup_exact": "25820629893032317578125/1439901237876801667072",
+      "final_speedup": 17.932222859330256,
+      "stages": [
+        {
+          "label": "Hardware + KV retention",
+          "time_ns": "2295811676006847/4435",
+          "scope": "Current chip and original source policy, with all original KV owners, first imports, stores, full-K arithmetic, mapping workspace and delivery costs. The initial transition groups hardware, base tiling and KV retention; these are not separately attributed.",
+          "mapping_count": 14,
+          "gqa_group": 1,
+          "retained_weight_groups": [],
+          "order": 1,
+          "signed_time_saved_ns": "26675095716470664655067/297627811840",
+          "speedup_exact": "180744409251226223046875/154069313534755558391808",
+          "speedup": 1.1731369803919662,
+          "added_speedup_exact": "26675095716470664655067/154069313534755558391808",
+          "share_exact": "572346200684134359725561687881136141/55973561516060745873501104672270979891",
+          "color": "#4075ae",
+          "display_percent": "1.02"
+        },
+        {
+          "label": "Tiling extension",
+          "time_ns": "2293746054371487/4435",
+          "scope": "Extend 14 to 25 compatible mappings, with independent attention heads and weight retention still disabled.",
+          "mapping_count": 25,
+          "gqa_group": 1,
+          "retained_weight_groups": [],
+          "order": 2,
+          "signed_time_saved_ns": "413124327072/887",
+          "speedup_exact": "180744409251226223046875/153930692013352726560768",
+          "speedup": 1.174193443082472,
+          "added_speedup_exact": "1296352646596163277553479373046875/1227069027847462156225215014048366592",
+          "share_exact": "890073671607343437410328155051316224768562500000/14265459541842671546506311145441314246120281068974213",
+          "color": "#52abc9",
+          "display_percent": "0.01"
+        },
+        {
+          "label": "KV-head reuse (GQA)",
+          "time_ns": "2153914001794207/4435",
+          "scope": "Enable the original group-eight attention implementation on the same chip and 25-mapping menu. This is KV-read reuse, distinct from retention.",
+          "mapping_count": 25,
+          "gqa_group": 8,
+          "retained_weight_groups": [],
+          "order": 3,
+          "signed_time_saved_ns": "27966410515456/887",
+          "speedup_exact": "180744409251226223046875/144546721814103193550848",
+          "speedup": 1.2504220571925229,
+          "added_speedup_exact": "24681505602994998884181735818359375/323782688313898583791612892008218624",
+          "share_exact": "542281043554927292735287853323245196368394000000000/120453763839995638982672431328625418696020949433516877",
+          "color": "#b379bc",
+          "display_percent": "0.45"
+        },
+        {
+          "label": "Attention-weight residency",
+          "time_ns": "1805228445433681/4435",
+          "scope": "Retain attention weights, with GQA and all preceding features enabled. Initial loads and kernel reads remain paid.",
+          "retained_weight_groups": [
+            "attention"
+          ],
+          "order": 4,
+          "signed_time_saved_ns": "348685556360526/4435",
+          "speedup_exact": "180744409251226223046875/121146830233540319248384",
+          "speedup": 1.491945013359383,
+          "added_speedup_exact": "31511482449409209077293604363848828125/130469926956504127013196725276842655744",
+          "share_exact": "7816377848255398372201346585546365519206330468750/547975454506930460415145576676483833257412201333487",
+          "color": "#d99c46",
+          "display_percent": "1.43"
+        },
+        {
+          "label": "MLP/output-weight residency",
+          "time_ns": "150193403141761/4435",
+          "scope": "Retain the remaining original MLP and output-head weights. All original initial imports and kernel reads remain charged.",
+          "retained_weight_groups": [
+            "attention",
+            "MLP",
+            "output"
+          ],
+          "order": 5,
+          "signed_time_saved_ns": "331007008458384/887",
+          "speedup_exact": "25820629893032317578125/1439901237876801667072",
+          "speedup": 17.932222859330256,
+          "added_speedup_exact": "15438600898489434793585058455078125/939071775010972392978845190324224",
+          "share_exact": "247017614375830956697360935281250000/254409161206282034712020027736453041",
+          "color": "#7b5ca2",
+          "display_percent": "97.09"
+        }
+      ]
+    }
+  ],
+  "method": "S_i = original Baseline 2 time / cumulative stage time; S_0 = 1. Slice i = (S_i-S_(i-1))/(S_final-1). Exact signed time savings are also retained. No standalone feature speedup factors or leave-one-out penalties are added.",
+  "order_scope": "Fixed declared order; interactions are assigned to the later enabling stage. A stage may reselect compatible mappings within the enlarged menu. This is an ordered analytical attribution, not a unique causal partition.",
+  "input_sha256": "6744796536526428c30618fb9634b800a14d5ba091c8525f9ddd6de72a0709b4",
+  "source_sha256": "2124bd02baf99a42fe2e07dbd5b4450aab1a73d2a7bc8f230891e91bf52031d9",
+  "percentages_sum_exactly_to_100": true,
+  "legend_overlap_check": true,
+  "new_optimizer_calls": 0,
+  "physical_or_full_source_admission": false
+}

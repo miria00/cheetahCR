@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "destination": "/media/miria/Elements/cheetah_paper_memory_pies_20261107T064350Z",
+  "files": 29,
+  "bytes": 13053178,
+  "manifest_sha256": "ed40aa3ed4fcf9cad874cf6ad857291aa36e4d9e80febf26fa202a508b24dcd0",
+  "all_copied_file_contents_read_back": true,
+  "scope": "Paper revision overlay: checked Llama mapping/resource intermediates, explicit tiling plus on-chip bandwidth group, compute/DRAM terminology and fixed-SRAM note. Original final times, reference and Figure 2 unchanged. Includes paper PDF, plots, new scripts, exact receipts and frozen parent controls. Original source inputs and imported model modules remain in authenticated WO23/WO24 roots and parent overlays; not a full project copy or fresh full-source/physical admission.",
+  "parent": {
+    "destination": "/media/miria/Elements/cheetah_paper_family_pies_20261107T061610Z",
+    "manifest_sha256": "8c0af2d2587eb648d7866c1e24f0a6e2b5a797b7d6601641ac9fa434bededbd8"
+  }
+}

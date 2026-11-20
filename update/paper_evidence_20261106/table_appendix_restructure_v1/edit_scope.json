@@ -1,0 +1,36 @@
+{
+  "backup": "/home/miria/CORGIsolve/cheetahCR/.edit_backups/tables_appendices_20261107T070304Z",
+  "parent": {
+    "passed": true,
+    "destination": "/media/miria/Elements/cheetah_paper_clean_pies_20261107T065502Z",
+    "files": 23,
+    "bytes": 12459425,
+    "manifest_sha256": "8f0c955700248d1c51ecfb770830026ea231360a0fef2a739485aad5bb9a37cf",
+    "all_copied_file_contents_read_back": true,
+    "scope": "Presentation-only paper overlay: DeepSeek last, dagger annotations and SRAM figure note removed, subtitles reduced to Decode and speedup. Numeric shares, four-group structure, original reference and final performance unchanged. Parent evidence retained in prior authenticated overlays; not a new experiment or full project copy.",
+    "parent": {
+      "destination": "/media/miria/Elements/cheetah_paper_four_group_pies_20261107T064805Z",
+      "manifest_sha256": "022244cddd5f0665c2b7a3ee52aa10b05f97691ce239ee00483899795857707f"
+    }
+  },
+  "original_table_numbers_removed": {
+    "1": "tab:current_phase_speedups",
+    "6": "tab:decode_efficiency",
+    "7": "tab:uniform_llama_controls",
+    "9": "tab:figure3_breakdown",
+    "11": "tab:native_features"
+  },
+  "original_table_10": "Retain feature-coverage table; remove lower disabled-choice/time-saved/factor table and its note.",
+  "appendix_interpretation": "Remove original Appendix A, Total Cost of Ownership and Return on Investment.",
+  "new_appendix_order": [
+    "Extended Related Work",
+    "Modeling Properties and Containment",
+    "Linear Program Formulation Details",
+    "Implementation-Level Validation: Decoder RTL and Historical Checks",
+    "Discussion and Plots"
+  ],
+  "unchanged_figures": {
+    "fig3/speedup_final_v6.png": "0e90c08b5481e1622351f8a086a07a7bdd160c2f8982b0e68ee434037330e496",
+    "fig3/feature_contributions_wo24.pdf": "a0dd1666ba00d1a9e0332d52b6811cb88759e161a3c1c45d90569d76492c00f6"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "four_groups_each": true,
+  "displayed_totals_100_percent": true,
+  "Llama_panels_unchanged": true,
+  "all_performance_endpoints_unchanged": true,
+  "Figure2_unchanged": true,
+  "no_overfull_or_unresolved_references": true,
+  "page15_visually_checked": true,
+  "all_twelve_workload_rows_below_figure": true,
+  "new_optimizer_calls": 0,
+  "pdf_sha256": "01f234bbab12143afc689766c1a0ae62cb9984a824bd1a3e7ff6548a4d87aca4"
+}

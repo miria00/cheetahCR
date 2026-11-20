@@ -1,0 +1,20 @@
+{
+  "passed": true,
+  "checks": [
+    "Exact source-cost intermediate mappings independently reconstructed",
+    "All timed host bytes and original invocation counts preserved",
+    "Grouped increments partition S_final-1 exactly; displayed percentages sum to 100.000%",
+    "Five DeepSeek and four Llama groups",
+    "SRAM capacity explicitly fixed; no isolated capacity gain claimed",
+    "All reference and final endpoints unchanged",
+    "Figure 2 source and artwork byte-identical",
+    "No overfull boxes or unresolved references",
+    "Figure 3 and 12 workload rows on page 15",
+    "Rendered pages 15 and 16 visually inspected"
+  ],
+  "new_optimizer_calls": 0,
+  "new_source_admission": false,
+  "new_physical_checks": false,
+  "pdf_sha256": "7e8124ed918f699c5831a21fe7a6b3cd9066ded07c6e6a75e74fe03511a3a3a6",
+  "figure3_pdf_sha256": "cc4854adc5d222c8e9126214b2f348269a5fba0abf7e9fda94fe24eaa8a05492"
+}

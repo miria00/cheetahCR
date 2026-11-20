@@ -1,0 +1,12 @@
+{
+  "title": "A Full-Stack Search Technique for Domain Optimized Deep Learning Accelerators",
+  "url": "https://arxiv.org/pdf/2105.12842",
+  "doi": "10.1145/3503222.3507767",
+  "local_read_only_source": "/home/miria/OCSolver/papers/Fast_paper.pdf",
+  "sha256": "22c6677a58f31385c0c7966d685fd7e59d0bf942b30082e0e6b647a9639695c3",
+  "pdf_page": 12,
+  "section": "6.2.7",
+  "figure": 15,
+  "method": "Cumulative configurations: baseline, scheduling, datapath, fusion. Figure 15 differs from the separate leave-one-component-out controls in Table 6. Our pies partition cumulative speedup increments above the 1x baseline.",
+  "scope": "Adopts the attribution method only; retains CHEETAH original Baseline 2 and current matched tasks."
+}

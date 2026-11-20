@@ -1,0 +1,306 @@
+{
+  "status": "original_values_restored_reproduction_incomplete",
+  "user_rule": "No unannounced comparison-method changes; like-for-like replacement only",
+  "source_replay_attempts": 10,
+  "new_precision_solves": 0,
+  "selected_new_results": 0,
+  "blockers": [
+    {
+      "kind": "missing_original_compact_mapping_caches",
+      "workloads": [
+        "sd15_unet",
+        "llama3_70b",
+        "deepseek_v3"
+      ],
+      "scope": "not found in checked local paths, cleanup archive manifests or bounded remote checks; broader Elements filename searches were partial"
+    },
+    {
+      "kind": "precision_extension_unqualified",
+      "note": "No matched original-menu native INT8/BF16 input pair has been recovered. Earlier c0 width sensitivity is unadopted."
+    },
+    {
+      "kind": "two_numerical_checks_failed",
+      "workloads": [
+        "efficientnet_b7@compact_npu",
+        "llama1_13b@compact_npu"
+      ],
+      "note": "Stored replay witnesses fail the unchanged independent stationarity/support threshold; retained without adoption."
+    }
+  ],
+  "replays": [
+    {
+      "workload": "deepseek_v3",
+      "hardware": "tpuv3",
+      "status": "Optimal",
+      "baseline_cycles": 58769886850.22221,
+      "objective_cycles": 3311075328.0,
+      "speedup": 17.749486504652005,
+      "original_objective": 26488605049.2,
+      "relative_original_objective_difference": -0.8750000114445438,
+      "baseline_reproduced": true,
+      "menu_columns": 16,
+      "scope": "Original TPU LLM anchor producer; original default CGM selector retained",
+      "independent_check": {
+        "status": "Optimal",
+        "objective": 3311075328.0,
+        "dual_objective": 3311075328.0,
+        "relative_duality_gap": 0.0,
+        "maximum_row_violation": 0.0,
+        "maximum_scaled_row_violation": 0.0,
+        "maximum_box_violation": 0.0,
+        "maximum_scaled_stationarity": 0.0,
+        "invalid_infinite_bound_dual_magnitude": 0.0,
+        "speedup": 17.749486504652005,
+        "numerical_check": true,
+        "exact_rational_certificate": false,
+        "passed": true
+      },
+      "paper_adopted": false
+    },
+    {
+      "workload": "efficientnet_b7",
+      "hardware": "compact_npu",
+      "status": "Optimal",
+      "baseline_cycles": 711506063267.0,
+      "objective_cycles": 35074937488.345276,
+      "speedup": 20.285312368793807,
+      "original_objective": 35553100000.0,
+      "relative_original_objective_difference": -0.013449249479081264,
+      "baseline_reproduced": true,
+      "menu_columns": 16,
+      "scope": "Original V2.1 graph, native per-hardware cache, all 16 choices and legacy workspace/floors",
+      "independent_check": {
+        "status": "Optimal",
+        "objective": 35074937488.345276,
+        "dual_objective": 35074937488.345276,
+        "relative_duality_gap": 0.0,
+        "maximum_row_violation": 3.7848949432373047e-06,
+        "maximum_scaled_row_violation": 7.397936260920861e-16,
+        "maximum_box_violation": 0.0,
+        "maximum_scaled_stationarity": 3.291760444389365e-07,
+        "invalid_infinite_bound_dual_magnitude": 3.1970557756721973e-08,
+        "speedup": 20.285312368793807,
+        "numerical_check": true,
+        "exact_rational_certificate": false,
+        "passed": false
+      },
+      "paper_adopted": false
+    },
+    {
+      "workload": "efficientnet_b7",
+      "hardware": "tpuv3",
+      "status": "Optimal",
+      "baseline_cycles": 71054952340.0,
+      "objective_cycles": 32112738155.0,
+      "speedup": 2.212671868622223,
+      "original_objective": 32112738155.0,
+      "relative_original_objective_difference": 0.0,
+      "baseline_reproduced": true,
+      "menu_columns": 16,
+      "scope": "Original V2.1 graph, native per-hardware cache, all 16 choices and legacy workspace/floors",
+      "independent_check": {
+        "status": "Optimal",
+        "objective": 32112738155.0,
+        "dual_objective": 32112738155.0,
+        "relative_duality_gap": 0.0,
+        "maximum_row_violation": 5.960464477539063e-08,
+        "maximum_scaled_row_violation": 1.3028550912366153e-16,
+        "maximum_box_violation": 0.0,
+        "maximum_scaled_stationarity": 0.0,
+        "invalid_infinite_bound_dual_magnitude": 0.0,
+        "speedup": 2.212671868622223,
+        "numerical_check": true,
+        "exact_rational_certificate": false,
+        "passed": true
+      },
+      "paper_adopted": false
+    },
+    {
+      "workload": "llama1_13b",
+      "hardware": "compact_npu",
+      "status": "Optimal",
+      "baseline_cycles": 18141786406914.0,
+      "objective_cycles": 571133845419.6377,
+      "speedup": 31.764509409496497,
+      "original_objective": 577878000000.0,
+      "relative_original_objective_difference": -0.011670550843538437,
+      "baseline_reproduced": true,
+      "menu_columns": 16,
+      "scope": "Original V2.1 graph, native per-hardware cache, all 16 choices and legacy workspace/floors",
+      "independent_check": {
+        "status": "Optimal",
+        "objective": 571133845419.6377,
+        "dual_objective": 571133845419.6377,
+        "relative_duality_gap": 0.0,
+        "maximum_row_violation": 2.2530555725097656e-05,
+        "maximum_scaled_row_violation": 2.7686859139059173e-14,
+        "maximum_box_violation": 0.0,
+        "maximum_scaled_stationarity": 1.1373765696063354e-14,
+        "invalid_infinite_bound_dual_magnitude": 1.430511474609375e-06,
+        "speedup": 31.764509409496497,
+        "numerical_check": true,
+        "exact_rational_certificate": false,
+        "passed": false
+      },
+      "paper_adopted": false
+    },
+    {
+      "workload": "llama1_13b",
+      "hardware": "tpuv3",
+      "status": "Optimal",
+      "baseline_cycles": 28973017042.844437,
+      "objective_cycles": 1605335003.0810285,
+      "speedup": 18.047956960533575,
+      "original_objective": 13526630400.0,
+      "relative_original_objective_difference": -0.8813204060723779,
+      "baseline_reproduced": true,
+      "menu_columns": 16,
+      "scope": "Original TPU LLM anchor producer; original default CGM selector retained",
+      "independent_check": {
+        "status": "Optimal",
+        "objective": 1605335003.0810285,
+        "dual_objective": 1605335003.0810285,
+        "relative_duality_gap": 0.0,
+        "maximum_row_violation": 5.320180207490921e-08,
+        "maximum_scaled_row_violation": 7.587447505746824e-17,
+        "maximum_box_violation": 0.0,
+        "maximum_scaled_stationarity": 3.0826391247615144e-16,
+        "invalid_infinite_bound_dual_magnitude": 0.0,
+        "speedup": 18.047956960533575,
+        "numerical_check": true,
+        "exact_rational_certificate": false,
+        "passed": true
+      },
+      "paper_adopted": false
+    },
+    {
+      "workload": "llama3_70b",
+      "hardware": "tpuv3",
+      "status": "Optimal",
+      "baseline_cycles": 185193714301.15558,
+      "objective_cycles": 8684306823.07246,
+      "speedup": 21.32510033030305,
+      "original_objective": 73819757808.3,
+      "relative_original_objective_difference": -0.8823579610539438,
+      "baseline_reproduced": true,
+      "menu_columns": 16,
+      "scope": "Original TPU LLM anchor producer; original default CGM selector retained",
+      "independent_check": {
+        "status": "Optimal",
+        "objective": 8684306823.07246,
+        "dual_objective": 8684306823.07246,
+        "relative_duality_gap": 0.0,
+        "maximum_row_violation": 9.094947017729282e-13,
+        "maximum_scaled_row_violation": 8.652035328808782e-17,
+        "maximum_box_violation": 0.0,
+        "maximum_scaled_stationarity": 1.1102320594987552e-16,
+        "invalid_infinite_bound_dual_magnitude": 0.0,
+        "speedup": 21.32510033030305,
+        "numerical_check": true,
+        "exact_rational_certificate": false,
+        "passed": true
+      },
+      "paper_adopted": false
+    },
+    {
+      "workload": "sd15_unet",
+      "hardware": "tpuv3",
+      "status": "Optimal",
+      "baseline_cycles": 11859241889.0,
+      "objective_cycles": 7915502331.070568,
+      "speedup": 1.4982298523808335,
+      "original_objective": 7915344898.970736,
+      "relative_original_objective_difference": 1.9889480729134914e-05,
+      "baseline_reproduced": true,
+      "menu_columns": 16,
+      "scope": "Original V2.1 graph, native per-hardware cache, all 16 choices and legacy workspace/floors",
+      "independent_check": {
+        "status": "Optimal",
+        "objective": 7915502331.070568,
+        "dual_objective": 7915502331.070568,
+        "relative_duality_gap": 0.0,
+        "maximum_row_violation": 7.450580596923828e-09,
+        "maximum_scaled_row_violation": 2.1461469321921407e-16,
+        "maximum_box_violation": 1.5941661448459176e-17,
+        "maximum_scaled_stationarity": 2.0982278353510517e-13,
+        "invalid_infinite_bound_dual_magnitude": 4.470348358154297e-08,
+        "speedup": 1.4982298523808335,
+        "numerical_check": true,
+        "exact_rational_certificate": false,
+        "passed": true
+      },
+      "paper_adopted": false
+    }
+  ],
+  "table_status": "Five original rows, two original-convention columns; requested four-column extension pending",
+  "figure_artwork_unchanged": true,
+  "resolved": {
+    "TPU_LLM_cache_mismatch": "Local candidate copies were prepatch. Original patch_pareto_npz preprocessing reconstructs the Elements archived patched files byte-for-byte; replay matches displayed original ratios. No fit to target values."
+  },
+  "recovered_source_readback": "elements_recovery_readback.json",
+  "verified_original_preprocessing_replays": [
+    {
+      "workload": "deepseek_v3",
+      "speedup": 2.2186858130815006,
+      "relative_original_objective_difference": -9.1556350221477e-08,
+      "independent_check": {
+        "status": "Optimal",
+        "objective": 26488602624.0,
+        "dual_objective": 26488602624.0,
+        "relative_duality_gap": 0.0,
+        "maximum_row_violation": 0.0,
+        "maximum_scaled_row_violation": 0.0,
+        "maximum_box_violation": 0.0,
+        "maximum_scaled_stationarity": 0.0,
+        "invalid_infinite_bound_dual_magnitude": 0.0,
+        "speedup": 2.2186858130815006,
+        "numerical_check": true,
+        "exact_rational_certificate": false,
+        "passed": true
+      },
+      "paper_new_value_adopted": false
+    },
+    {
+      "workload": "llama1_13b",
+      "speedup": 2.1419242032993253,
+      "relative_original_objective_difference": 0.0,
+      "independent_check": {
+        "status": "Optimal",
+        "objective": 13526630400.0,
+        "dual_objective": 13526630400.0,
+        "relative_duality_gap": 0.0,
+        "maximum_row_violation": 7.566995918750763e-10,
+        "maximum_scaled_row_violation": 5.345518228951617e-18,
+        "maximum_box_violation": 0.0,
+        "maximum_scaled_stationarity": 0.0,
+        "invalid_infinite_bound_dual_magnitude": 0.0,
+        "speedup": 2.1419242032993253,
+        "numerical_check": true,
+        "exact_rational_certificate": false,
+        "passed": true
+      },
+      "paper_new_value_adopted": false
+    },
+    {
+      "workload": "llama3_70b",
+      "speedup": 2.508728535353536,
+      "relative_original_objective_difference": -1.0035660130842095e-07,
+      "independent_check": {
+        "status": "Optimal",
+        "objective": 73819750400.0,
+        "dual_objective": 73819750400.0,
+        "relative_duality_gap": 0.0,
+        "maximum_row_violation": 4.848530466006196e-09,
+        "maximum_scaled_row_violation": 1.0014893454927056e-16,
+        "maximum_box_violation": 0.0,
+        "maximum_scaled_stationarity": 0.0,
+        "invalid_infinite_bound_dual_magnitude": 0.0,
+        "speedup": 2.508728535353536,
+        "numerical_check": true,
+        "exact_rational_certificate": false,
+        "passed": true
+      },
+      "paper_new_value_adopted": false
+    }
+  ]
+}

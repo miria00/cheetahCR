@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "DeepSeek_last": true,
+  "annotation_markers_removed_from_pies_and_caption": true,
+  "SRAM_figure_note_removed": true,
+  "subtitles_decode_and_speedup_only": true,
+  "percentages_and_endpoints_unchanged": true,
+  "Figure2_unchanged": true,
+  "no_overfull_or_unresolved_references": true,
+  "page15_visually_checked": true,
+  "new_optimizer_calls": 0,
+  "pdf_sha256": "f1a7f13b5e24ac4b89a54fa0c630f45a09774ae2e375b683b04aa44408dc7e81"
+}

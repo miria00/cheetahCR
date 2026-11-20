@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "files": 167,
+  "bytes": 138050283,
+  "manifest_sha256": "f8889098c415416204ecfca2cc330f4b17af75a9d2b8ebdf5538e3b2491c7e0d",
+  "source": "/tmp/cheetah_table5_likeforlike_20261107_v1",
+  "destination": "/media/miria/Elements/cheetah_table5_likeforlike_20261107_v1",
+  "copied_file_content_readback": true,
+  "excluded": [
+    "__pycache__",
+    "manifest and receipt self-identities"
+  ],
+  "numerical_optimizer_calls": 10,
+  "GPU_calls": 0
+}

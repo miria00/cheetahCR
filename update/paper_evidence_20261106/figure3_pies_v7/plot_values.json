@@ -1,0 +1,627 @@
+{
+  "passed": true,
+  "panels": [
+    {
+      "workload": "deepseek_v3",
+      "label": "DeepSeek-V3",
+      "phase": "Decode",
+      "reference_ns": "50055666134987/100",
+      "final_ns": "1506875157083872/23549",
+      "final_speedup_exact": "1178760881812808863/150687515708387200",
+      "final_speedup": 7.822551697606888,
+      "stages": [
+        {
+          "label": "Memory residency + mapping",
+          "time_ns": "457470204541599/4939",
+          "scope": "Earlier P020 hardware with the qualified N16 mapping family and resident memory policy. This base group includes the inherited datapath; it is not an isolated memory-only effect.",
+          "order": 1,
+          "signed_time_saved_ns": "201477914586540893/493900",
+          "speedup_exact": "247224935040700793/45747020454159900",
+          "speedup": 5.404175672783515,
+          "added_speedup_exact": "201477914586540893/45747020454159900",
+          "share_exact": "303602064191524753878497558777696/470312933075559970483417920259137"
+        },
+        {
+          "label": "Hardware refinement",
+          "time_ns": "1637781469863934/23549",
+          "scope": "Combined WO23 and WO24 hardware refinements under the pre-fusion N16 family: earlier-hardware N16 control to selected WO24 hardware with producer fusion, prefetch and the second context disabled. Compatible mappings may be reselected. The intervening WO23 point is retained explicitly; no software-menu expansion is credited as hardware.",
+          "order": 2,
+          "signed_time_saved_ns": "2683963167092144825/116308511",
+          "speedup_exact": "1178760881812808863/163778146986393400",
+          "speedup": 7.197302591967533,
+          "added_speedup_exact": "5373902568422669144803832139691/2996944896052378182077491161864",
+          "share_exact": "101222503461816659576925954952643857071339544400/385134903414254314989814834561277717026705132479",
+          "intermediate_time_ns": "3136267555187/45"
+        },
+        {
+          "label": "Producer-layout fusion",
+          "time_ns": "1606023197887240/23549",
+          "scope": "Enable rounded attention producer-layout storage fusion; no cross-wave prefetch or second accumulator.",
+          "order": 3,
+          "signed_time_saved_ns": "31758271976694/23549",
+          "speedup_exact": "1178760881812808863/160602319788724000",
+          "speedup": 7.3396255008239955,
+          "added_speedup_exact": "18717704340049417921817706319461/131515751683566983449953740108000",
+          "share_exact": "1175218486152559971546095613144015883116784708/56336600637115820443063895133691004309644649835"
+        },
+        {
+          "label": "Cross-wave prefetch",
+          "time_ns": "1574478235292744/23549",
+          "scope": "Enable paid cross-wave prefetch while retaining producer fusion and one FP32 accumulator context.",
+          "order": 4,
+          "signed_time_saved_ns": "31544962594496/23549",
+          "speedup_exact": "1178760881812808863/157447823529274400",
+          "speedup": 7.486676254966719,
+          "added_speedup_exact": "580999498822502748293528497157/3951013391326110967599534666500",
+          "share_exact": "67345670081062287225614091287869480827888608/3124562797495601150005471405524326897616984915"
+        },
+        {
+          "label": "Compute/readout overlap",
+          "time_ns": "1506875157083872/23549",
+          "scope": "Add the second FP32 context with fusion and prefetch retained. Original output conversion, stores and reduction order remain paid. The simple label denotes next-tile compute overlapping prior-result readout using the second FP32 context; bulk conversion and output stores remain charged.",
+          "order": 5,
+          "signed_time_saved_ns": "67603078208872/23549",
+          "speedup_exact": "1178760881812808863/150687515708387200",
+          "speedup": 7.822551697606888,
+          "added_speedup_exact": "9960983010343780233810665854067/29656776726648639931391012809600",
+          "share_exact": "9960983010343780233810665854067/202334892401945119392859702539159"
+        }
+      ],
+      "slices": [
+        {
+          "label": "Placement / residency\u2020",
+          "source_stages": [
+            1
+          ],
+          "table10_families": [
+            "Activation placement",
+            "Weight residency",
+            "MoE residency / offload",
+            "Implementation / tiling",
+            "Hardware resources"
+          ],
+          "added_speedup_exact": "201477914586540893/45747020454159900",
+          "share_exact": "303602064191524753878497558777696/470312933075559970483417920259137",
+          "scope": "Earlier P020 hardware with the qualified N16 mapping family and resident memory policy. This base group includes the inherited datapath; it is not an isolated memory-only effect.",
+          "color": "#4075ae",
+          "display_percent": "64.553",
+          "display_label": "Placement / residency\u2020"
+        },
+        {
+          "label": "Hardware resources",
+          "source_stages": [
+            2
+          ],
+          "table10_families": [
+            "Hardware resources"
+          ],
+          "added_speedup_exact": "5373902568422669144803832139691/2996944896052378182077491161864",
+          "share_exact": "101222503461816659576925954952643857071339544400/385134903414254314989814834561277717026705132479",
+          "scope": "Combined WO23 and WO24 hardware refinements under the pre-fusion N16 family: earlier-hardware N16 control to selected WO24 hardware with producer fusion, prefetch and the second context disabled. Compatible mappings may be reselected. The intervening WO23 point is retained explicitly; no software-menu expansion is credited as hardware.",
+          "color": "#72a0ce",
+          "display_percent": "26.282",
+          "display_label": "Hardware resources"
+        },
+        {
+          "label": "Fusion / storage",
+          "source_stages": [
+            3
+          ],
+          "table10_families": [
+            "Fusion / storage",
+            "Activation placement"
+          ],
+          "added_speedup_exact": "18717704340049417921817706319461/131515751683566983449953740108000",
+          "share_exact": "1175218486152559971546095613144015883116784708/56336600637115820443063895133691004309644649835",
+          "scope": "Enable rounded attention producer-layout storage fusion; no cross-wave prefetch or second accumulator.",
+          "color": "#55a67c",
+          "display_percent": "2.086",
+          "display_label": "Fusion / storage"
+        },
+        {
+          "label": "Scheduling: prefetch",
+          "source_stages": [
+            4
+          ],
+          "table10_families": [
+            "Scheduling / concurrency"
+          ],
+          "added_speedup_exact": "580999498822502748293528497157/3951013391326110967599534666500",
+          "share_exact": "67345670081062287225614091287869480827888608/3124562797495601150005471405524326897616984915",
+          "scope": "Enable paid cross-wave prefetch while retaining producer fusion and one FP32 accumulator context.",
+          "color": "#e5a745",
+          "display_percent": "2.156",
+          "display_label": "Scheduling: prefetch"
+        },
+        {
+          "label": "Scheduling: overlap",
+          "source_stages": [
+            5
+          ],
+          "table10_families": [
+            "Scheduling / concurrency"
+          ],
+          "added_speedup_exact": "9960983010343780233810665854067/29656776726648639931391012809600",
+          "share_exact": "9960983010343780233810665854067/202334892401945119392859702539159",
+          "scope": "Add the second FP32 context with fusion and prefetch retained. Original output conversion, stores and reduction order remain paid. The simple label denotes next-tile compute overlapping prior-result readout using the second FP32 context; bulk conversion and output stores remain charged.",
+          "color": "#d77969",
+          "display_percent": "4.923",
+          "display_label": "Scheduling: overlap"
+        }
+      ]
+    },
+    {
+      "workload": "llama1_13b",
+      "label": "Llama-1 13B",
+      "phase": "Decode",
+      "reference_ns": "62176466544446484375/536870912",
+      "final_ns": "29935343674115/2867",
+      "final_speedup_exact": "35651985916585614140625/3214283051871110168576",
+      "final_speedup": 11.09173813918838,
+      "stages": [
+        {
+          "label": "Resident datapath + KV",
+          "time_ns": "874634718214/15",
+          "scope": "Joint resident custom datapath: final memory capacity, weight and KV retention, original first imports, formats, vector and host resources; old mapping menu. Active arrays capped at 256, DRAM at 900 GB/s and local delivery at 8192 GB/s. Not isolated software and not a TPU-v3 implementation.",
+          "resource_mask": 0,
+          "mapping_count": 25,
+          "order": 1,
+          "signed_time_saved_ns": "463081059332284074457/8053063680",
+          "speedup_exact": "932646998166697265625/469565938834413191168",
+          "speedup": 1.9861896296860324,
+          "added_speedup_exact": "463081059332284074457/469565938834413191168",
+          "share_exact": "2772498132017032610818102520716111/28371141104589030745151860847200486"
+        },
+        {
+          "label": "Tiling extension",
+          "time_ns": "291522257538/5",
+          "scope": "Extend 25 to 31 compatible mappings under the same service caps; residency and all owners stay fixed.",
+          "resource_mask": 0,
+          "mapping_count": 31,
+          "order": 2,
+          "signed_time_saved_ns": "13589120/3",
+          "speedup_exact": "103627444240744140625/52169940090908311552",
+          "speedup": 1.986343937910777,
+          "added_speedup_exact": "55008038089093008447265625/356481569145725411074953445376",
+          "share_exact": "10538780960229167124478254629842187500000/689234925311578434544830068568126578834230289"
+        },
+        {
+          "label": "Array parallelism",
+          "time_ns": "824312788448/15",
+          "scope": "Restore selected array availability; DRAM/local caps remain. Compatible mappings may be reselected.",
+          "resource_mask": 1,
+          "mapping_count": 31,
+          "order": 3,
+          "signed_time_saved_ns": "50253984166/15",
+          "speedup_exact": "932646998166697265625/442549558507340824576",
+          "speedup": 2.1074408057537966,
+          "added_speedup_exact": "2603845971018701967513013671875/21502174394750868454264325275648",
+          "share_exact": "15589404803380905913109839612260557908203125/1299159869481252694946000268707571313451009696"
+        },
+        {
+          "label": "DRAM bandwidth",
+          "time_ns": "49755514264160/2867",
+          "scope": "Restore selected delivered DRAM bandwidth, retaining full array availability and the local-service cap.",
+          "resource_mask": 3,
+          "mapping_count": 31,
+          "order": 4,
+          "signed_time_saved_ns": "1616972050518016/43005",
+          "speedup_exact": "35651985916585614140625/5342457664005717622784",
+          "speedup": 6.673330545375653,
+          "added_speedup_exact": "4909062920036057248468003359375/1075160198774888031018645716992",
+          "share_exact": "117563588503307117152506109711240780184062500/259844415335559852478403560021749011795665961"
+        },
+        {
+          "label": "Local delivery bandwidth",
+          "time_ns": "29935343674115/2867",
+          "scope": "Restore selected local delivery bandwidth. This reaches the unchanged selected execution.",
+          "resource_mask": 7,
+          "mapping_count": 31,
+          "order": 5,
+          "signed_time_saved_ns": "6913209135",
+          "speedup_exact": "35651985916585614140625/3214283051871110168576",
+          "speedup": 11.09173813918838,
+          "added_speedup_exact": "141325688548121744394670020371015625/31985661247284151834079598039007232",
+          "share_exact": "20189384078303106342095717195859375/46112988216625319917923514212641824"
+        }
+      ],
+      "slices": [
+        {
+          "label": "Implementation / tiling",
+          "source_stages": [
+            2
+          ],
+          "table10_families": [
+            "Implementation / tiling"
+          ],
+          "added_speedup_exact": "55008038089093008447265625/356481569145725411074953445376",
+          "share_exact": "10538780960229167124478254629842187500000/689234925311578434544830068568126578834230289",
+          "scope": "Extend 25 to 31 compatible mappings under the same service caps; residency and all owners stay fixed.",
+          "color": "#52abc9",
+          "display_percent": "0.002",
+          "display_label": "Implementation / tiling"
+        },
+        {
+          "label": "HW resources: arrays",
+          "source_stages": [
+            3
+          ],
+          "table10_families": [
+            "Hardware resources"
+          ],
+          "added_speedup_exact": "2603845971018701967513013671875/21502174394750868454264325275648",
+          "share_exact": "15589404803380905913109839612260557908203125/1299159869481252694946000268707571313451009696",
+          "scope": "Restore selected array availability; DRAM/local caps remain. Compatible mappings may be reselected.",
+          "color": "#315a94",
+          "display_percent": "1.200",
+          "display_label": "HW resources: arrays"
+        },
+        {
+          "label": "HW resources: on-chip BW",
+          "source_stages": [
+            5
+          ],
+          "table10_families": [
+            "Hardware resources"
+          ],
+          "added_speedup_exact": "141325688548121744394670020371015625/31985661247284151834079598039007232",
+          "share_exact": "20189384078303106342095717195859375/46112988216625319917923514212641824",
+          "scope": "Restore selected local delivery bandwidth. This reaches the unchanged selected execution.",
+          "color": "#55a67c",
+          "display_percent": "43.782",
+          "display_label": "HW resources: on-chip BW"
+        },
+        {
+          "label": "Weight residency + KV\u2020",
+          "source_stages": [
+            1
+          ],
+          "table10_families": [
+            "Weight residency",
+            "KV retention",
+            "Hardware resources"
+          ],
+          "added_speedup_exact": "463081059332284074457/469565938834413191168",
+          "share_exact": "2772498132017032610818102520716111/28371141104589030745151860847200486",
+          "scope": "Joint resident custom datapath: final memory capacity, weight and KV retention, original first imports, formats, vector and host resources; old mapping menu. Active arrays capped at 256, DRAM at 900 GB/s and local delivery at 8192 GB/s. Not isolated software and not a TPU-v3 implementation.",
+          "color": "#9771b5",
+          "display_percent": "9.772",
+          "display_label": "Weight residency + KV\u2020"
+        },
+        {
+          "label": "HW resources: DRAM BW",
+          "source_stages": [
+            4
+          ],
+          "table10_families": [
+            "Hardware resources"
+          ],
+          "added_speedup_exact": "4909062920036057248468003359375/1075160198774888031018645716992",
+          "share_exact": "117563588503307117152506109711240780184062500/259844415335559852478403560021749011795665961",
+          "scope": "Restore selected delivered DRAM bandwidth, retaining full array availability and the local-service cap.",
+          "color": "#e5a745",
+          "display_percent": "45.244",
+          "display_label": "HW resources: DRAM BW"
+        }
+      ]
+    },
+    {
+      "workload": "llama1_65b",
+      "label": "Llama-1 65B",
+      "phase": "Decode",
+      "reference_ns": "37675158186255203125/67108864",
+      "final_ns": "1404992478347/35",
+      "final_speedup_exact": "1318630536518932109375/94287449150411767808",
+      "final_speedup": 13.985218058189174,
+      "stages": [
+        {
+          "label": "Resident datapath + KV",
+          "time_ns": "10205909820052/45",
+          "scope": "Joint resident custom datapath: final memory capacity, weight and KV retention, original first imports, formats, vector and host resources; old mapping menu. Active arrays capped at 256, DRAM at 900 GB/s and local delivery at 8192 GB/s. Not isolated software and not a TPU-v3 implementation.",
+          "resource_mask": 0,
+          "mapping_count": 14,
+          "order": 1,
+          "signed_time_saved_ns": "1010475104271349999697/3019898880",
+          "speedup_exact": "1695382118381484140625/684907014110134140928",
+          "speedup": 2.4753464097374014,
+          "added_speedup_exact": "1010475104271349999697/684907014110134140928",
+          "share_exact": "1419709921058147281661745729060859/12495535138487165553411562545701484"
+        },
+        {
+          "label": "Tiling extension",
+          "time_ns": "50359626754148/225",
+          "scope": "Extend 14 to 25 compatible mappings under the same service caps; residency and all owners stay fixed.",
+          "resource_mask": 0,
+          "mapping_count": 25,
+          "order": 2,
+          "signed_time_saved_ns": "223307448704/75",
+          "speedup_exact": "8476910591907420703125/3379577342934879567872",
+          "speedup": 2.508275364559621,
+          "added_speedup_exact": "8873237236737940435218907265625/269466106186596351750740742504448",
+          "share_exact": "33244884203214199706247136860276356773125000/13109801784740722847702255034403285679180557409"
+        },
+        {
+          "label": "Array parallelism",
+          "time_ns": "48219775496468/225",
+          "scope": "Restore selected array availability; DRAM/local caps remain. Compatible mappings may be reselected.",
+          "resource_mask": 1,
+          "mapping_count": 25,
+          "order": 3,
+          "signed_time_saved_ns": "142656750512/15",
+          "speedup_exact": "8476910591907420703125/3235974355903003492352",
+          "speedup": 2.619585219037351,
+          "added_speedup_exact": "1133707986958375463856681322265625/10185153796829358544192428631392256",
+          "share_exact": "530950398106145432430984804594855153931640625/61939769213066816371412903690861083479475063681"
+        },
+        {
+          "label": "DRAM bandwidth",
+          "time_ns": "2347888722812/35",
+          "scope": "Restore selected delivered DRAM bandwidth, retaining full array availability and the local-service cap.",
+          "resource_mask": 3,
+          "mapping_count": 25,
+          "order": 4,
+          "signed_time_saved_ns": "231883435948736/1575",
+          "speedup_exact": "1318630536518932109375/157564144986324205568",
+          "speedup": 8.36884899564798,
+          "added_speedup_exact": "682519150792266028456464903671875/118714182773960737540829888905216",
+          "share_exact": "3835737092763662623524733808017489106921562500/8663349691146725642814858751062934285985521317"
+        },
+        {
+          "label": "Local delivery bandwidth",
+          "time_ns": "1404992478347/35",
+          "scope": "Restore selected local delivery bandwidth. This reaches the unchanged selected execution.",
+          "resource_mask": 7,
+          "mapping_count": 25,
+          "order": 5,
+          "signed_time_saved_ns": "26939892699",
+          "speedup_exact": "1318630536518932109375/94287449150411767808",
+          "speedup": 13.985218058189174,
+          "added_speedup_exact": "1243331780720569120301988118359375/221376438562961680002620216836096",
+          "share_exact": "414443926906856373433996039453125/958207109228458718245328541575468"
+        }
+      ],
+      "slices": [
+        {
+          "label": "Implementation / tiling",
+          "source_stages": [
+            2
+          ],
+          "table10_families": [
+            "Implementation / tiling"
+          ],
+          "added_speedup_exact": "8873237236737940435218907265625/269466106186596351750740742504448",
+          "share_exact": "33244884203214199706247136860276356773125000/13109801784740722847702255034403285679180557409",
+          "scope": "Extend 14 to 25 compatible mappings under the same service caps; residency and all owners stay fixed.",
+          "color": "#52abc9",
+          "display_percent": "0.254",
+          "display_label": "Implementation / tiling"
+        },
+        {
+          "label": "HW resources: arrays",
+          "source_stages": [
+            3
+          ],
+          "table10_families": [
+            "Hardware resources"
+          ],
+          "added_speedup_exact": "1133707986958375463856681322265625/10185153796829358544192428631392256",
+          "share_exact": "530950398106145432430984804594855153931640625/61939769213066816371412903690861083479475063681",
+          "scope": "Restore selected array availability; DRAM/local caps remain. Compatible mappings may be reselected.",
+          "color": "#315a94",
+          "display_percent": "0.857",
+          "display_label": "HW resources: arrays"
+        },
+        {
+          "label": "HW resources: on-chip BW",
+          "source_stages": [
+            5
+          ],
+          "table10_families": [
+            "Hardware resources"
+          ],
+          "added_speedup_exact": "1243331780720569120301988118359375/221376438562961680002620216836096",
+          "share_exact": "414443926906856373433996039453125/958207109228458718245328541575468",
+          "scope": "Restore selected local delivery bandwidth. This reaches the unchanged selected execution.",
+          "color": "#55a67c",
+          "display_percent": "43.252",
+          "display_label": "HW resources: on-chip BW"
+        },
+        {
+          "label": "Weight residency + KV\u2020",
+          "source_stages": [
+            1
+          ],
+          "table10_families": [
+            "Weight residency",
+            "KV retention",
+            "Hardware resources"
+          ],
+          "added_speedup_exact": "1010475104271349999697/684907014110134140928",
+          "share_exact": "1419709921058147281661745729060859/12495535138487165553411562545701484",
+          "scope": "Joint resident custom datapath: final memory capacity, weight and KV retention, original first imports, formats, vector and host resources; old mapping menu. Active arrays capped at 256, DRAM at 900 GB/s and local delivery at 8192 GB/s. Not isolated software and not a TPU-v3 implementation.",
+          "color": "#9771b5",
+          "display_percent": "11.362",
+          "display_label": "Weight residency + KV\u2020"
+        },
+        {
+          "label": "HW resources: DRAM BW",
+          "source_stages": [
+            4
+          ],
+          "table10_families": [
+            "Hardware resources"
+          ],
+          "added_speedup_exact": "682519150792266028456464903671875/118714182773960737540829888905216",
+          "share_exact": "3835737092763662623524733808017489106921562500/8663349691146725642814858751062934285985521317",
+          "scope": "Restore selected delivered DRAM bandwidth, retaining full array availability and the local-service cap.",
+          "color": "#e5a745",
+          "display_percent": "44.275",
+          "display_label": "HW resources: DRAM BW"
+        }
+      ]
+    },
+    {
+      "workload": "llama3_70b",
+      "label": "Llama-3 70B",
+      "phase": "Decode",
+      "reference_ns": "40754094532407265625/67108864",
+      "final_ns": "150193403141761/4435",
+      "final_speedup_exact": "25820629893032317578125/1439901237876801667072",
+      "final_speedup": 17.932222859330256,
+      "stages": [
+        {
+          "label": "Resident datapath + KV",
+          "time_ns": "36912231588388/225",
+          "scope": "Joint resident custom datapath: final memory capacity, weight and KV retention, original first imports, formats, vector and host resources; old mapping menu. Active arrays capped at 256, DRAM at 900 GB/s and local delivery at 8192 GB/s. Not isolated software and not a TPU-v3 implementation.",
+          "resource_mask": 0,
+          "mapping_count": 14,
+          "order": 1,
+          "signed_time_saved_ns": "6692533340190000494393/15099494400",
+          "speedup_exact": "9169671269791634765625/2477137929601634271232",
+          "speedup": 3.7017201021447654,
+          "added_speedup_exact": "6692533340190000494393/2477137929601634271232",
+          "share_exact": "143596336857547579951891678494949439/899947102412747916182607485115652564"
+        },
+        {
+          "label": "Tiling extension",
+          "time_ns": "12022918036876/75",
+          "scope": "Extend 14 to 25 compatible mappings under the same service caps; residency and all owners stay fixed.",
+          "resource_mask": 0,
+          "mapping_count": 25,
+          "order": 2,
+          "signed_time_saved_ns": "168695495552/45",
+          "speedup_exact": "3056557089930544921875/806844371419858468864",
+          "speedup": 3.7882858184307775,
+          "added_speedup_exact": "20141695819094230658480478515625/232675205419040310945327815327744",
+          "share_exact": "3457314102989647795742549839665095470546875000/676249390614532481219178436055096557161659746879"
+        },
+        {
+          "label": "Array parallelism",
+          "time_ns": "11350320035626/75",
+          "scope": "Restore selected array availability; DRAM/local caps remain. Compatible mappings may be reselected.",
+          "resource_mask": 1,
+          "mapping_count": 25,
+          "order": 3,
+          "signed_time_saved_ns": "8967973350",
+          "speedup_exact": "277868826357322265625/69246098511572762624",
+          "speedup": 4.012772305300109,
+          "added_speedup_exact": "93447008608809137080748291015625/416270083389040252387287013261312",
+          "share_exact": "2005017748053497351863494813682143343505859375/151231407379614559048257999399523921003307226724"
+        },
+        {
+          "label": "DRAM bandwidth",
+          "time_ns": "230849137852186/4435",
+          "scope": "Restore selected delivered DRAM bandwidth, retaining full array availability and the local-service cap.",
+          "resource_mask": 3,
+          "mapping_count": 25,
+          "order": 4,
+          "signed_time_saved_ns": "6604996803817472/66525",
+          "speedup_exact": "25820629893032317578125/2213146199519943196672",
+          "speedup": 11.666933661514593,
+          "added_speedup_exact": "4267398414180212251938743359375/557526581369423565521742528512",
+          "share_exact": "93759647508111389253277152070988273443600000000/207411259436102272323397041817844151915918571601"
+        },
+        {
+          "label": "Local delivery bandwidth",
+          "time_ns": "150193403141761/4435",
+          "scope": "Restore selected local delivery bandwidth. This reaches the unchanged selected execution.",
+          "resource_mask": 7,
+          "mapping_count": 25,
+          "order": 5,
+          "signed_time_saved_ns": "18186185955",
+          "speedup_exact": "25820629893032317578125/1439901237876801667072",
+          "speedup": 17.932222859330256,
+          "added_speedup_exact": "297511696386926293106036919169921875/47485708479450721923573231759917056",
+          "share_exact": "297511696386926293106036919169921875/804038598607248154082673184776801694"
+        }
+      ],
+      "slices": [
+        {
+          "label": "Implementation / tiling",
+          "source_stages": [
+            2
+          ],
+          "table10_families": [
+            "Implementation / tiling"
+          ],
+          "added_speedup_exact": "20141695819094230658480478515625/232675205419040310945327815327744",
+          "share_exact": "3457314102989647795742549839665095470546875000/676249390614532481219178436055096557161659746879",
+          "scope": "Extend 14 to 25 compatible mappings under the same service caps; residency and all owners stay fixed.",
+          "color": "#52abc9",
+          "display_percent": "0.511",
+          "display_label": "Implementation / tiling"
+        },
+        {
+          "label": "HW resources: arrays",
+          "source_stages": [
+            3
+          ],
+          "table10_families": [
+            "Hardware resources"
+          ],
+          "added_speedup_exact": "93447008608809137080748291015625/416270083389040252387287013261312",
+          "share_exact": "2005017748053497351863494813682143343505859375/151231407379614559048257999399523921003307226724",
+          "scope": "Restore selected array availability; DRAM/local caps remain. Compatible mappings may be reselected.",
+          "color": "#315a94",
+          "display_percent": "1.326",
+          "display_label": "HW resources: arrays"
+        },
+        {
+          "label": "HW resources: on-chip BW",
+          "source_stages": [
+            5
+          ],
+          "table10_families": [
+            "Hardware resources"
+          ],
+          "added_speedup_exact": "297511696386926293106036919169921875/47485708479450721923573231759917056",
+          "share_exact": "297511696386926293106036919169921875/804038598607248154082673184776801694",
+          "scope": "Restore selected local delivery bandwidth. This reaches the unchanged selected execution.",
+          "color": "#55a67c",
+          "display_percent": "37.002",
+          "display_label": "HW resources: on-chip BW"
+        },
+        {
+          "label": "Weight residency + KV\u2020",
+          "source_stages": [
+            1
+          ],
+          "table10_families": [
+            "Weight residency",
+            "KV retention",
+            "Hardware resources"
+          ],
+          "added_speedup_exact": "6692533340190000494393/2477137929601634271232",
+          "share_exact": "143596336857547579951891678494949439/899947102412747916182607485115652564",
+          "scope": "Joint resident custom datapath: final memory capacity, weight and KV retention, original first imports, formats, vector and host resources; old mapping menu. Active arrays capped at 256, DRAM at 900 GB/s and local delivery at 8192 GB/s. Not isolated software and not a TPU-v3 implementation.",
+          "color": "#9771b5",
+          "display_percent": "15.956",
+          "display_label": "Weight residency + KV\u2020"
+        },
+        {
+          "label": "HW resources: DRAM BW",
+          "source_stages": [
+            4
+          ],
+          "table10_families": [
+            "Hardware resources"
+          ],
+          "added_speedup_exact": "4267398414180212251938743359375/557526581369423565521742528512",
+          "share_exact": "93759647508111389253277152070988273443600000000/207411259436102272323397041817844151915918571601",
+          "scope": "Restore selected delivered DRAM bandwidth, retaining full array availability and the local-service cap.",
+          "color": "#e5a745",
+          "display_percent": "45.205",
+          "display_label": "HW resources: DRAM BW"
+        }
+      ]
+    }
+  ],
+  "method": "Sum exact cumulative speedup increments within each displayed feature group; divide by final speedup minus one. Every underlying increment appears exactly once.",
+  "order_scope": "Underlying cumulative comparisons unchanged. Legend is grouped, not chronological. The earlier Llama Hardware + DRAM display group is separated into its original base resident-datapath and DRAM-bandwidth increments.",
+  "input_sha256": "a6357660cc353052778b6d76833cd0b3562521dd270d5e9549602bd689b7555b",
+  "source_sha256": "4691c400432d35189c8a8af08cd18c07997d40b992ebd435c7de1b796ee32acb",
+  "percentages_sum_exactly_to_100": true,
+  "legend_overlap_check": true,
+  "new_optimizer_calls": 0,
+  "physical_or_full_source_admission": false
+}

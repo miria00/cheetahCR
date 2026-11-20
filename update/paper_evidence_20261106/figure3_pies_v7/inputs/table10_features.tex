@@ -1,0 +1,55 @@
+\begin{table}[H]
+\centering\footnotesize
+\caption{Encoded decision families and actual recovery coverage. The master
+formulates broader freedoms than the latest decoder implementation menus.
+``Fixed'' means an active inherited policy, not a free selector.}
+\label{tab:current_features}
+\begin{tabularx}{\linewidth}{@{}p{0.22\linewidth}XX@{}}
+\toprule
+Feature & DeepSeek decode & Llama decode \\
+\midrule
+Hardware resources & Selectable finite whole-chip branches & Selectable finite whole-chip branches \\
+Implementation / tiling & Independent compatible full-K choices & Full-K choices; 13B menu grows from 25 to 31 \\
+Activation placement & Resident arena fixed; rounded producer layout selectable & Original DRAM arenas and boundaries fixed \\
+Weight residency & Original resident backing fixed; loads paid & Eligible whole-owner retention selectable; loads paid \\
+Fusion / storage & Rounded attention producer-to-AV layout selected; inherited gate/up and SwiGLU & Inherited boundaries; no new fusion recipe \\
+Tiling--placement coupling & Footprint, ports and shared resources checked; general lifetime exchange absent & Same restriction \\
+KV retention & Original owners, appends and entry fixed and charged & Original owners/appends charged \\
+MoE residency / offload & Original routing, groups and resident parameters fixed & Not applicable \\
+Rematerialization & Formulated; new decoder implementation absent & Formulated; new decoder implementation absent \\
+Scheduling / concurrency & Cross-N prefetch and two contexts selectable; arbitrary overlap absent & Ordinary serial DRAM kernels \\
+Serving / phase choice & Decode-only; original request order and starting KV fixed & Same restriction \\
+\bottomrule
+\end{tabularx}
+\medskip
+\begin{tabular}{@{}llrr@{}}
+\toprule
+Workload & Disabled choice (other choices retained) & Time saved, s & Factor \\
+\midrule
+DeepSeek & Rounded producer-layout storage fusion & 1.348604 & $1.021076\times$ \\
+DeepSeek & New delivery / concurrency recipes & 4.210287 & $1.065797\times$ \\
+DeepSeek & Second context; prefetch still available & 2.870741 & $1.044863\times$ \\
+Llama-1 13B & Six new full-K mappings & 0.059881 & $1.005735\times$ \\
+\bottomrule
+\end{tabular}
+\par\smallskip\begin{minipage}{\linewidth}\footnotesize
+Same-chip controls reoptimize the declared feature-off menu. Saved time is
+$T_{\rm off}-T_{\rm on}$ and factor is $T_{\rm off}/T_{\rm on}$, with
+$T_{\rm on}=63.988923$~s (DeepSeek) or $10.441348$~s (13B).
+The second-context control is part of the delivery family, so these gains
+must not be added. Fixed, unavailable and unisolated features receive no
+invented individual speedup credit. Compatible alternatives remain selectable;
+unselected alternatives are not declared absent.
+\end{minipage}
+\end{table}
+
+\paragraph{Hardware--software interaction.}
+For DeepSeek, old/old, old-hardware/new-software, new-hardware/old-software,
+and new/new take 69.694835, 64.028837, 69.547814 and 63.988923~s.
+The corresponding 13B times are 10.687989, 10.627475, 10.501228 and
+10.441348~s. Both hardware-only minima choose the new chip within the
+declared menu. The signed interaction
+$I=T_{10}+T_{01}-T_{00}-T_{11}$ is $-107.107212$~ms (DeepSeek) and
+$-0.633227$~ms (13B): combined savings are slightly less than the sum of the
+separate changes. These finite-family controls do not certify unrestricted
+placement, rematerialization or scheduling optima.
